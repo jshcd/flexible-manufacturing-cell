@@ -1,10 +1,13 @@
+/*
+ * This class assambles 2 pieces into a new one
+ */
+
 package Element.Station;
 
 import Element.Piece.Piece;
 import Element.Other.Sensor;
 import Element.Other.HidraulicActuator;
 import Element.Conveyor.ConveyorBelt;
-import java.util.ArrayList;
 import java.util.ArrayList;
 
 public class AssemblyStation extends ConveyorBelt {

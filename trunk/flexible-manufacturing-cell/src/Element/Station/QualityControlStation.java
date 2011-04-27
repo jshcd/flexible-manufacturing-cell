@@ -1,3 +1,7 @@
+/*
+ * This class checks the quality of pieces.
+ */
+
 package Element.Station;
 
 import Element.Piece.Piece;

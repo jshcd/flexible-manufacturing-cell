@@ -1,6 +1,6 @@
 /* 
  * Interface for mailboxes. It's objective is establishing connections with other mailboxes (RMI)
- * and sending and receiving commands (as integers).
+ * and sending and receiving commands (as ints).
  */
 
 
