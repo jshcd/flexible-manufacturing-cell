@@ -1,6 +1,6 @@
 /*
  * Abstract class that defines a belt wich contains sensors. This class is extended by OneSensorBelt
- * and TwoSensorBelt depending on what tpe it is
+ * and TwoSensorBelt depending on what type it is.
  */
 
 
@@ -12,10 +12,10 @@ import java.util.ArrayList;
 
 public abstract class ConveyorBelt implements PieceContainer {
 
-    public Integer _id;
-    private ArrayList<Piece> _capacity;
-    private Integer _length;
-    private Integer _speed;
+    public int _id;
+    private ArrayList<Piece> _pieces;
+    private int _length;
+    private int _speed;
 
     public void startBelt() {
         throw new UnsupportedOperationException();
@@ -29,19 +29,19 @@ public abstract class ConveyorBelt implements PieceContainer {
         throw new UnsupportedOperationException();
     }
 
-    public Integer getSpeed() {
+    public int getSpeed() {
         throw new UnsupportedOperationException();
     }
 
-    public void setSpeed(Integer speed) {
+    public void setSpeed(int speed) {
         throw new UnsupportedOperationException();
     }
 
-    public Integer getLength() {
+    public int getLength() {
         throw new UnsupportedOperationException();
     }
 
-    public void setLength(Integer length) {
+    public void setLength(int length) {
         throw new UnsupportedOperationException();
     }
 
@@ -57,11 +57,11 @@ public abstract class ConveyorBelt implements PieceContainer {
         throw new UnsupportedOperationException();
     }
 
-    public Integer getId() {
+    public int getId() {
         throw new UnsupportedOperationException();
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         throw new UnsupportedOperationException();
     }
 }

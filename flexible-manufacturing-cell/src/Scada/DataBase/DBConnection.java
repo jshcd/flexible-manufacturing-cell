@@ -1,3 +1,9 @@
+
+/*
+ * This class is in charge of connecting and accepting connections from different terminals and passing
+ * and receiving parameter sets.
+ */
+
 package Scada.DataBase;
 
 public class DBConnection {

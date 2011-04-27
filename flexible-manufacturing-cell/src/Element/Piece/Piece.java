@@ -1,15 +1,14 @@
 /*
- * It represents a 
+ * It represents a piece
  */
 
 package Element.Piece;
 
-import Element.PieceContainer;
 
 public class Piece {
-	private Integer _id;
+	private int _id;
 	private Element.Piece.Piece.PieceType _type;
-	private Integer _position;
+	private int _position;
 
 	public int getId() {
 		throw new UnsupportedOperationException();
@@ -27,11 +26,11 @@ public class Piece {
 		throw new UnsupportedOperationException();
 	}
 
-	public Integer getPosition() {
+	public int getPosition() {
 		throw new UnsupportedOperationException();
 	}
 
-	public void setPosition(Integer position) {
+	public void setPosition(int position) {
 		throw new UnsupportedOperationException();
 	}
         

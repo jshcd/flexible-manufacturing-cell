@@ -32,7 +32,7 @@ public class TwoSensorBelt extends ConveyorBelt {
 		throw new UnsupportedOperationException();
 	}
 
-	public ArrayList<Element.Piece.Piece> getCapacity() {
+	public ArrayList<Element.Piece.Piece> getPieces() {
 		throw new UnsupportedOperationException();
 	}
 }

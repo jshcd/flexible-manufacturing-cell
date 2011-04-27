@@ -1,3 +1,7 @@
+/*
+ * This class transforms assemblies into welded pieces.
+ */
+
 package Element.Station;
 
 import Element.Piece.Piece;

@@ -8,9 +8,9 @@ package Element.Other;
 import Element.PieceContainer;
 
 public class Sensor {
-	private Integer _state;
+	private int _state;
 	private PieceContainer _associatedContainer;
-	private Integer _positionInBelt;
+	private int _positionInBelt;
 	private SensorMailBox _mailBox;
 
 	public void getState() {
@@ -21,11 +21,11 @@ public class Sensor {
 		throw new UnsupportedOperationException();
 	}
 
-	public Integer getPositionInBelt() {
+	public int getPositionInBelt() {
 		throw new UnsupportedOperationException();
 	}
 
-	public void setPositionInBelt(Integer positionInBelt) {
+	public void setPositionInBelt(int positionInBelt) {
 		throw new UnsupportedOperationException();
 	}
 
