@@ -11,6 +11,7 @@ public class Master {
 	private Robot2 _robot2;
 
 	public void initialize() {
+                System.out.println("HOLA");
 		throw new UnsupportedOperationException();
 	}
 
