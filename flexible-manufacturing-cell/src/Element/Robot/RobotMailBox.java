@@ -2,7 +2,7 @@ package Element.Robot;
 
 import Auxiliar.MailBox;
 
-public class RobotMailBox implements MailBox {
+public class RobotMailBox extends MailBox {
 	private Robot _robot;
 
 	public void startConnection(MailBox destiny) {

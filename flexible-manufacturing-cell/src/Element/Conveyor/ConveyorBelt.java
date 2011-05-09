@@ -10,58 +10,72 @@ import Element.Piece.Piece;
 import Element.PieceContainer;
 import java.util.ArrayList;
 
-public abstract class ConveyorBelt implements PieceContainer {
+public abstract class ConveyorBelt extends Thread implements PieceContainer {
 
     public int _id;
     private ArrayList<Piece> _pieces;
     private int _length;
     private int _speed;
+    private boolean _moving;
+    
+    public ConveyorBelt(int id, int speed, int length){
+        _id = id;
+        _pieces = new ArrayList();
+        _length = length;
+        _speed = speed;
+        _moving = false;
+    }
+    
+    @Override
+    public void run(){
+        while(_moving){
+            
+        }
+    }
 
     public void startBelt() {
-        throw new UnsupportedOperationException();
+        _moving = true;
     }
 
     public void stopBelt() {
-        throw new UnsupportedOperationException();
+        _moving = false;
     }
 
-    public void detectEnd() {
-        throw new UnsupportedOperationException();
-    }
+    public abstract void detectEnd();
 
     public int getSpeed() {
-        throw new UnsupportedOperationException();
+        return _speed;
     }
 
     public void setSpeed(int speed) {
-        throw new UnsupportedOperationException();
+        _speed = speed;
     }
 
     public int getLength() {
-        throw new UnsupportedOperationException();
+        return _length;
     }
 
     public void setLength(int length) {
-        throw new UnsupportedOperationException();
+        _length = length;
     }
 
-    public ArrayList<Element.Piece.Piece> getCapacity() {
-        throw new UnsupportedOperationException();
+    public ArrayList<Element.Piece.Piece> getPieces() {
+        return _pieces;
     }
 
-    public void setCapacity(ArrayList<Element.Piece.Piece> capacity) {
-        throw new UnsupportedOperationException();
+    public void setPieces(ArrayList<Element.Piece.Piece> pieces) {
+        _pieces = pieces;
     }
 
     public void setEventListeners() {
         throw new UnsupportedOperationException();
     }
 
-    public int getId() {
-        throw new UnsupportedOperationException();
+    public int getConveyorId() {
+        return _id;
     }
 
-    public void setId(int id) {
+    public void setConveyorId(int id) {
         throw new UnsupportedOperationException();
     }
 }

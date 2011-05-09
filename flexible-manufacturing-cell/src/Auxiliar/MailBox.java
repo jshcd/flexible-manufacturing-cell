@@ -6,15 +6,25 @@
 
 package Auxiliar;
 
-public interface MailBox {
+public abstract class MailBox {
 
-	public void startConnection(MailBox destiny);
+	public void startConnection(MailBox destiny){
+            
+        }
 
-	public void endConnection(MailBox destiny);
+	public void endConnection(MailBox destiny){
+            
+        }
 
-	public void acceptConnection();
+	public void acceptConnection(){
+            
+        }
 
-	public void sendCommand();
+	public void sendCommand(){
+            
+        }
 
-	public void receiveCommand(int command);
+	public void receiveCommand(int command){
+            
+        }
 }

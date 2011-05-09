@@ -2,7 +2,7 @@ package Automaton.Master;
 
 import Auxiliar.MailBox;
 
-public class MasterMailBox implements MailBox {
+public class MasterMailBox extends MailBox {
 	public MasterMailBox _unnamed_MasterMailBox_;
 
 	public void startConnection(MailBox destiny) {
