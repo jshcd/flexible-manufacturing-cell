@@ -8,7 +8,7 @@ package Element.Piece;
 public class Piece {
 	private int _id;
 	private Element.Piece.Piece.PieceType _type;
-	private int _position;
+	private float _position;
 
 	public int getId() {
 		throw new UnsupportedOperationException();

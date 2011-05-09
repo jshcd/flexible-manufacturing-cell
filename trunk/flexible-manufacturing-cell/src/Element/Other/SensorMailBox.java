@@ -2,7 +2,7 @@ package Element.Other;
 
 import Auxiliar.MailBox;
 
-public class SensorMailBox implements MailBox {
+public class SensorMailBox extends MailBox {
 
 	public void startConnection(MailBox destiny) {
 		throw new UnsupportedOperationException();

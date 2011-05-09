@@ -4,7 +4,7 @@ package Automaton.Slaves;
 
 import Auxiliar.MailBox;
 
-public class SlaveMailBox implements MailBox {
+public class SlaveMailBox extends MailBox {
 
 	public void startConnection(MailBox destiny) {
 		throw new UnsupportedOperationException();
