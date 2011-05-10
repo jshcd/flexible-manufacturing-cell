@@ -14,33 +14,13 @@ public class WeldingStation extends ConveyorBelt {
 
     private List<Piece> _pieces;
     private HidraulicActuator _actuator;
+    
+    public WeldingStation(int id, int speed, int length) {
+        super(id, speed, length);
+    }
 
     public void weld() {
         throw new UnsupportedOperationException();
     }
-
-    public Sensor getLoadSensor() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setLoadSensor(Sensor loadSensor) {
-        throw new UnsupportedOperationException();
-    }
-
-    public ArrayList<Element.Piece.Piece> getCapacity() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setCapacity(ArrayList<Element.Piece.Piece> capacity) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setEventListeners() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void detectEnd() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    
 }

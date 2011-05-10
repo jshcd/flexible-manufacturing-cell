@@ -6,6 +6,8 @@
 
 package Element.Conveyor;
 
+import Automaton.Slaves.Slave;
+import Element.Other.Sensor;
 import Element.Piece.Piece;
 import Element.PieceContainer;
 import java.util.ArrayList;
@@ -14,13 +16,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class ConveyorBelt extends Thread implements PieceContainer {
+public class ConveyorBelt extends Thread implements PieceContainer {
 
     public int _id;
     private List<Piece> _pieces;
     private int _length;
     private int _speed;
     private boolean _moving;
+    private ArrayList<Sensor> _sensors;
+    
+    // Process for which it works
+    protected Slave _process;
     
     public ConveyorBelt(int id, int speed, int length){
         _id = id;
@@ -28,6 +34,7 @@ public abstract class ConveyorBelt extends Thread implements PieceContainer {
         _length = length;
         _speed = speed;
         _moving = false;
+        _sensors = new ArrayList();
     }
     
     @Override
@@ -36,9 +43,9 @@ public abstract class ConveyorBelt extends Thread implements PieceContainer {
         // TODO: Check this works right
         while(_moving){
             try {
-                Thread.sleep(1000/_speed);
+                Thread.sleep(10);
                 for(Piece p:_pieces){
-                    p.setPosition(p.getPosition() + 1);
+                    p.setPosition(p.getPosition() + _speed);
                 }
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,8 +60,6 @@ public abstract class ConveyorBelt extends Thread implements PieceContainer {
     public void stopBelt() {
         _moving = false;
     }
-
-    public abstract void detectEnd();
 
     public int getSpeed() {
         return _speed;
@@ -80,15 +85,23 @@ public abstract class ConveyorBelt extends Thread implements PieceContainer {
         _pieces = pieces;
     }
 
-    public void setEventListeners() {
-        throw new UnsupportedOperationException();
-    }
-
     public int getConveyorId() {
         return _id;
     }
 
     public void setConveyorId(int id) {
         _id = id;
+    }
+
+    public Slave getProcess() {
+        return _process;
+    }
+
+    public void setProcess(Slave _process) {
+        this._process = _process;
+    }
+    
+    public void addSensor(Sensor s){
+        _sensors.add(s);
     }
 }
