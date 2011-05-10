@@ -9,9 +9,10 @@ import Element.Other.Sensor;
 import Element.Other.HidraulicActuator;
 import Element.Conveyor.ConveyorBelt;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AssemblyStation extends ConveyorBelt {
-	private ArrayList<Piece> _capacity;
+	private List<Piece> _capacity;
 	private Sensor _loadSensor;
 	private HidraulicActuator _actuator;
 
@@ -38,4 +39,9 @@ public class AssemblyStation extends ConveyorBelt {
 	public void setEventListeners() {
 		throw new UnsupportedOperationException();
 	}
+
+    @Override
+    public void detectEnd() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

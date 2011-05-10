@@ -9,18 +9,22 @@ package Element.Conveyor;
 import Element.Piece.Piece;
 import Element.PieceContainer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class ConveyorBelt extends Thread implements PieceContainer {
 
     public int _id;
-    private ArrayList<Piece> _pieces;
+    private List<Piece> _pieces;
     private int _length;
     private int _speed;
     private boolean _moving;
     
     public ConveyorBelt(int id, int speed, int length){
         _id = id;
-        _pieces = new ArrayList();
+        _pieces = Collections.synchronizedList(new ArrayList<Piece>());
         _length = length;
         _speed = speed;
         _moving = false;
@@ -28,8 +32,17 @@ public abstract class ConveyorBelt extends Thread implements PieceContainer {
     
     @Override
     public void run(){
+        
+        // TODO: Check this works right
         while(_moving){
-            
+            try {
+                Thread.sleep(1000/_speed);
+                for(Piece p:_pieces){
+                    p.setPosition(p.getPosition() + 1);
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -59,11 +72,11 @@ public abstract class ConveyorBelt extends Thread implements PieceContainer {
         _length = length;
     }
 
-    public ArrayList<Element.Piece.Piece> getPieces() {
+    public List<Element.Piece.Piece> getPieces() {
         return _pieces;
     }
 
-    public void setPieces(ArrayList<Element.Piece.Piece> pieces) {
+    public void setPieces(List<Element.Piece.Piece> pieces) {
         _pieces = pieces;
     }
 
@@ -76,6 +89,6 @@ public abstract class ConveyorBelt extends Thread implements PieceContainer {
     }
 
     public void setConveyorId(int id) {
-        throw new UnsupportedOperationException();
+        _id = id;
     }
 }

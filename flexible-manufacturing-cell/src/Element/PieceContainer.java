@@ -5,13 +5,13 @@
 package Element;
 
 import Element.Piece.Piece;
-import java.util.ArrayList;
+import java.util.List;
 
 public interface PieceContainer {
 
-	public ArrayList<Piece> getCapacity();
+	public List<Piece> getPieces();
 
-	public void setCapacity(ArrayList<Element.Piece.Piece> capacity);
+	public void setPieces(List<Element.Piece.Piece> pieces);
 
 	public void setEventListeners();
 }
