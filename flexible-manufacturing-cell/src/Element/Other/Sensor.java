@@ -4,6 +4,7 @@
  */
 package Element.Other;
 
+import Automaton.Slaves.Slave;
 import Element.Conveyor.ConveyorBelt;
 import Element.Piece.Piece;
 import Element.PieceContainer;
@@ -13,10 +14,20 @@ import java.util.logging.Logger;
 
 public class Sensor extends Thread{
 
+    private int _id;
     private int _state;
     private PieceContainer _associatedContainer;
-    private int _positionInBelt;
+    private Slave _process;
+    private float _positionInBelt;
     private SensorMailBox _mailBox;
+
+    public int getSensorId() {
+        return _id;
+    }
+
+    public void setSensorId(int _id) {
+        this._id = _id;
+    }
 
     public int getSensorState() {
         return _state;
@@ -30,7 +41,7 @@ public class Sensor extends Thread{
                 Thread.sleep(50);
                 List<Piece> pieces = _associatedContainer.getPieces();
                 for(Piece p:pieces){
-                    if(p.getPosition() == _positionInBelt){
+                    if(p.getPosition() >= _positionInBelt+0.2){
                         activate();
                     }
                 }
@@ -44,23 +55,41 @@ public class Sensor extends Thread{
         throw new UnsupportedOperationException();
     }
 
-    public int getPositionInBelt() {
-        throw new UnsupportedOperationException();
+    public float getPositionInBelt() {
+        return _positionInBelt;
     }
 
-    public void setPositionInBelt(int positionInBelt) {
-        throw new UnsupportedOperationException();
+    public void setPositionInBelt(float positionInBelt) {
+        _positionInBelt =  positionInBelt;
     }
 
     public PieceContainer getAssociatedContainer() {
-        throw new UnsupportedOperationException();
+        return _associatedContainer;
     }
 
     public void setAssociatedContainer(PieceContainer associatedContainer) {
-        throw new UnsupportedOperationException();
+        _associatedContainer = associatedContainer;
     }
 
+    public SensorMailBox getMailBox() {
+        return _mailBox;
+    }
+
+    public void setMailBox(SensorMailBox _mailBox) {
+        this._mailBox = _mailBox;
+    }
+
+    public Slave getProcess() {
+        return _process;
+    }
+
+    public void setProcess(Slave _process) {
+        this._process = _process;
+    }
+    
+    
+
     public void notifyContainer() {
-        throw new UnsupportedOperationException();
+        // TODO: Mailbox implementation here
     }
 }
