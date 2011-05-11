@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class ConveyorBelt extends Thread implements PieceContainer {
 
-    public int _id;
+    private int _id;
     private List<Piece> _pieces;
     private int _length;
     private int _speed;
@@ -38,27 +38,31 @@ public class ConveyorBelt extends Thread implements PieceContainer {
     }
     
     @Override
-    public void run(){
+    public void start(){
         
         // TODO: Check this works right
         while(_moving){
             try {
                 Thread.sleep(10);
                 for(Piece p:_pieces){
-                    p.setPosition(p.getPosition() + _speed);
+                    p.setPosition(p.getPosition() + _speed/100);
                 }
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        System.out.println("Conveyor Belt with id " + _id + " has finished");
     }
 
     public void startBelt() {
         _moving = true;
+        System.out.println("Conveyor Belt with id " + _id + " has started");
     }
 
     public void stopBelt() {
         _moving = false;
+        System.out.println("Conveyor Belt with id " + _id + " has stoped");
     }
 
     public int getSpeed() {
@@ -103,5 +107,9 @@ public class ConveyorBelt extends Thread implements PieceContainer {
     
     public void addSensor(Sensor s){
         _sensors.add(s);
+    }
+    
+    public void addPiece(Piece p){
+        _pieces.add(p);
     }
 }

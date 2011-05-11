@@ -1,8 +1,7 @@
 package Scada.Gui;
 
 import Element.Piece.Piece;
-import Element.Conveyor.OneSensorBelt;
-import Element.Conveyor.TwoSensorBelt;
+import Element.Conveyor.ConveyorBelt;
 import Element.Robot.Robot1;
 import Element.Robot.Robot2;
 import Element.Station.AssemblyStation;
@@ -15,11 +14,7 @@ public class Painter {
 		throw new UnsupportedOperationException();
 	}
 
-	public void paint(OneSensorBelt belt) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void paint(TwoSensorBelt belt) {
+	public void paint(ConveyorBelt belt) {
 		throw new UnsupportedOperationException();
 	}
 
