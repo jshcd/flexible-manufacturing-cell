@@ -18,8 +18,10 @@ public class Sensor extends Thread{
     private int _state;
     private PieceContainer _associatedContainer;
     private Slave _process;
-    private float _positionInBelt;
+    private double _positionInBelt;
     private SensorMailBox _mailBox;
+    private double _range = 0.2;
+    private Piece _detectedPiece;
 
     public int getSensorId() {
         return _id;
@@ -33,7 +35,8 @@ public class Sensor extends Thread{
         return _state;
     }
     
-    public void run(){
+    @Override
+    public void start(){
         
         // TODO: Check this works right
         while(true){
@@ -41,7 +44,8 @@ public class Sensor extends Thread{
                 Thread.sleep(50);
                 List<Piece> pieces = _associatedContainer.getPieces();
                 for(Piece p:pieces){
-                    if(p.getPosition() >= _positionInBelt+0.2){
+                    if(p.getPosition() >= _positionInBelt+_range){
+                        _detectedPiece = p;
                         activate();
                     }
                 }
@@ -55,11 +59,11 @@ public class Sensor extends Thread{
         throw new UnsupportedOperationException();
     }
 
-    public float getPositionInBelt() {
+    public double getPositionInBelt() {
         return _positionInBelt;
     }
 
-    public void setPositionInBelt(float positionInBelt) {
+    public void setPositionInBelt(double positionInBelt) {
         _positionInBelt =  positionInBelt;
     }
 
@@ -87,9 +91,25 @@ public class Sensor extends Thread{
         this._process = _process;
     }
     
-    
-
     public void notifyContainer() {
         // TODO: Mailbox implementation here
     }
+
+    public Piece getDetectedPiece() {
+        return _detectedPiece;
+    }
+
+    public void setDetectedPiece(Piece _detectedPiece) {
+        this._detectedPiece = _detectedPiece;
+    }
+
+    public double getRange() {
+        return _range;
+    }
+
+    public void setRange(double _range) {
+        this._range = _range;
+    }
+    
+    
 }

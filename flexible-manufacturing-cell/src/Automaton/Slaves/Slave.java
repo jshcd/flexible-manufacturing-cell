@@ -12,5 +12,4 @@ public interface Slave {
 
 	public void reportToMaster();
 
-	public void loadParameters();
 }

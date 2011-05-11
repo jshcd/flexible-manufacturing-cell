@@ -4,16 +4,16 @@ package Automaton.Slaves;
 
 import Element.Station.QualityControlStation;
 import Auxiliar.State;
+import Element.Conveyor.ConveyorBelt;
 import Scada.DataBase.DBConnection;
-import Element.Conveyor.TwoSensorBelt;
 
 public class Slave3 implements Slave {
 	private SlaveMailBox _mailBox;
 	private QualityControlStation _qualityControlStation;
 	private State _state;
 	private DBConnection _dbconnection;
-	private TwoSensorBelt _acceptedBelt;
-	private TwoSensorBelt _rejectedBelt;
+	private ConveyorBelt _acceptedBelt;
+	private ConveyorBelt _rejectedBelt;
 
 	public void start() {
 		throw new UnsupportedOperationException();

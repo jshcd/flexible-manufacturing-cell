@@ -10,15 +10,19 @@ package Auxiliar;
  */
 public class Constants {
     
+    /*
+     *  Constants used by mailboxes
+     */
     public final static int START_ORDER = 0;
-    public final static int STOP_ORDER = 1;
+    public final static int EMERGENCY_STOP_ORDER = 1;
+    public final static int NORMAL_STOP_ORDER = 2;
     
-    public final static int SLAVE_ONE_STARTING = 2;
-    public final static int SLAVE_ONE_STOPPING = 3;
-    public final static int SLAVE_TWO_STARTING = 4;
-    public final static int SLAVE_TWO_STOPPING = 5;
-    public final static int SLAVE_THREE_STARTING = 6;
-    public final static int SLAVE_THREE_STOPPING = 7;
+    public final static int SLAVE_ONE_STARTING = 3;
+    public final static int SLAVE_ONE_STOPPING = 4;
+    public final static int SLAVE_TWO_STARTING = 5;
+    public final static int SLAVE_TWO_STOPPING = 6;
+    public final static int SLAVE_THREE_STARTING = 7;
+    public final static int SLAVE_THREE_STOPPING = 8;
     
     public final static int SENSOR_GEAR_UNLOAD_ACTIVATED = 10;
     public final static int SENSOR_GEAR_UNLOAD_DISACTIVATED = 11;
@@ -49,4 +53,16 @@ public class Constants {
     public final static int SENSOR_NOT_OK_LOAD_DISACTIVATED = 91;
     public final static int SENSOR_NOT_OK_UNLOAD_ACTIVATED = 110;
     public final static int SENSOR_NOT_OK_UNLOAD_DISACTIVATED = 111;
+    
+    /*
+     * Constants used as parameters, stored in databases
+     */
+    public final static String PARAM_CONVEYOR_LENGTH = "c_length";
+    public final static String PARAM_CONVEYOR_SPEED = "c_speed";
+    public final static String PARAM_SENSOR_INITIAL_POSITION = "s_i_pos";
+    public final static String PARAM_SENSOR_FINAL_POSITION = "s_f_pos";
+    public final static String PARAM_SENSOR_RANGE = "s_range";
+    public final static String PARAM_PIECE_SIZE = "p_size";
+    
+    
 }

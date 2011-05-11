@@ -5,17 +5,8 @@ package Element.Piece;
 
 public class Piece {
 
-    private int _id;
     private Element.Piece.Piece.PieceType _type;
-    private float _position;
-
-    public int getId() {
-        return _id;
-    }
-
-    public void setId(int id) {
-        _id = id;
-    }
+    private double _position;
 
     public Element.Piece.Piece.PieceType getType() {
         return _type;
@@ -25,11 +16,11 @@ public class Piece {
         _type = type;
     }
 
-    public float getPosition() {
+    public double getPosition() {
         return _position;
     }
 
-    public void setPosition(float position) {
+    public void setPosition(double position) {
         _position = position;
     }
 

@@ -2,14 +2,14 @@
 
 package Automaton.Slaves;
 
-import Element.Conveyor.TwoSensorBelt;
+import Element.Conveyor.ConveyorBelt;
 import Element.Station.WeldingStation;
 import Auxiliar.State;
 import Scada.DataBase.DBConnection;
 
 public class Slave2 implements Slave {
 	private SlaveMailBox _mailBox;
-	private TwoSensorBelt _assemblyBelt;
+	private ConveyorBelt _assemblyBelt;
 	private WeldingStation _weldingStation;
 	private State _state;
 	private DBConnection _dbconnection;

@@ -1,7 +1,6 @@
 package Scada.Gui;
 
-import Element.Conveyor.OneSensorBelt;
-import Element.Conveyor.TwoSensorBelt;
+import Element.Conveyor.ConveyorBelt;
 import Element.Robot.Robot1;
 import Element.Robot.Robot2;
 import Element.Station.AssemblyStation;
@@ -10,11 +9,7 @@ import Element.Station.QualityControlStation;
 
 public class Canvas {
 
-	public void update(OneSensorBelt belt) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void update(TwoSensorBelt belt) {
+	public void update(ConveyorBelt belt) {
 		throw new UnsupportedOperationException();
 	}
 
