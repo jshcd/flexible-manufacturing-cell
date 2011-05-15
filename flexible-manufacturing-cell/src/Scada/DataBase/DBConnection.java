@@ -5,40 +5,55 @@
  */
 package Scada.DataBase;
 
-import Scada.DataBase.ParameterSet.Parameter;
+import java.sql.Connection;
+import java.sql.DriverManager;	
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
-public class DBConnection implements DBInterface{
 
-    private DBConnection _other;
-    private DBManager _manager;
-    private ParameterSet _parameters;
+public class DBConnection{
+
+   private  Connection _connection; 
     
-    private String _serverIP;
-
-    public DBConnection(String serverIP) {
-        _serverIP = serverIP;
-    }
-    
+    public DBConnection() {}    
     
     public void connect() {
-        throw new UnsupportedOperationException();
+        try{
+            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+            _connection = DriverManager.getConnection(Auxiliar.Constants.DATABASE_LOCATION, "", "");
+        }
+        catch(SQLException e){}
+        catch(ClassNotFoundException e){}
+  }
+    
+    public void disconnect(){
+        try{
+            _connection.close();
+        }catch(SQLException e){}
     }
 
-    public void setParameters(ParameterSet parameters) {
-        throw new UnsupportedOperationException();
-    }
-
-    public ParameterSet getParameters() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Statement executeQuery(String query){
+        Statement s = null;
+        try{
+            s = _connection.createStatement();
+            s.execute(query);
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return s;
     }
     
-    public int retrieveParameter(String parameterName) {
-        for (Parameter p : _parameters.getParameters()) {
-            if (p.field.equals(parameterName)) {
-                return p.value;
-            }
+    public ResultSet executeSelect(String selectQuery){
+        Statement s = executeQuery(selectQuery);
+        ResultSet rs = null;
+        
+        try{
+            rs = s.getResultSet();
+        }catch(SQLException e){
+            System.out.println(e);
         }
-        return -1;
+        
+        return rs;
     }
-
 }

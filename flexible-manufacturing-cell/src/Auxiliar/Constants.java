@@ -11,6 +11,11 @@ package Auxiliar;
 public class Constants {
     
     /*
+     * Constant used for MS Access database location
+     */
+    public final static String DATABASE_LOCATION = "DB.mdb";            
+    
+    /*
      *  Constants used by mailboxes
      */
     public final static int START_ORDER = 0;
@@ -64,5 +69,54 @@ public class Constants {
     public final static String PARAM_SENSOR_RANGE = "s_range";
     public final static String PARAM_PIECE_SIZE = "p_size";
     
+    /* Constants used in DB Queries */
+    public final static String DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION = "SELECT * FROM belts "
+            + "WHERE belts.id = '1'";
+    public final static String DBQUERY_SELECT_SLAVE1_BELT2_CONFIGURATION = "SELECT * FROM belts "
+            + "WHERE belts.id = '2'";
+    public final static String DBQUERY_SELECT_SLAVE1_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
+            + "FROM activation_times WHERE activation_times.time_name='t1'";
+    public final static String DBQUERY_SELECT_SLAVE2_BELT_CONFIGURATION = "SELECT * FROM belts "
+            + "WHERE belts.id = '3'";
+    public final static String DBQUERY_SELECT_SLAVE2_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
+            + "FROM activation_times WHERE activation_times.time_name='t2'";
+    public final static String DBQUERY_SELECT_SLAVE3_BELT1_CONFIGURATION = "SELECT * FROM belts "
+            + "WHERE belts.id = '4'";
+    public final static String DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION = "SELECT * FROM belts "
+            + "WHERE belts.id = '5'";
+    public final static String DBQUERY_SELECT_SLAVE3_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
+            + "FROM activation_times WHERE activation_times.time_name='t3'";
+    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION = "SELECT * FROM robots WHERE "
+            + "robots.id = '1'";
+    public final static String DBQUERY_SELECT_ROBOT2_CONFIGURATION = "SELECT * FROM robots WHERE "
+            + "robots.id = '2'";
+    public final static String DBQUERY_SELECT_GLOBAL_TIMING_CONFIGURATION = "SELECT "
+            + "configuration.value FROM configuration WHERE configuration.parameter = 'clock_cycle'";
+    
+    /* Constants used in DB Updates */
+    public final static String DBQUERY_UPDATE_SLAVE1_BELT1_CONFIGURATION = "UPDATE belts "
+            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = '1'";    
+    public final static String DBQUERY_UPDATE_SLAVE1_BELT2_CONFIGURATION = "UPDATE belts "
+            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = '2'";
+    public final static String DBQUERY_UPDATE_SLAVE1_ACTIVATION_TIME_CONFIGURATION = "UPDATE "
+            + "activation_times SET time = '[TIME]' WHERE time_name='t1'";
+    public final static String DBQUERY_UPDATE_SLAVE2_BELT_CONFIGURATION = "UPDATE belts "
+            + "SET length = '[LENGTH]', speed = '[SPEED]' WHERE id = '3'";
+    public final static String DBQUERY_UPDATE_SLAVE2_ACTIVATION_TIME_CONFIGURATION = "UPDATE "
+            + "activation_times SET time = '[TIME]' WHERE time_name='t2'";
+    public final static String DBQUERY_UPDATE_SLAVE3_BELT1_CONFIGURATION = "UPDATE belts "
+            + "SET length = '[LENGTH]', speed = '[SPEED]' WHERE id = '4'";
+    public final static String DBQUERY_UPDATE_SLAVE3_BELT2_CONFIGURATION = "UPDATE belts "
+            + "SET length = '[LENGTH]' WHERE id = '5'";
+    public final static String DBQUERY_UPDATE_SLAVE3_ACTIVATION_TIME_CONFIGURATION = "UPDATE "
+            + "activation_times SET time = '[TIME]' WHERE time_name='t3'";
+    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION = "UPDATE robots SET "
+            + "picking_time = '[PICKING_TIME]', transport_element1 = '[TRANSPORT_TIMEA]', "
+            + "transport_element2 = '[TRANSPORT_TIMEB]' WHERE id = '1'";
+    public final static String DBQUERY_UPDATE_ROBOT2_CONFIGURATION = "UPDATE robots SET "
+            + "picking_time = '[PICKING_TIME]', transport_element1 = '[TRANSPORT_TIMEA]', "
+            + "transport_element2 = '[TRANSPORT_TIMEB]' WHERE id = '2'";
+    public final static String DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION = "UPDATE configuration "
+            + "SET value = '[VALUE]' WHERE parameter = 'clock_cycle'";
     
 }
