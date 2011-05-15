@@ -3,11 +3,13 @@ package Automaton.Master;
 import Scada.DataBase.DBManager;
 import Scada.Gui.Canvas;
 import Element.Robot.Robot2;
+import Scada.DataBase.MasterConfigurationData;
 
 public class Master {
 
     private MasterMailBox _mailBox;
     private DBManager _dbmanager;
+    private MasterConfigurationData _configurationData;
     private Canvas _canvas;
     private Robot2 _robot2;
 
@@ -18,12 +20,13 @@ public class Master {
     public Master() {
         _mailBox = new MasterMailBox();
         _dbmanager = new DBManager();
+        _configurationData = null;
         _canvas = new Canvas();
         _robot2 = new Robot2();
     }
 
     public void initialize() {
-        throw new UnsupportedOperationException();
+        _configurationData = _dbmanager.readParameters();
     }
 
     public void startSystem() {
