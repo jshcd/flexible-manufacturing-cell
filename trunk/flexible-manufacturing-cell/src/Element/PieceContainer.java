@@ -12,4 +12,5 @@ public interface PieceContainer {
 	public List<Piece> getPieces();
 
 	public void setPieces(List<Element.Piece.Piece> pieces);
+        
 }

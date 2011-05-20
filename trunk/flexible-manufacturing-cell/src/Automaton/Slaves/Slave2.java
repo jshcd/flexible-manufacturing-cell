@@ -4,14 +4,14 @@ package Automaton.Slaves;
 
 import Element.Conveyor.ConveyorBelt;
 import Element.Station.WeldingStation;
-import Auxiliar.State;
+import Auxiliar.AutomatonState;
 import Scada.DataBase.DBConnection;
 
 public class Slave2 implements Slave {
 	private SlaveMailBox _mailBox;
 	private ConveyorBelt _assemblyBelt;
 	private WeldingStation _weldingStation;
-	private State _state;
+	private AutomatonState _state;
 	private DBConnection _dbconnection;
 
 	public void start() {

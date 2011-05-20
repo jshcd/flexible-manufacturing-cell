@@ -1,12 +1,12 @@
 package Element.Robot;
 
-import Auxiliar.State;
+import Auxiliar.AutomatonState;
 import Element.Piece.Piece;
 import Automaton.Master.Master;
 
 public class Robot2 implements Robot {
 	private RobotMailBox _mailBox;
-	private State _state;
+	private AutomatonState _state;
 	private Piece _loadedPiece;
 
 	public void pickAssembly() {
