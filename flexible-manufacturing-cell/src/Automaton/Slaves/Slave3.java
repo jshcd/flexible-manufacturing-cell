@@ -3,14 +3,14 @@
 package Automaton.Slaves;
 
 import Element.Station.QualityControlStation;
-import Auxiliar.State;
+import Auxiliar.AutomatonState;
 import Element.Conveyor.ConveyorBelt;
 import Scada.DataBase.DBConnection;
 
 public class Slave3 implements Slave {
 	private SlaveMailBox _mailBox;
 	private QualityControlStation _qualityControlStation;
-	private State _state;
+	private AutomatonState _state;
 	private DBConnection _dbconnection;
 	private ConveyorBelt _acceptedBelt;
 	private ConveyorBelt _rejectedBelt;

@@ -1,12 +1,12 @@
 package Element.Other;
 
-import Auxiliar.State;
+import Auxiliar.AutomatonState;
 import Element.PieceContainer;
 import Element.Station.AssemblyStation;
 import Element.Station.WeldingStation;
 
 public class HidraulicActuator {
-	private State _state;
+	private AutomatonState _state;
 	private PieceContainer _associatedContainer;
 	private int _actuationTime;
 

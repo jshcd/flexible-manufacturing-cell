@@ -1,6 +1,6 @@
 package Auxiliar;
 
-public enum State {
+public enum AutomatonState {
 	q0,
 	q1,
 	q2,

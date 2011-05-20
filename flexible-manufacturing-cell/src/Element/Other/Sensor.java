@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Sensor extends Thread{
+public class Sensor extends Thread {
 
     private int _id;
     private int _state;
@@ -22,6 +22,7 @@ public class Sensor extends Thread{
     private SensorMailBox _mailBox;
     private double _range = 0.2;
     private Piece _detectedPiece;
+    private boolean _activated = false;
 
     public int getSensorId() {
         return _id;
@@ -34,19 +35,21 @@ public class Sensor extends Thread{
     public int getSensorState() {
         return _state;
     }
-    
+
     @Override
-    public void start(){
-        
+    public void start() {
+
         // TODO: Check this works right
-        while(true){
+        while (true) {
             try {
                 Thread.sleep(50);
                 List<Piece> pieces = _associatedContainer.getPieces();
-                for(Piece p:pieces){
-                    if(p.getPosition() >= _positionInBelt+_range){
+                for (Piece p : pieces) {
+                    if (p.getPosition() >= _positionInBelt + _range) {
                         _detectedPiece = p;
                         activate();
+                    } else {
+                        disactivate();
                     }
                 }
             } catch (InterruptedException ex) {
@@ -56,7 +59,15 @@ public class Sensor extends Thread{
     }
 
     public void activate() {
-        throw new UnsupportedOperationException();
+        _activated = true;
+        _process.runCommand(_id * 10 + 1);
+    }
+
+    private void disactivate() {
+        if (_activated) {
+            _activated = false;
+            _process.runCommand(_id * 10 + 0);
+        }
     }
 
     public double getPositionInBelt() {
@@ -64,7 +75,7 @@ public class Sensor extends Thread{
     }
 
     public void setPositionInBelt(double positionInBelt) {
-        _positionInBelt =  positionInBelt;
+        _positionInBelt = positionInBelt;
     }
 
     public PieceContainer getAssociatedContainer() {
@@ -90,7 +101,7 @@ public class Sensor extends Thread{
     public void setProcess(Slave _process) {
         this._process = _process;
     }
-    
+
     public void notifyContainer() {
         // TODO: Mailbox implementation here
     }
@@ -110,6 +121,4 @@ public class Sensor extends Thread{
     public void setRange(double _range) {
         this._range = _range;
     }
-    
-    
 }

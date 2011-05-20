@@ -13,7 +13,7 @@ public class Constants {
     /*
      * Constant used for MS Access database location
      */
-    public final static String DATABASE_LOCATION = "DB.mdb";            
+    public final static String DATABASE_LOCATION = "FlexibleManufacturincCellDB.mdb";            
     
     /*
      *  Constants used by mailboxes
@@ -29,45 +29,39 @@ public class Constants {
     public final static int SLAVE_THREE_STARTING = 7;
     public final static int SLAVE_THREE_STOPPING = 8;
     
-    public final static int SENSOR_GEAR_UNLOAD_ACTIVATED = 10;
-    public final static int SENSOR_GEAR_UNLOAD_DISACTIVATED = 11;
+    public final static int SENSOR_GEAR_UNLOAD_ACTIVATED = 11;
+    public final static int SENSOR_GEAR_UNLOAD_DISACTIVATED = 10;
     
-    public final static int SENSOR_AXIS_UNLOAD_ACTIVATED = 20;
-    public final static int SENSOR_AXIS_UNLOAD_DISACTIVATED = 21;
+    public final static int SENSOR_AXIS_UNLOAD_ACTIVATED = 21;
+    public final static int SENSOR_AXIS_UNLOAD_DISACTIVATED = 20;
         
-    public final static int SENSOR_ASSEMBLY_ACTIVATED = 30;
-    public final static int SENSOR_ASSEMBLY_DISACTIVATED = 31;
+    public final static int SENSOR_ASSEMBLY_ACTIVATED = 31;
+    public final static int SENSOR_ASSEMBLY_DISACTIVATED = 30;
     
-    public final static int SENSOR_WELDING_LOAD_ACTIVATED = 40;
-    public final static int SENSOR_WELDING_LOAD_DISACTIVATED = 41;
-    public final static int SENSOR_WELDING_UNLOAD_ACTIVATED = 50;
-    public final static int SENSOR_WELDING_UNLOAD_DISACTIVATED = 51;
+    public final static int SENSOR_WELDING_LOAD_ACTIVATED = 41;
+    public final static int SENSOR_WELDING_LOAD_DISACTIVATED = 40;
+    public final static int SENSOR_WELDING_UNLOAD_ACTIVATED = 51;
+    public final static int SENSOR_WELDING_UNLOAD_DISACTIVATED = 50;
     
-    public final static int SENSOR_WELDING_TABLE_ACTIVATED = 60;
-    public final static int SENSOR_WELDING_TABLE_DISACTIVATED = 61;
+    public final static int SENSOR_WELDING_TABLE_ACTIVATED = 61;
+    public final static int SENSOR_WELDING_TABLE_DISACTIVATED = 60;
         
-    public final static int SENSOR_QUALITY_ACTIVATED = 70;
-    public final static int SENSOR_QUALITY_DISACTIVATED = 71;
+    public final static int SENSOR_QUALITY_ACTIVATED = 71;
+    public final static int SENSOR_QUALITY_DISACTIVATED = 70;
         
-    public final static int SENSOR_OK_LOAD_ACTIVATED = 80;
-    public final static int SENSOR_OK_LOAD_DISACTIVATED = 81;
-    public final static int SENSOR_OK_UNLOAD_ACTIVATED = 100;
-    public final static int SENSOR_OK_UNLOAD_DISACTIVATED = 101;
+    public final static int SENSOR_OK_LOAD_ACTIVATED = 81;
+    public final static int SENSOR_OK_LOAD_DISACTIVATED = 80;
+    public final static int SENSOR_OK_UNLOAD_ACTIVATED = 101;
+    public final static int SENSOR_OK_UNLOAD_DISACTIVATED = 100;
     
-    public final static int SENSOR_NOT_OK_LOAD_ACTIVATED = 90;
-    public final static int SENSOR_NOT_OK_LOAD_DISACTIVATED = 91;
-    public final static int SENSOR_NOT_OK_UNLOAD_ACTIVATED = 110;
-    public final static int SENSOR_NOT_OK_UNLOAD_DISACTIVATED = 111;
+    public final static int SENSOR_NOT_OK_LOAD_ACTIVATED = 91;
+    public final static int SENSOR_NOT_OK_LOAD_DISACTIVATED = 90;
+    public final static int SENSOR_NOT_OK_UNLOAD_ACTIVATED = 111;
+    public final static int SENSOR_NOT_OK_UNLOAD_DISACTIVATED = 110;
     
-    /*
-     * Constants used as parameters, stored in databases
-     */
-    public final static String PARAM_CONVEYOR_LENGTH = "c_length";
-    public final static String PARAM_CONVEYOR_SPEED = "c_speed";
-    public final static String PARAM_SENSOR_INITIAL_POSITION = "s_i_pos";
-    public final static String PARAM_SENSOR_FINAL_POSITION = "s_f_pos";
-    public final static String PARAM_SENSOR_RANGE = "s_range";
-    public final static String PARAM_PIECE_SIZE = "p_size";
+    
+    public final static int ROBOT1_PICKS_AXIS = 200;
+    
     
     /* Constants used in DB Queries */
     public final static String DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION = "SELECT * FROM belts "
@@ -92,6 +86,10 @@ public class Constants {
             + "robots.id = '2'";
     public final static String DBQUERY_SELECT_GLOBAL_TIMING_CONFIGURATION = "SELECT "
             + "configuration.value FROM configuration WHERE configuration.parameter = 'clock_cycle'";
+    public final static String DBQUERY_SELECT_SENSOR_RANGE = "SELECT "
+            + "configuration.value FROM configuration WHERE configuration.parameter = 'sensor_range'";
+    public final static String DBQUERY_SELECT_PIECE_SIZE = "SELECT "
+            + "configuration.value FROM configuration WHERE configuration.parameter = 'piece_size'";
     
     /* Constants used in DB Updates */
     public final static String DBQUERY_UPDATE_SLAVE1_BELT1_CONFIGURATION = "UPDATE belts "
