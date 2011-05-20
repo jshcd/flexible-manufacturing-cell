@@ -6,7 +6,6 @@ import java.net.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;import java.util.logging.Level;
 import java.util.logging.Logger;
-;
 
 public class MasterMailBox implements MailBox {
 
