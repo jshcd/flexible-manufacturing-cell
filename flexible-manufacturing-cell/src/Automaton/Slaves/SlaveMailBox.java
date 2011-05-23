@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class SlaveMailBox implements MailBox {
 
-    private int _id;
+    private String _id;
     private ServerSocket _providerSocket;
     private Socket _connection = null;
     private ObjectOutputStream _out;
@@ -18,7 +18,7 @@ public class SlaveMailBox implements MailBox {
     private short _message;
 
     public SlaveMailBox (int id) {
-        _id = id;
+        _id = "Slave"+id;
     }
 
     public void startConnection(MailBox destiny) {
@@ -49,7 +49,7 @@ public class SlaveMailBox implements MailBox {
         try {
             _out.writeObject(command);
             _out.flush();
-            System.out.println("Slave " + _id + "> " + command);
+            System.out.println(_id + "> " + command);
         } catch (IOException ex) {
             Logger.getLogger(SlaveMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
