@@ -17,5 +17,7 @@ public interface MailBox {
     public void sendCommand(short command);
 
     public void receiveCommand();
+
+    public String getId();
     
 }

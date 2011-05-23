@@ -23,4 +23,8 @@ public class SensorMailBox implements MailBox {
 	public void receiveCommand() {
 		throw new UnsupportedOperationException();
 	}
+
+    public String getId() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

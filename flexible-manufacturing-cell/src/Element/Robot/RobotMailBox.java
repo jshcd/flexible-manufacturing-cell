@@ -1,11 +1,15 @@
 package Element.Robot;
 
 import Auxiliar.MailBox;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,17 +21,24 @@ public class RobotMailBox implements MailBox {
     private ObjectOutputStream _out;
     private ObjectInputStream _in;
     private short _message;
+    private int _port;
+    private String _address;
 
     public RobotMailBox(int id){
         _id = "Robot"+id;
     }
 
-    public void startConnection(MailBox destiny) {
+    public void startConnection() {
         try {
-            _providerSocket = new ServerSocket(2004, 10);
-            _out = new ObjectOutputStream(_connection.getOutputStream());
-            _out.flush();
-            _in = new ObjectInputStream(_connection.getInputStream());
+            Properties prop = new Properties();
+            InputStream is = null;
+            is=new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            prop.load(is);
+            _port = Integer.parseInt(prop.getProperty(_id + ".port"));
+            _address = prop.getProperty(_id + ".ip");
+
+            _providerSocket = new ServerSocket(_port, 10);
+            
         } catch (IOException ex) {
             Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -40,6 +51,9 @@ public class RobotMailBox implements MailBox {
     public void acceptConnection() {
         try {
             _connection = _providerSocket.accept();
+            _out = new ObjectOutputStream(_connection.getOutputStream());
+            _out.flush();
+            _in = new ObjectInputStream(_connection.getInputStream());
         } catch (IOException ex) {
             Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,5 +78,13 @@ public class RobotMailBox implements MailBox {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void startConnection(MailBox destiny) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String getId() {
+        return _id;
     }
 }
