@@ -4,6 +4,8 @@
  */
 package Auxiliar;
 
+import java.awt.Point;
+
 /**
  *
  * @author Francesco
@@ -116,5 +118,20 @@ public class Constants {
             + "transport_element2 = '[TRANSPORT_TIMEB]' WHERE id = '2'";
     public final static String DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION = "UPDATE configuration "
             + "SET value = '[VALUE]' WHERE parameter = 'clock_cycle'";
-    
+
+
+    /**
+     * constants used for GUI
+     */
+    public static final int CANVAS_WIDTH = 1000;
+	public static final int CANVAS_HEIGHT = 462;
+        	public static final Point QUALITY_POSITION = new Point(505, 160);
+
+        /* CONNECTION ESTABLISHMENT RESPONSES */
+	public static final String CONNECTION_ACCEPTED = "ConnectionAccepted";
+	public static final String CONNECTION_REJECTED_DUPLICATED_ID = "ConnectionRejectedDuplicatedID";
+	public static final String CONNECTION_REJECTED_UNEXPECTED_ID = "ConnectionRejectedUnexpectedID";
+	public static final String DEFAULT_MASTER_IP = "localhost";
+	public static final int DEFAULT_MASTER_PORT = 42680;
+	public static final int UPDATE_FREQUENCY = 30;
 }
