@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 /**
  * Loads all the images required for the application.
  * 
- * @author Jos� Montero
+ * @author 
  */
 public class ImageLoader {
 	private static final String IMAGES_FOLDER = "images";
