@@ -15,7 +15,7 @@ import Element.Station.WeldingStation;
 /**
  * Canvas where the factory simulation is displayed.
  * 
- * @author Jos� Montero
+ * @author
  */
 public class Canvas_1 extends JPanel {
 	private static final long serialVersionUID = 1L;

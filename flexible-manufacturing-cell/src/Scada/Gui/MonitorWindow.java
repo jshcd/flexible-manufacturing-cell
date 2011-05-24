@@ -28,7 +28,7 @@ import Auxiliar.Constants;
  * Monitor where the whole system state is displayed: factory simulation,
  * automata connectivity, log messages...
  * 
- * @author Jos� Montero
+ * @author 
  */
 public class MonitorWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
