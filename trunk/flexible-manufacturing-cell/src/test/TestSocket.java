@@ -18,7 +18,7 @@ public class TestSocket {
         RobotMailBox r1mb = new RobotMailBox(1);
         SlaveMailBox s1mb = new SlaveMailBox(1);
         MasterMailBox mmb = new MasterMailBox();
-        mmb.startConnection();
+        //mmb.startConnection();
         //System.out.println(1);
         s1mb.startConnection(mmb);
         //System.out.println(2);
