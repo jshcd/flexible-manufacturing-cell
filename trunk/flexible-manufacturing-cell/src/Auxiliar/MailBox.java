@@ -8,7 +8,7 @@ package Auxiliar;
 
 public interface MailBox {
     
-    public void startConnection(MailBox destiny);
+    public void startConnection();
 
     public void endConnection(MailBox destiny);
 

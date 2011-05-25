@@ -30,11 +30,10 @@ public class SlaveMailBox implements MailBox {
     public void startConnection() {
         try {
             Properties prop = new Properties();
-            InputStream is = null;
-            is=new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
             prop.load(is);
-            int port = 5000;//Integer.parseInt(prop.getProperty(destiny.getId() + ".port"));
-            String address = "localhost";//prop.getProperty(destiny.getId() + ".ip");
+            int port = Integer.parseInt(prop.getProperty("Scada.port"));
+            String address = prop.getProperty("Scada.ip");
 
             _requestSocket = new Socket(address, port);
         } catch (UnknownHostException ex) {
@@ -79,9 +78,5 @@ public class SlaveMailBox implements MailBox {
 
     public String getId() {
         return _id;
-    }
-
-    public void startConnection(MailBox destiny) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
