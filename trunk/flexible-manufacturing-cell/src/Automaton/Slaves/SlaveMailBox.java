@@ -27,14 +27,14 @@ public class SlaveMailBox implements MailBox {
         _id = "Slave"+id;
     }
 
-    public void startConnection(MailBox destiny) {
+    public void startConnection() {
         try {
             Properties prop = new Properties();
             InputStream is = null;
             is=new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
             prop.load(is);
-            int port = Integer.parseInt(prop.getProperty(destiny.getId() + ".port"));
-            String address = prop.getProperty(destiny.getId() + ".ip");
+            int port = 5000;//Integer.parseInt(prop.getProperty(destiny.getId() + ".port"));
+            String address = "localhost";//prop.getProperty(destiny.getId() + ".ip");
 
             _requestSocket = new Socket(address, port);
         } catch (UnknownHostException ex) {
@@ -69,8 +69,7 @@ public class SlaveMailBox implements MailBox {
     public void receiveCommand() {
          try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
-            _message = Short.parseShort((String) _in.readObject());
-            System.out.println(_message);
+            System.out.println(_in.readObject());
         } catch (IOException ex) {
             Logger.getLogger(SlaveMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -78,11 +77,11 @@ public class SlaveMailBox implements MailBox {
         }
     }
 
-    public void startConnection() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public String getId() {
         return _id;
+    }
+
+    public void startConnection(MailBox destiny) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
