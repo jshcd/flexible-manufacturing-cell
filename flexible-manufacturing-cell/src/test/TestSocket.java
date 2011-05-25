@@ -35,7 +35,7 @@ public class TestSocket {
         //System.out.println(5);
         s1mb.sendCommand(a);
         r1mb.sendCommand(d);
-        //System.out.println(6);
+        System.out.println(6);
         mmb.receiveCommand();
         mmb.receiveCommand();
         //System.out.println(7);
