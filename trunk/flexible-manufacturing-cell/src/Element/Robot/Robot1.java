@@ -21,7 +21,7 @@ public class Robot1 extends Thread implements Robot {
     
     public Robot1(){
         _state = AutomatonState.q0;
-        _mailBox = new RobotMailBox();
+        _mailBox = new RobotMailBox(1);
     }
     
     @Override
