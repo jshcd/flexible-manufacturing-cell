@@ -5,9 +5,9 @@
 
 package test;
 
-import Automaton.Master.MasterMailBox;
 import Automaton.Slaves.SlaveMailBox;
-import Element.Robot.RobotMailBox;
+import Scada.Communication.Server;
+
 
 /**
  *
@@ -15,38 +15,29 @@ import Element.Robot.RobotMailBox;
  */
 public class TestSocket {
     public static void main(String [] args) {
-        RobotMailBox r1mb = new RobotMailBox(1);
         SlaveMailBox s1mb = new SlaveMailBox(1);
-        MasterMailBox mmb = new MasterMailBox();
-        //mmb.startConnection();
-        //System.out.println(1);
-        s1mb.startConnection(mmb);
-        //System.out.println(2);
+
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                Server s = new Server();
+                s.start();
+            }
+        });
+        t.start();
+
+        s1mb.startConnection();
         s1mb.acceptConnection();
-        //System.out.println(3);
+        short a = 100;
 
-        r1mb.startConnection(mmb);
-        r1mb.acceptConnection();
-
-        mmb.acceptConnection();
-        //System.out.println(4);
-        short a = 231;
-        short d = 255;
+        SlaveMailBox s2mb = new SlaveMailBox(2);
+        s2mb.startConnection();
         //System.out.println(5);
         s1mb.sendCommand(a);
-        r1mb.sendCommand(d);
-        System.out.println(6);
-        mmb.receiveCommand();
-        mmb.receiveCommand();
+        s2mb.acceptConnection();
         //System.out.println(7);
-        short b = 5;
-        short c = 6;
-        //System.out.println(8);
-        mmb.sendCommand(b);
-        mmb.sendCommand(c);
-        //System.out.println(9);
-        r1mb.receiveCommand();
+        s2mb.sendCommand(a);
         s1mb.receiveCommand();
+        s2mb.receiveCommand();
 
         //System.out.println(10);
     }
