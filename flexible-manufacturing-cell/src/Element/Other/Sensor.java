@@ -19,7 +19,6 @@ public class Sensor extends Thread {
     private PieceContainer _associatedContainer;
     private Slave _process;
     private double _positionInBelt;
-    private SensorMailBox _mailBox;
     private double _range = 0.2;
     private Piece _detectedPiece;
     private boolean _activated = false;
@@ -84,14 +83,6 @@ public class Sensor extends Thread {
 
     public void setAssociatedContainer(PieceContainer associatedContainer) {
         _associatedContainer = associatedContainer;
-    }
-
-    public SensorMailBox getMailBox() {
-        return _mailBox;
-    }
-
-    public void setMailBox(SensorMailBox _mailBox) {
-        this._mailBox = _mailBox;
     }
 
     public Slave getProcess() {
