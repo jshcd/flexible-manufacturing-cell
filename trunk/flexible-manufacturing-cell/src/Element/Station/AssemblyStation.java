@@ -20,7 +20,10 @@ public class AssemblyStation extends ConveyorBelt {
     }
 
     public void assemble() {
-        throw new UnsupportedOperationException();
+        _capacity.remove(0);
+        Piece p = new Piece();
+        p.setType(Piece.PieceType.assembly);
+        _capacity.add(p);
     }
 
 }

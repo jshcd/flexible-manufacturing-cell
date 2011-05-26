@@ -10,6 +10,8 @@ import Element.Piece.Piece.PieceType;
 import Scada.DataBase.DBConnection;
 import Element.Station.AssemblyStation;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -123,6 +125,7 @@ public class Slave1 implements Slave {
     }
 
     public void runCommand(int command) {
+        Piece p;
         switch (command) {
             case Constants.START_ORDER:
                 start();
@@ -132,6 +135,16 @@ public class Slave1 implements Slave {
                 break;
             case Constants.NORMAL_STOP_ORDER:
                 _finishing = true;
+                break;
+            case Constants.ROBOT1_PLACES_GEAR:
+                p = new Piece();
+                p.setType(PieceType.gear);
+                _assemblyStation.getPieces().add(p);
+                break;
+            case Constants.ROBOT1_PLACES_AXIS:
+                p = new Piece();
+                p.setType(PieceType.axis);
+                _assemblyStation.getPieces().add(p);
                 break;
         }
     }
