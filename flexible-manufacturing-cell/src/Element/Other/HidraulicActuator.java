@@ -10,13 +10,6 @@ public class HidraulicActuator {
 	private PieceContainer _associatedContainer;
 	private int _actuationTime;
 
-	public void activate() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void stop() {
-		throw new UnsupportedOperationException();
-	}
 
 	public int getActuationTime() {
 		throw new UnsupportedOperationException();
