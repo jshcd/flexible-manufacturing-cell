@@ -10,7 +10,7 @@ public interface MailBox {
     
     public void startConnection();
 
-    public void endConnection(MailBox destiny);
+    public void endConnection();
 
     public void acceptConnection();
 
