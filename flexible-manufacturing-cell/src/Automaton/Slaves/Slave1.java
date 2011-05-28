@@ -57,7 +57,7 @@ public class Slave1 implements Slave {
             _robot = new Robot1();
             _robot.setPickingTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("picking_time"));
             _robot.setTrasportTime1(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element1"));
-            //_robot.setTrasportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element2"));
+            _robot.setTrasportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element2"));
             
             _assemblyStation = new AssemblyStation(3, 0, 0);
 
