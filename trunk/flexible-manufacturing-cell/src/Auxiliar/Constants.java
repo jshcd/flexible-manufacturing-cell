@@ -68,6 +68,8 @@ public class Constants {
     public final static int ROBOT1_PLACES_AXIS = 203;
     public final static int ROBOT1_PICKS_ASSEMBLY = 204;
     public final static int ROBOT1_PLACES_ASSEMBLY = 205;
+    public final static int ROBOT1_REQUEST_ASSEMBLY = 206;
+    public final static int SLAVE1_ASSEMBLY_COMPLETED = 207;
     
     
     /* Constants used in DB Queries */

@@ -3,27 +3,39 @@
  */
 package Element.Station;
 
+import Auxiliar.Constants;
 import Element.Piece.Piece;
 import Element.Other.Sensor;
-import Element.Other.HidraulicActuator;
 import Element.Conveyor.ConveyorBelt;
-import java.util.List;
 
 public class AssemblyStation extends ConveyorBelt {
-
-    private List<Piece> _capacity;
-    private Sensor _loadSensor;
-    private HidraulicActuator _actuator;
 
     public AssemblyStation(int id, int speed, int length) {
         super(id, speed, length);
     }
 
     public void assemble() {
-        _capacity.remove(0);
-        Piece p = new Piece();
-        p.setType(Piece.PieceType.assembly);
-        _capacity.add(p);
+        if (_pieces.size() == 2) {
+            _pieces.remove(0);
+            _pieces.remove(1);
+            Piece p = new Piece();
+            p.setType(Piece.PieceType.assembly);
+            _pieces.add(p);
+            this._process.orderToRobot(Constants.SLAVE1_ASSEMBLY_COMPLETED);
+        } else {
+            System.out.println("ASSEMBLY_TABLE: Unable to assemble pieces");
+        }
     }
 
+    public void pickAssembly() {
+        if (_pieces.size() > 0) {
+            _pieces.remove(0);
+            Piece p = new Piece();
+            p.setType(Piece.PieceType.assembly);
+            _pieces.add(p);
+            this._process.runCommand(MIN_PRIORITY);
+        } else {
+            System.out.println("ASSEMBLY_TABLE: Unable to pick assembly");
+        }
+    }
 }

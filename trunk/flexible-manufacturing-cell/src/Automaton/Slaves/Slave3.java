@@ -3,14 +3,12 @@
 package Automaton.Slaves;
 
 import Element.Station.QualityControlStation;
-import Auxiliar.AutomatonState;
 import Element.Conveyor.ConveyorBelt;
 import Scada.DataBase.DBConnection;
 
 public class Slave3 implements Slave {
 	private SlaveMailBox _mailBox;
 	private QualityControlStation _qualityControlStation;
-	private AutomatonState _state;
 	private DBConnection _dbconnection;
 	private ConveyorBelt _acceptedBelt;
 	private ConveyorBelt _rejectedBelt;
@@ -42,4 +40,8 @@ public class Slave3 implements Slave {
 	public void loadParameters() {
 		throw new UnsupportedOperationException();
 	}
+
+    public void orderToRobot(int i) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
