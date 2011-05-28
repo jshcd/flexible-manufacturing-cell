@@ -16,22 +16,30 @@ public class RobotMailBox implements MailBox {
     private String _id;
     private ObjectOutputStream _out;
     private ObjectInputStream _in;
-    private short _message;
+    private int _port;
+    private String _address;
     private Socket _requestSocket;
 
+    /**
+     * Constructs a new <code>RobotMailBox</code> with the indicated id
+     * @param id Identifier of the <code>RobotMailBox</code>
+     */
     public RobotMailBox(int id){
         _id = "Robot"+id;
     }
 
+    /**
+     *
+     */
     public void startConnection() {
         try {
             Properties prop = new Properties();
             InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
             prop.load(is);
-            int port = Integer.parseInt(prop.getProperty("Scada.port"));
-            String address = prop.getProperty("Scada.ip");
+            _port = Integer.parseInt(prop.getProperty("Scada.port"));
+            _address = prop.getProperty("Scada.ip");
 
-            _requestSocket = new Socket(address, port);
+            _requestSocket = new Socket(_address, _port);
         } catch (UnknownHostException ex) {
             Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -39,8 +47,16 @@ public class RobotMailBox implements MailBox {
         }
     }
 
-    public void endConnection(MailBox destiny) {
-            throw new UnsupportedOperationException();
+    /**
+     *
+     * @param destiny
+     */
+    public void endConnection() {
+        try {
+            _requestSocket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void acceptConnection() {
@@ -64,8 +80,7 @@ public class RobotMailBox implements MailBox {
     public void receiveCommand() {
         try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
-            _message = Short.parseShort((String) _in.readObject());
-            System.out.println(_message);
+            System.out.println(Short.parseShort((String) _in.readObject()));
         } catch (IOException ex) {
             Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -73,6 +88,10 @@ public class RobotMailBox implements MailBox {
         }
     }
 
+    /**
+     * Returns the identifier of the <code>RobotMailBox</code>
+     * @return Identifier of the <code>RobotMailBox</code>
+     */
     public String getId() {
         return _id;
     }

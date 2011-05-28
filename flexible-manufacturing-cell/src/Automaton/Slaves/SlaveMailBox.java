@@ -14,15 +14,16 @@ import java.util.logging.Logger;
 public class SlaveMailBox implements MailBox {
 
     private String _id;
-    private ServerSocket _providerSocket;
-    private Socket _connection = null;
     private ObjectOutputStream _out;
     private ObjectInputStream _in;
-    private short _message;
     private int _port;
     private String _address;
     private Socket _requestSocket;
 
+    /**
+     * Constructs a new <code>SlaveMailBox</code> with the indicated id
+     * @param id Identifier of the <code>SlaveMailBox</code>
+     */
     public SlaveMailBox (int id) {
         _id = "Slave"+id;
     }
@@ -32,10 +33,10 @@ public class SlaveMailBox implements MailBox {
             Properties prop = new Properties();
             InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
             prop.load(is);
-            int port = Integer.parseInt(prop.getProperty("Scada.port"));
-            String address = prop.getProperty("Scada.ip");
-
-            _requestSocket = new Socket(address, port);
+            _port = Integer.parseInt(prop.getProperty("Scada.port"));
+            _address = prop.getProperty("Scada.ip");
+            //_requestSocket = new Socket();
+            _requestSocket = new Socket(_address, _port);
         } catch (UnknownHostException ex) {
             Logger.getLogger(SlaveMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -43,8 +44,12 @@ public class SlaveMailBox implements MailBox {
         }
     }
 
-    public void endConnection(MailBox destiny) {
-        throw new UnsupportedOperationException();
+    public void endConnection() {
+        try {
+            _requestSocket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(SlaveMailBox.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void acceptConnection() {
@@ -76,6 +81,10 @@ public class SlaveMailBox implements MailBox {
         }
     }
 
+    /**
+     * Returns the identifier of the <code>SlaveMailBox</code>
+     * @return Identifier of the <code>SlaveMailBox</code>
+     */
     public String getId() {
         return _id;
     }

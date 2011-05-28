@@ -19,6 +19,10 @@ public class MasterMailBox implements MailBox {
     private short _message;
     private Socket _requestSocket;
 
+    /**
+     * Constructs a new <code>MasterMailBox</code> with the indicated id
+     * @param id Identifier of the <code>MasterMailBox</code>
+     */
     public MasterMailBox(){
         _id = "Master";
     }
@@ -39,8 +43,12 @@ public class MasterMailBox implements MailBox {
         }
     }
 
-    public void endConnection(MailBox destiny) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void endConnection() {
+        try {
+            _requestSocket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MasterMailBox.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void acceptConnection() {
@@ -73,6 +81,10 @@ public class MasterMailBox implements MailBox {
         }
     }
 
+    /**
+     * Returns the identifier of the <code>MasterMailBox</code>
+     * @return Identifier of the <code>MasterMailBox</code>
+     */
     public String getId() {
         return _id;
     }
