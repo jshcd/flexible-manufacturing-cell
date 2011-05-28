@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Javier
+ * @author Javier Sánchez
  */
 public class Server {
 
@@ -37,7 +37,7 @@ public class Server {
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
                 System.out.println("Received> " + Short.parseShort((String) in.readObject()));
                 
-                short a = 15;
+                short a = (short) numCli;
                 out.writeObject(a);
                 skCliente.close();
                 numCli++;

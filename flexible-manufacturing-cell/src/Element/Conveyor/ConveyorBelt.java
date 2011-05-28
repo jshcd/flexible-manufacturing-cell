@@ -46,23 +46,23 @@ public class ConveyorBelt extends Thread implements PieceContainer {
                 Thread.sleep(10);
                 for(Piece p:_pieces){
                     p.setPosition(p.getPosition() + _speed/100);
+                    System.out.println(p.getPosition());
                 }
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        System.out.println("Conveyor Belt with id " + _id + " has finished");
+        Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has finished", _id);
     }
 
     public void startBelt() {
         _moving = true;
-        System.out.println("Conveyor Belt with id " + _id + " has started");
+        Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has started", _id);
     }
 
     public void stopBelt() {
         _moving = false;
-        System.out.println("Conveyor Belt with id " + _id + " has stoped");
+        Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has stoped", _id);
     }
 
     public int getSpeed() {
