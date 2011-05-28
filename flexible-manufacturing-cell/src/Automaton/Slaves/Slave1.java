@@ -20,6 +20,7 @@ public class Slave1 implements Slave {
     private SlaveMailBox _mailBox;
     private ConveyorBelt _gearBelt;
     private ConveyorBelt _axisBelt;
+    private ConveyorBelt _weldingBelt;
     private Robot1 _robot;
     private DBConnection _dbconnection;
     private AssemblyStation _assemblyStation;
@@ -43,9 +44,9 @@ public class Slave1 implements Slave {
     public void initialize(String serverIP) {
         _dbconnection = new DBConnection();
         _dbconnection.connect();
-                
+
         try {
-        int gearSpeed;
+            int gearSpeed;
             gearSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION).getInt("length");
             int gearLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION).getInt("speed");
             int axisSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT2_CONFIGURATION).getInt("length");
@@ -55,10 +56,11 @@ public class Slave1 implements Slave {
             _axisBelt = new ConveyorBelt(2, axisSpeed, axisLength);
 
             _robot = new Robot1();
-            _robot.setPickingTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("picking_time"));
+            // TODO: estos parametros están mal
             _robot.setTrasportTime1(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element1"));
-            _robot.setTrasportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element2"));
-            
+            _robot.setTransportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element2"));
+            _robot.setTransportTime3(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element3"));
+
             _assemblyStation = new AssemblyStation(3, 0, 0);
 
             _sensor1 = new Sensor();
@@ -136,15 +138,32 @@ public class Slave1 implements Slave {
             case Constants.NORMAL_STOP_ORDER:
                 _finishing = true;
                 break;
+            case Constants.ROBOT1_PICKS_GEAR:
+                _gearBelt.removeLastPiece();
+                break;
+            case Constants.ROBOT1_PICKS_AXIS:
+                _axisBelt.removeLastPiece();
+                break;
             case Constants.ROBOT1_PLACES_GEAR:
                 p = new Piece();
                 p.setType(PieceType.gear);
-                _assemblyStation.getPieces().add(p);
+                _assemblyStation.addPiece(p);
                 break;
             case Constants.ROBOT1_PLACES_AXIS:
                 p = new Piece();
                 p.setType(PieceType.axis);
-                _assemblyStation.getPieces().add(p);
+                _assemblyStation.addPiece(p);
+                break;
+            case Constants.ROBOT1_PICKS_ASSEMBLY:
+                _assemblyStation.pickAssembly();
+                break;
+            case Constants.ROBOT1_REQUEST_ASSEMBLY:
+                _assemblyStation.assemble();
+                break;
+            case Constants.ROBOT1_PLACES_ASSEMBLY:
+                p = new Piece();
+                p.setType(PieceType.gear);
+                _weldingBelt.addPiece(p);
                 break;
         }
     }
@@ -161,7 +180,7 @@ public class Slave1 implements Slave {
 
         int pieceSize;
         try {
-            
+
             pieceSize = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_PIECE_SIZE).getInt("value");
 
             // if we didn't receive the order to finish, we keep adding pieces

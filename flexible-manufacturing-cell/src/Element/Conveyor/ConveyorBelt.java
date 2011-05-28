@@ -18,12 +18,12 @@ import java.util.logging.Logger;
 
 public class ConveyorBelt extends Thread implements PieceContainer {
 
-    private int _id;
-    private List<Piece> _pieces;
-    private int _length;
-    private int _speed;
-    private boolean _moving;
-    private ArrayList<Sensor> _sensors;
+    protected int _id;
+    protected List<Piece> _pieces;
+    protected int _length;
+    protected int _speed;
+    protected boolean _moving;
+    protected ArrayList<Sensor> _sensors;
     
     // Process for which it works
     protected Slave _process;
@@ -111,5 +111,14 @@ public class ConveyorBelt extends Thread implements PieceContainer {
     
     public void addPiece(Piece p){
         _pieces.add(p);
+    }
+    
+    public void removeLastPiece(){
+        Piece last = new Piece();
+        last.setPosition(0);
+        for(Piece p: _pieces){
+            if(p.getPosition() > last.getPosition()) last = p;
+        }
+        _pieces.remove(last);
     }
 }

@@ -59,13 +59,13 @@ public class Sensor extends Thread {
 
     public void activate() {
         _activated = true;
-        _process.runCommand(_id * 10 + 1);
+        _process.orderToRobot(_id * 10 + 1);
     }
 
     private void disactivate() {
         if (_activated) {
             _activated = false;
-            _process.runCommand(_id * 10 + 0);
+            _process.orderToRobot(_id * 10 + 0);
         }
     }
 
@@ -91,10 +91,6 @@ public class Sensor extends Thread {
 
     public void setProcess(Slave _process) {
         this._process = _process;
-    }
-
-    public void notifyContainer() {
-        // TODO: Mailbox implementation here
     }
 
     public Piece getDetectedPiece() {
