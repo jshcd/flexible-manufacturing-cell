@@ -12,8 +12,9 @@ public class MasterConfigurationData {
     public Slave1ConfigurationData _slave1ConfigurationData;
     public Slave2ConfigurationData _slave2ConfigurationData;
     public Slave3ConfigurationData _slave3ConfigurationData;
-    public RobotConfigurationData _robot1ConfigurationData;
-    public RobotConfigurationData _robot2ConfigurationData;
+    public Robot1ConfigurationData _robot1ConfigurationData;
+    /* Falta por incluir la configuracion del Robot2 */
+    /*public RobotConfigurationData _robot2ConfigurationData;*/
     public int _clockCycleTime;
     
     public void MasterConfigurationData(){}   
