@@ -87,22 +87,22 @@ public class Canvas_1 extends JPanel {
 
 	private void paintAssembly(Graphics g) {
 		if (assembly != null) {
-			// Painting the packages
+			// Painting the pieces
 			for (Element.Piece.Piece pac : assembly.getPieces()) {
 
-					g.drawImage(imageLoader.blisterSealedRight, 50, 45, null);
+					g.drawImage(imageLoader.prueba, 50, 45, null);
 
 			}
 
 			// Painting the quality control
-			g.drawImage(imageLoader.qualityControl,
+			g.drawImage(imageLoader.prueba,
 					Constants.QUALITY_POSITION.x, Constants.QUALITY_POSITION.y,
 					null);
 
             }
 
 	}
-//bla bla
+
 
 
 

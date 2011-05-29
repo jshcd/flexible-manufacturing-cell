@@ -33,14 +33,7 @@ import Auxiliar.Constants;
 public class MonitorWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	private static final String TITLE = "Flexible Manufacturing Cell";
-	private static final String CONTROL_PANEL_TITLE = "Control Panel";
-	private static final String START_TOOL_TIP = "Start";
-	private static final String STOP_TOOL_TIP = "Normal stop";
-	private static final String EMERGENCY_STOP_TOOL_TIP = "Emergency stop";
-	private static final String CONFIGURATION_TOOL_TIP = "Parameters configuration";
-	private static final String REPORT_TOOL_TIP = "Report generation";
-
+	
 	/* GUI COMPONENTS */
 	private Canvas_1 canvas;
 	//private ConnectionsPanel connectionStatusPanel;
@@ -55,16 +48,7 @@ public class MonitorWindow extends JFrame {
 	private ActionListener btnActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			/*if (e.getSource() == btnConfiguration) {
-				configurationParametersDialog.showData(masterAutomaton
-						.getDBConfigurationParameters(), btnStart.isEnabled());
-				configurationParametersDialog.setVisible(true);
-			}
-                        else if (e.getSource() == btnReport) {
-				reportDialog.showData(masterAutomaton.getDBReportData());
-				reportDialog.setVisible(true);
-			} 
-                        else */
+			
                     if (e.getSource() == btnStart) {
 				if (masterAutomaton != null) {
 					JOptionPane
@@ -106,7 +90,7 @@ public class MonitorWindow extends JFrame {
 	public MonitorWindow(int port) {
 		
 			imageLoader = new ImageLoader(this);
-			setTitle(TITLE);
+			setTitle(Constants.TITLE);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			createComponents();
 			layoutComponents();
@@ -123,25 +107,25 @@ public class MonitorWindow extends JFrame {
 		canvas = new Canvas_1(imageLoader);
 		btnConfiguration = new JButton(new ImageIcon(
 				imageLoader.configurationButton));
-		btnConfiguration.setToolTipText(CONFIGURATION_TOOL_TIP);
+		btnConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
 		btnConfiguration.setCursor(handCursor);
 		btnConfiguration.addActionListener(btnActionListener);
 		btnReport = new JButton(new ImageIcon(imageLoader.reportButton));
-		btnReport.setToolTipText(REPORT_TOOL_TIP);
+		btnReport.setToolTipText(Constants.REPORT_TOOL_TIP);
 		btnReport.setCursor(handCursor);
 		btnReport.addActionListener(btnActionListener);
 		btnStart = new JButton(new ImageIcon(imageLoader.startButton));
-		btnStart.setToolTipText(START_TOOL_TIP);
+		btnStart.setToolTipText(Constants.START_TOOL_TIP);
 		btnStart.setCursor(handCursor);
 		btnStart.addActionListener(btnActionListener);
 		btnStop = new JButton(new ImageIcon(imageLoader.stopButton));
-		btnStop.setToolTipText(STOP_TOOL_TIP);
+		btnStop.setToolTipText(Constants.STOP_TOOL_TIP);
 		btnStop.setCursor(handCursor);
 		btnStop.setEnabled(false);
 		btnStop.addActionListener(btnActionListener);
 		btnEmergencyStop = new JButton(new ImageIcon(
 				imageLoader.emergencyButton));
-		btnEmergencyStop.setToolTipText(EMERGENCY_STOP_TOOL_TIP);
+		btnEmergencyStop.setToolTipText(Constants.EMERGENCY_STOP_TOOL_TIP);
 		btnEmergencyStop.setCursor(handCursor);
 		btnEmergencyStop.setEnabled(false);
 		btnEmergencyStop.addActionListener(btnActionListener);
@@ -156,7 +140,7 @@ public class MonitorWindow extends JFrame {
 		canvas.setBorder(new LineBorder(Color.GRAY));
 		MigLayout pnlButtonsLayout = new MigLayout();
 		JPanel pnlButtons = new JPanel(pnlButtonsLayout);
-		pnlButtons.setBorder(new TitledBorder(CONTROL_PANEL_TITLE));
+		pnlButtons.setBorder(new TitledBorder(Constants.CONTROL_PANEL_TITLE));
 		pnlButtons.add(btnConfiguration, "");
 		pnlButtons.add(btnStart, "");
 		pnlButtons.add(btnEmergencyStop, "span 1 2, wrap");
