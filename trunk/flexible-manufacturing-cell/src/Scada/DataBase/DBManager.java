@@ -72,28 +72,39 @@ public class DBManager {
        /* Robot 1 Configuration */
        try{
            rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION);
-           md._robot1ConfigurationData.setPickingTime(rs.getInt("picking_time"));
-           md._robot1ConfigurationData.setTransportTimeA(rs.getInt("transport_element1"));
-           md._robot1ConfigurationData.setTransportTimeB(rs.getInt("transport_element2"));
+           md._robot1ConfigurationData.setPickAndPlaceGearTime(rs.getInt("time"));
+           rs.next();
+           md._robot1ConfigurationData.setPickAndPlaceAxisTime(rs.getInt("time"));
+           rs.next();
+           md._robot1ConfigurationData.setPickAndPlaceAssemblyTime(rs.getInt("time"));
+           rs.next();
+           md._robot1ConfigurationData.setAssemblyTime(rs.getInt("time"));
+           rs.next();
+           md._robot1ConfigurationData.setWeldingTime(rs.getInt("time"));
+           rs.next();
+           md._robot1ConfigurationData.setQualityControlTime(rs.getInt("time"));
        }catch(SQLException e){
            /* In case of exception set the values as default */
-           md._robot1ConfigurationData.setPickingTime(5);
-           md._robot1ConfigurationData.setTransportTimeA(5);
-           md._robot1ConfigurationData.setTransportTimeB(5);
+           md._robot1ConfigurationData.setPickAndPlaceGearTime(3);
+           md._robot1ConfigurationData.setPickAndPlaceAxisTime(5);
+           md._robot1ConfigurationData.setPickAndPlaceAssemblyTime(5);
+           md._robot1ConfigurationData.setAssemblyTime(2);
+           md._robot1ConfigurationData.setWeldingTime(2);
+           md._robot1ConfigurationData.setQualityControlTime(2);
        }
        
-       /* Robot 2 Configuration */
-       try{
-           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT2_CONFIGURATION);
-           md._robot2ConfigurationData.setPickingTime(rs.getInt("picking_time"));
-           md._robot2ConfigurationData.setTransportTimeA(rs.getInt("transport_element1"));
-           md._robot2ConfigurationData.setTransportTimeB(rs.getInt("transport_element2"));
-       }catch(SQLException e){
-           /* In case of exception set the values as default */
-           md._robot2ConfigurationData.setPickingTime(5);
-           md._robot2ConfigurationData.setTransportTimeA(5);
-           md._robot2ConfigurationData.setTransportTimeB(5);
-       }
+       /* Robot 2 Configuration */       
+//       try{
+//           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT2_CONFIGURATION);
+//           md._robot2ConfigurationData.setPickingTime(rs.getInt("picking_time"));
+//           md._robot2ConfigurationData.setTransportTimeA(rs.getInt("transport_element1"));
+//           md._robot2ConfigurationData.setTransportTimeB(rs.getInt("transport_element2"));
+//       }catch(SQLException e){
+//           /* In case of exception set the values as default */
+//           md._robot2ConfigurationData.setPickingTime(5);
+//           md._robot2ConfigurationData.setTransportTimeA(5);
+//           md._robot2ConfigurationData.setTransportTimeB(5);
+//       }
        
        /* General Configuration for Master */
        try{
@@ -166,24 +177,40 @@ public class DBManager {
        db.executeQuery(query);
        
        /* Robot 1 Configuration */
-       query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT1_CONFIGURATION;
-       query = query.replaceAll("\\[PICKING_TIME\\]", 
-               String.valueOf(md._robot1ConfigurationData.getPickingTime()));
-       query = query.replaceAll("\\[TRANSPORT_TIMEA\\]", 
-               String.valueOf(md._robot1ConfigurationData.getTransportTimeA()));
-       query = query.replaceAll("\\[TRANSPORT_TIMEB\\]", 
-               String.valueOf(md._robot1ConfigurationData.getTransportTimeB()));
+       query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT1_CONFIGURATION_PICKANDPLACEAXIS;
+       query = query.replaceAll("\\[TIME\\]", 
+               String.valueOf(md._robot1ConfigurationData.getPickAndPlaceAxisTime()));
+       db.executeQuery(query);
+       query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT1_CONFIGURATION_PICKANDPLACEGEAR;
+       query = query.replaceAll("\\[TIME\\]", 
+               String.valueOf(md._robot1ConfigurationData.getPickAndPlaceGearTime()));
+       db.executeQuery(query);
+       query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT1_CONFIGURATION_PICKANDPLACEASSEMBLY;
+       query = query.replaceAll("\\[TIME\\]", 
+               String.valueOf(md._robot1ConfigurationData.getPickAndPlaceAssemblyTime()));
+       db.executeQuery(query);
+       query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT1_CONFIGURATION_ASSEMBLYTIME;
+       query = query.replaceAll("\\[TIME\\]", 
+               String.valueOf(md._robot1ConfigurationData.getAssemblyTime()));
+       db.executeQuery(query);
+       query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT1_CONFIGURATION_WELDINGTIME;
+       query = query.replaceAll("\\[TIME\\]", 
+               String.valueOf(md._robot1ConfigurationData.getWeldingTime()));
+       db.executeQuery(query);
+       query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT1_CONFIGURATION_QUALITYCONTROLTIME;
+       query = query.replaceAll("\\[TIME\\]", 
+               String.valueOf(md._robot1ConfigurationData.getQualityControlTime()));
        db.executeQuery(query);
        
        /* Robot 2 Configuration */
-       query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT2_CONFIGURATION;
-       query = query.replaceAll("\\[PICKING_TIME\\]", 
-               String.valueOf(md._robot1ConfigurationData.getPickingTime()));
-       query = query.replaceAll("\\[TRANSPORT_TIMEA\\]", 
-               String.valueOf(md._robot1ConfigurationData.getTransportTimeA()));
-       query = query.replaceAll("\\[TRANSPORT_TIMEB\\]", 
-               String.valueOf(md._robot1ConfigurationData.getTransportTimeB()));
-       db.executeQuery(query);
+//       query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT2_CONFIGURATION;
+//       query = query.replaceAll("\\[PICKING_TIME\\]", 
+//               String.valueOf(md._robot1ConfigurationData.getPickingTime()));
+//       query = query.replaceAll("\\[TRANSPORT_TIMEA\\]", 
+//               String.valueOf(md._robot1ConfigurationData.getTransportTimeA()));
+//       query = query.replaceAll("\\[TRANSPORT_TIMEB\\]", 
+//               String.valueOf(md._robot1ConfigurationData.getTransportTimeB()));
+//       db.executeQuery(query);
        
        /* General Timing Configuraiton */
        query = Auxiliar.Constants.DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION;
