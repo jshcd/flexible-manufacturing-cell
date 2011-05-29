@@ -16,13 +16,13 @@ public class ImageLoader {
 	private MediaTracker mediaTracker;
 
 	/* CANVAS IMAGES */
-	public Image background = Toolkit.getDefaultToolkit().getImage(
+	/*public Image background = Toolkit.getDefaultToolkit().getImage(
 			ImageLoader.class.getResource(IMAGES_FOLDER + "/"
 					+ "background.png"));
 	
 
 	/* APPLICATION IMAGES */
-	public Image configurationButton = Toolkit.getDefaultToolkit().getImage(
+	/*public Image configurationButton = Toolkit.getDefaultToolkit().getImage(
 			ImageLoader.class.getResource(IMAGES_FOLDER + "/"
 					+ "configuration_button.png"));
 	public Image reportButton = Toolkit.getDefaultToolkit().getImage(
@@ -43,7 +43,7 @@ public class ImageLoader {
 	public Image off = Toolkit.getDefaultToolkit().getImage(
 			ImageLoader.class.getResource(IMAGES_FOLDER + "/"
 					+ "off.png"));
-
+*/
         public Image prueba = Toolkit.getDefaultToolkit().getImage(
 			ImageLoader.class.getResource(IMAGES_FOLDER + "/"
 					+ "prueba1.png"));
@@ -56,7 +56,7 @@ public class ImageLoader {
 	public ImageLoader(Component component) {
 		try {
 			mediaTracker = new MediaTracker(component);
-			mediaTracker.addImage(configurationButton, 0);
+			/*mediaTracker.addImage(configurationButton, 0);
 			mediaTracker.addImage(reportButton, 0);
 			mediaTracker.addImage(startButton, 0);
 			mediaTracker.addImage(stopButton, 0);
@@ -64,7 +64,7 @@ public class ImageLoader {
 			mediaTracker.addImage(on, 0);
 			mediaTracker.addImage(off, 0);
 
-			mediaTracker.addImage(background, 0);
+			mediaTracker.addImage(background, 0);*/
 			
 
 			mediaTracker.waitForAll();

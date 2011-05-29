@@ -105,26 +105,24 @@ public class MonitorWindow extends JFrame {
 	private void createComponents() {
 		Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
 		canvas = new Canvas_1(imageLoader);
-		btnConfiguration = new JButton(new ImageIcon(
-				imageLoader.configurationButton));
+		//btnConfiguration = new JButton(new ImageIcon(	imageLoader.configurationButton));
 		btnConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
 		btnConfiguration.setCursor(handCursor);
 		btnConfiguration.addActionListener(btnActionListener);
-		btnReport = new JButton(new ImageIcon(imageLoader.reportButton));
+		//btnReport = new JButton(new ImageIcon(imageLoader.reportButton));
 		btnReport.setToolTipText(Constants.REPORT_TOOL_TIP);
 		btnReport.setCursor(handCursor);
 		btnReport.addActionListener(btnActionListener);
-		btnStart = new JButton(new ImageIcon(imageLoader.startButton));
+		//btnStart = new JButton(new ImageIcon(imageLoader.startButton));
 		btnStart.setToolTipText(Constants.START_TOOL_TIP);
 		btnStart.setCursor(handCursor);
 		btnStart.addActionListener(btnActionListener);
-		btnStop = new JButton(new ImageIcon(imageLoader.stopButton));
+		//btnStop = new JButton(new ImageIcon(imageLoader.stopButton));
 		btnStop.setToolTipText(Constants.STOP_TOOL_TIP);
 		btnStop.setCursor(handCursor);
 		btnStop.setEnabled(false);
 		btnStop.addActionListener(btnActionListener);
-		btnEmergencyStop = new JButton(new ImageIcon(
-				imageLoader.emergencyButton));
+		//btnEmergencyStop = new JButton(new ImageIcon(				imageLoader.emergencyButton));
 		btnEmergencyStop.setToolTipText(Constants.EMERGENCY_STOP_TOOL_TIP);
 		btnEmergencyStop.setCursor(handCursor);
 		btnEmergencyStop.setEnabled(false);
