@@ -77,7 +77,7 @@ public class Canvas_1 extends JPanel {
 	 */
 	public void paintComponent(Graphics g) {
 		// Erases the panel
-		g.drawImage(imageLoader.background, 0, 0, null);
+		g.drawImage(imageLoader.prueba, 0, 0, null);
 
 		// Paints the different automata
 		//paintMasterAutomaton(g);
