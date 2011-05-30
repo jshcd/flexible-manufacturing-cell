@@ -59,13 +59,15 @@ public class Sensor extends Thread {
 
     public void activate() {
         _activated = true;
-        _process.orderToRobot(_id * 10 + 1);
+//        _process.orderToRobot(_id * 10 + 1);
+        _process.reportToMaster(_id * 10 + 1);
     }
 
     private void disactivate() {
         if (_activated) {
             _activated = false;
-            _process.orderToRobot(_id * 10 + 0);
+//            _process.orderToRobot(_id * 10 + 0);
+            _process.reportToMaster(_id * 10 + 0);
         }
     }
 
