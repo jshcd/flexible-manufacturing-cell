@@ -15,7 +15,7 @@ public class Constants {
     /*
      * Constant used for MS Access database location
      */
-    public final static String DATABASE_LOCATION = "FlexibleManufacturincCellDB.mdb";
+    public final static String DATABASE_LOCATION = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=./FlexibleManufacturincCellDB.mdb";
     /*
      *  Constants used by mailboxes
      */

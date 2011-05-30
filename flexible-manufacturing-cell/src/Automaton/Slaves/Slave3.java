@@ -44,7 +44,7 @@ public class Slave3 implements Slave {
             throw new UnsupportedOperationException();
     }
 
-    public void reportToMaster() {
+    public void reportToMaster(int i) {
             throw new UnsupportedOperationException();
     }
 

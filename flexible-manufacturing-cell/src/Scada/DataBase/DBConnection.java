@@ -22,9 +22,11 @@ public class DBConnection{
         try{
             Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
             _connection = DriverManager.getConnection(Auxiliar.Constants.DATABASE_LOCATION, "", "");
+        } catch(SQLException e) {
+            e.printStackTrace();
+        } catch(ClassNotFoundException e) {
+            e.printStackTrace();
         }
-        catch(SQLException e){}
-        catch(ClassNotFoundException e){}
   }
     
     public void disconnect(){

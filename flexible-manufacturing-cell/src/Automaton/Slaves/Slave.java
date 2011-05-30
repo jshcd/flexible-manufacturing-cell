@@ -9,7 +9,7 @@ public interface Slave {
     
     public void runCommand(int command);
 
-    public void reportToMaster();
+    public void reportToMaster(int i);
     
     public void orderToRobot(int i);
 

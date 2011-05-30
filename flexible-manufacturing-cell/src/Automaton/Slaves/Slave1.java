@@ -114,6 +114,18 @@ public class Slave1 implements Slave {
 
     }
 
+    public Sensor getSensor1() {
+        return _sensor1;
+    }
+
+    public Sensor getSensor2() {
+        return _sensor2;
+    }
+
+    public Sensor getSensor3() {
+        return _sensor3;
+    }
+    
     /*
      * Starts the system
      */
@@ -181,8 +193,41 @@ public class Slave1 implements Slave {
         throw new UnsupportedOperationException();
     }
 
-    public void reportToMaster() {
-        throw new UnsupportedOperationException();
+    public void reportToMaster(int orderNumber) {
+        InputStream is = null;
+        try {
+            //TO-DO envia al master la información de un sensor
+            Socket requestSocket = new Socket();
+            ObjectOutputStream out;
+            ObjectInputStream in;
+            Properties prop = new Properties();
+            is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            prop.load(is);
+            int port = Integer.parseInt(prop.getProperty("Master.port"));
+            String address = prop.getProperty("Master.ip");
+            requestSocket = new Socket(address, port);
+            out = new ObjectOutputStream(requestSocket.getOutputStream());
+            out.flush();
+            out.writeObject(orderNumber);
+            out.flush();
+            in = new ObjectInputStream(requestSocket.getInputStream());
+            try {
+                System.out.println(in.readObject());
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            requestSocket.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                is.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private void mainLoop() {
