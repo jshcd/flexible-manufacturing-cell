@@ -114,6 +114,9 @@ public class ConveyorBelt extends Thread implements PieceContainer {
     }
     
     public void removeLastPiece(){
+        if(_pieces.size() == 0) {
+            System.out.println("CONVEYOR " + _id + ": Unable to remove last element. Empty conveyor");
+        }
         Piece last = new Piece();
         last.setPosition(0);
         for(Piece p: _pieces){

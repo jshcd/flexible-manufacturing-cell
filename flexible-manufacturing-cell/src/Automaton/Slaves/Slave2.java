@@ -1,7 +1,7 @@
 /* Slave 2 code */
-
 package Automaton.Slaves;
 
+import Auxiliar.Constants;
 import Element.Conveyor.ConveyorBelt;
 import Element.Station.WeldingStation;
 import Scada.DataBase.DBConnection;
@@ -18,49 +18,57 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Slave2 implements Slave {
+
     private SlaveMailBox _mailBox;
-    private ConveyorBelt _weldingBelt;
     private WeldingStation _weldingStation;
     private DBConnection _dbconnection;
 
     public void start() {
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void stop() {
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void runCommand(int command) {
-            throw new UnsupportedOperationException();
+        switch (command) {
+            case Constants.SLAVE2_ROBOT2_REQUEST_WELDING:
+                _weldingStation.weld();
+                break;
+            case Constants.SLAVE2_ROBOT2_REQUEST_QUALITY:
+                _weldingStation.weld();
+                break;
+
+        }
     }
 
     public void startAssemblyBelt() {
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void stopAssemblyBelt() {
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void unloadAssembly() {
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void weld() {
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void weldingAvailable() {
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void reportToMaster() {
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void loadParameters() {
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public void orderToRobot(int i) {
@@ -75,7 +83,7 @@ public class Slave2 implements Slave {
             int port = Integer.parseInt(prop.getProperty("Slave2.port"));
             ServerSocket skServidor = new ServerSocket(port);
             Logger.getLogger(Slave2.class.getName()).log(Level.INFO, "Server listening at port {0}", port);
-            while(true) {
+            while (true) {
                 Socket skCliente = skServidor.accept();
                 Logger.getLogger(Slave2.class.getName()).log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
