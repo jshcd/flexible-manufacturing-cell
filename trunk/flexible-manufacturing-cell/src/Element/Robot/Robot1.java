@@ -27,6 +27,7 @@ public class Robot1 extends Thread implements Robot {
     private boolean _axisSensor;
     private boolean _assemblySensor;
     private boolean _weldingSensor;
+    private boolean _assemblyCompleted;
 
     public Robot1() {
         _state = AutomatonState.q0;
@@ -35,13 +36,13 @@ public class Robot1 extends Thread implements Robot {
         _axisSensor = false;
         _assemblySensor = false;
         _weldingSensor = false;
+        _assemblyCompleted = false;
     }
 
     @Override
     public void start() {
         while (true) {
             switch (_state) {
-                // TODO: rellenar transiciones
                 case q0:
                     if (_gearSensor) {
                         pickGear();
@@ -79,9 +80,12 @@ public class Robot1 extends Thread implements Robot {
                     _state = AutomatonState.q7;
                     break;
                 case q7:
-                    pickAssembly();
-                    _state = AutomatonState.q8;
-                    break;
+                    this.reportProcess(Constants.SLAVE1_ROBOT1_REQUEST_ASSEMBLY);
+                    if (_assemblyCompleted) {
+                        pickAssembly();
+                        _state = AutomatonState.q8;
+                        break;
+                    }
                 case q8:
                     if (!_weldingSensor) {
                         transportAssembly();
@@ -89,9 +93,7 @@ public class Robot1 extends Thread implements Robot {
                     }
                     break;
                 case q9:
-                    if (_weldingSensor) {
-                        _state = AutomatonState.q0;                        
-                    }
+                    returnToIdle();
             }
         }
     }
@@ -122,25 +124,29 @@ public class Robot1 extends Thread implements Robot {
             case Constants.SENSOR_WELDING_LOAD_DISACTIVATED:
                 _weldingSensor = false;
                 break;
+            case Constants.SLAVE1_ASSEMBLY_COMPLETED:
+                _assemblyCompleted = true;
+                break;
         }
     }
 
     public void pickAxis() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.axis);
-        reportProcess(Constants.ROBOT1_PICKS_AXIS);
+        reportProcess(Constants.SLAVE1_ROBOT1_PICKS_AXIS);
     }
 
     public void pickGear() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.gear);
-        reportProcess(Constants.ROBOT1_PICKS_GEAR);
+        reportProcess(Constants.SLAVE1_ROBOT1_PICKS_GEAR);
     }
 
     public void pickAssembly() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.assembly);
-        reportProcess(Constants.ROBOT1_PICKS_ASSEMBLY);
+        _assemblyCompleted = false;
+        reportProcess(Constants.SLAVE1_ROBOT1_PICKS_ASSEMBLY);
     }
 
     public void transportGear() {
@@ -149,7 +155,7 @@ public class Robot1 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.ROBOT1_PLACES_GEAR);
+        reportProcess(Constants.SLAVE1_ROBOT1_PLACES_GEAR);
         _loadedPiece = null;
     }
 
@@ -159,7 +165,7 @@ public class Robot1 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.ROBOT1_PLACES_AXIS);
+        reportProcess(Constants.SLAVE1_ROBOT1_PLACES_AXIS);
         _loadedPiece = null;
     }
 
@@ -169,42 +175,46 @@ public class Robot1 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.ROBOT1_PLACES_ASSEMBLY);
+        reportProcess(Constants.SLAVE1_ROBOT1_PLACES_ASSEMBLY);
         _loadedPiece = null;
     }
 
-    public Piece getLoadedPiece() {
-        return this._loadedPiece;
-    }
-
-    public void setLoadedPiece(Piece loadedPiece) {
-        _loadedPiece = loadedPiece;
-    }
-
-    public int getTransportTime1() {
-        return _transportTime1;
+    public void returnToIdle() {
+        try {
+            switch (_state) {
+                case q0:
+                    break;
+                case q9:
+                    Thread.sleep(_transportTime3);
+                case q8:
+                case q7:
+                    Thread.sleep(_transportTime2);
+                case q6:
+                case q5:
+                case q4:
+                case q3:
+                case q2:
+                case q1:
+                    _state = AutomatonState.q0;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void setTrasportTime1(int transportTime1) {
         this._transportTime1 = transportTime1;
     }
 
-    public int getTransportTime2() {
-        return _transportTime2;
-    }
-
     public void setTransportTime2(int transportTime2) {
         this._transportTime2 = transportTime2;
-    }
-
-    public int getTransportTime3() {
-        return _transportTime3;
     }
 
     public void setTransportTime3(int _transportTime3) {
         this._transportTime3 = _transportTime3;
     }
 
+    // TODO: rellenar con implementacion de Mailboxes
     public void reportProcess(int command) {
         throw new UnsupportedOperationException();
     }
@@ -217,7 +227,7 @@ public class Robot1 extends Thread implements Robot {
             int port = Integer.parseInt(prop.getProperty("Robot1.port"));
             ServerSocket skServidor = new ServerSocket(port);
             Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Server listening at port {0}", port);
-            while(true) {
+            while (true) {
                 Socket skCliente = skServidor.accept();
                 Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());

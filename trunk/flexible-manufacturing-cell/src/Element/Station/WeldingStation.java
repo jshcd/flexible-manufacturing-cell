@@ -3,24 +3,60 @@
  */
 package Element.Station;
 
+import Auxiliar.Constants;
 import Element.Piece.Piece;
-import Element.Other.HidraulicActuator;
-import Element.Other.Sensor;
 import Element.Conveyor.ConveyorBelt;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WeldingStation extends ConveyorBelt {
-
-    private List<Piece> _pieces;
-    private HidraulicActuator _actuator;
+    
+    
+    private int _weldingTime;
     
     public WeldingStation(int id, int speed, int length) {
         super(id, speed, length);
     }
-
-    public void weld() {
-        throw new UnsupportedOperationException();
+    
+    @Override
+    public void start(){
+        while(true){
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            weld();
+        }
     }
+    
+    public boolean weld() {
+        if (_pieces.size() == 1) {
+            _pieces.remove(0);
+            
+            try {
+                Thread.sleep(_weldingTime);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AssemblyStation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            Piece p = new Piece();
+            p.setType(Piece.PieceType.weldedAssembly);
+            _pieces.add(p);
+            this._process.orderToRobot(Constants.SLAVE2_WELDED_ASSEMBLY_COMPLETED);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int getWeldingTime() {
+        return _weldingTime;
+    }
+
+    public void setWeldingTime(int weldingTime) {
+        this._weldingTime = weldingTime;
+    }
+    
     
 }

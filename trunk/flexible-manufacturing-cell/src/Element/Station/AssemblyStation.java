@@ -5,37 +5,54 @@ package Element.Station;
 
 import Auxiliar.Constants;
 import Element.Piece.Piece;
-import Element.Other.Sensor;
 import Element.Conveyor.ConveyorBelt;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AssemblyStation extends ConveyorBelt {
+
+    private int _assemblyTime;
 
     public AssemblyStation(int id, int speed, int length) {
         super(id, speed, length);
     }
 
-    public void assemble() {
+    @Override
+    public void start() {
+        while (true) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            assemble();
+        }
+    }
+
+    public boolean assemble() {
         if (_pieces.size() == 2) {
             _pieces.remove(0);
             _pieces.remove(1);
             Piece p = new Piece();
+            try {
+                Thread.sleep(_assemblyTime);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AssemblyStation.class.getName()).log(Level.SEVERE, null, ex);
+            }
             p.setType(Piece.PieceType.assembly);
             _pieces.add(p);
             this._process.orderToRobot(Constants.SLAVE1_ASSEMBLY_COMPLETED);
+            return true;
         } else {
-            System.out.println("ASSEMBLY_TABLE: Unable to assemble pieces");
+            return false;
         }
     }
 
-    public void pickAssembly() {
-        if (_pieces.size() > 0) {
-            _pieces.remove(0);
-            Piece p = new Piece();
-            p.setType(Piece.PieceType.assembly);
-            _pieces.add(p);
-            this._process.runCommand(MIN_PRIORITY);
-        } else {
-            System.out.println("ASSEMBLY_TABLE: Unable to pick assembly");
-        }
+    public int getAssemblyTime() {
+        return _assemblyTime;
+    }
+
+    public void setAssemblyTime(int assemblyTime) {
+        this._assemblyTime = assemblyTime;
     }
 }

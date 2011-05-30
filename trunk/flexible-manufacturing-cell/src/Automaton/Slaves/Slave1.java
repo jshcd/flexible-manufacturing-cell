@@ -42,15 +42,15 @@ public class Slave1 implements Slave {
      * Arg[0] must be the IP Address of the server
      */
     public static void main(String[] args) {
-        Slave1 s = new Slave1(args[0]);
+        Slave1 s = new Slave1();
     }
 
-    public Slave1(String serverIP) {
-        initialize(serverIP);
+    public Slave1() {
+        initialize();
         mainLoop();
     }
 
-    public void initialize(String serverIP) {
+    public final void initialize() {
         _dbconnection = new DBConnection();
         _dbconnection.connect();
 
@@ -147,29 +147,29 @@ public class Slave1 implements Slave {
             case Constants.NORMAL_STOP_ORDER:
                 _finishing = true;
                 break;
-            case Constants.ROBOT1_PICKS_GEAR:
+            case Constants.SLAVE1_ROBOT1_PICKS_GEAR:
                 _gearBelt.removeLastPiece();
                 break;
-            case Constants.ROBOT1_PICKS_AXIS:
+            case Constants.SLAVE1_ROBOT1_PICKS_AXIS:
                 _axisBelt.removeLastPiece();
                 break;
-            case Constants.ROBOT1_PLACES_GEAR:
+            case Constants.SLAVE1_ROBOT1_PLACES_GEAR:
                 p = new Piece();
                 p.setType(PieceType.gear);
                 _assemblyStation.addPiece(p);
                 break;
-            case Constants.ROBOT1_PLACES_AXIS:
+            case Constants.SLAVE1_ROBOT1_PLACES_AXIS:
                 p = new Piece();
                 p.setType(PieceType.axis);
                 _assemblyStation.addPiece(p);
                 break;
-            case Constants.ROBOT1_PICKS_ASSEMBLY:
-                _assemblyStation.pickAssembly();
+            case Constants.SLAVE1_ROBOT1_PICKS_ASSEMBLY:
+                _assemblyStation.removeLastPiece();
                 break;
-            case Constants.ROBOT1_REQUEST_ASSEMBLY:
+            case Constants.SLAVE1_ROBOT1_REQUEST_ASSEMBLY:
                 _assemblyStation.assemble();
                 break;
-            case Constants.ROBOT1_PLACES_ASSEMBLY:
+            case Constants.SLAVE1_ROBOT1_PLACES_ASSEMBLY:
                 p = new Piece();
                 p.setType(PieceType.gear);
                 _weldingBelt.addPiece(p);
