@@ -142,7 +142,7 @@ public class MonitorWindow extends JFrame {
 		pnlButtons.add(btnConfiguration, "");
 		pnlButtons.add(btnStart, "");
 		pnlButtons.add(btnEmergencyStop, "span 1 2, wrap");
-		pnlButtons.add(btnReport, "");
+	//	pnlButtons.add(btnReport, "");
 		pnlButtons.add(btnStop, "wrap");
 		contentPane.add(canvas, "span 3, wrap, center");
 		contentPane.add(pnlButtons, "");
