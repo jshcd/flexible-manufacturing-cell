@@ -98,7 +98,7 @@ public class Robot2 extends Thread implements Robot {
     public void pickAssembly() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.assembly);
-        reportProcess(Constants.SLAVE2_ROBOT2_PICKS_ASSEMBLY);
+        reportProcess(Constants.SLAVE1_ROBOT2_PICKS_ASSEMBLY);
     }
 
     public void transportAssembly() {

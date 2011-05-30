@@ -3,6 +3,9 @@ package Automaton.Slaves;
 
 import Auxiliar.Constants;
 import Element.Conveyor.ConveyorBelt;
+import Element.Piece.Piece;
+import Element.Piece.Piece.PieceType;
+import Element.Station.QualityControlStation;
 import Element.Station.WeldingStation;
 import Scada.DataBase.DBConnection;
 import java.io.FileInputStream;
@@ -21,6 +24,7 @@ public class Slave2 implements Slave {
 
     private SlaveMailBox _mailBox;
     private WeldingStation _weldingStation;
+    private QualityControlStation _qualityStation;
     private DBConnection _dbconnection;
 
     public void start() {
@@ -32,14 +36,21 @@ public class Slave2 implements Slave {
     }
 
     public void runCommand(int command) {
+        Piece p;
         switch (command) {
             case Constants.SLAVE2_ROBOT2_REQUEST_WELDING:
                 _weldingStation.weld();
                 break;
             case Constants.SLAVE2_ROBOT2_REQUEST_QUALITY:
-                _weldingStation.weld();
+                _qualityStation.checkQuality();
                 break;
-
+            
+            case Constants.SLAVE2_ROBOT2_PLACES_ASSEMBLY:
+                p = new Piece();
+                p.setType(PieceType.assembly);
+                _weldingStation.addPiece(p);
+                break;
+            case Constants.SLAVE2_ROBOT2_PICKS_WELDED_ASSEMBLY:
         }
     }
 
