@@ -65,11 +65,12 @@ public class Slave1 implements Slave {
 
             _robot = new Robot1();
             // TODO: estos parametros están mal
-            _robot.setTrasportTime1(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element1"));
-            _robot.setTransportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element2"));
-            _robot.setTransportTime3(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION).getInt("transport_element3"));
+            _robot.setTrasportTime1(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1).getInt("time"));
+            _robot.setTransportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2).getInt("time"));
+            _robot.setTransportTime3(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3).getInt("time"));
 
             _assemblyStation = new AssemblyStation(3, 0, 0);
+            _assemblyStation.setAssemblyTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ASSEMBLY_STATION_TIME).getInt("time"));
 
             _sensor1 = new Sensor();
             _sensor1.setSensorId(1);
@@ -182,8 +183,11 @@ public class Slave1 implements Slave {
                 break;
             case Constants.SLAVE1_ROBOT1_PLACES_ASSEMBLY:
                 p = new Piece();
-                p.setType(PieceType.gear);
+                p.setType(PieceType.assembly);
                 _weldingBelt.addPiece(p);
+                break;
+            case Constants.SLAVE1_ROBOT2_PICKS_ASSEMBLY:
+                _weldingBelt.removeLastPiece();
                 break;
         }
     }

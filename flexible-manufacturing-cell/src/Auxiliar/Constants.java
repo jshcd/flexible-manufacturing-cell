@@ -28,7 +28,6 @@ public class Constants {
     public final static int SLAVE_TWO_STOPPING = 6;
     public final static int SLAVE_THREE_STARTING = 7;
     public final static int SLAVE_THREE_STOPPING = 8;
-    
     public final static int SENSOR_GEAR_UNLOAD_ACTIVATED = 11;
     public final static int SENSOR_GEAR_UNLOAD_DISACTIVATED = 10;
     public final static int SENSOR_AXIS_UNLOAD_ACTIVATED = 21;
@@ -51,7 +50,6 @@ public class Constants {
     public final static int SENSOR_NOT_OK_LOAD_DISACTIVATED = 90;
     public final static int SENSOR_NOT_OK_UNLOAD_ACTIVATED = 111;
     public final static int SENSOR_NOT_OK_UNLOAD_DISACTIVATED = 110;
-    
     public final static int SLAVE1_ROBOT1_PICKS_AXIS = 200;
     public final static int SLAVE1_ROBOT1_PICKS_GEAR = 201;
     public final static int SLAVE1_ROBOT1_PLACES_GEAR = 202;
@@ -60,21 +58,18 @@ public class Constants {
     public final static int SLAVE1_ROBOT1_PLACES_ASSEMBLY = 205;
     public final static int SLAVE1_ROBOT1_REQUEST_ASSEMBLY = 206;
     public final static int SLAVE1_ASSEMBLY_COMPLETED = 207;
-    
     public final static int SLAVE2_WELDED_ASSEMBLY_COMPLETED = 300;
     public final static int SLAVE2_ROBOT2_REQUEST_WELDING = 301;
-    public final static int SLAVE2_ROBOT2_PICKS_ASSEMBLY = 302;
+    public final static int SLAVE1_ROBOT2_PICKS_ASSEMBLY = 302;
     public final static int SLAVE2_ROBOT2_PLACES_ASSEMBLY = 303;
     public final static int SLAVE2_ROBOT2_REQUEST_QUALITY = 304;
     public final static int SLAVE2_ROBOT2_PICKS_WELDED_ASSEMBLY = 305;
-    
     public final static int SLAVE3_ROBOT2_PLACES_WELDED_ASSEMBLY = 306;
     public final static int SLAVE3_ROBOT2_PICKS_CHECKED_WELDED_ASSEMBLY = 307;
     public final static int SLAVE3_ROBOT2_PLACES_WELDED_OK = 308;
     public final static int SLAVE3_ROBOT2_PLACES_WELDED_NOT_OK = 309;
     public final static int SLAVE3_QUALITY_CONTROL_COMPLETED_OK = 310;
     public final static int SLAVE3_QUALITY_CONTROL_COMPLETED_NOT_OK = 311;
-    
     /* 
      * Constants used in DB Queries 
      */
@@ -94,7 +89,14 @@ public class Constants {
             + "WHERE belts.id = '5'";
     public final static String DBQUERY_SELECT_SLAVE3_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
             + "FROM activation_times WHERE activation_times.time_name='t3'";
-    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION = "SELECT * FROM robot1";
+    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1 = "SELECT * FROM robot1 WHERE robot1.id = '1";
+    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2 = "SELECT * FROM robot1 WHERE robot1.id = '2";
+    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3 = "SELECT * FROM robot1 WHERE robot1.id = '3";
+    
+    public final static String DBQUERY_SELECT_ASSEMBLY_STATION_TIME = "SELECT * FROM stations WHERE station_name = 'assembly";
+    public final static String DBQUERY_SELECT_WELDING_STATION_TIME = "SELECT * FROM stations WHERE station_name = 'welding";
+    public final static String DBQUERY_SELECT_QUALITY_STATION_TIME = "SELECT * FROM stations WHERE station_name = 'quality";
+    
     public final static String DBQUERY_SELECT_ROBOT2_CONFIGURATION = "SELECT * FROM robots WHERE "
             + "robots.id = '2'";
     public final static String DBQUERY_SELECT_GLOBAL_TIMING_CONFIGURATION = "SELECT "
@@ -137,7 +139,6 @@ public class Constants {
 //            + "transport_element2 = '[TRANSPORT_TIMEB]' WHERE id = '2'";
     public final static String DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION = "UPDATE configuration "
             + "SET value = '[VALUE]' WHERE parameter = 'clock_cycle'";
-
     /**
      * constants used for GUI
      */
