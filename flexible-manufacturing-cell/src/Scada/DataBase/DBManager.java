@@ -70,28 +70,28 @@ public class DBManager {
        }
        
        /* Robot 1 Configuration */
-       try{
-           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION);
-           md._robot1ConfigurationData.setPickAndPlaceGearTime(rs.getInt("time"));
-           rs.next();
-           md._robot1ConfigurationData.setPickAndPlaceAxisTime(rs.getInt("time"));
-           rs.next();
-           md._robot1ConfigurationData.setPickAndPlaceAssemblyTime(rs.getInt("time"));
-           rs.next();
-           md._robot1ConfigurationData.setAssemblyTime(rs.getInt("time"));
-           rs.next();
-           md._robot1ConfigurationData.setWeldingTime(rs.getInt("time"));
-           rs.next();
-           md._robot1ConfigurationData.setQualityControlTime(rs.getInt("time"));
-       }catch(SQLException e){
-           /* In case of exception set the values as default */
-           md._robot1ConfigurationData.setPickAndPlaceGearTime(3);
-           md._robot1ConfigurationData.setPickAndPlaceAxisTime(5);
-           md._robot1ConfigurationData.setPickAndPlaceAssemblyTime(5);
-           md._robot1ConfigurationData.setAssemblyTime(2);
-           md._robot1ConfigurationData.setWeldingTime(2);
-           md._robot1ConfigurationData.setQualityControlTime(2);
-       }
+//       try{
+//           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION);
+//           md._robot1ConfigurationData.setPickAndPlaceGearTime(rs.getInt("time"));
+//           rs.next();
+//           md._robot1ConfigurationData.setPickAndPlaceAxisTime(rs.getInt("time"));
+//           rs.next();
+//           md._robot1ConfigurationData.setPickAndPlaceAssemblyTime(rs.getInt("time"));
+//           rs.next();
+//           md._robot1ConfigurationData.setAssemblyTime(rs.getInt("time"));
+//           rs.next();
+//           md._robot1ConfigurationData.setWeldingTime(rs.getInt("time"));
+//           rs.next();
+//           md._robot1ConfigurationData.setQualityControlTime(rs.getInt("time"));
+//       }catch(SQLException e){
+//           /* In case of exception set the values as default */
+//           md._robot1ConfigurationData.setPickAndPlaceGearTime(3);
+//           md._robot1ConfigurationData.setPickAndPlaceAxisTime(5);
+//           md._robot1ConfigurationData.setPickAndPlaceAssemblyTime(5);
+//           md._robot1ConfigurationData.setAssemblyTime(2);
+//           md._robot1ConfigurationData.setWeldingTime(2);
+//           md._robot1ConfigurationData.setQualityControlTime(2);
+//       }
        
        /* Robot 2 Configuration */       
 //       try{
