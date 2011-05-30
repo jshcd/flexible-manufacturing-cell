@@ -52,6 +52,7 @@ public class DBConnection{
         
         try{
             rs = s.getResultSet();
+            rs.next();
         }catch(SQLException e){
             System.out.println(e);
         }
