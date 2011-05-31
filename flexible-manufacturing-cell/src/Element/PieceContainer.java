@@ -13,4 +13,8 @@ public interface PieceContainer {
 
 	public void setPieces(List<Element.Piece.Piece> pieces);
         
+        public void startContainer();
+        
+        public void stopContainer();
+        
 }

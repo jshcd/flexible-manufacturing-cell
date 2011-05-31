@@ -11,13 +11,12 @@ package test.automata;
 public class auxiliar {
 
     public static void main(String args[]) {
-        try{
-        Slave1Test s1 = new Slave1Test();
-        System.out.println("CRFCRF");
-        s1.start();
-        System.out.println("cerfsefdert");
-        }catch (java.lang.UnsupportedOperationException a){
-            
+        try {
+            Slave1Test s1 = new Slave1Test();
+            System.out.println("CRFCRF");
+            s1.start();
+            System.out.println("cerfsefdert");
+        } catch (java.lang.UnsupportedOperationException a) {
         }
     }
 }

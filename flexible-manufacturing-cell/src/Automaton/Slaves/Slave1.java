@@ -161,10 +161,10 @@ public class Slave1 implements Slave {
      */
     public void start() {
         _finishing = false;
-        _gearBelt.startBelt();
-        _axisBelt.startBelt();
-        _assemblyStation.startBelt();
-        _weldingBelt.startBelt();
+        _gearBelt.startContainer();
+        _axisBelt.startContainer();
+        _assemblyStation.startContainer();
+        _weldingBelt.startContainer();
         orderToRobot(Constants.START_ORDER);
         mainLoop();
         reportToMaster(Constants.SLAVE_ONE_STARTING);
@@ -175,10 +175,10 @@ public class Slave1 implements Slave {
 
     public void stop() {
         _finishing = true;
-        _gearBelt.stopBelt();
-        _axisBelt.stopBelt();
-        _assemblyStation.stopBelt();
-        _weldingBelt.stopBelt();
+        _gearBelt.stopContainer();
+        _axisBelt.stopContainer();
+        _assemblyStation.stopContainer();
+        _weldingBelt.stopContainer();
         orderToRobot(Constants.EMERGENCY_STOP_ORDER);
         reportToMaster(Constants.SLAVE_ONE_STOPPING);
     }

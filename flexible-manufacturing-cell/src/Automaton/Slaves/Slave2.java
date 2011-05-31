@@ -83,14 +83,14 @@ public class Slave2 implements Slave {
     }
 
     public void start() {
-        _weldingStation.startBelt();
-        _qualityStation.startBelt();
+        _weldingStation.startContainer();
+        _qualityStation.startContainer();
         reportToMaster(Constants.SLAVE_TWO_STARTING);
     }
 
     public void stop() {
-        _weldingStation.stopBelt();
-        _qualityStation.stopBelt();
+        _weldingStation.stopContainer();
+        _qualityStation.stopContainer();
         reportToMaster(Constants.SLAVE_TWO_STOPPING);
     }
 
