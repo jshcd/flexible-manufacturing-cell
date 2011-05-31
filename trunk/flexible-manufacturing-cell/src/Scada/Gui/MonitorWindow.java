@@ -29,21 +29,21 @@ import Auxiliar.Constants;
  * @author
  */
 public class MonitorWindow extends JFrame {
+
     private static final long serialVersionUID = 1L;
-    
     /* GUI COMPONENTS */
     private Canvas_1 canvas;
     //private ConnectionsPanel connectionStatusPanel;
     //private LoggingPanel logPanel;
-    private JButton buttonConfiguration, 
-                                buttonReport, 
-                                buttonStart,
-                                buttonStop,
-                                buttonEmergencyStop;
+    private JButton buttonConfiguration,
+            buttonReport,
+            buttonStart,
+            buttonStop,
+            buttonEmergencyStop;
     private ImageLoader imageLoader;
     //private ConfigurationParametersDialog configurationParametersDialog;
-    //private ReportDialog reportDialog;
-    
+    private Report report;
+    private Master masterAutomaton;
 
     /* LISTENERS */
     private ActionListener btnActionListener = new ActionListener() {
@@ -69,16 +69,19 @@ public class MonitorWindow extends JFrame {
                 buttonStop.setEnabled(false);
                 buttonEmergencyStop.setEnabled(false);
                 canvas.setEmergencyStopped(true);
-                masterAutomaton.emergencyStop();;
+                masterAutomaton.emergencyStop();
+                ;
             } else if (e.getSource() == buttonStop) {
                 buttonStart.setEnabled(false);
                 buttonStop.setEnabled(false);
                 buttonEmergencyStop.setEnabled(false);
                 masterAutomaton.stopSystem();
+            } else if (e.getSource() == buttonReport) {
+                //reportDialog.showData(masterAutomaton.getDBReportData());
+                report.setVisible(true);
             }
         }
     };
-    private Master masterAutomaton;
 
     /**
      * Constructs a monitor window and starts the master automaton.
@@ -89,12 +92,13 @@ public class MonitorWindow extends JFrame {
      */
     public MonitorWindow(int port) {
         imageLoader = new ImageLoader(this);
+        report = new Report();
         setTitle(Constants.TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createComponents();
         layoutComponents();
 
-        //masterAutomaton = new Master();
+        masterAutomaton = new Master();
 
         pack();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -103,6 +107,7 @@ public class MonitorWindow extends JFrame {
     private void createComponents() {
         Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
         canvas = new Canvas_1(imageLoader);
+
         buttonConfiguration = new JButton(new ImageIcon(imageLoader.configurationButton));
         buttonConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
         buttonConfiguration.setCursor(handCursor);
@@ -125,6 +130,7 @@ public class MonitorWindow extends JFrame {
         buttonEmergencyStop.setCursor(handCursor);
         buttonEmergencyStop.setEnabled(false);
         buttonEmergencyStop.addActionListener(btnActionListener);
+
 
     }
 
