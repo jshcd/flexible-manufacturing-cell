@@ -94,17 +94,53 @@ public class Slave1 implements Slave {
             _sensor3.setPositionInBelt(0);
 
             // We start the belts
-            _gearBelt.start();
+            Thread t1 = new Thread(new Runnable() {
+                public void run() {
+                    _gearBelt.start();
+                }
+            });
+            t1.start();
             _gearBelt.addSensor(_sensor1);
-            _axisBelt.start();
+            
+            Thread t2 = new Thread(new Runnable() {
+                public void run() {
+                    _axisBelt.start();
+                }
+            });
+            t2.start();
             _axisBelt.addSensor(_sensor2);
-            _assemblyStation.start();
+            Thread t3 = new Thread(new Runnable() {
+                public void run() {
+                    _assemblyStation.start();
+                }
+            });
+            t3.start();
+
+
             _assemblyStation.addSensor(_sensor3);
 
             //We start the sensors
-            _sensor1.start();
-            _sensor2.start();
-            _sensor3.start();
+            Thread t4 = new Thread(new Runnable() {
+                public void run() {
+                    _sensor1.start();
+                }
+            });
+            t4.start();
+            Thread t5 = new Thread(new Runnable() {
+                public void run() {
+                    _sensor2.start();
+                }
+            });
+            t5.start();
+            Thread t6 = new Thread(new Runnable() {
+                public void run() {
+                    _sensor3.start();
+                }
+            });
+            t6.start();
+            
+            
+            
 
             _finishing = false;
         } catch (SQLException ex) {
@@ -242,7 +278,6 @@ public class Slave1 implements Slave {
 
             // if we didn't receive the order to finish, we keep adding pieces
             while (!_finishing) {
-
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException ex) {
