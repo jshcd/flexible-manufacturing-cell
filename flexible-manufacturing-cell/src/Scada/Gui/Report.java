@@ -170,6 +170,8 @@ public class Report extends JDialog {
         value2.setEditable(false);
         panel1.add(value2, "span 2, wrap");
 
+        reportLayout = new MigLayout("wrap 2",
+                "[left][fill, grow, 40lp:40lp:]", "");
         panel2.setLayout(reportLayout);
         panel2.add(new JLabel("Right pieces: "), "");
         JTextField value3 = new JTextField(totalRightPieces);
@@ -180,6 +182,8 @@ public class Report extends JDialog {
         value4.setEditable(false);
         panel2.add(value4,"span 2, wrap");
 
+        reportLayout = new MigLayout("wrap 2",
+                "[left][fill, grow, 40lp:40lp:]", "");
         panel3.setLayout(reportLayout);
         panel3.add(new JLabel("Number of normal stops: "), "");
         JTextField value5 = new JTextField(totalNormalStops);
