@@ -42,6 +42,7 @@ public class Sensor extends Thread {
         while (true) {
             try {
                 Thread.sleep(50);
+                //TO-DO Sección crítica
                 List<Piece> pieces = _associatedContainer.getPieces();
                 for (Piece p : pieces) {
                     if (p.getPosition() >= _positionInBelt + _range) {
