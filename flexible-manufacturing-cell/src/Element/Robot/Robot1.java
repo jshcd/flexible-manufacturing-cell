@@ -80,7 +80,7 @@ public class Robot1 extends Thread implements Robot {
                     _state = AutomatonState.q7;
                     break;
                 case q7:
-                    this.reportProcess(Constants.SLAVE1_ROBOT1_REQUEST_ASSEMBLY);
+                    this.reportProcess(Constants.ROBOT1_SLAVE1_REQUEST_ASSEMBLY);
                     if (_assemblyCompleted) {
                         pickAssembly();
                         _state = AutomatonState.q8;
@@ -124,7 +124,7 @@ public class Robot1 extends Thread implements Robot {
             case Constants.SENSOR_WELDING_LOAD_DISACTIVATED:
                 _weldingSensor = false;
                 break;
-            case Constants.SLAVE1_ASSEMBLY_COMPLETED:
+            case Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED:
                 _assemblyCompleted = true;
                 break;
         }
@@ -133,20 +133,20 @@ public class Robot1 extends Thread implements Robot {
     public void pickAxis() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.axis);
-        reportProcess(Constants.SLAVE1_ROBOT1_PICKS_AXIS);
+        reportProcess(Constants.ROBOT1_SLAVE1_PICKS_AXIS);
     }
 
     public void pickGear() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.gear);
-        reportProcess(Constants.SLAVE1_ROBOT1_PICKS_GEAR);
+        reportProcess(Constants.ROBOT1_SLAVE1_PICKS_GEAR);
     }
 
     public void pickAssembly() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.assembly);
         _assemblyCompleted = false;
-        reportProcess(Constants.SLAVE1_ROBOT1_PICKS_ASSEMBLY);
+        reportProcess(Constants.ROBOT1_SLAVE1_PICKS_ASSEMBLY);
     }
 
     public void transportGear() {
@@ -155,7 +155,7 @@ public class Robot1 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.SLAVE1_ROBOT1_PLACES_GEAR);
+        reportProcess(Constants.ROBOT1_SLAVE1_PLACES_GEAR);
         _loadedPiece = null;
     }
 
@@ -165,7 +165,7 @@ public class Robot1 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.SLAVE1_ROBOT1_PLACES_AXIS);
+        reportProcess(Constants.ROBOT1_SLAVE1_PLACES_AXIS);
         _loadedPiece = null;
     }
 
@@ -175,7 +175,7 @@ public class Robot1 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.SLAVE1_ROBOT1_PLACES_ASSEMBLY);
+        reportProcess(Constants.ROBOT1_SLAVE1_PLACES_ASSEMBLY);
         _loadedPiece = null;
     }
 

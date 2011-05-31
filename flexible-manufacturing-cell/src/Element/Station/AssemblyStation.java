@@ -18,14 +18,16 @@ public class AssemblyStation extends ConveyorBelt {
     }
 
     @Override
-    public void start() {
+    public void run() {
         while (true) {
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
+            if (_moving) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                assemble();
             }
-            assemble();
         }
     }
 
@@ -41,7 +43,7 @@ public class AssemblyStation extends ConveyorBelt {
             }
             p.setType(Piece.PieceType.assembly);
             _pieces.add(p);
-            this._process.orderToRobot(Constants.SLAVE1_ASSEMBLY_COMPLETED);
+            this._process.orderToRobot(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
             return true;
         } else {
             return false;

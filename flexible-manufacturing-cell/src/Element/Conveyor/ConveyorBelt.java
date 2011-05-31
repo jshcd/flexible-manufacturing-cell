@@ -2,8 +2,6 @@
  * Abstract class that defines a belt wich contains sensors. This class is extended by OneSensorBelt
  * and TwoSensorBelt depending on what type it is.
  */
-
-
 package Element.Conveyor;
 
 import Automaton.Slaves.Slave;
@@ -16,7 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ConveyorBelt extends Thread implements PieceContainer {
+public class ConveyorBelt implements PieceContainer, Runnable {
 
     protected int _id;
     protected List<Piece> _pieces;
@@ -24,11 +22,10 @@ public class ConveyorBelt extends Thread implements PieceContainer {
     protected int _speed;
     protected boolean _moving;
     protected ArrayList<Sensor> _sensors;
-    
     // Process for which it works
     protected Slave _process;
-    
-    public ConveyorBelt(int id, int speed, int length){
+
+    public ConveyorBelt(int id, int speed, int length) {
         _id = id;
         _pieces = Collections.synchronizedList(new ArrayList<Piece>());
         _length = length;
@@ -36,23 +33,28 @@ public class ConveyorBelt extends Thread implements PieceContainer {
         _moving = false;
         _sensors = new ArrayList();
     }
-    
+
     @Override
-    public void start(){
-        
+    public synchronized void run() {
+        Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has been started", _id);
+
         // TODO: Check this works right
-        while(_moving){
-            try {
-                Thread.sleep(10);
-                for(Piece p:_pieces){
-                    p.setPosition(p.getPosition() + _speed/100);
-                    System.out.println(p.getPosition());
+        while (true) {
+            if (_moving) {
+                try {
+                    Thread.sleep(10);
+                    synchronized (_pieces) {
+                        for (Piece p : _pieces) {
+                            p.setPosition(p.getPosition() + _speed / 100);
+                            System.out.println(p.getPosition());
+                        }
+                    }
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
+
             }
         }
-        Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has finished", _id);
     }
 
     public void startBelt() {
@@ -81,7 +83,7 @@ public class ConveyorBelt extends Thread implements PieceContainer {
         _length = length;
     }
 
-    public List<Element.Piece.Piece> getPieces() {
+    public synchronized List<Element.Piece.Piece> getPieces() {
         return _pieces;
     }
 
@@ -104,23 +106,25 @@ public class ConveyorBelt extends Thread implements PieceContainer {
     public void setProcess(Slave _process) {
         this._process = _process;
     }
-    
-    public void addSensor(Sensor s){
+
+    public void addSensor(Sensor s) {
         _sensors.add(s);
     }
-    
-    public void addPiece(Piece p){
+
+    public void addPiece(Piece p) {
         _pieces.add(p);
     }
-    
-    public void removeLastPiece(){
-        if(_pieces.size() == 0) {
+
+    public void removeLastPiece() {
+        if (_pieces.size() == 0) {
             System.out.println("CONVEYOR " + _id + ": Unable to remove last element. Empty conveyor");
         }
         Piece last = new Piece();
         last.setPosition(0);
-        for(Piece p: _pieces){
-            if(p.getPosition() > last.getPosition()) last = p;
+        for (Piece p : _pieces) {
+            if (p.getPosition() > last.getPosition()) {
+                last = p;
+            }
         }
         _pieces.remove(last);
     }

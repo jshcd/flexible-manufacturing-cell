@@ -98,7 +98,7 @@ public class Robot2 extends Thread implements Robot {
     public void pickAssembly() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.assembly);
-        reportProcess(Constants.SLAVE1_ROBOT2_PICKS_ASSEMBLY);
+        reportProcess(Constants.ROBOT2_SLAVE1_PICKS_ASSEMBLY);
     }
 
     public void transportAssembly() {
@@ -107,8 +107,8 @@ public class Robot2 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.SLAVE2_ROBOT2_PLACES_ASSEMBLY);
-        reportProcess(Constants.SLAVE2_ROBOT2_REQUEST_WELDING);
+        reportProcess(Constants.ROBOT2_SLAVE2_PLACES_ASSEMBLY);
+        reportProcess(Constants.ROBOT2_SLAVE2_REQUEST_WELDING);
         _loadedPiece = null;
     }
 
@@ -116,7 +116,7 @@ public class Robot2 extends Thread implements Robot {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.weldedAssembly);
         _weldingCompleted = false;
-        reportProcess(Constants.SLAVE2_ROBOT2_PICKS_WELDED_ASSEMBLY);
+        reportProcess(Constants.ROBOT2_SLAVE2_PICKS_WELDED_ASSEMBLY);
     }
 
     public void transportWeldedAssembly() {
@@ -125,8 +125,8 @@ public class Robot2 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.SLAVE3_ROBOT2_PLACES_WELDED_ASSEMBLY);
-        reportProcess(Constants.SLAVE2_ROBOT2_REQUEST_QUALITY);
+        reportProcess(Constants.ROBOT2_SLAVE2_PLACES_WELDED_ASSEMBLY);
+        reportProcess(Constants.ROBOT2_SLAVE2_REQUEST_QUALITY);
         _loadedPiece = null;
     }
 
@@ -134,7 +134,7 @@ public class Robot2 extends Thread implements Robot {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.weldedAssembly);
         _weldingCompleted = false;
-        reportProcess(Constants.SLAVE3_ROBOT2_PICKS_CHECKED_WELDED_ASSEMBLY);
+        reportProcess(Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY);
     }
 
     public void transportWeldedOK() {
@@ -143,7 +143,7 @@ public class Robot2 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.SLAVE3_ROBOT2_PLACES_WELDED_OK);
+        reportProcess(Constants.ROBOT2_SLAVE3_PLACES_WELDED_OK);
         _loadedPiece = null;
         _qualityCompletedOK = false;
     }
@@ -154,7 +154,7 @@ public class Robot2 extends Thread implements Robot {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.SLAVE3_ROBOT2_PLACES_WELDED_NOT_OK);
+        reportProcess(Constants.ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK);
         _loadedPiece = null;
         _qualityCompletedNotOK = false;
     }
@@ -183,13 +183,13 @@ public class Robot2 extends Thread implements Robot {
             case Constants.SENSOR_QUALITY_DISACTIVATED:
                 _qualityTableSensor = false;
                 break;
-            case Constants.SLAVE2_WELDED_ASSEMBLY_COMPLETED:
+            case Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED:
                 _weldingCompleted = true;
                 break;
-            case Constants.SLAVE3_QUALITY_CONTROL_COMPLETED_OK:
+            case Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK:
                 _qualityCompletedOK = true;
                 break;
-            case Constants.SLAVE3_QUALITY_CONTROL_COMPLETED_NOT_OK:
+            case Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK:
                 _qualityCompletedNotOK = true;
                 break;
             case Constants.SENSOR_OK_LOAD_ACTIVATED:
