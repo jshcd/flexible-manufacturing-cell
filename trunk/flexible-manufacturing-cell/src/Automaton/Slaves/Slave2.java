@@ -2,7 +2,7 @@
 package Automaton.Slaves;
 
 import Auxiliar.Constants;
-import Element.Conveyor.ConveyorBelt;
+import Element.Other.Sensor;
 import Element.Piece.Piece;
 import Element.Piece.Piece.PieceType;
 import Element.Station.QualityControlStation;
@@ -16,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,63 +27,106 @@ public class Slave2 implements Slave {
     private WeldingStation _weldingStation;
     private QualityControlStation _qualityStation;
     private DBConnection _dbconnection;
+    private Sensor _sensor6;
+    private Sensor _sensor7;
+
+    public Slave2() {
+        Logger.getLogger(Slave2.class.getName()).log(Level.INFO, "Slave 2 created");
+        initialize();
+    }
+
+    public final void initialize() {
+        _dbconnection = new DBConnection();
+        _dbconnection.connect();
+
+        try {
+
+            // TODO: Estos parametros no deben cargase asi, pero lo dejamos de momento para hacer pruebas
+            int sensor_range = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SENSOR_RANGE).getInt("value");
+
+            _weldingStation = new WeldingStation(5, 0, 0);
+            _weldingStation.setWeldingTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_WELDING_STATION_TIME).getInt("time"));
+            _qualityStation = new QualityControlStation(6, 0, 0);
+            _qualityStation.setQualityTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_QUALITY_STATION_TIME).getInt("time"));
+
+            _sensor6 = new Sensor();
+            _sensor6.setSensorId(6);
+            _sensor6.setAssociatedContainer(_weldingStation);
+            _sensor6.setProcess(this);
+            _sensor6.setRange(sensor_range);
+            _sensor6.setPositionInBelt(0);
+
+            _sensor7 = new Sensor();
+            _sensor7.setSensorId(7);
+            _sensor7.setAssociatedContainer(_qualityStation);
+            _sensor7.setProcess(this);
+            _sensor7.setRange(sensor_range);
+            _sensor7.setPositionInBelt(0);
+
+
+            // We start the belts
+            _weldingStation.run();
+            _weldingStation.addSensor(_sensor6);
+            _qualityStation.run();
+            _qualityStation.addSensor(_sensor7);
+
+            //We start the sensors
+            _sensor6.run();
+            _sensor7.run();
+
+
+        } catch (SQLException ex) {
+            System.err.println("Error at loading database at Slave 1");
+            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     public void start() {
-        throw new UnsupportedOperationException();
+        _weldingStation.startBelt();
+        _qualityStation.startBelt();
+        reportToMaster(Constants.SLAVE_TWO_STARTING);
     }
 
     public void stop() {
-        throw new UnsupportedOperationException();
+        _weldingStation.stopBelt();
+        _qualityStation.stopBelt();
+        reportToMaster(Constants.SLAVE_TWO_STOPPING);
     }
 
     public void runCommand(int command) {
         Piece p;
         switch (command) {
-            case Constants.SLAVE2_ROBOT2_REQUEST_WELDING:
+            case Constants.ROBOT2_SLAVE2_REQUEST_WELDING:
                 _weldingStation.weld();
                 break;
-            case Constants.SLAVE2_ROBOT2_REQUEST_QUALITY:
+            case Constants.ROBOT2_SLAVE2_REQUEST_QUALITY:
                 _qualityStation.checkQuality();
                 break;
-            
-            case Constants.SLAVE2_ROBOT2_PLACES_ASSEMBLY:
+            case Constants.ROBOT2_SLAVE2_PLACES_ASSEMBLY:
                 p = new Piece();
                 p.setType(PieceType.assembly);
                 _weldingStation.addPiece(p);
                 break;
-            case Constants.SLAVE2_ROBOT2_PICKS_WELDED_ASSEMBLY:
+            case Constants.ROBOT2_SLAVE2_PICKS_WELDED_ASSEMBLY:
+                _weldingStation.removeLastPiece();
+                break;
+            case Constants.ROBOT2_SLAVE2_PLACES_WELDED_ASSEMBLY:
+                p = new Piece();
+                p.setType(PieceType.weldedAssembly);
+                _qualityStation.addPiece(p);
+                break;
+            case Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY:
+                _qualityStation.removeLastPiece();
+                break;
         }
     }
 
-    public void startAssemblyBelt() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void stopAssemblyBelt() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void unloadAssembly() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void weld() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void weldingAvailable() {
-        throw new UnsupportedOperationException();
+    public void orderToRobot(int i) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void reportToMaster(int i) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void loadParameters() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void orderToRobot(int i) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
