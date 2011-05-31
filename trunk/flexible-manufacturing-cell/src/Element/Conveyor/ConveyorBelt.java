@@ -10,6 +10,7 @@ import Element.Piece.Piece;
 import Element.PieceContainer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +37,7 @@ public class ConveyorBelt implements PieceContainer, Runnable {
 
     @Override
     public synchronized void run() {
-        Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has been started", _id);
+        Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} starts running", _id);
 
         // TODO: Check this works right
         while (true) {
@@ -44,8 +45,10 @@ public class ConveyorBelt implements PieceContainer, Runnable {
                 try {
                     Thread.sleep(10);
                     synchronized (_pieces) {
-                        for (Piece p : _pieces) {
-                            p.setPosition(p.getPosition() + _speed / 100);
+                        Iterator i = _pieces.iterator();
+                        while(i.hasNext()){
+                            Piece p = (Piece)i.next();
+                            p.setPosition(p.getPosition() + ((double)_speed / 100));
                             System.out.println(p.getPosition());
                         }
                     }
@@ -57,12 +60,12 @@ public class ConveyorBelt implements PieceContainer, Runnable {
         }
     }
 
-    public void startBelt() {
+    public void startContainer() {
         _moving = true;
         Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has started", _id);
     }
 
-    public void stopBelt() {
+    public void stopContainer() {
         _moving = false;
         Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has stoped", _id);
     }
@@ -83,7 +86,7 @@ public class ConveyorBelt implements PieceContainer, Runnable {
         _length = length;
     }
 
-    public synchronized List<Element.Piece.Piece> getPieces() {
+    public List<Element.Piece.Piece> getPieces() {
         return _pieces;
     }
 

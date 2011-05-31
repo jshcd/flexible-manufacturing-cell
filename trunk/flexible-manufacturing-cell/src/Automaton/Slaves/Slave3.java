@@ -105,14 +105,14 @@ public class Slave3 implements Slave {
     }
 
     public void start() {
-        _acceptedBelt.startBelt();
-        _rejectedBelt.startBelt();
+        _acceptedBelt.startContainer();
+        _rejectedBelt.startContainer();
         reportToMaster(Constants.SLAVE_THREE_STARTING);
     }
 
     public void stop() {
-        _acceptedBelt.stopBelt();
-        _rejectedBelt.stopBelt();
+        _acceptedBelt.stopContainer();
+        _rejectedBelt.stopContainer();
         reportToMaster(Constants.SLAVE_THREE_STOPPING);
     }
 
