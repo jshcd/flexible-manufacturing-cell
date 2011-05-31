@@ -12,7 +12,7 @@ public class Piece {
         return _type;
     }
 
-    public void setType(Element.Piece.Piece.PieceType type) {
+    public synchronized void setType(Element.Piece.Piece.PieceType type) {
         _type = type;
     }
 
@@ -20,7 +20,7 @@ public class Piece {
         return _position;
     }
 
-    public void setPosition(double position) {
+    public synchronized void setPosition(double position) {
         _position = position;
     }
 

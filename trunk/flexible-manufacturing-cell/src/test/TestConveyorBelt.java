@@ -8,7 +8,6 @@ package test;
 import Element.Conveyor.ConveyorBelt;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
-import Element.PieceContainer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,7 +35,7 @@ public class TestConveyorBelt {
 
         Thread t = new Thread(new Runnable() {
             public void run() {
-                cb.start();
+                cb.run();
             }
         });
         t.start();

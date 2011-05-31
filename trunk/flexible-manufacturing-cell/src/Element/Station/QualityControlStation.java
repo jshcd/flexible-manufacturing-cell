@@ -18,14 +18,16 @@ public class QualityControlStation extends ConveyorBelt {
     }
 
     @Override
-    public void start() {
+    public void run() {
         while (true) {
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
+            if (_moving) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                checkQuality();
             }
-            checkQuality();
         }
     }
 
@@ -40,9 +42,9 @@ public class QualityControlStation extends ConveyorBelt {
 
             int random = (int) Math.random() * 100;
             if (random > _sucessRate) {
-                this._process.orderToRobot(Constants.SLAVE3_QUALITY_CONTROL_COMPLETED_OK);
-            }else{
-                this._process.orderToRobot(Constants.SLAVE3_QUALITY_CONTROL_COMPLETED_NOT_OK);                
+                this._process.orderToRobot(Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
+            } else {
+                this._process.orderToRobot(Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
             }
             return true;
         } else {

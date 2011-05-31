@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Sensor extends Thread {
+public class Sensor implements Runnable {
 
     private int _id;
     private int _state;
@@ -36,7 +36,9 @@ public class Sensor extends Thread {
     }
 
     @Override
-    public void start() {
+    public void run() {
+
+        Logger.getLogger(Sensor.class.getName()).log(Level.INFO, "Sensor with id {0} has been created", _id);
 
         // TODO: Check this works right
         while (true) {
@@ -44,12 +46,14 @@ public class Sensor extends Thread {
                 Thread.sleep(50);
                 //TO-DO Sección crítica
                 List<Piece> pieces = _associatedContainer.getPieces();
-                for (Piece p : pieces) {
-                    if (p.getPosition() >= _positionInBelt + _range) {
-                        _detectedPiece = p;
-                        activate();
-                    } else {
-                        disactivate();
+                synchronized (pieces) {
+                    for (Piece p : pieces) {
+                        if (p.getPosition() >= _positionInBelt + _range) {
+                            _detectedPiece = p;
+                            activate();
+                        } else {
+                            disactivate();
+                        }
                     }
                 }
             } catch (InterruptedException ex) {
@@ -59,15 +63,17 @@ public class Sensor extends Thread {
     }
 
     public void activate() {
+        Logger.getLogger(Sensor.class.getName()).log(Level.INFO, "Sensor with id {0} is activated", _id);
         _activated = true;
-//        _process.orderToRobot(_id * 10 + 1);
+        _process.orderToRobot(_id * 10 + 1);
         _process.reportToMaster(_id * 10 + 1);
     }
 
     private void disactivate() {
         if (_activated) {
+            Logger.getLogger(Sensor.class.getName()).log(Level.INFO, "Sensor with id {0} is disactivated", _id);
             _activated = false;
-//            _process.orderToRobot(_id * 10 + 0);
+            _process.orderToRobot(_id * 10 + 0);
             _process.reportToMaster(_id * 10 + 0);
         }
     }
