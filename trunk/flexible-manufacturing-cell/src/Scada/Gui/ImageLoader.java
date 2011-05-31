@@ -17,7 +17,7 @@ public class ImageLoader {
 
     /* CANVAS IMAGES */
     public Image background = Toolkit.getDefaultToolkit().getImage(
-    ImageLoader.class.getResource(IMAGES_FOLDER + "/background.png"));    
+    ImageLoader.class.getResource(IMAGES_FOLDER + "/background2.png"));
     
     /* APPLICATION IMAGES */
     public Image reportButton = Toolkit.getDefaultToolkit().getImage(
@@ -56,6 +56,10 @@ public class ImageLoader {
             mediaTracker.waitForAll();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+         catch (Exception e) {
+             System.out.println("aki");
+             e.printStackTrace();
         }
     }
 }

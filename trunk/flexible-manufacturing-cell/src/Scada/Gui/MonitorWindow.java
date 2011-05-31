@@ -77,7 +77,7 @@ public class MonitorWindow extends JFrame {
                 buttonEmergencyStop.setEnabled(false);
                 masterAutomaton.stopSystem();
             } else if (e.getSource() == buttonReport) {
-                //reportDialog.showData(masterAutomaton.getDBReportData());
+                //report.getValues...
                 report.setVisible(true);
             }
         }
