@@ -23,7 +23,7 @@ public class Report extends JDialog {
     private JPanel panel2;
     private JPanel panel3;
     private String currentRightPieces = "20";
-    private String currentWrongPieces = "50";
+    private String currentWrongPieces = "100";
     private String totalRightPieces;
     private String totalWrongPieces;
     private String totalNormalStops;
@@ -55,10 +55,25 @@ public class Report extends JDialog {
 
         getValues();
 
-       
+
         //Report 1
-    /*    panel1 = new JPanel();
+        panel1 = new JPanel();
         panel1.setBorder(paneEdge);
+        titled = BorderFactory.createTitledBorder("Current Execution");
+        panel1.setBorder(titled);
+
+        //Report 2
+        panel2 = new JPanel();
+        panel2.setBorder(paneEdge);
+        titled = BorderFactory.createTitledBorder("Overall Execution");
+        panel2.setBorder(titled);
+        
+        //Report 3
+        panel3 = new JPanel();
+        panel3.setBorder(paneEdge);
+        titled = BorderFactory.createTitledBorder("Stops and Restarts");
+        panel3.setBorder(titled);
+        /*panel1.setBorder(paneEdge);
         panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
         titled = BorderFactory.createTitledBorder("Current Execution");
         JPanel comp1 = new JPanel(new GridLayout(2, 2, 10,5), false);
@@ -74,7 +89,7 @@ public class Report extends JDialog {
 
         comp1.setBorder(titled);
         panel1.add(Box.createRigidArea(new Dimension(0, 15)));
-        panel1.add(comp1);*/
+        panel1.add(comp1);
 
 
         //Report 2
@@ -97,22 +112,22 @@ public class Report extends JDialog {
         comp2.setBorder(titled);
         panel2.add(Box.createRigidArea(new Dimension(0, 15)));
         panel2.add(comp2);
-
+         
 
         //Report 3
         panel3 = new JPanel();
         panel3.setBorder(paneEdge);
         panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
         titled = BorderFactory.createTitledBorder("Stops and Restarts");
-      
-        JPanel comp3 = new JPanel(new GridLayout(3, 2, 10,5), false);
+
+        JPanel comp3 = new JPanel(new GridLayout(3, 2, 10, 5), false);
         comp3.add(new JLabel("Number of normal stops: "));
         JTextField value5 = new JTextField(totalNormalStops);
         value5.setEditable(false);
         comp3.add(value5);
         comp3.add(new JLabel("Number of emergency stops: "));
         JTextField value6 = new JTextField(totalEmergencyStops);
-        value6.setEditable(false); 
+        value6.setEditable(false);
         comp3.add(value6);
 
         comp3.add(new JLabel("Number of restarts: "));
@@ -122,61 +137,67 @@ public class Report extends JDialog {
 
         comp3.setBorder(titled);
         panel3.add(Box.createRigidArea(new Dimension(0, 15)));
-        panel3.add(comp3);
+        panel3.add(comp3);*/
+
+
 
         btnClose = new JButton("Close");
         btnClose.addActionListener(btnActionListener);
     }
 
     private void layoutComponents() {
-      /*  MigLayout contentPaneLayout = new MigLayout("wrap 1", "[fill, grow]",  "");
-        Container contentPane = getContentPane();
-        contentPane.setLayout(contentPaneLayout);
-      */
-         MigLayout contentPaneLayout = new MigLayout("wrap 2",
+
+        MigLayout contentPaneLayout = new MigLayout("wrap 2",
                 "[fill][grow]", "");
         Container contentPane = getContentPane();
         contentPane.setLayout(contentPaneLayout);
 
-         Border paneEdge = BorderFactory.createEmptyBorder(0, 10, 10, 10);
-        TitledBorder titled;
 
-
-        MigLayout reportLayout = new MigLayout();
-        JPanel panel1 = new JPanel(reportLayout);
-
-        panel1.setBorder(paneEdge);
-        titled = BorderFactory.createTitledBorder("Prueba Execution");
-        panel1.setBorder(titled);
-         panel1.add(new JLabel("Right pieces: "), "");
-        JTextField value1 = new JTextField(currentRightPieces);
-        value1.setEditable(false);
-        panel1.add(value1, "");
-
-        panel1.add(new JLabel("Wrong pieces: "), "" );
-        JTextField value2 = new JTextField(currentWrongPieces);
-        value2.setEditable(false);
-        panel1.add(value2, "span 1 2, wrap");
-
-      /*  comp1.setBorder(titled);
-        panel1.add(Box.createRigidArea(new Dimension(0, 15)));
-        panel1.add(comp1);
-
-        pnlButtons.setBorder(new TitledBorder(Constants.CONTROL_PANEL_TITLE));
-        pnlButtons.add(buttonConfiguration, "");
-        pnlButtons.add(buttonStart, "");
-        pnlButtons.add(buttonEmergencyStop, "span 1 2, wrap");
-        pnlButtons.add(buttonReport, "");
-        pnlButtons.add(buttonStop, "wrap");*/
-
-        contentPane.add(panel1, "");
-
-      //  add(panel1);
+        add(panel1);
         add(panel2);
         add(panel3);
 
-       
+        MigLayout reportLayout = new MigLayout("wrap 2",
+                "[left][fill, grow, 40lp:40lp:]", "");
+
+        panel1.setLayout(reportLayout);
+        panel1.add(new JLabel("Right pieces: "), "");
+        JTextField value1 = new JTextField(currentRightPieces);
+        value1.setEditable(false);
+        panel1.add(value1, "span 2, wrap");
+        panel1.add(new JLabel("Wrong pieces: "));
+        JTextField value2 = new JTextField(currentWrongPieces);
+        value2.setEditable(false);
+        panel1.add(value2, "span 2, wrap");
+
+        panel2.setLayout(reportLayout);
+        panel2.add(new JLabel("Right pieces: "), "");
+        JTextField value3 = new JTextField(totalRightPieces);
+        value3.setEditable(false);
+        panel2.add(value3, "span 2, wrap");
+        panel2.add(new JLabel("Wrong pieces: "), "");
+        JTextField value4 = new JTextField(totalWrongPieces);
+        value4.setEditable(false);
+        panel2.add(value4,"span 2, wrap");
+
+        panel3.setLayout(reportLayout);
+        panel3.add(new JLabel("Number of normal stops: "), "");
+        JTextField value5 = new JTextField(totalNormalStops);
+        value5.setEditable(false);
+        panel3.add(value5, "span 2, wrap");
+        panel3.add(new JLabel("Number of emergency stops: "), "");
+        JTextField value6 = new JTextField(totalEmergencyStops);
+        value6.setEditable(false);
+        panel3.add(value6,  "span 2, wrap");
+        panel3.add(new JLabel("Number of restarts: "), "");
+        JTextField value7 = new JTextField(totalRestarts);
+        value7.setEditable(false);
+        panel3.add(value7,  "span 2, wrap");
+
+
         add(btnClose, "center, width pref!");
+
+
     }
 
     private void getValues() {
@@ -211,5 +232,4 @@ public class Report extends JDialog {
         frame.pack();
         frame.setVisible(true);
     }
-
 }
