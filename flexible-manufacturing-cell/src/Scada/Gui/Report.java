@@ -57,7 +57,7 @@ public class Report extends JDialog {
 
        
         //Report 1
-        panel1 = new JPanel();
+    /*    panel1 = new JPanel();
         panel1.setBorder(paneEdge);
         panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
         titled = BorderFactory.createTitledBorder("Current Execution");
@@ -74,7 +74,7 @@ public class Report extends JDialog {
 
         comp1.setBorder(titled);
         panel1.add(Box.createRigidArea(new Dimension(0, 15)));
-        panel1.add(comp1);
+        panel1.add(comp1);*/
 
 
         //Report 2
@@ -129,11 +129,49 @@ public class Report extends JDialog {
     }
 
     private void layoutComponents() {
-        MigLayout contentPaneLayout = new MigLayout("wrap 1", "[fill, grow]",  "");
+      /*  MigLayout contentPaneLayout = new MigLayout("wrap 1", "[fill, grow]",  "");
+        Container contentPane = getContentPane();
+        contentPane.setLayout(contentPaneLayout);
+      */
+         MigLayout contentPaneLayout = new MigLayout("wrap 2",
+                "[fill][grow]", "");
         Container contentPane = getContentPane();
         contentPane.setLayout(contentPaneLayout);
 
-        add(panel1);
+         Border paneEdge = BorderFactory.createEmptyBorder(0, 10, 10, 10);
+        TitledBorder titled;
+
+
+        MigLayout reportLayout = new MigLayout();
+        JPanel panel1 = new JPanel(reportLayout);
+
+        panel1.setBorder(paneEdge);
+        titled = BorderFactory.createTitledBorder("Prueba Execution");
+        panel1.setBorder(titled);
+         panel1.add(new JLabel("Right pieces: "), "");
+        JTextField value1 = new JTextField(currentRightPieces);
+        value1.setEditable(false);
+        panel1.add(value1, "");
+
+        panel1.add(new JLabel("Wrong pieces: "), "" );
+        JTextField value2 = new JTextField(currentWrongPieces);
+        value2.setEditable(false);
+        panel1.add(value2, "span 1 2, wrap");
+
+      /*  comp1.setBorder(titled);
+        panel1.add(Box.createRigidArea(new Dimension(0, 15)));
+        panel1.add(comp1);
+
+        pnlButtons.setBorder(new TitledBorder(Constants.CONTROL_PANEL_TITLE));
+        pnlButtons.add(buttonConfiguration, "");
+        pnlButtons.add(buttonStart, "");
+        pnlButtons.add(buttonEmergencyStop, "span 1 2, wrap");
+        pnlButtons.add(buttonReport, "");
+        pnlButtons.add(buttonStop, "wrap");*/
+
+        contentPane.add(panel1, "");
+
+      //  add(panel1);
         add(panel2);
         add(panel3);
 
