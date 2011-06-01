@@ -15,7 +15,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Robot1 extends Thread implements Robot {
+public class Robot1 implements Robot, Runnable {
 
     private RobotMailBox _mailBox;
     private AutomatonState _state;
@@ -40,8 +40,13 @@ public class Robot1 extends Thread implements Robot {
     }
 
     @Override
-    public void start() {
+    public void run() {
         while (true) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
+            }
             switch (_state) {
                 case q0:
                     if (_gearSensor) {
@@ -51,6 +56,7 @@ public class Robot1 extends Thread implements Robot {
                         pickAxis();
                         _state = AutomatonState.q2;
                     }
+                    break;
                 case q1:
                     transportGear();
                     _state = AutomatonState.q3;
@@ -84,8 +90,8 @@ public class Robot1 extends Thread implements Robot {
                     if (_assemblyCompleted) {
                         pickAssembly();
                         _state = AutomatonState.q8;
-                        break;
                     }
+                    break;
                 case q8:
                     if (!_weldingSensor) {
                         transportAssembly();
@@ -134,12 +140,15 @@ public class Robot1 extends Thread implements Robot {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.axis);
         reportProcess(Constants.ROBOT1_SLAVE1_PICKS_AXIS);
+        Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 picks axis");
+
     }
 
     public void pickGear() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.gear);
         reportProcess(Constants.ROBOT1_SLAVE1_PICKS_GEAR);
+        Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 picks gear");
     }
 
     public void pickAssembly() {
@@ -147,6 +156,7 @@ public class Robot1 extends Thread implements Robot {
         _loadedPiece.setType(Piece.PieceType.assembly);
         _assemblyCompleted = false;
         reportProcess(Constants.ROBOT1_SLAVE1_PICKS_ASSEMBLY);
+        Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 picks assembly from assembly station");
     }
 
     public void transportGear() {
@@ -156,6 +166,7 @@ public class Robot1 extends Thread implements Robot {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
         reportProcess(Constants.ROBOT1_SLAVE1_PLACES_GEAR);
+        Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 places gear on assembly station");
         _loadedPiece = null;
     }
 
@@ -166,6 +177,7 @@ public class Robot1 extends Thread implements Robot {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
         reportProcess(Constants.ROBOT1_SLAVE1_PLACES_AXIS);
+        Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 places axis on assembly station");
         _loadedPiece = null;
     }
 
@@ -176,6 +188,7 @@ public class Robot1 extends Thread implements Robot {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
         reportProcess(Constants.ROBOT1_SLAVE1_PLACES_ASSEMBLY);
+        Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 places assembly on welding belt");
         _loadedPiece = null;
     }
 
@@ -203,15 +216,18 @@ public class Robot1 extends Thread implements Robot {
     }
 
     public void setTrasportTime1(int transportTime1) {
+        Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1: tr1 = {0}", transportTime1);
         this._transportTime1 = transportTime1;
     }
 
     public void setTransportTime2(int transportTime2) {
+        Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1: tr2 = {0}", transportTime2);
         this._transportTime2 = transportTime2;
     }
 
-    public void setTransportTime3(int _transportTime3) {
-        this._transportTime3 = _transportTime3;
+    public void setTransportTime3(int transportTime3) {
+        Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1: tr3 = {0}", transportTime3);
+        this._transportTime3 = transportTime3;
     }
 
     // TODO: rellenar con implementacion de Mailboxes

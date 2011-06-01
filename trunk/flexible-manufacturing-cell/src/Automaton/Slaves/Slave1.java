@@ -18,7 +18,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -26,23 +26,22 @@ import java.util.logging.Logger;
 
 public class Slave1 implements Slave {
 
-    private SlaveMailBox _mailBox;
-    private ConveyorBelt _gearBelt;
-    private ConveyorBelt _axisBelt;
-    private ConveyorBelt _weldingBelt;
+    protected SlaveMailBox _mailBox;
+    protected ConveyorBelt _gearBelt;
+    protected ConveyorBelt _axisBelt;
+    protected ConveyorBelt _weldingBelt;
     protected Robot1 _robot;
-    private DBConnection _dbconnection;
-    private AssemblyStation _assemblyStation;
-    private Sensor _sensor1;
-    private Sensor _sensor2;
-    private Sensor _sensor3;
-    private Sensor _sensor4;
-    private Sensor _sensor5;
-    private boolean _finishing;
+    protected DBConnection _dbconnection;
+    protected AssemblyStation _assemblyStation;
+    protected Sensor _sensor1;
+    protected Sensor _sensor2;
+    protected Sensor _sensor3;
+    protected Sensor _sensor4;
+    protected Sensor _sensor5;
+    protected boolean _finishing;
 
     public Slave1() {
         Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Slave 1 created");
-        initialize();
     }
 
     public final void initialize() {
@@ -57,23 +56,19 @@ public class Slave1 implements Slave {
             int gearSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION).getInt("length");
             int gearLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION).getInt("speed");
             int axisSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT2_CONFIGURATION).getInt("length");
-            int axisLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT2_CONFIGURATION).getInt("speed");
+            double axisLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT2_CONFIGURATION).getDouble("speed");
             int weldingSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT3_CONFIGURATION).getInt("length");
-            int weldingLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT3_CONFIGURATION).getInt("speed");
-            int sensor_range = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SENSOR_RANGE).getInt("value");
+            double weldingLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT3_CONFIGURATION).getDouble("speed");
+            double sensor_range = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SENSOR_RANGE).getDouble("value");
 
             _gearBelt = new ConveyorBelt(1, gearSpeed, gearLength);
             _axisBelt = new ConveyorBelt(2, axisSpeed, axisLength);
 
-            _assemblyStation = new AssemblyStation(3, 0, 0);
+            _assemblyStation = new AssemblyStation(3);
             _assemblyStation.setAssemblyTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ASSEMBLY_STATION_TIME).getInt("time"));
+            _assemblyStation.setProcess(this);
 
             _weldingBelt = new ConveyorBelt(4, weldingSpeed, weldingLength);
-
-            _robot = new Robot1();
-            _robot.setTrasportTime1(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1).getInt("time"));
-            _robot.setTransportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2).getInt("time"));
-            _robot.setTransportTime3(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3).getInt("time"));
 
             _sensor1 = new Sensor();
             _sensor1.setSensorId(1);
@@ -104,7 +99,7 @@ public class Slave1 implements Slave {
             _sensor4.setPositionInBelt(0);
 
             _sensor5 = new Sensor();
-            _sensor5.setSensorId(4);
+            _sensor5.setSensorId(5);
             _sensor5.setAssociatedContainer(_weldingBelt);
             _sensor5.setProcess(this);
             _sensor5.setRange(sensor_range);
@@ -114,6 +109,7 @@ public class Slave1 implements Slave {
             _axisBelt.addSensor(_sensor2);
             _assemblyStation.addSensor(_sensor3);
             _weldingBelt.addSensor(_sensor4);
+            _weldingBelt.addSensor(_sensor5);
 
             // We start the belts
             Thread gearBelt = new Thread(_gearBelt);
@@ -125,23 +121,38 @@ public class Slave1 implements Slave {
             Thread weldingBelt = new Thread(_weldingBelt);
             weldingBelt.start();
 
-
             //We start the sensors
             Thread sensor1 = new Thread(_sensor1);
             sensor1.start();
             Thread sensor2 = new Thread(_sensor2);
             sensor2.start();
-            Thread sensor3 = new Thread(_sensor4);
+            Thread sensor3 = new Thread(_sensor3);
             sensor3.start();
             Thread sensor4 = new Thread(_sensor4);
             sensor4.start();
+            Thread sensor5 = new Thread(_sensor5);
+            sensor5.start();
 
+            startRobot();
 
         } catch (SQLException ex) {
             System.err.println("Error at loading database at Slave 1");
             Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public void startRobot() {
+        _robot = new Robot1();
+        try {
+            _robot.setTrasportTime1(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1).getInt("time"));
+            _robot.setTransportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2).getInt("time"));
+            _robot.setTransportTime3(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3).getInt("time"));
+            (new Thread(_robot)).start();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Sensor getSensor1() {
@@ -166,8 +177,8 @@ public class Slave1 implements Slave {
         _assemblyStation.startContainer();
         _weldingBelt.startContainer();
         orderToRobot(Constants.START_ORDER);
-        mainLoop();
         reportToMaster(Constants.SLAVE_ONE_STARTING);
+        mainLoop();
     }
     /*
      * Emergency stop
@@ -225,6 +236,24 @@ public class Slave1 implements Slave {
             case Constants.ROBOT2_SLAVE1_PICKS_ASSEMBLY:
                 _weldingBelt.removeLastPiece();
                 break;
+            case Constants.SENSOR_GEAR_UNLOAD_ACTIVATED:
+                _gearBelt.stopContainer();
+                break;
+            case Constants.SENSOR_GEAR_UNLOAD_DISACTIVATED:
+                _gearBelt.startContainer();
+                break;
+            case Constants.SENSOR_AXIS_UNLOAD_ACTIVATED:
+                _axisBelt.stopContainer();
+                break;
+            case Constants.SENSOR_AXIS_UNLOAD_DISACTIVATED:
+                _axisBelt.startContainer();
+                break;
+            case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
+                _weldingBelt.stopContainer();
+                break;
+            case Constants.SENSOR_WELDING_UNLOAD_DISACTIVATED:
+                _weldingBelt.startContainer();
+                break;
         }
     }
 
@@ -271,21 +300,16 @@ public class Slave1 implements Slave {
     }
 
     // This loop is intended to keep adding pieces to the starting belts while the system is working
-    private void mainLoop() {
+    protected void mainLoop() {
 
-        int pieceSize;
+        double pieceSize;
         try {
 
-            pieceSize = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_PIECE_SIZE).getInt("value");
-
+            pieceSize = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_PIECE_SIZE).getDouble("value");
             // if we didn't receive the order to finish, we keep adding pieces
             while (!_finishing) {
 
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                Thread.sleep((int) (500 * (Math.random()) + 1000));
 
                 boolean roomInGearBelt = true;
                 boolean roomInAxisBelt = true;
@@ -293,43 +317,53 @@ public class Slave1 implements Slave {
                 //we check if there is room in the gears belt for adding a new piece
                 List<Piece> pieces = _gearBelt.getPieces();
                 synchronized (pieces) {
-                    for (Piece p : pieces) {
+                    Iterator it = pieces.iterator();
+                    while (it.hasNext()) {
+                        Piece p = (Piece) it.next();
                         if (p.getPosition() < pieceSize * 1.1) {
                             roomInGearBelt = false;
                             break;
                         }
                     }
-                }
 
-                // if so we add the piece
-                if (roomInGearBelt) {
-                    Piece p = new Piece();
-                    p.setPosition(0);
-                    p.setType(PieceType.gear);
-                    _gearBelt.addPiece(p);
+                    // if so we add the piece
+                    if (roomInGearBelt) {
+                        Piece p = new Piece();
+                        p.setPosition(0);
+                        p.setType(PieceType.gear);
+                        _gearBelt.addPiece(p);
 
-                    Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Added gear");
-                }
-
-                //we check if there is room in the axis belt for adding a new piece
-                for (Piece p : _axisBelt.getPieces()) {
-                    if (p.getPosition() < pieceSize * 1.1) {
-                        roomInAxisBelt = false;
-                        break;
+                        Logger.getLogger(Slave1.class.getName()).log(Level.FINE, "Added gear");
                     }
                 }
 
-                // if so we add the piece
-                if (roomInAxisBelt) {
-                    Piece p = new Piece();
-                    p.setPosition(0);
-                    p.setType(PieceType.axis);
-                    _axisBelt.addPiece(p);
-                    Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Added axis");
+                pieces = _axisBelt.getPieces();
+                synchronized (pieces) {
+
+                    //we check if there is room in the axis belt for adding a new piece
+                    Iterator it = pieces.iterator();
+                    while (it.hasNext()) {
+                        Piece p = (Piece) it.next();
+                        if (p.getPosition() < pieceSize * 1.1) {
+                            roomInAxisBelt = false;
+                            break;
+                        }
+                    }
+
+                    // if so we add the piece
+                    if (roomInAxisBelt) {
+                        Piece p = new Piece();
+                        p.setPosition(0);
+                        p.setType(PieceType.axis);
+                        _axisBelt.addPiece(p);
+                        Logger.getLogger(Slave1.class.getName()).log(Level.FINE, "Added axis");
+                    }
                 }
             }
 
         } catch (SQLException ex) {
+            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
             Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
         }
 

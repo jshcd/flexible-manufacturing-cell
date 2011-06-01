@@ -4,31 +4,32 @@
  */
 package Element.Conveyor;
 
+import Element.PieceContainer;
 import Automaton.Slaves.Slave;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
-import Element.PieceContainer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ConveyorBelt implements PieceContainer, Runnable {
+public class ConveyorBelt implements PieceContainer {
 
     protected int _id;
     protected List<Piece> _pieces;
-    protected int _length;
+    protected double _length;
     protected int _speed;
     protected boolean _moving;
     protected ArrayList<Sensor> _sensors;
     // Process for which it works
     protected Slave _process;
 
-    public ConveyorBelt(int id, int speed, int length) {
+    public ConveyorBelt(int id, int speed, double length) {
         _id = id;
-        _pieces = Collections.synchronizedList(new ArrayList<Piece>());
+        _pieces = new CopyOnWriteArrayList <Piece>();
         _length = length;
         _speed = speed;
         _moving = false;
@@ -41,33 +42,43 @@ public class ConveyorBelt implements PieceContainer, Runnable {
 
         // TODO: Check this works right
         while (true) {
-            if (_moving) {
-                try {
-                    Thread.sleep(10);
+            try {
+                Thread.sleep(40);
+                if (_moving) {
                     synchronized (_pieces) {
                         Iterator i = _pieces.iterator();
-                        while(i.hasNext()){
-                            Piece p = (Piece)i.next();
-                            p.setPosition(p.getPosition() + ((double)_speed / 100));
-                            System.out.println(p.getPosition());
+                        while (i.hasNext()) {
+                            Piece p = (Piece) i.next();
+                            p.setPosition(p.getPosition() + ((double) _speed / 100));
+                            Logger.getLogger(ConveyorBelt.class.getName()).log(Level.FINEST, "ConveyorBelt " + _id + ": piece at {1}", p.getPosition());
+
+//                            System.out.println(p.getPosition());
                         }
                     }
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
+    @Override
     public void startContainer() {
+        if (!_moving) {
+            Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has started", _id);
+        }
+        for (Sensor s : _sensors) {
+            s.disactivate();
+        }
         _moving = true;
-        Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has started", _id);
     }
 
+    @Override
     public void stopContainer() {
+        if (_moving) {
+            Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has stopped", _id);
+        }
         _moving = false;
-        Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has stoped", _id);
     }
 
     public int getSpeed() {
@@ -78,57 +89,79 @@ public class ConveyorBelt implements PieceContainer, Runnable {
         _speed = speed;
     }
 
-    public int getLength() {
+    public double getLength() {
         return _length;
     }
 
-    public void setLength(int length) {
+    public void setLength(double length) {
         _length = length;
     }
 
+    @Override
     public List<Element.Piece.Piece> getPieces() {
         return _pieces;
     }
 
+    @Override
     public void setPieces(List<Element.Piece.Piece> pieces) {
         _pieces = pieces;
     }
 
-    public int getConveyorId() {
+    @Override
+    public int getId() {
         return _id;
     }
 
-    public void setConveyorId(int id) {
+    @Override
+    public void setId(int id) {
         _id = id;
     }
 
+    @Override
     public Slave getProcess() {
         return _process;
     }
 
+    @Override
     public void setProcess(Slave _process) {
         this._process = _process;
     }
 
+    @Override
     public void addSensor(Sensor s) {
         _sensors.add(s);
     }
 
+    @Override
     public void addPiece(Piece p) {
         _pieces.add(p);
     }
 
+    @Override
+    public boolean isMoving() {
+        return _moving;
+    }
+
+    // Used when an element is picked from the belt
+    @Override
     public void removeLastPiece() {
-        if (_pieces.size() == 0) {
-            System.out.println("CONVEYOR " + _id + ": Unable to remove last element. Empty conveyor");
+        if (_pieces.isEmpty()) {
+            Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, "Conveyor Belt with id {0}: unable to remove last element", _id);
+            return;
         }
+
         Piece last = new Piece();
         last.setPosition(0);
-        for (Piece p : _pieces) {
-            if (p.getPosition() > last.getPosition()) {
-                last = p;
+        synchronized (_pieces) {
+            Iterator it = _pieces.iterator();
+            while (it.hasNext()) {
+                Piece p = (Piece) it.next();
+                if (p.getPosition() > last.getPosition()) {
+                    last = p;
+                }
             }
+            _pieces.remove(last);
+            this.startContainer();
         }
-        _pieces.remove(last);
     }
 }

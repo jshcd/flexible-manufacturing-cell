@@ -81,20 +81,21 @@ public class Slave3 implements Slave {
             _sensor11.setProcess(this);
             _sensor11.setRange(sensor_range);
             _sensor11.setPositionInBelt(reyectedLength - sensor_range);
-
-            // We start the belts
-            _acceptedBelt.run();
+            
             _acceptedBelt.addSensor(_sensor9);
             _acceptedBelt.addSensor(_sensor11);
-            _rejectedBelt.run();
             _rejectedBelt.addSensor(_sensor8);
             _rejectedBelt.addSensor(_sensor10);
+            
+            // We start the belts
+            new Thread(_acceptedBelt).start();
+            new Thread(_rejectedBelt).start();
 
             //We start the sensors
-            _sensor8.run();
-            _sensor9.run();
-            _sensor10.run();
-            _sensor11.run();
+            new Thread(_sensor8).start();
+            new Thread(_sensor9).start();
+            new Thread(_sensor10).start();
+            new Thread(_sensor11).start();
 
 
         } catch (SQLException ex) {

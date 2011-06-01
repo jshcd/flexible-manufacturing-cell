@@ -15,7 +15,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Robot2 extends Thread implements Robot {
+public class Robot2 implements Robot,Runnable {
 
     private RobotMailBox _mailBox;
     private AutomatonState _state;
@@ -45,8 +45,16 @@ public class Robot2 extends Thread implements Robot {
     }
 
     @Override
-    public void start() {
+    public void run() {
+        
         while (true) {
+            
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             switch (_state) {
                 case q0:
                     if (_weldingSensor) {
@@ -99,6 +107,7 @@ public class Robot2 extends Thread implements Robot {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.assembly);
         reportProcess(Constants.ROBOT2_SLAVE1_PICKS_ASSEMBLY);
+        Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 picks asembly from welding belt");
     }
 
     public void transportAssembly() {
@@ -110,6 +119,7 @@ public class Robot2 extends Thread implements Robot {
         reportProcess(Constants.ROBOT2_SLAVE2_PLACES_ASSEMBLY);
         reportProcess(Constants.ROBOT2_SLAVE2_REQUEST_WELDING);
         _loadedPiece = null;
+        Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 places assembly on welding station");
     }
 
     public void pickWeldedAssembly() {
@@ -117,6 +127,7 @@ public class Robot2 extends Thread implements Robot {
         _loadedPiece.setType(Piece.PieceType.weldedAssembly);
         _weldingCompleted = false;
         reportProcess(Constants.ROBOT2_SLAVE2_PICKS_WELDED_ASSEMBLY);
+        Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 picks welded assembly from welding station");
     }
 
     public void transportWeldedAssembly() {
@@ -127,6 +138,7 @@ public class Robot2 extends Thread implements Robot {
         }
         reportProcess(Constants.ROBOT2_SLAVE2_PLACES_WELDED_ASSEMBLY);
         reportProcess(Constants.ROBOT2_SLAVE2_REQUEST_QUALITY);
+        Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 places welded assembly in quality station");
         _loadedPiece = null;
     }
 
@@ -135,6 +147,7 @@ public class Robot2 extends Thread implements Robot {
         _loadedPiece.setType(Piece.PieceType.weldedAssembly);
         _weldingCompleted = false;
         reportProcess(Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY);
+        Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 picks welded assembly from quality station");
     }
 
     public void transportWeldedOK() {
@@ -144,6 +157,7 @@ public class Robot2 extends Thread implements Robot {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
         reportProcess(Constants.ROBOT2_SLAVE3_PLACES_WELDED_OK);
+        Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 places accepted welded assembly");
         _loadedPiece = null;
         _qualityCompletedOK = false;
     }
@@ -155,6 +169,7 @@ public class Robot2 extends Thread implements Robot {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
         reportProcess(Constants.ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK);
+        Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 places rejected welded assembly");
         _loadedPiece = null;
         _qualityCompletedNotOK = false;
     }
@@ -240,6 +255,24 @@ public class Robot2 extends Thread implements Robot {
     }
 
     private void returnToIdle() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        try {
+            switch (_state) {
+                case q0:
+                    break;
+                case q7:
+                case q6:
+                    Thread.sleep(_transportTime6);
+                case q5:
+                case q4:
+                    Thread.sleep(_transportTime5);
+                case q3:
+                case q2:
+                case q1:
+                    Thread.sleep(_transportTime4);
+                    _state = AutomatonState.q0;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
