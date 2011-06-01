@@ -32,9 +32,9 @@ public class MonitorWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
     /* GUI COMPONENTS */
-    private Canvas_1 canvas;
-    //private ConnectionsPanel connectionStatusPanel;
-    //private LoggingPanel logPanel;
+    private Canvas canvas;
+    private Connections connectionStatus;
+    private Log log;
     private JButton buttonConfiguration,
             buttonReport,
             buttonStart,
@@ -44,6 +44,7 @@ public class MonitorWindow extends JFrame {
     //private ConfigurationParametersDialog configurationParametersDialog;
     private Report report;
     private Master masterAutomaton;
+
 
     /* LISTENERS */
     private ActionListener btnActionListener = new ActionListener() {
@@ -106,7 +107,7 @@ public class MonitorWindow extends JFrame {
 
     private void createComponents() {
         Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
-        canvas = new Canvas_1(imageLoader);
+        canvas = new Canvas(imageLoader);
 
         buttonConfiguration = new JButton(new ImageIcon(imageLoader.configurationButton));
         buttonConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
@@ -130,7 +131,8 @@ public class MonitorWindow extends JFrame {
         buttonEmergencyStop.setCursor(handCursor);
         buttonEmergencyStop.setEnabled(false);
         buttonEmergencyStop.addActionListener(btnActionListener);
-
+        log = new Log();
+        connectionStatus = new Connections(imageLoader);
 
     }
 
@@ -151,6 +153,8 @@ public class MonitorWindow extends JFrame {
         contentPane.add(canvas, "span 3, wrap, center");
         contentPane.add(pnlButtons, "");
 
+        contentPane.add(connectionStatus, "");
+	contentPane.add(log, "");
     }
 
     /**
@@ -158,9 +162,27 @@ public class MonitorWindow extends JFrame {
      *
      * @return Returns the canvas.
      */
-    public Canvas_1 getCanvas() {
+    public Canvas getCanvas() {
         return canvas;
     }
+
+    public Connections getConnectionStatus() {
+        return connectionStatus;
+    }
+
+    public ImageLoader getImageLoader() {
+        return imageLoader;
+    }
+
+    public Log getLog() {
+        return log;
+    }
+
+    public Report getReport() {
+        return report;
+    }
+
+    
 
     /**
      * Enables the start button and disables the stop buttons.

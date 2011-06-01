@@ -199,7 +199,7 @@ public class Report extends JDialog {
         panel3.add(value7,  "span 2, wrap");
 
 
-        add(btnClose, "center, width pref!");
+        add(btnClose, "cell 1 3, center, width pref!");
 
 
     }

@@ -28,7 +28,6 @@ public class Constants {
     public final static int SLAVE_TWO_STOPPING = 6;
     public final static int SLAVE_THREE_STARTING = 7;
     public final static int SLAVE_THREE_STOPPING = 8;
-    
     public final static int SENSOR_GEAR_UNLOAD_ACTIVATED = 11;
     public final static int SENSOR_GEAR_UNLOAD_DISACTIVATED = 10;
     public final static int SENSOR_AXIS_UNLOAD_ACTIVATED = 21;
@@ -51,7 +50,6 @@ public class Constants {
     public final static int SENSOR_NOT_OK_LOAD_DISACTIVATED = 90;
     public final static int SENSOR_NOT_OK_UNLOAD_ACTIVATED = 111;
     public final static int SENSOR_NOT_OK_UNLOAD_DISACTIVATED = 110;
-    
     public final static int ROBOT1_SLAVE1_PICKS_AXIS = 200;
     public final static int ROBOT1_SLAVE1_PICKS_GEAR = 201;
     public final static int ROBOT1_SLAVE1_PLACES_GEAR = 202;
@@ -61,7 +59,6 @@ public class Constants {
     public final static int ROBOT1_SLAVE1_REQUEST_ASSEMBLY = 206;
     public final static int SLAVE1_ROBOT1_ASSEMBLY_COMPLETED = 207;
     public final static int ROBOT2_SLAVE1_PICKS_ASSEMBLY = 208;
-    
     public final static int SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED = 300;
     public final static int ROBOT2_SLAVE2_REQUEST_WELDING = 301;
     public final static int ROBOT2_SLAVE2_PLACES_ASSEMBLY = 303;
@@ -69,7 +66,6 @@ public class Constants {
     public final static int ROBOT2_SLAVE2_PICKS_WELDED_ASSEMBLY = 305;
     public final static int ROBOT2_SLAVE2_PLACES_WELDED_ASSEMBLY = 306;
     public final static int ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY = 400;
-    
     public final static int ROBOT2_SLAVE3_PLACES_WELDED_OK = 401;
     public final static int ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK = 402;
     public final static int SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK = 403;
@@ -87,24 +83,20 @@ public class Constants {
             + "WHERE belts.id = 4";
     public final static String DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION = "SELECT * FROM belts "
             + "WHERE belts.id = 5";
-    
     public final static String DBQUERY_SELECT_SLAVE1_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
             + "FROM activation_times WHERE activation_times.time_name='t1'";
     public final static String DBQUERY_SELECT_SLAVE2_BELT_CONFIGURATION = "SELECT * FROM belts "
             + "WHERE belts.id = 3";
     public final static String DBQUERY_SELECT_SLAVE2_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
             + "FROM activation_times WHERE activation_times.time_name='t2'";
-    
     public final static String DBQUERY_SELECT_SLAVE3_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
             + "FROM activation_times WHERE activation_times.time_name='t3'";
     public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1 = "SELECT * FROM robot1 WHERE robot1.id = 1";
     public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2 = "SELECT * FROM robot1 WHERE robot1.id = 2";
     public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3 = "SELECT * FROM robot1 WHERE robot1.id = 3";
-    
     public final static String DBQUERY_SELECT_ASSEMBLY_STATION_TIME = "SELECT * FROM stations WHERE station_name = 'assembly'";
     public final static String DBQUERY_SELECT_WELDING_STATION_TIME = "SELECT * FROM stations WHERE station_name = 'welding'";
     public final static String DBQUERY_SELECT_QUALITY_STATION_TIME = "SELECT * FROM stations WHERE station_name = 'quality'";
-    
     public final static String DBQUERY_SELECT_ROBOT2_CONFIGURATION = "SELECT * FROM robots WHERE "
             + "robots.id = 2";
     public final static String DBQUERY_SELECT_GLOBAL_TIMING_CONFIGURATION = "SELECT "
@@ -147,12 +139,12 @@ public class Constants {
 //            + "transport_element2 = '[TRANSPORT_TIMEB]' WHERE id = '2'";
     public final static String DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION = "UPDATE configuration "
             + "SET value = '[VALUE]' WHERE parameter = 'clock_cycle'";
+
     /**
-     * constants used for GUI
+     * CONSTANTS used for GUI
      */
     public static final int CANVAS_WIDTH = 960;
     public static final int CANVAS_HEIGHT = 494;
-    public static final Point QUALITY_POSITION = new Point(505, 160);  //probando
     public static final String TITLE = "Flexible Manufacturing Cell";
     public static final String CONTROL_PANEL_TITLE = "Control Panel";
     public static final String START_TOOL_TIP = "Start";
@@ -160,6 +152,16 @@ public class Constants {
     public static final String EMERGENCY_STOP_TOOL_TIP = "Emergency stop";
     public static final String CONFIGURATION_TOOL_TIP = "Parameters configuration";
     public static final String REPORT_TOOL_TIP = "Report generation";
+    
+    //conections Panel
+    public static final String TITLE_CONNECTIONS = "Connections Panel";
+    public static final String ASSEMBLY_AUTOMATON_LABEL = "Assembly Automaton";
+    public static final String WELDING_AUTOMATON_LABEL = "Welding Automaton";
+    public static final String QUALITY_AUTOMATON_LABEL = "Quality Automaton";
+    public static final String MASTER_SCADA_AUTOMATON_LABEL = "Master and SCADA Automaton";
+
+    //Log Panel
+    public static final String TITLE_LOG = "Log Panel";
 
     /* CONNECTION ESTABLISHMENT RESPONSES */
     public static final String CONNECTION_ACCEPTED = "ConnectionAccepted";

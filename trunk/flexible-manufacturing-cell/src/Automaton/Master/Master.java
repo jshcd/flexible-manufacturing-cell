@@ -4,6 +4,7 @@ import Scada.DataBase.DBManager;
 import Scada.Gui.Canvas;
 import Element.Robot.Robot2;
 import Scada.DataBase.MasterConfigurationData;
+import Scada.Gui.ImageLoader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class Master {
     private MasterConfigurationData _configurationData;
     private Canvas _canvas;
     private Robot2 _robot2;
+    private ImageLoader _imageLoader;
 
     public static void main(String[] args) {
         Master m = new Master();
@@ -32,7 +34,7 @@ public class Master {
         _mailBox = new MasterMailBox();
         _dbmanager = new DBManager();
         _configurationData = null;
-        _canvas = new Canvas();
+         _canvas = new Canvas(_imageLoader);
         _robot2 = new Robot2();
     }
 
