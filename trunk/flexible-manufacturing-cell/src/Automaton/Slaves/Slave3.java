@@ -43,12 +43,12 @@ public class Slave3 implements Slave {
         try {
 
             // TODO: Estos parametros no deben cargase asi, pero lo dejamos de momento para hacer pruebas
-            int sensor_range = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SENSOR_RANGE).getInt("value");
+            double sensor_range = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SENSOR_RANGE).getDouble("value");
 
-            int acceptedSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT1_CONFIGURATION).getInt("length");
-            int acceptedLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT1_CONFIGURATION).getInt("speed");
-            int reyectedSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION).getInt("length");
-            int reyectedLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION).getInt("speed");
+            int acceptedSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT1_CONFIGURATION).getInt("speed");
+            double acceptedLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT1_CONFIGURATION).getDouble("length");
+            int reyectedSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION).getInt("speed");
+            double reyectedLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION).getDouble("length");
 
             _acceptedBelt = new ConveyorBelt(7, acceptedSpeed, acceptedLength);
             _rejectedBelt = new ConveyorBelt(8, reyectedSpeed, reyectedLength);
@@ -80,12 +80,12 @@ public class Slave3 implements Slave {
             _sensor11.setProcess(this);
             _sensor11.setRange(sensor_range);
             _sensor11.setPositionInBelt(reyectedLength - sensor_range);
-            
+
             _acceptedBelt.addSensor(_sensor9);
             _acceptedBelt.addSensor(_sensor11);
             _rejectedBelt.addSensor(_sensor8);
             _rejectedBelt.addSensor(_sensor10);
-            
+
             // We start the belts
             new Thread(_acceptedBelt).start();
             new Thread(_rejectedBelt).start();
@@ -129,6 +129,19 @@ public class Slave3 implements Slave {
                 p.setType(PieceType.weldedAssembly);
                 _rejectedBelt.addPiece(p);
                 break;
+            case Constants.SENSOR_OK_UNLOAD_ACTIVATED:
+                _acceptedBelt.stopContainer();
+                break;
+            case Constants.SENSOR_OK_UNLOAD_DISACTIVATED:
+                _acceptedBelt.startContainer();
+                break;
+            case Constants.SENSOR_NOT_OK_UNLOAD_ACTIVATED:
+                _rejectedBelt.stopContainer();
+                break;
+            case Constants.SENSOR_NOT_OK_UNLOAD_DISACTIVATED:
+                _rejectedBelt.startContainer();
+                break;
+
         }
     }
 
