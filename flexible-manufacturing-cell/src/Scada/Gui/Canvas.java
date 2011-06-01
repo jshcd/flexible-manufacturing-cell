@@ -1,35 +1,100 @@
 package Scada.Gui;
 
-import Element.Conveyor.ConveyorBelt;
-import Element.Robot.Robot1;
-import Element.Robot.Robot2;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.JPanel;
+
+import Auxiliar.Constants;
 import Element.Station.AssemblyStation;
-import Element.Station.WeldingStation;
 import Element.Station.QualityControlStation;
+import Element.Station.WeldingStation;
 
-public class Canvas {
+/**
+ * Canvas where the factory simulation is displayed.
+ *
+ * @author
+ */
+public class Canvas extends JPanel {
 
-	public void update(ConveyorBelt belt) {
-		throw new UnsupportedOperationException();
-	}
+    private static final long serialVersionUID = 1L;
+    private ImageLoader imageLoader;
+    private AssemblyStation assembly;
+    private QualityControlStation quality;
+    private WeldingStation welding;
+    private boolean emergencyStopped;
 
-	public void update(Robot1 robot) {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * Creates a canvas where the factory simulation is displayed.
+     *
+     * @param imageLoader
+     *            The image loader in charge of retrieving the images to paint
+     *            the canvas.
+     */
+    public Canvas(ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
+        Dimension size = new Dimension(Constants.CANVAS_WIDTH,
+                Constants.CANVAS_HEIGHT);
+        setMinimumSize(size);
+        setPreferredSize(size);
+        setMaximumSize(size);
 
-	public void paint(Robot2 robot) {
-		throw new UnsupportedOperationException();
-	}
+        emergencyStopped = false;
+    }
 
-	public void paint(AssemblyStation table) {
-		throw new UnsupportedOperationException();
-	}
+    public void setAssembly(AssemblyStation assembly) {
+        this.assembly = assembly;
+    }
 
-	public void paint(WeldingStation table) {
-		throw new UnsupportedOperationException();
-	}
+    public void setQuality(QualityControlStation quality) {
+        this.quality = quality;
+    }
 
-	public void paint(QualityControlStation table) {
-		throw new UnsupportedOperationException();
-	}
+    public void setWelding(WeldingStation welding) {
+        this.welding = welding;
+    }
+
+    /**
+     * Tells the canvas whether the system is at an emergency stop or not.
+     *
+     * @param emergencyStopped
+     *            Whether the system is at an emergency stop or not.
+     */
+    public void setEmergencyStopped(boolean emergencyStopped) {
+        this.emergencyStopped = emergencyStopped;
+        repaint();
+    }
+
+    /**
+     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+     */
+    public void paintComponent(Graphics g) {
+        // Erases the panel
+        g.drawImage(imageLoader.background, 0, 0, null);
+
+        // Paints the different automata
+        //paintMasterAutomaton(g);
+        paintAssembly(g);
+
+    }
+
+    private void paintAssembly(Graphics g) {
+//        if (assembly != null) {
+//            // Painting the pieces
+//            for (Element.Piece.Piece pac : assembly.getPieces()) {
+//
+//                g.drawImage(imageLoader.prueba, 50, 45, null);
+//
+//            }
+//
+//            // Painting the quality control
+//            g.drawImage(imageLoader.prueba,
+//                    Constants.QUALITY_POSITION.x, Constants.QUALITY_POSITION.y,
+//                    null);
+//
+//        }
+
+    }
 }
