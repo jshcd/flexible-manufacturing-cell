@@ -12,7 +12,7 @@ import javax.swing.JTextArea;
  * Allows a <code>Logger</code> to send log messages to a <code>JTextArea</code>
  * .
  * 
- * @author Jos� Montero
+ * @author
  */
 public class JTextAreaHandler extends Handler {
 	private JTextArea txtLog;

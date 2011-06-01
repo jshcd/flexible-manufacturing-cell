@@ -95,6 +95,5 @@ public class Canvas extends JPanel {
 //                    null);
 //
 //        }
-
     }
 }
