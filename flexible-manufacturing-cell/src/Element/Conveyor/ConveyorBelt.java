@@ -67,9 +67,7 @@ public class ConveyorBelt implements PieceContainer {
         if (!_moving) {
             Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has started", _id);
         }
-        for (Sensor s : _sensors) {
-            s.disactivate();
-        }
+
         _moving = true;
     }
 

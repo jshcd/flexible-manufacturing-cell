@@ -40,55 +40,60 @@ public class Sensor implements Runnable {
 
         Logger.getLogger(Sensor.class.getName()).log(Level.INFO, "Sensor with id {0} has been created", _id);
 
-        // TODO: Check this works right
         while (true) {
             try {
-                Thread.sleep(25);
-                //TO-DO Sección crítica
+
                 if (_associatedContainer.isMoving()) {
-                    List<Piece> pieces = _associatedContainer.getPieces();
-                    synchronized (pieces) {
-                        boolean detected = false;
-                        for (Piece p : pieces) {
-                            if (p.getPosition() <= _positionInBelt + _range 
-                                    && p.getPosition() >= _positionInBelt - _range) {
-                                _detectedPiece = p;
-                                detected = true;
-                                break;
-                            }
-                        }
-                        if (detected) {
-                            activate();
-                        } else {
-                            disactivate();
+                    Thread.sleep(25);
+                } else {
+                    Thread.sleep(500);
+                }
+
+                //TO-DO Sección crítica
+                List<Piece> pieces = _associatedContainer.getPieces();
+                boolean detected = false;
+                synchronized (pieces) {
+                    for (Piece p : pieces) {
+                        if (p.getPosition() <= _positionInBelt + _range
+                                && p.getPosition() >= _positionInBelt - _range) {
+                            _detectedPiece = p;
+                            detected = true;
+                            break;
                         }
                     }
                 }
+                if (detected) {
+                    activate();
+                } else {
+                    disactivate();
+                }
+
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    public void activate() {
+    public void activate() throws InterruptedException {
         if (!_activated) {
             Logger.getLogger(Sensor.class.getName()).log(Level.INFO, "Sensor with id {0} is activated", _id);
         }
         _activated = true;
-
-        _process.orderToRobot(_id * 10 + 1);
-        _process.reportToMaster(_id * 10 + 1);
-        _process.runCommand(_id * 10 + 1);
+        report(1);
     }
 
-    public void disactivate() {
+    public void disactivate() throws InterruptedException {
         if (_activated) {
             Logger.getLogger(Sensor.class.getName()).log(Level.INFO, "Sensor with id {0} is disactivated", _id);
-            _activated = false;
-            _process.orderToRobot(_id * 10 + 0);
-            _process.reportToMaster(_id * 10 + 0);
-            _process.runCommand(_id * 10 + 1);
         }
+        _activated = false;
+        report(0);
+    }
+
+    private void report(int i) {
+        _process.orderToRobot(_id * 10 + i);
+        _process.reportToMaster(_id * 10 + i);
+        _process.runCommand(_id * 10 + i);
     }
 
     public double getPositionInBelt() {
@@ -117,10 +122,6 @@ public class Sensor implements Runnable {
 
     public Piece getDetectedPiece() {
         return _detectedPiece;
-    }
-
-    public void setDetectedPiece(Piece _detectedPiece) {
-        this._detectedPiece = _detectedPiece;
     }
 
     public double getRange() {
