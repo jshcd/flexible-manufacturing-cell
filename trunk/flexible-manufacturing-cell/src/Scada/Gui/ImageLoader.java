@@ -17,7 +17,7 @@ public class ImageLoader {
 
     /* CANVAS IMAGES */
     public Image background = Toolkit.getDefaultToolkit().getImage(
-            ImageLoader.class.getResource(IMAGES_FOLDER + "/background3.png"));
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/background.png"));
     /* APPLICATION IMAGES */
     public Image reportButton = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/report.png"));

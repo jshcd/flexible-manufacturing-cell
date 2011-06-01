@@ -153,6 +153,45 @@ public class Constants {
     public static final String CONFIGURATION_TOOL_TIP = "Parameters configuration";
     public static final String REPORT_TOOL_TIP = "Report generation";
     
+    /* CONSTANTS used in GUI for ELEMENT POSITIONING */
+    /* SENSOR LIGHT POSITIONS */
+    public static final Point GEAR_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION = new Point(67, 54);
+    public static final Point GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION = new Point(267, 54);
+    public static final Point AXIS_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION = new Point(67, 174);
+    public static final Point AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION = new Point(267, 174);        
+    public static final Point WELDING_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION = new Point(580, 29);
+    public static final Point WELDING_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION = new Point(778, 29);    
+    public static final Point OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION = new Point(410, 294);
+    public static final Point OK_CONVEYOR_SENSOR_RIGHT_LIGHT_POSITION = new Point(610, 294);    
+    public static final Point NOTOK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION = new Point(410, 404);
+    public static final Point NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION = new Point(610, 404);
+    public static final Point ASSEMBLY_STATION_SENSOR_LIGHT_POSITION = new Point(544, 192);
+    public static final Point WELDING_STATION_SENSOR_LIGHT_POSITION = new Point(900, 146);
+    public static final Point QUALITY_CONTROL_STATION_LIGHT_SENSOR_POSITION = new Point(821, 276);
+    /* WELDING STAMPER */
+    public static final Point WELDING_STAMPER_POSITION_ENABLED = new Point(391, 130);
+    public static final Point WELDING_STAMPER_POSITION_DISABLED = new Point(391, 80);
+    /* TORCH */
+    public static final Point TORCH_POSITION_ENABLED = new Point(833, 114);
+    public static final Point TORCH_POSITION_DISABLED = new Point(833,74);    
+    /* STARTING POSITIONS FOR CONVEYOR BELTS */
+    public static final Point GEAR_CONVEYOR_START_POSITION = new Point(26, 87);
+    public static final Point AXIS_CONVEYOR_START_POSITION = new Point(13, 200);
+    public static final Point WELDING_CONVEYOR_START_POSITION = new Point(522, 50);
+    public static final Point OK_CONVEYOR_START_POSITION = new Point(599, 315);
+    public static final Point NOTOK_CONVEYOR_START_POSITION = new Point(594, 428);
+    /* SENSOR ACTIVATION POSITION IN BELTS */
+    public static final Point GEAR_CONVEYOR_SENSOR_LEFT_POSITION = new Point();
+    public static final Point GEAR_CONVEYOR_SENSOR_RIGHT_POSITION = new Point();
+    public static final Point AXIS_CONVEYOR_SENSOR_LEFT_POSITION = new Point();
+    public static final Point AXIS_CONVEYOR_SENSOR_RIGHT_POSITION = new Point();
+    public static final Point WELDING_CONVEYOR_SENSOR_LEFT_POSITION = new Point();
+    public static final Point WELDING_CONVEYOR_SENSOR_RIGHT_POSITION = new Point();
+    public static final Point OK_CONVEYOR_SENSOR_LEFT_POSITION = new Point();
+    public static final Point OK_CONVEYOR_SENSOR_RIGHT_POSITION = new Point();
+    public static final Point NOTOK_CONVEYOR_SENSOR_LEFT_POSITION = new Point();
+    public static final Point NOTOK_CONVEYOR_SENSOR_RIGHT_POSITION = new Point();
+    
     //conections Panel
     public static final String TITLE_CONNECTIONS = "Connections Panel";
     public static final String ASSEMBLY_AUTOMATON_LABEL = "Assembly Automaton";
