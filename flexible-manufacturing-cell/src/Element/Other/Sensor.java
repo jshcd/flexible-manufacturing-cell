@@ -43,13 +43,21 @@ public class Sensor implements Runnable {
         // TODO: Check this works right
         while (true) {
             try {
-                Thread.sleep(50);
+                Thread.sleep(25);
                 //TO-DO Sección crítica
-                List<Piece> pieces = _associatedContainer.getPieces();
-                synchronized (pieces) {
-                    for (Piece p : pieces) {
-                        if (p.getPosition() >= _positionInBelt + _range) {
-                            _detectedPiece = p;
+                if (_associatedContainer.isMoving()) {
+                    List<Piece> pieces = _associatedContainer.getPieces();
+                    synchronized (pieces) {
+                        boolean detected = false;
+                        for (Piece p : pieces) {
+                            if (p.getPosition() <= _positionInBelt + _range 
+                                    && p.getPosition() >= _positionInBelt - _range) {
+                                _detectedPiece = p;
+                                detected = true;
+                                break;
+                            }
+                        }
+                        if (detected) {
                             activate();
                         } else {
                             disactivate();
@@ -63,18 +71,23 @@ public class Sensor implements Runnable {
     }
 
     public void activate() {
-        Logger.getLogger(Sensor.class.getName()).log(Level.INFO, "Sensor with id {0} is activated", _id);
+        if (!_activated) {
+            Logger.getLogger(Sensor.class.getName()).log(Level.INFO, "Sensor with id {0} is activated", _id);
+        }
         _activated = true;
+
         _process.orderToRobot(_id * 10 + 1);
         _process.reportToMaster(_id * 10 + 1);
+        _process.runCommand(_id * 10 + 1);
     }
 
-    private void disactivate() {
+    public void disactivate() {
         if (_activated) {
             Logger.getLogger(Sensor.class.getName()).log(Level.INFO, "Sensor with id {0} is disactivated", _id);
             _activated = false;
             _process.orderToRobot(_id * 10 + 0);
             _process.reportToMaster(_id * 10 + 0);
+            _process.runCommand(_id * 10 + 1);
         }
     }
 
@@ -90,8 +103,8 @@ public class Sensor implements Runnable {
         return _associatedContainer;
     }
 
-    public void setAssociatedContainer(PieceContainer associatedContainer) {
-        _associatedContainer = associatedContainer;
+    public void setAssociatedContainer(PieceContainer _associatedContainer) {
+        this._associatedContainer = _associatedContainer;
     }
 
     public Slave getProcess() {

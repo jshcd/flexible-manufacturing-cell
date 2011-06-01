@@ -63,17 +63,16 @@ public class Slave2 implements Slave {
             _sensor7.setRange(sensor_range);
             _sensor7.setPositionInBelt(0);
 
-
-            // We start the belts
-            _weldingStation.run();
             _weldingStation.addSensor(_sensor6);
-            _qualityStation.run();
             _qualityStation.addSensor(_sensor7);
 
-            //We start the sensors
-            _sensor6.run();
-            _sensor7.run();
+            // We start the belts
+            new Thread(_weldingStation).start();
+            new Thread(_qualityStation).start();
 
+            //We start the sensors
+            new Thread(_sensor6).start();
+            new Thread(_sensor7).start();
 
         } catch (SQLException ex) {
             System.err.println("Error at loading database at Slave 1");

@@ -1,20 +1,44 @@
 /*
- * This interface represents every object that can contain Pieces in it. 
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
-
 package Element;
 
+import Automaton.Slaves.Slave;
+import Element.Other.Sensor;
 import Element.Piece.Piece;
 import java.util.List;
 
-public interface PieceContainer {
+/**
+ *
+ * @author Portatil
+ */
+public interface PieceContainer extends Runnable {
 
-	public List<Piece> getPieces();
+    void addPiece(Piece p);
 
-	public void setPieces(List<Element.Piece.Piece> pieces);
-        
-        public void startContainer();
-        
-        public void stopContainer();
-        
+    void addSensor(Sensor s);
+
+    int getId();
+
+    List<Piece> getPieces();
+
+    Slave getProcess();
+
+    boolean isMoving();
+
+    void removeLastPiece();
+
+    void run();
+
+    void setId(int id);
+
+    void setPieces(List<Piece> pieces);
+
+    void setProcess(Slave _process);
+
+    void startContainer();
+
+    void stopContainer();
+    
 }

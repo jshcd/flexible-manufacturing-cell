@@ -15,28 +15,31 @@ public class TestAutomata {
     Slave1Test s1;
     Slave2Test s2;
     Slave3Test s3;
-    Robot2 r2;
+    Robot1Test r1;
+    Robot2Test r2;
 
     public static void main(String args[]) {
         final TestAutomata ta = new TestAutomata();
 
-
     }
 
     public TestAutomata() {
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                s1 = new Slave1Test();
-            }
-        });
-        t.start();
+        s1 = new Slave1Test();
+        s2 = new Slave2Test();
+        s3 = new Slave3Test();
+        r2 = new Robot2Test();
         
-        t = new Thread(new Runnable() {
+        s1.setTest(this);
+        s1.initialize();
+        
+        Thread t = new Thread(new Runnable() {
+
             public void run() {
-                s2 = new Slave2Test();
+                s1.start();
             }
         });
         t.start();
+
     }
 
     public void sendToSlave1(int command) {
@@ -55,7 +58,7 @@ public class TestAutomata {
         s1.getRobot().runCommand(command);
     }
 
-    public void sendToRobot21(int command) {
+    public void sendToRobot2(int command) {
         r2.runCommand(command);
     }
 }

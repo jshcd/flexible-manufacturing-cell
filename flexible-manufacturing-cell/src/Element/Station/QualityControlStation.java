@@ -18,7 +18,7 @@ public class QualityControlStation extends ConveyorBelt {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         while (true) {
             if (_moving) {
                 try {
