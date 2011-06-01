@@ -44,8 +44,6 @@ public class MonitorWindow extends JFrame {
     //private ConfigurationParametersDialog configurationParametersDialog;
     private Report report;
     private Master masterAutomaton;
-
-
     /* LISTENERS */
     private ActionListener btnActionListener = new ActionListener() {
 
@@ -154,7 +152,7 @@ public class MonitorWindow extends JFrame {
         contentPane.add(pnlButtons, "");
 
         contentPane.add(connectionStatus, "");
-	contentPane.add(log, "");
+        contentPane.add(log, "");
     }
 
     /**
@@ -181,8 +179,6 @@ public class MonitorWindow extends JFrame {
     public Report getReport() {
         return report;
     }
-
-    
 
     /**
      * Enables the start button and disables the stop buttons.
