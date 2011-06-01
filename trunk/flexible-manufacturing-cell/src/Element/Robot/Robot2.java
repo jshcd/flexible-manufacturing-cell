@@ -61,6 +61,7 @@ public class Robot2 implements Robot,Runnable {
                         _state = AutomatonState.q1;
                         pickAssembly();
                     }
+                    break;
                 case q1:
                     if (!_weldingTableSensor) {
                         transportAssembly();

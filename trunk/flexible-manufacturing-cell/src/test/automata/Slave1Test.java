@@ -42,7 +42,7 @@ public class Slave1Test extends Slave1 {
         test.sendToRobot2(i);
         test.sendToSlave2(i);
         test.sendToSlave3(i);
-        System.out.println("S1 " + i);
+//        System.out.println("S1 " + i);
     }
 
     public void startRobot() {
@@ -80,7 +80,7 @@ public class Slave1Test extends Slave1 {
         this.test = test;
     }
 
-    public Robot1 getRobot() {
+    public Robot1Test getRobot() {
         return _robot;
     }
     

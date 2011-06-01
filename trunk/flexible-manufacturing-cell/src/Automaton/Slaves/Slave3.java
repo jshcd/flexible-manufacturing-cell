@@ -34,7 +34,6 @@ public class Slave3 implements Slave {
 
     public Slave3() {
         Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Slave 3 created");
-        initialize();
     }
 
     public final void initialize() {
@@ -52,7 +51,7 @@ public class Slave3 implements Slave {
             int reyectedLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION).getInt("speed");
 
             _acceptedBelt = new ConveyorBelt(7, acceptedSpeed, acceptedLength);
-            _rejectedBelt = new QualityControlStation(8, reyectedSpeed, reyectedLength);
+            _rejectedBelt = new ConveyorBelt(8, reyectedSpeed, reyectedLength);
 
             _sensor8 = new Sensor();
             _sensor8.setSensorId(8);

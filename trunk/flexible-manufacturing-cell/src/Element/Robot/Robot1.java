@@ -139,6 +139,7 @@ public class Robot1 implements Robot, Runnable {
     public void pickAxis() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.axis);
+        _axisSensor = false;
         reportProcess(Constants.ROBOT1_SLAVE1_PICKS_AXIS);
         Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 picks axis");
 
@@ -147,6 +148,7 @@ public class Robot1 implements Robot, Runnable {
     public void pickGear() {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.gear);
+        _gearSensor = false;
         reportProcess(Constants.ROBOT1_SLAVE1_PICKS_GEAR);
         Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 picks gear");
     }

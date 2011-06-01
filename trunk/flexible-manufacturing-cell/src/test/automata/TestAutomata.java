@@ -4,8 +4,6 @@
  */
 package test.automata;
 
-import Element.Robot.Robot2;
-
 /**
  *
  * @author Portatil
@@ -15,7 +13,6 @@ public class TestAutomata {
     Slave1Test s1;
     Slave2Test s2;
     Slave3Test s3;
-    Robot1Test r1;
     Robot2Test r2;
 
     public static void main(String args[]) {
@@ -28,10 +25,20 @@ public class TestAutomata {
         s2 = new Slave2Test();
         s3 = new Slave3Test();
         r2 = new Robot2Test();
-        
+
         s1.setTest(this);
+        s2.setTest(this);
+        s3.setTest(this);
+        r2.setTest(this);
+        r2.setTest(this);
+
         s1.initialize();
-        
+        s2.initialize();
+        s3.initialize();
+
+        s1.getRobot().setTest(this);
+        s1.startRobot();
+
         Thread t = new Thread(new Runnable() {
 
             public void run() {
@@ -39,6 +46,9 @@ public class TestAutomata {
             }
         });
         t.start();
+
+        Thread y = new Thread(r2);
+        y.start();
 
     }
 

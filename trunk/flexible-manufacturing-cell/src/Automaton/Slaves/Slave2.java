@@ -32,7 +32,6 @@ public class Slave2 implements Slave {
 
     public Slave2() {
         Logger.getLogger(Slave2.class.getName()).log(Level.INFO, "Slave 2 created");
-        initialize();
     }
 
     public final void initialize() {
@@ -44,10 +43,12 @@ public class Slave2 implements Slave {
             // TODO: Estos parametros no deben cargase asi, pero lo dejamos de momento para hacer pruebas
             int sensor_range = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SENSOR_RANGE).getInt("value");
 
-            _weldingStation = new WeldingStation(5, 0, 0);
+            _weldingStation = new WeldingStation(5);
             _weldingStation.setWeldingTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_WELDING_STATION_TIME).getInt("time"));
-            _qualityStation = new QualityControlStation(6, 0, 0);
+            _weldingStation.setProcess(this);
+            _qualityStation = new QualityControlStation(6);
             _qualityStation.setQualityTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_QUALITY_STATION_TIME).getInt("time"));
+            _qualityStation.setProcess(this);
 
             _sensor6 = new Sensor();
             _sensor6.setSensorId(6);

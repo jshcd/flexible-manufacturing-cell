@@ -18,7 +18,6 @@ public class Slave2Test extends Slave2 {
         test.sendToRobot1(i);
         test.sendToRobot2(i);
         test.sendToSlave1(i);
-        test.sendToSlave2(i);
         test.sendToSlave3(i);
     }
     
