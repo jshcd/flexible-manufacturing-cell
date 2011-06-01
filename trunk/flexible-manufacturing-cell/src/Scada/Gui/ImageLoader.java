@@ -13,25 +13,25 @@ import java.awt.Toolkit;
 public class ImageLoader {
 
     private static final String IMAGES_FOLDER = "Images";
-    private MediaTracker mediaTracker;
+    private MediaTracker _mediaTracker;
 
     /* CANVAS IMAGES */
-    public Image background = Toolkit.getDefaultToolkit().getImage(
+    public Image _background = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/background.png"));
     /* APPLICATION IMAGES */
-    public Image reportButton = Toolkit.getDefaultToolkit().getImage(
+    public Image _reportButton = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/report.png"));
-    public Image configurationButton = Toolkit.getDefaultToolkit().getImage(
+    public Image _configurationButton = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/configuration.png"));
-    public Image startButton = Toolkit.getDefaultToolkit().getImage(
+    public Image _startButton = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/on.png"));
-    public Image stopButton = Toolkit.getDefaultToolkit().getImage(
+    public Image _stopButton = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/off.png"));
-    public Image emergencyStopButton = Toolkit.getDefaultToolkit().getImage(
+    public Image _emergencyStopButton = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/emergencyStop.png"));
-    public Image on = Toolkit.getDefaultToolkit().getImage(
+    public Image _on = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/panelOn.png"));
-    public Image off = Toolkit.getDefaultToolkit().getImage(
+    public Image _off = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/panelOff.png"));
 
     /**
@@ -42,17 +42,17 @@ public class ImageLoader {
      */
     public ImageLoader(Component component) {
         try {
-            mediaTracker = new MediaTracker(component);
-            mediaTracker.addImage(background, 0);
-            mediaTracker.addImage(reportButton, 0);
-            mediaTracker.addImage(configurationButton, 0);
-            mediaTracker.addImage(startButton, 0);
-            mediaTracker.addImage(reportButton, 0);
-            mediaTracker.addImage(stopButton, 0);
-            mediaTracker.addImage(emergencyStopButton, 0);
-            mediaTracker.addImage(on, 0);
-            mediaTracker.addImage(off, 0);
-            mediaTracker.waitForAll();
+            _mediaTracker = new MediaTracker(component);
+            _mediaTracker.addImage(_background, 0);
+            _mediaTracker.addImage(_reportButton, 0);
+            _mediaTracker.addImage(_configurationButton, 0);
+            _mediaTracker.addImage(_startButton, 0);
+            _mediaTracker.addImage(_reportButton, 0);
+            _mediaTracker.addImage(_stopButton, 0);
+            _mediaTracker.addImage(_emergencyStopButton, 0);
+            _mediaTracker.addImage(_on, 0);
+            _mediaTracker.addImage(_off, 0);
+            _mediaTracker.waitForAll();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (Exception e) {

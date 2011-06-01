@@ -1,5 +1,6 @@
 package Scada.Gui;
 
+import Scada.DataBase.MasterConfigurationData;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.BorderFactory;
@@ -18,24 +19,17 @@ import net.miginfocom.swing.MigLayout;
 
 public class Report extends JDialog {
 
-    private JButton btnClose;
-    private JPanel panel1;
-    private JPanel panel2;
-    private JPanel panel3;
-    private String currentRightPieces = "20";
-    private String currentWrongPieces = "100";
-    private String totalRightPieces;
-    private String totalWrongPieces;
-    private String totalNormalStops;
-    private String totalEmergencyStops;
-    private String totalRestarts;
+    private JButton _btnClose;
+    private JPanel _panel1,_panel2,_panel3;
+    private String _currentRightPieces,_currentWrongPieces,_totalRightPieces,
+            _totalWrongPieces,_totalNormalStops,_totalEmergencyStops, _totalRestarts;
 
     /* LISTENERS */
-    private ActionListener btnActionListener = new ActionListener() {
+    private ActionListener  _btnActionListener = new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == btnClose) {
+            if (e.getSource() == _btnClose) {
                 setVisible(false);
             }
         }
@@ -53,29 +47,26 @@ public class Report extends JDialog {
         Border paneEdge = BorderFactory.createEmptyBorder(0, 10, 10, 10);
         TitledBorder titled;
 
-        getValues();
-
-
         //Report 1
-        panel1 = new JPanel();
-        panel1.setBorder(paneEdge);
+        _panel1 = new JPanel();
+        _panel1.setBorder(paneEdge);
         titled = BorderFactory.createTitledBorder("Current Execution");
-        panel1.setBorder(titled);
+        _panel1.setBorder(titled);
 
         //Report 2
-        panel2 = new JPanel();
-        panel2.setBorder(paneEdge);
+        _panel2 = new JPanel();
+        _panel2.setBorder(paneEdge);
         titled = BorderFactory.createTitledBorder("Overall Execution");
-        panel2.setBorder(titled);
+        _panel2.setBorder(titled);
 
         //Report 3
-        panel3 = new JPanel();
-        panel3.setBorder(paneEdge);
+        _panel3 = new JPanel();
+        _panel3.setBorder(paneEdge);
         titled = BorderFactory.createTitledBorder("Stops and Restarts");
-        panel3.setBorder(titled);
+        _panel3.setBorder(titled);
        
-        btnClose = new JButton("Close");
-        btnClose.addActionListener(btnActionListener);
+        _btnClose = new JButton("Close");
+        _btnClose.addActionListener(_btnActionListener);
     }
 
     private void layoutComponents() {
@@ -85,57 +76,57 @@ public class Report extends JDialog {
         Container contentPane = getContentPane();
         contentPane.setLayout(contentPaneLayout);
 
-        add(panel1);
-        add(panel2);
-        add(panel3);
+        add(_panel1);
+        add(_panel2);
+        add(_panel3);
 
         MigLayout reportLayout = new MigLayout("wrap 2",
                 "[left][fill, grow, 40lp:40lp:]", "");
 
-        panel1.setLayout(reportLayout);
-        panel1.add(new JLabel("Right pieces: "), "");
-        JTextField value1 = new JTextField(currentRightPieces);
+        _panel1.setLayout(reportLayout);
+        _panel1.add(new JLabel("Right pieces: "), "");
+        JTextField value1 = new JTextField(_currentRightPieces);
         value1.setEditable(false);
-        panel1.add(value1, "span 2, wrap");
-        panel1.add(new JLabel("Wrong pieces: "));
-        JTextField value2 = new JTextField(currentWrongPieces);
+        _panel1.add(value1, "span 2, wrap");
+        _panel1.add(new JLabel("Wrong pieces: "));
+        JTextField value2 = new JTextField(_currentWrongPieces);
         value2.setEditable(false);
-        panel1.add(value2, "span 2, wrap");
+        _panel1.add(value2, "span 2, wrap");
 
         reportLayout = new MigLayout("wrap 2",
                 "[left][fill, grow, 40lp:40lp:]", "");
-        panel2.setLayout(reportLayout);
-        panel2.add(new JLabel("Right pieces: "), "");
-        JTextField value3 = new JTextField(totalRightPieces);
+        _panel2.setLayout(reportLayout);
+        _panel2.add(new JLabel("Right pieces: "), "");
+        JTextField value3 = new JTextField(_totalRightPieces);
         value3.setEditable(false);
-        panel2.add(value3, "span 2, wrap");
-        panel2.add(new JLabel("Wrong pieces: "), "");
-        JTextField value4 = new JTextField(totalWrongPieces);
+        _panel2.add(value3, "span 2, wrap");
+        _panel2.add(new JLabel("Wrong pieces: "), "");
+        JTextField value4 = new JTextField(_totalWrongPieces);
         value4.setEditable(false);
-        panel2.add(value4, "span 2, wrap");
+        _panel2.add(value4, "span 2, wrap");
 
         reportLayout = new MigLayout("wrap 2",
                 "[left][fill, grow, 40lp:40lp:]", "");
-        panel3.setLayout(reportLayout);
-        panel3.add(new JLabel("Number of normal stops: "), "");
-        JTextField value5 = new JTextField(totalNormalStops);
+        _panel3.setLayout(reportLayout);
+        _panel3.add(new JLabel("Number of normal stops: "), "");
+        JTextField value5 = new JTextField(_totalNormalStops);
         value5.setEditable(false);
-        panel3.add(value5, "span 2, wrap");
-        panel3.add(new JLabel("Number of emergency stops: "), "");
-        JTextField value6 = new JTextField(totalEmergencyStops);
+        _panel3.add(value5, "span 2, wrap");
+        _panel3.add(new JLabel("Number of emergency stops: "), "");
+        JTextField value6 = new JTextField(_totalEmergencyStops);
         value6.setEditable(false);
-        panel3.add(value6, "span 2, wrap");
-        panel3.add(new JLabel("Number of restarts: "), "");
-        JTextField value7 = new JTextField(totalRestarts);
+        _panel3.add(value6, "span 2, wrap");
+        _panel3.add(new JLabel("Number of restarts: "), "");
+        JTextField value7 = new JTextField(_totalRestarts);
         value7.setEditable(false);
-        panel3.add(value7, "span 2, wrap");
+        _panel3.add(value7, "span 2, wrap");
 
-        add(btnClose, "cell 1 3, center, width pref!");
+        add(_btnClose, "cell 1 3, center, width pref!");
 
 
     }
 
-    private void getValues() {
+    public void getValues (MasterConfigurationData configurationParameters){
         //valores que se muestran en el informe
         /*
         currentRightPieces;

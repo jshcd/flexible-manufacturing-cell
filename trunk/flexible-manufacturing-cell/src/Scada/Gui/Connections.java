@@ -16,9 +16,9 @@ public class Connections extends JPanel {
 
     private static final long serialVersionUID = 1L;
     /* GUI COMPONENTS */
-    private JLabel assembly, welding, quality, master;
-    private JLabel assemblyStatus, weldingStatus, qualityStatus, masterStatus;
-    private ImageLoader imageLoader;
+    private JLabel _assembly, _welding, _quality, _master;
+    private JLabel _assemblyStatus, _weldingStatus, _qualityStatus, _masterStatus;
+    private ImageLoader _imageLoader;
 
     /**
      * Constructs a connections panel.
@@ -28,22 +28,22 @@ public class Connections extends JPanel {
      *            the connections status.
      */
     public Connections(ImageLoader imageLoader) {
-        this.imageLoader = imageLoader;
+        this._imageLoader = imageLoader;
         createComponents();
         layoutComponents();
     }
 
     private void createComponents() {
-        welding = new JLabel(Constants.WELDING_AUTOMATON_LABEL);
-        assembly = new JLabel(Constants.ASSEMBLY_AUTOMATON_LABEL);
-        quality = new JLabel(Constants.QUALITY_AUTOMATON_LABEL);
-        master = new JLabel(Constants.MASTER_SCADA_AUTOMATON_LABEL);
+        _welding = new JLabel(Constants.WELDING_AUTOMATON_LABEL);
+        _assembly = new JLabel(Constants.ASSEMBLY_AUTOMATON_LABEL);
+        _quality = new JLabel(Constants.QUALITY_AUTOMATON_LABEL);
+        _master = new JLabel(Constants.MASTER_SCADA_AUTOMATON_LABEL);
 
-        weldingStatus = new JLabel(new ImageIcon(imageLoader.off));
-        assemblyStatus = new JLabel(new ImageIcon(imageLoader.off));
-        qualityStatus = new JLabel(new ImageIcon(
-                imageLoader.off));
-        masterStatus = new JLabel(new ImageIcon(imageLoader.on));
+        _weldingStatus = new JLabel(new ImageIcon(_imageLoader._off));
+        _assemblyStatus = new JLabel(new ImageIcon(_imageLoader._off));
+        _qualityStatus = new JLabel(new ImageIcon(
+                _imageLoader._off));
+        _masterStatus = new JLabel(new ImageIcon(_imageLoader._on));
     }
 
     private void layoutComponents() {
@@ -51,36 +51,36 @@ public class Connections extends JPanel {
                 "[fill, grow][fill, grow][fill, grow][fill, grow]");
         setLayout(layout);
         setBorder(new TitledBorder(Constants.TITLE_CONNECTIONS));
-        add(assembly, "growy");
-        add(assemblyStatus, "");
-        add(welding, "growy");
-        add(weldingStatus, "");
-        add(quality, "growy");
-        add(qualityStatus, "");
-        add(master, "growy");
-        add(masterStatus, "");
+        add(_assembly, "growy");
+        add(_assemblyStatus, "");
+        add(_welding, "growy");
+        add(_weldingStatus, "");
+        add(_quality, "growy");
+        add(_qualityStatus, "");
+        add(_master, "growy");
+        add(_masterStatus, "");
     }
 
     public void setConnectionStatus(int automatonID, boolean connected) {
 
         //if assembly station connected{
         if (connected) {
-            assemblyStatus.setIcon(new ImageIcon(imageLoader.on));
+            _assemblyStatus.setIcon(new ImageIcon(_imageLoader._on));
         } else {
-            assemblyStatus.setIcon(new ImageIcon(imageLoader.off));
+            _assemblyStatus.setIcon(new ImageIcon(_imageLoader._off));
         }
         //} else if welding station connected {
         if (connected) {
-            weldingStatus.setIcon(new ImageIcon(imageLoader.on));
+            _weldingStatus.setIcon(new ImageIcon(_imageLoader._on));
         } else {
-            weldingStatus.setIcon(new ImageIcon(
-                    imageLoader.off));
+            _weldingStatus.setIcon(new ImageIcon(
+                    _imageLoader._off));
         }
         //} else if welding station connected {
         if (connected) {
-            qualityStatus.setIcon(new ImageIcon(imageLoader.on));
+            _qualityStatus.setIcon(new ImageIcon(_imageLoader._on));
         } else {
-            qualityStatus.setIcon(new ImageIcon(imageLoader.off));
+            _qualityStatus.setIcon(new ImageIcon(_imageLoader._off));
         }
     }
 }

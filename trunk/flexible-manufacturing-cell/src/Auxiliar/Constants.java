@@ -143,6 +143,8 @@ public class Constants {
     /**
      * CONSTANTS used for GUI
      */
+    public static final int GUI_WIDTH = 985;
+    public static final int GUI_HEIGHT = 735;
     public static final int CANVAS_WIDTH = 962;
     public static final int CANVAS_HEIGHT = 519;
     public static final String TITLE = "Flexible Manufacturing Cell";
@@ -150,7 +152,7 @@ public class Constants {
     public static final String START_TOOL_TIP = "Start";
     public static final String STOP_TOOL_TIP = "Normal stop";
     public static final String EMERGENCY_STOP_TOOL_TIP = "Emergency stop";
-    public static final String CONFIGURATION_TOOL_TIP = "Parameters configuration";
+    public static final String CONFIGURATION_TOOL_TIP = "Configuration parameters";
     public static final String REPORT_TOOL_TIP = "Report generation";
     
     /* CONSTANTS used in GUI for ELEMENT POSITIONING */
