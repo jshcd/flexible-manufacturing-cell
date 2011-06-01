@@ -21,6 +21,8 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import Auxiliar.Constants;
+import java.awt.Dimension;
+import java.util.Locale;
 
 /**
  * Monitor where the whole system state is displayed: factory simulation,
@@ -32,53 +34,57 @@ public class MonitorWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
     /* GUI COMPONENTS */
-    private Canvas canvas;
-    private Connections connectionStatus;
-    private Log log;
-    private JButton buttonConfiguration,
-            buttonReport,
-            buttonStart,
-            buttonStop,
-            buttonEmergencyStop;
-    private ImageLoader imageLoader;
-    //private ConfigurationParametersDialog configurationParametersDialog;
-    private Report report;
-    private Master masterAutomaton;
+    private Canvas _canvas;
+    private Connections _connectionStatus;
+    private Log _log;
+    private JButton _buttonConfiguration,
+            _buttonReport,
+            _buttonStart,
+            _buttonStop,
+            _buttonEmergencyStop;
+    private ImageLoader _imageLoader;
+    private ConfigurationParameters _configurationParameters;
+    private Report _report;
+    private Master _masterAutomaton;
     /* LISTENERS */
-    private ActionListener btnActionListener = new ActionListener() {
+    private ActionListener _btnActionListener = new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (e.getSource() == buttonStart) {
-                if (masterAutomaton != null) {
+            if (e.getSource() == _buttonStart) {
+                if (_masterAutomaton != null) {
                     JOptionPane.showMessageDialog(
                             MonitorWindow.this,
                             "The system cannot be started until all the slave automata have been connected.",
                             "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    buttonStart.setEnabled(false);
-                    buttonStop.setEnabled(true);
-                    buttonEmergencyStop.setEnabled(true);
-                    canvas.setEmergencyStopped(false);
-                    masterAutomaton.startSystem();
+                    _buttonStart.setEnabled(false);
+                    _buttonStop.setEnabled(true);
+                    _buttonEmergencyStop.setEnabled(true);
+                    _canvas.setEmergencyStopped(false);
+                    _masterAutomaton.startSystem();
                 }
-            } else if (e.getSource() == buttonEmergencyStop) {
-                buttonStart.setEnabled(true);
-                buttonStop.setEnabled(false);
-                buttonEmergencyStop.setEnabled(false);
-                canvas.setEmergencyStopped(true);
-                masterAutomaton.emergencyStop();
+            } else if (e.getSource() == _buttonEmergencyStop) {
+                _buttonStart.setEnabled(true);
+                _buttonStop.setEnabled(false);
+                _buttonEmergencyStop.setEnabled(false);
+                _canvas.setEmergencyStopped(true);
+                _masterAutomaton.emergencyStop();
                 ;
-            } else if (e.getSource() == buttonStop) {
-                buttonStart.setEnabled(false);
-                buttonStop.setEnabled(false);
-                buttonEmergencyStop.setEnabled(false);
-                masterAutomaton.stopSystem();
-            } else if (e.getSource() == buttonReport) {
-                //report.getValues...
-                report.setVisible(true);
+            } else if (e.getSource() == _buttonStop) {
+                _buttonStart.setEnabled(false);
+                _buttonStop.setEnabled(false);
+                _buttonEmergencyStop.setEnabled(false);
+                _masterAutomaton.stopSystem();
+            } else if (e.getSource() == _buttonReport) {
+             //TODO  llenar los parametros para el informe _report.getValues(_masterAutomaton.getDbmanager().algo);
+                _report.setVisible(true);
             }
+             else if (e.getSource() == _buttonConfiguration) {
+		_configurationParameters.getValues(_masterAutomaton.getDbmanager().readParameters(), _buttonStart.isEnabled());
+		_configurationParameters.setVisible(true);
+        }
         }
     };
 
@@ -86,51 +92,57 @@ public class MonitorWindow extends JFrame {
      * Constructs a monitor window and starts the master automaton.
      *
      * @param port
-     *            The port on which the master automaton is listening to slave
+     *            The port _on which the master automaton is listening to slave
      *            automata connections.
      */
     public MonitorWindow(int port) {
-        imageLoader = new ImageLoader(this);
-        report = new Report();
+        _imageLoader = new ImageLoader(this);
+        _report = new Report();
+
+        Dimension size = new Dimension(Constants.GUI_WIDTH, Constants.GUI_HEIGHT);
+        setMinimumSize(size);
+        setPreferredSize(size);
+        setMaximumSize(size);
+        setResizable(false);
         setTitle(Constants.TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createComponents();
         layoutComponents();
 
-        masterAutomaton = new Master();
-
+        _masterAutomaton = new Master();
+        _configurationParameters = new ConfigurationParameters(_masterAutomaton);
         pack();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     private void createComponents() {
         Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
-        canvas = new Canvas(imageLoader);
+        _canvas = new Canvas(_imageLoader);
 
-        buttonConfiguration = new JButton(new ImageIcon(imageLoader.configurationButton));
-        buttonConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
-        buttonConfiguration.setCursor(handCursor);
-        buttonConfiguration.addActionListener(btnActionListener);
-        buttonReport = new JButton(new ImageIcon(imageLoader.reportButton));
-        buttonReport.setToolTipText(Constants.REPORT_TOOL_TIP);
-        buttonReport.setCursor(handCursor);
-        buttonReport.addActionListener(btnActionListener);
-        buttonStart = new JButton(new ImageIcon(imageLoader.startButton));
-        buttonStart.setToolTipText(Constants.START_TOOL_TIP);
-        buttonStart.setCursor(handCursor);
-        buttonStart.addActionListener(btnActionListener);
-        buttonStop = new JButton(new ImageIcon(imageLoader.stopButton));
-        buttonStop.setToolTipText(Constants.STOP_TOOL_TIP);
-        buttonStop.setCursor(handCursor);
-        buttonStop.setEnabled(false);
-        buttonStop.addActionListener(btnActionListener);
-        buttonEmergencyStop = new JButton(new ImageIcon(imageLoader.emergencyStopButton));
-        buttonEmergencyStop.setToolTipText(Constants.EMERGENCY_STOP_TOOL_TIP);
-        buttonEmergencyStop.setCursor(handCursor);
-        buttonEmergencyStop.setEnabled(false);
-        buttonEmergencyStop.addActionListener(btnActionListener);
-        log = new Log();
-        connectionStatus = new Connections(imageLoader);
+        _buttonConfiguration = new JButton(new ImageIcon(_imageLoader._configurationButton));
+        _buttonConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
+        _buttonConfiguration.setCursor(handCursor);
+        _buttonConfiguration.addActionListener(_btnActionListener);
+        _buttonReport = new JButton(new ImageIcon(_imageLoader._reportButton));
+        _buttonReport.setToolTipText(Constants.REPORT_TOOL_TIP);
+        _buttonReport.setCursor(handCursor);
+        _buttonReport.addActionListener(_btnActionListener);
+        _buttonStart = new JButton(new ImageIcon(_imageLoader._startButton));
+        _buttonStart.setToolTipText(Constants.START_TOOL_TIP);
+        _buttonStart.setCursor(handCursor);
+        _buttonStart.addActionListener(_btnActionListener);
+        _buttonStop = new JButton(new ImageIcon(_imageLoader._stopButton));
+        _buttonStop.setToolTipText(Constants.STOP_TOOL_TIP);
+        _buttonStop.setCursor(handCursor);
+        _buttonStop.setEnabled(false);
+        _buttonStop.addActionListener(_btnActionListener);
+        _buttonEmergencyStop = new JButton(new ImageIcon(_imageLoader._emergencyStopButton));
+        _buttonEmergencyStop.setToolTipText(Constants.EMERGENCY_STOP_TOOL_TIP);
+        _buttonEmergencyStop.setCursor(handCursor);
+        _buttonEmergencyStop.setEnabled(false);
+        _buttonEmergencyStop.addActionListener(_btnActionListener);
+        _log = new Log();
+        _connectionStatus = new Connections(_imageLoader);
 
     }
 
@@ -139,20 +151,20 @@ public class MonitorWindow extends JFrame {
                 "[fill][fill][fill]", "[fill, grow][fill]");
         Container contentPane = getContentPane();
         contentPane.setLayout(contentPaneLayout);
-        canvas.setBorder(new LineBorder(Color.GRAY));
+        _canvas.setBorder(new LineBorder(Color.GRAY));
         MigLayout pnlButtonsLayout = new MigLayout();
         JPanel pnlButtons = new JPanel(pnlButtonsLayout);
         pnlButtons.setBorder(new TitledBorder(Constants.CONTROL_PANEL_TITLE));
-        pnlButtons.add(buttonConfiguration, "");
-        pnlButtons.add(buttonStart, "");
-        pnlButtons.add(buttonEmergencyStop, "span 1 2, wrap");
-        pnlButtons.add(buttonReport, "");
-        pnlButtons.add(buttonStop, "wrap");
-        contentPane.add(canvas, "span 3, wrap, center");
+        pnlButtons.add(_buttonConfiguration, "");
+        pnlButtons.add(_buttonStart, "");
+        pnlButtons.add(_buttonEmergencyStop, "span 1 2, wrap");
+        pnlButtons.add(_buttonReport, "");
+        pnlButtons.add(_buttonStop, "wrap");
+        contentPane.add(_canvas, "span 3, wrap, center");
         contentPane.add(pnlButtons, "");
 
-        contentPane.add(connectionStatus, "");
-        contentPane.add(log, "");
+        contentPane.add(_connectionStatus, "");
+        contentPane.add(_log, "");
     }
 
     /**
@@ -161,41 +173,41 @@ public class MonitorWindow extends JFrame {
      * @return Returns the canvas.
      */
     public Canvas getCanvas() {
-        return canvas;
+        return _canvas;
     }
 
     public Connections getConnectionStatus() {
-        return connectionStatus;
+        return _connectionStatus;
     }
 
     public ImageLoader getImageLoader() {
-        return imageLoader;
+        return _imageLoader;
     }
 
     public Log getLog() {
-        return log;
+        return _log;
     }
 
     public Report getReport() {
-        return report;
+        return _report;
     }
 
     /**
      * Enables the start button and disables the stop buttons.
      */
     public void enableStart() {
-        buttonStart.setEnabled(true);
-        buttonStop.setEnabled(false);
-        buttonEmergencyStop.setEnabled(false);
+        _buttonStart.setEnabled(true);
+        _buttonStop.setEnabled(false);
+        _buttonEmergencyStop.setEnabled(false);
     }
 
     /**
      * Disables the start button and the stop buttons.
      */
     public void disableAll() {
-        buttonStart.setEnabled(false);
-        buttonStop.setEnabled(false);
-        buttonEmergencyStop.setEnabled(false);
+        _buttonStart.setEnabled(false);
+        _buttonStop.setEnabled(false);
+        _buttonEmergencyStop.setEnabled(false);
     }
 
     public static void main(String[] args) {

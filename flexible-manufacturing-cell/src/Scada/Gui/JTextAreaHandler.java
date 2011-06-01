@@ -15,8 +15,8 @@ import javax.swing.JTextArea;
  * @author
  */
 public class JTextAreaHandler extends Handler {
-	private JTextArea txtLog;
-	private SimpleDateFormat dateFormatter;
+	private JTextArea _txtLog;
+	private SimpleDateFormat _dateFormatter;
 
 	/**
 	 * Constructs a logging handler for a particular <code>JTextArea</code>.
@@ -25,8 +25,8 @@ public class JTextAreaHandler extends Handler {
 	 *            The <code>JTextArea</code>.
 	 */
 	public JTextAreaHandler(JTextArea txtLog) {
-		this.txtLog = txtLog;
-		dateFormatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+		this._txtLog = txtLog;
+		_dateFormatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class JTextAreaHandler extends Handler {
 		} else {
 			level = "ERROR";
 		}
-		txtLog.append(dateFormatter.format(date) + " [" + level + "] => "
+		_txtLog.append(_dateFormatter.format(date) + " [" + level + "] => "
 				+ record.getMessage() + "\n");
-		txtLog.setCaretPosition(txtLog.getText().length());
+		_txtLog.setCaretPosition(_txtLog.getText().length());
 	}
 }

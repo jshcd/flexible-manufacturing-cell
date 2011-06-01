@@ -20,11 +20,11 @@ import Element.Station.WeldingStation;
 public class Canvas extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private ImageLoader imageLoader;
-    private AssemblyStation assembly;
-    private QualityControlStation quality;
-    private WeldingStation welding;
-    private boolean emergencyStopped;
+    private ImageLoader _imageLoader;
+    private AssemblyStation _assembly;
+    private QualityControlStation _quality;
+    private WeldingStation _welding;
+    private boolean _emergencyStopped;
 
     /**
      * Creates a canvas where the factory simulation is displayed.
@@ -34,26 +34,25 @@ public class Canvas extends JPanel {
      *            the canvas.
      */
     public Canvas(ImageLoader imageLoader) {
-        this.imageLoader = imageLoader;
+        this._imageLoader = imageLoader;
         Dimension size = new Dimension(Constants.CANVAS_WIDTH,
                 Constants.CANVAS_HEIGHT);
         setMinimumSize(size);
         setPreferredSize(size);
         setMaximumSize(size);
-
-        emergencyStopped = false;
+        _emergencyStopped = false;
     }
 
     public void setAssembly(AssemblyStation assembly) {
-        this.assembly = assembly;
+        this._assembly = assembly;
     }
 
     public void setQuality(QualityControlStation quality) {
-        this.quality = quality;
+        this._quality = quality;
     }
 
     public void setWelding(WeldingStation welding) {
-        this.welding = welding;
+        this._welding = welding;
     }
 
     /**
@@ -63,7 +62,7 @@ public class Canvas extends JPanel {
      *            Whether the system is at an emergency stop or not.
      */
     public void setEmergencyStopped(boolean emergencyStopped) {
-        this.emergencyStopped = emergencyStopped;
+        this._emergencyStopped = emergencyStopped;
         repaint();
     }
 
@@ -72,7 +71,7 @@ public class Canvas extends JPanel {
      */
     public void paintComponent(Graphics g) {
         // Erases the panel
-        g.drawImage(imageLoader.background, 0, 0, null);
+        g.drawImage(_imageLoader._background, 0, 0, null);
 
         // Paints the different automata
         //paintMasterAutomaton(g);

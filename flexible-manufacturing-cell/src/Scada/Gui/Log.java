@@ -19,9 +19,9 @@ public class Log extends JPanel {
 
     private static final long serialVersionUID = 1L;
     /* GUI COMPONENTS */
-    private JTextArea txtLog;
-    private JScrollPane scrLogs;
-    private Handler logHandler;
+    private JTextArea _txtLog;
+    private JScrollPane _scrLogs;
+    private Handler _logHandler;
 
     /**
      * Constructs a panel where log messages can be displayed.
@@ -32,22 +32,22 @@ public class Log extends JPanel {
     }
 
     private void createComponents() {
-        txtLog = new JTextArea();
-        txtLog.setWrapStyleWord(true);
-        txtLog.setLineWrap(true);
-        txtLog.setEditable(false);
-        txtLog.setBackground(Color.WHITE);
-        scrLogs = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+        _txtLog = new JTextArea();
+        _txtLog.setWrapStyleWord(true);
+        _txtLog.setLineWrap(true);
+        _txtLog.setEditable(false);
+        _txtLog.setBackground(Color.WHITE);
+        _scrLogs = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        logHandler = new JTextAreaHandler(txtLog);
+        _logHandler = new JTextAreaHandler(_txtLog);
     }
 
     private void layoutComponents() {
         setLayout(new BorderLayout());
         setBorder(new TitledBorder(Constants.TITLE_LOG));
-        scrLogs.setViewportView(txtLog);
-        add(scrLogs, BorderLayout.CENTER);
+        _scrLogs.setViewportView(_txtLog);
+        add(_scrLogs, BorderLayout.CENTER);
     }
 
     /**
@@ -57,6 +57,6 @@ public class Log extends JPanel {
      *         messages.
      */
     public Handler getLogHandler() {
-        return logHandler;
+        return _logHandler;
     }
 }
