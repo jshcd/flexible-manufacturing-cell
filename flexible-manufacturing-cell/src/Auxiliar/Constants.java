@@ -143,8 +143,8 @@ public class Constants {
     /**
      * CONSTANTS used for GUI
      */
-    public static final int CANVAS_WIDTH = 960;
-    public static final int CANVAS_HEIGHT = 494;
+    public static final int CANVAS_WIDTH = 962;
+    public static final int CANVAS_HEIGHT = 519;
     public static final String TITLE = "Flexible Manufacturing Cell";
     public static final String CONTROL_PANEL_TITLE = "Control Panel";
     public static final String START_TOOL_TIP = "Start";
