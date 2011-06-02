@@ -10,6 +10,7 @@ import Element.Piece.Piece;
 import Element.Conveyor.ConveyorBelt;
 import Element.PieceContainer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -25,7 +26,7 @@ public class AssemblyStation implements PieceContainer {
 
     public AssemblyStation(int id) {
         _id = id;
-        _pieces = new ArrayList<Piece>(2);
+        _pieces = Collections.synchronizedList(new ArrayList <Piece>());
     }
 
     @Override

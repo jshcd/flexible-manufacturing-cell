@@ -10,6 +10,7 @@ import Element.Other.Sensor;
 import Element.Piece.Piece;
 import Element.PieceContainer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ public class WeldingStation implements PieceContainer {
 
     public WeldingStation(int id) {
         _id = id;
-        _pieces = new ArrayList<Piece>(1);
+        _pieces = Collections.synchronizedList(new ArrayList <Piece>());
     }
 
     @Override
