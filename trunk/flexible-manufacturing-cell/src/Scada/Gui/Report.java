@@ -19,7 +19,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class Report extends JDialog {
 
-    private JButton _btnClose;
+    private JButton _buttonClose;
     private JPanel _panel1,_panel2,_panel3;
     private String _currentRightPieces,_currentWrongPieces,_totalRightPieces,
             _totalWrongPieces,_totalNormalStops,_totalEmergencyStops, _totalRestarts;
@@ -29,7 +29,7 @@ public class Report extends JDialog {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == _btnClose) {
+            if (e.getSource() == _buttonClose) {
                 setVisible(false);
             }
         }
@@ -65,8 +65,8 @@ public class Report extends JDialog {
         titled = BorderFactory.createTitledBorder("Stops and Restarts");
         _panel3.setBorder(titled);
        
-        _btnClose = new JButton("Close");
-        _btnClose.addActionListener(_btnActionListener);
+        _buttonClose = new JButton("Close");
+        _buttonClose.addActionListener(_btnActionListener);
     }
 
     private void layoutComponents() {
@@ -78,7 +78,7 @@ public class Report extends JDialog {
 
         add(_panel1);
         add(_panel2);
-        add(_panel3);
+        add(_panel3,  "wrap 15px");
 
         MigLayout reportLayout = new MigLayout("wrap 2",
                 "[left][fill, grow, 40lp:40lp:]", "");
@@ -121,7 +121,8 @@ public class Report extends JDialog {
         value7.setEditable(false);
         _panel3.add(value7, "span 2, wrap");
 
-        add(_btnClose, "cell 1 3, center, width pref!");
+        
+        add(_buttonClose, "cell 0 4, right, width pref!");
 
 
     }
@@ -139,23 +140,5 @@ public class Report extends JDialog {
          */
     }
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("BorderDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Create and set up the content pane.
-        Report newContentPane = new Report();
-        // newContentPane.setOpaque(true); //content panes must be opaque
-        frame.setContentPane(newContentPane);
-
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
 }
