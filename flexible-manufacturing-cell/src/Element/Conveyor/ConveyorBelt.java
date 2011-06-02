@@ -29,7 +29,7 @@ public class ConveyorBelt implements PieceContainer {
 
     public ConveyorBelt(int id, int speed, double length) {
         _id = id;
-        _pieces = new CopyOnWriteArrayList <Piece>();
+        _pieces = Collections.synchronizedList(new ArrayList <Piece>());
         _length = length;
         _speed = speed;
         _moving = false;
@@ -37,13 +37,13 @@ public class ConveyorBelt implements PieceContainer {
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} starts running", _id);
 
         // TODO: Check this works right
         while (true) {
             try {
-                Thread.sleep(40);
+                Thread.sleep(100);
                 if (_moving) {
                     synchronized (_pieces) {
                         Iterator i = _pieces.iterator();

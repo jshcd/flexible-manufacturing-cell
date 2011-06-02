@@ -27,6 +27,7 @@ public class Slave3 implements Slave {
     private DBConnection _dbconnection;
     private ConveyorBelt _acceptedBelt;
     private ConveyorBelt _rejectedBelt;
+    
     private Sensor _sensor8;
     private Sensor _sensor9;
     private Sensor _sensor10;
@@ -65,21 +66,21 @@ public class Slave3 implements Slave {
             _sensor9.setAssociatedContainer(_acceptedBelt);
             _sensor9.setProcess(this);
             _sensor9.setRange(sensor_range);
-            _sensor9.setPositionInBelt(acceptedLength - sensor_range);
+            _sensor9.setPositionInBelt(0);
 
             _sensor10 = new Sensor();
             _sensor10.setSensorId(10);
             _sensor10.setAssociatedContainer(_rejectedBelt);
             _sensor10.setProcess(this);
             _sensor10.setRange(sensor_range);
-            _sensor10.setPositionInBelt(0);
+            _sensor10.setPositionInBelt(reyectedLength - sensor_range);
 
             _sensor11 = new Sensor();
             _sensor11.setSensorId(11);
             _sensor11.setAssociatedContainer(_acceptedBelt);
             _sensor11.setProcess(this);
             _sensor11.setRange(sensor_range);
-            _sensor11.setPositionInBelt(reyectedLength - sensor_range);
+            _sensor11.setPositionInBelt(acceptedLength - sensor_range);
 
             _acceptedBelt.addSensor(_sensor9);
             _acceptedBelt.addSensor(_sensor11);
