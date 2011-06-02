@@ -33,7 +33,7 @@ public class ConfigurationParameters extends JDialog {
     private static final long serialVersionUID = 1L;
 
     /* GUI COMPONENTS */
-    private JButton _btnCancel, _btnAccept;
+    private JButton _buttonCancel, _buttonAccept;
     private JPanel _slave1Parameters, _slave2Parameters, _slave3Parameters, _masterParameters;
     private String _axisBeltCapacity, _axisBeltSpeed, _axisBeltLength,
             _gearBeltCapacity, _gearBeltSpeed, _gearBeltLength, _assemblyActivationTime,
@@ -54,7 +54,7 @@ public class ConfigurationParameters extends JDialog {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == _btnAccept) {
+            if (e.getSource() == _buttonAccept) {
                 String errors = checkData();
                 if (errors.length() > 0) {
                     JOptionPane.showMessageDialog(
@@ -64,7 +64,7 @@ public class ConfigurationParameters extends JDialog {
                     _masterAutomaton.getDbmanager().updateParameters(_masterConfiguration);
                     setVisible(false);
                 }
-            } else if (e.getSource() == _btnCancel) {
+            } else if (e.getSource() == _buttonCancel) {
                 setVisible(false);
             }
         }
@@ -116,10 +116,10 @@ public class ConfigurationParameters extends JDialog {
         titled = BorderFactory.createTitledBorder("Master parameters");
         _masterParameters.setBorder(titled);
 
-        _btnAccept = new JButton("Accept");
-        _btnAccept.addActionListener(btnActionListener);
-        _btnCancel = new JButton("Cancel");
-        _btnCancel.addActionListener(btnActionListener);
+        _buttonAccept = new JButton("Accept");
+        _buttonAccept.addActionListener(btnActionListener);
+        _buttonCancel = new JButton("Cancel");
+        _buttonCancel.addActionListener(btnActionListener);
 
 
 
@@ -233,6 +233,12 @@ public class ConfigurationParameters extends JDialog {
         _masterParameters.add(_clockCycleTimeTxt);
         _masterParameters.add(new JLabel("ms"));
 
+        MigLayout pnlButtonsLayout = new MigLayout("", "[center]", "");
+        JPanel pnlButtons = new JPanel(pnlButtonsLayout);
+        pnlButtons.add(_buttonAccept, "cell 0 0, split 2");
+        pnlButtons.add(_buttonCancel, "cell 0 0");
+
+        add(pnlButtons, "span 2, center, width pref!");
 
     }
 
@@ -280,7 +286,7 @@ public class ConfigurationParameters extends JDialog {
             _OKBeltLengthTxt.setEditable(false);
             _notOKBeltLengthTxt.setEditable(false);
             _qualityActivationTimeTxt.setEditable(false);
-             _clockCycleTimeTxt.setEditable(false);
+            _clockCycleTimeTxt.setEditable(false);
         } else {
             _axisBeltSpeedTxt.setEditable(true);
             _axisBeltCapacityTxt.setEditable(true);
@@ -288,7 +294,7 @@ public class ConfigurationParameters extends JDialog {
             _gearBeltSpeedTxt.setEditable(true);
             _gearBeltCapacityTxt.setEditable(true);
             _gearBeltLengthTxt.setEditable(true);
-             _assemblyActivationTimeTxt.setEditable(true);
+            _assemblyActivationTimeTxt.setEditable(true);
             _weldingBeltSpeedTxt.setEditable(true);
             _weldingBeltLengthTxt.setEditable(true);
             _weldingActivationTimeTxt.setEditable(true);
@@ -296,12 +302,12 @@ public class ConfigurationParameters extends JDialog {
             _OKBeltLengthTxt.setEditable(true);
             _notOKBeltLengthTxt.setEditable(true);
             _qualityActivationTimeTxt.setEditable(true);
-             _clockCycleTimeTxt.setEditable(true);
+            _clockCycleTimeTxt.setEditable(true);
         }
     }
 
     private String checkData() {
-       
+
         return "a";
     }
 
