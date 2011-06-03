@@ -78,26 +78,24 @@ public class MonitorWindow extends JFrame {
                 _buttonEmergencyStop.setEnabled(false);
                 _masterAutomaton.stopSystem();
             } else if (e.getSource() == _buttonReport) {
-             //TODO  llenar los parametros para el informe _report.getValues(_masterAutomaton.getDbmanager().algo);
+                //TODO  llenar los parametros para el informe _report.getValues(_masterAutomaton.getDbmanager().algo);
                 _report.setVisible(true);
+            } else if (e.getSource() == _buttonConfiguration) {
+                //  _configurationParameters.getValues(_masterAutomaton.getDbmanager().readParameters(), _buttonStart.isEnabled());
+                _configurationParameters.setVisible(true);
             }
-             else if (e.getSource() == _buttonConfiguration) {
-		_configurationParameters.getValues(_masterAutomaton.getDbmanager().readParameters(), _buttonStart.isEnabled());
-		_configurationParameters.setVisible(true);
-        }
         }
     };
 
     /**
      * Constructs a monitor window and starts the master automaton.
      *
-     * @param port
-     *            The port _on which the master automaton is listening to slave
-     *            automata connections.
      */
-    public MonitorWindow(int port) {
+    public MonitorWindow(Master master) {
         _imageLoader = new ImageLoader(this);
         _report = new Report();
+        _masterAutomaton = master;
+        _configurationParameters = new ConfigurationParameters(_masterAutomaton);
 
         Dimension size = new Dimension(Constants.GUI_WIDTH, Constants.GUI_HEIGHT);
         setMinimumSize(size);
@@ -109,8 +107,6 @@ public class MonitorWindow extends JFrame {
         createComponents();
         layoutComponents();
 
-        _masterAutomaton = new Master();
-        _configurationParameters = new ConfigurationParameters(_masterAutomaton);
         pack();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
@@ -217,38 +213,38 @@ public class MonitorWindow extends JFrame {
             e1.printStackTrace();
         }
 
-        int port;
+        /*   int port;
         try {
-            if (args.length == 0) {
-                port = Constants.DEFAULT_MASTER_PORT;
-            } else if (args.length == 1) {
-                port = Integer.parseInt(args[0]);
-            } else {
-                System.err.println("Usage error: java -jar masterSCADA.jar [<port>]\n\n"
-                        + "where <port> is a non-priviledged available port in the system [1014, 65535]. "
-                        + "If no port is specified, the default port (42680) is used.");
-                return;
-            }
-
-            if (port < 1024 || port > 65535) {
-                System.err.println("Usage error: java -jar masterSCADA.jar [<port>]\n\n"
-                        + "where <port> is a non-priviledged available port in the system [1014, 65535]. "
-                        + "If no port is specified, the default port (42680) is used.");
-                return;
-            }
-
-            try {
-                MonitorWindow w = new MonitorWindow(port);
-                w.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return;
-            }
-        } catch (NumberFormatException e) {
-            System.err.println("Usage error: java -jar masterSCADA.jar [<port>]\n\n"
-                    + "where <port> is a non-priviledged available port in the system [1014, 65535]. "
-                    + "If no port is specified, the default port (42680) is used.");
-
+        if (args.length == 0) {
+        port = Constants.DEFAULT_MASTER_PORT;
+        } else if (args.length == 1) {
+        port = Integer.parseInt(args[0]);
+        } else {
+        System.err.println("Usage error: java -jar masterSCADA.jar [<port>]\n\n"
+        + "where <port> is a non-priviledged available port in the system [1014, 65535]. "
+        + "If no port is specified, the default port (42680) is used.");
+        return;
         }
+
+        if (port < 1024 || port > 65535) {
+        System.err.println("Usage error: java -jar masterSCADA.jar [<port>]\n\n"
+        + "where <port> is a non-priviledged available port in the system [1014, 65535]. "
+        + "If no port is specified, the default port (42680) is used.");
+        return;
+        }
+         */
+        try {
+            MonitorWindow w = new MonitorWindow(new Master());
+            w.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        /* } catch (NumberFormatException e) {
+        System.err.println("Usage error: java -jar masterSCADA.jar [<port>]\n\n"
+        + "where <port> is a non-priviledged available port in the system [1014, 65535]. "
+        + "If no port is specified, the default port (42680) is used.");
+
+        }*/
     }
 }

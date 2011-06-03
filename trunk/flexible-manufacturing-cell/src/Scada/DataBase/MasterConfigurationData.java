@@ -17,6 +17,7 @@ public class MasterConfigurationData {
     /*public RobotConfigurationData _robot2ConfigurationData;*/
     public int _clockCycleTime;
     
-    public void MasterConfigurationData(){}   
+    public void MasterConfigurationData(){
+    }
     
 }

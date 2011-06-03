@@ -4,7 +4,10 @@ import Scada.DataBase.DBManager;
 import Scada.Gui.Canvas;
 import Element.Robot.Robot2;
 import Scada.DataBase.MasterConfigurationData;
+import Scada.Gui.ConfigurationParameters;
 import Scada.Gui.ImageLoader;
+import Scada.Gui.MonitorWindow;
+import Scada.Gui.Report;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,20 +25,27 @@ public class Master {
     private MasterMailBox _mailBox;
     private DBManager _dbmanager;
     private MasterConfigurationData _configurationData;
-    private Canvas _canvas;
+    //   private Canvas _canvas;
     private Robot2 _robot2;
-    private ImageLoader _imageLoader;
+    // private ImageLoader _imageLoader;
+    private MonitorWindow _monitor;
+    private ConfigurationParameters _configurationParameters;
+    private Report _report;
+    protected Logger _logger = Logger.getLogger(Master.class.toString());
 
     public static void main(String[] args) {
-        Master m = new Master();
+        // Master m = new Master();
     }
 
     public Master() {
         _mailBox = new MasterMailBox();
         _dbmanager = new DBManager();
         _configurationData = null;
-         _canvas = new Canvas(_imageLoader);
         _robot2 = new Robot2();
+        _monitor = new MonitorWindow(this);
+        // _logger.addHandler(monitor.getLog().getLogHandler());
+        //TODO: _report = _dbmanager. leer Datos Informe
+
     }
 
     public void initialize() {
@@ -45,7 +55,7 @@ public class Master {
     public void startSystem() {
         throw new UnsupportedOperationException();
     }
-    
+
     public void stopSystem() {
         throw new UnsupportedOperationException();
     }
@@ -64,14 +74,6 @@ public class Master {
 
     public void loadParameters() {
         throw new UnsupportedOperationException();
-    }
-
-    public Canvas getCanvas() {
-        return _canvas;
-    }
-
-    public void setCanvas(Canvas _canvas) {
-        this._canvas = _canvas;
     }
 
     public DBManager getDbmanager() {
@@ -98,6 +100,18 @@ public class Master {
         this._robot2 = _robot2;
     }
 
+    public MonitorWindow getMonitor() {
+        return _monitor;
+    }
+
+    public void setMonitor(MonitorWindow _monitor) {
+        this._monitor = _monitor;
+    }
+
+    public MasterConfigurationData getConfigurationData() {
+        return _configurationData;
+    }
+
     public void startServer() {
         try {
             Properties prop = new Properties();
@@ -106,12 +120,13 @@ public class Master {
             int port = Integer.parseInt(prop.getProperty("Master.port"));
             ServerSocket skServidor = new ServerSocket(port);
             Logger.getLogger(Master.class.getName()).log(Level.INFO, "Server listening at port {0}", port);
-            while(true) {
+            while (true) {
                 Socket skCliente = skServidor.accept();
                 Logger.getLogger(Master.class.getName()).log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
                 Logger.getLogger(Master.class.getName()).log(Level.INFO, "Received> {0}", (String) in.readObject());
+                // _logger.getLogger(Master.class.getName()).log(Level.INFO, "Received> {0}", (String) in.readObject());
 
                 int a = 0;
                 out.writeObject(a);

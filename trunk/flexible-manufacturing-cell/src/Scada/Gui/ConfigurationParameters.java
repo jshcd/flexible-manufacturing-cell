@@ -34,16 +34,18 @@ public class ConfigurationParameters extends JDialog {
 
     /* GUI COMPONENTS */
     private JButton _buttonCancel, _buttonAccept;
-    private JPanel _slave1Parameters, _slave2Parameters, _slave3Parameters, _masterParameters;
+    private JPanel _slave1Parameters, _slave2Parameters, _slave3Parameters, _masterParameters, _robot1Parameters, _robot2Parameters;
     private String _axisBeltCapacity, _axisBeltSpeed, _axisBeltLength,
             _gearBeltCapacity, _gearBeltSpeed, _gearBeltLength, _assemblyActivationTime,
             _weldingBeltSpeed, _weldingBeltLength, _weldingActivationTime,
-            _OKBeltSpeed, _OKBeltLength, _notOKBeltLength, _qualityActivationTime;
+            _OKBeltSpeed, _OKBeltLength, _notOKBeltLength, _qualityActivationTime,
+            _robot1Axis, _robot1Gear, _robot1Assembly, _robot2Axis, _robot2Gear, _robot2Assembly;
     private JTextField _axisBeltCapacityTxt, _axisBeltSpeedTxt, _axisBeltLengthTxt,
             _gearBeltCapacityTxt, _gearBeltSpeedTxt, _gearBeltLengthTxt, _assemblyActivationTimeTxt,
             _weldingBeltSpeedTxt, _weldingBeltLengthTxt, _weldingActivationTimeTxt,
             _OKBeltSpeedTxt, _OKBeltLengthTxt, _notOKBeltLengthTxt, _qualityActivationTimeTxt,
-            _clockCycleTimeTxt;
+            _clockCycleTimeTxt, _robot1AxisTxt, _robot1GearTxt, _robot1AssemblyTxt,
+            _robot2AxisTxt, _robot2GearTxt, _robot2AssemblyTxt;
     private String _clockCycleTime;
     private MasterConfigurationData _masterConfiguration;
     private Master _masterAutomaton;
@@ -77,7 +79,9 @@ public class ConfigurationParameters extends JDialog {
      *            The master automaton.
      */
     public ConfigurationParameters(Master masterAutomaton) {
-        this._masterAutomaton = masterAutomaton;
+        _masterAutomaton = masterAutomaton;
+        //  _masterConfiguration = _masterAutomaton.getConfigurationData();
+
         setTitle("Configuration Parameters");
         createComponents();
         layoutComponents();
@@ -87,7 +91,6 @@ public class ConfigurationParameters extends JDialog {
     }
 
     private void createComponents() {
-        _masterConfiguration = new MasterConfigurationData();
 
         Border paneEdge = BorderFactory.createEmptyBorder(0, 10, 10, 10);
         TitledBorder titled;
@@ -95,26 +98,36 @@ public class ConfigurationParameters extends JDialog {
         //Slave 1 parameters
         _slave1Parameters = new JPanel();
         _slave1Parameters.setBorder(paneEdge);
-        titled = BorderFactory.createTitledBorder("Assembly station parameters");
+        titled = BorderFactory.createTitledBorder("Assembly station ");
         _slave1Parameters.setBorder(titled);
 
         //Slave 2 parameters
         _slave2Parameters = new JPanel();
         _slave2Parameters.setBorder(paneEdge);
-        titled = BorderFactory.createTitledBorder("Welding station parameters");
+        titled = BorderFactory.createTitledBorder("Welding station ");
         _slave2Parameters.setBorder(titled);
 
         //Slave 3 parameters
         _slave3Parameters = new JPanel();
         _slave3Parameters.setBorder(paneEdge);
-        titled = BorderFactory.createTitledBorder("Quality station parameters");
+        titled = BorderFactory.createTitledBorder("Quality station ");
         _slave3Parameters.setBorder(titled);
 
         //Master parameters
         _masterParameters = new JPanel();
         _masterParameters.setBorder(paneEdge);
-        titled = BorderFactory.createTitledBorder("Master parameters");
+        titled = BorderFactory.createTitledBorder("Master ");
         _masterParameters.setBorder(titled);
+
+        _robot1Parameters = new JPanel();
+        _robot1Parameters.setBorder(paneEdge);
+        titled = BorderFactory.createTitledBorder("Robot 1 ");
+        _robot1Parameters.setBorder(titled);
+
+        _robot2Parameters = new JPanel();
+        _robot2Parameters.setBorder(paneEdge);
+        titled = BorderFactory.createTitledBorder("Robot 2 ");
+        _robot2Parameters.setBorder(titled);
 
         _buttonAccept = new JButton("Accept");
         _buttonAccept.addActionListener(btnActionListener);
@@ -133,8 +146,10 @@ public class ConfigurationParameters extends JDialog {
         contentPane.setLayout(contentPaneLayout);
 
         add(_slave1Parameters);
-        add(_slave1Parameters);
-        add(_slave1Parameters);
+        add(_robot1Parameters);
+        add(_slave2Parameters);
+        add(_robot2Parameters);
+        add(_slave3Parameters);
         add(_masterParameters);
 
         MigLayout pnlCommonLayout = new MigLayout("wrap 3",
@@ -183,6 +198,8 @@ public class ConfigurationParameters extends JDialog {
         _slave1Parameters.add(new JLabel("sec"));
 
         //slave 2
+        pnlCommonLayout = new MigLayout("wrap 3",
+                "[left][fill, grow, 40lp:40lp:][]", "");
         _slave2Parameters.setLayout(pnlCommonLayout);
         _slave2Parameters.add(new JLabel("Belt length: "));
         _weldingBeltLengthTxt = new JTextField(_weldingBeltLength);
@@ -201,7 +218,49 @@ public class ConfigurationParameters extends JDialog {
         _slave2Parameters.add(_weldingActivationTimeTxt);
         _slave2Parameters.add(new JLabel("axis"));
 
+        //robot 1
+        pnlCommonLayout = new MigLayout("wrap 3",
+                "[left][fill, grow, 40lp:40lp:][]", "");
+        _robot1Parameters.setLayout(pnlCommonLayout);
+        _robot1Parameters.add(new JLabel("Axis picking/transport time: "));
+        _robot1AxisTxt = new JTextField(_robot1Axis);
+        _robot1Parameters.add(_robot1AxisTxt);
+        _robot1Parameters.add(new JLabel("sec"));
+
+        _robot1Parameters.add(new JLabel("Gear picking/transport time: "));
+        _robot1GearTxt = new JTextField(_robot1Gear);
+        _robot1Parameters.add(_robot1GearTxt);
+        _robot1Parameters.add(new JLabel("sec"));
+
+        _robot1Parameters.setLayout(pnlCommonLayout);
+        _robot1Parameters.add(new JLabel("Assembly picking/transport time: "));
+        _robot1AssemblyTxt = new JTextField(_robot1Assembly);
+        _robot1Parameters.add(_robot1AssemblyTxt);
+        _robot1Parameters.add(new JLabel("sec"));
+
+        //robot 2
+        pnlCommonLayout = new MigLayout("wrap 3",
+                "[left][fill, grow, 40lp:40lp:][]", "");
+        _robot2Parameters.setLayout(pnlCommonLayout);
+        _robot2Parameters.add(new JLabel("Axis picking/transport time: "));
+        _robot2AxisTxt = new JTextField(_robot2Axis);
+        _robot2Parameters.add(_robot2AxisTxt);
+        _robot2Parameters.add(new JLabel("sec"));
+
+        _robot2Parameters.add(new JLabel("Gear picking/transport time: "));
+        _robot2GearTxt = new JTextField(_robot2Gear);
+        _robot2Parameters.add(_robot2GearTxt);
+        _robot2Parameters.add(new JLabel("sec"));
+
+        _robot2Parameters.setLayout(pnlCommonLayout);
+        _robot2Parameters.add(new JLabel("Assembly picking/transport time: "));
+        _robot2AssemblyTxt = new JTextField(_robot2Assembly);
+        _robot2Parameters.add(_robot2AssemblyTxt);
+        _robot2Parameters.add(new JLabel("sec"));
+
         //slave 3
+        pnlCommonLayout = new MigLayout("wrap 3",
+                "[left][fill, grow, 40lp:40lp:][]", "");
         _slave3Parameters.setLayout(pnlCommonLayout);
         _slave3Parameters.add(new JLabel("OK Belt length: "));
         _OKBeltLengthTxt = new JTextField(_OKBeltLength);
@@ -223,20 +282,22 @@ public class ConfigurationParameters extends JDialog {
         _slave3Parameters.setLayout(pnlCommonLayout);
         _slave3Parameters.add(new JLabel("Activation time: "));
         _qualityActivationTimeTxt = new JTextField(_qualityActivationTime);
-        _slave3Parameters.add(_qualityActivationTimeTxt);
-        _slave3Parameters.add(new JLabel("axis"));
+        _slave3Parameters.add(_qualityActivationTimeTxt, "left");
+        _slave3Parameters.add(new JLabel("sec"));
 
         //Master
+        pnlCommonLayout = new MigLayout("wrap 3",
+                "[left][fill, grow, 40lp:40lp:][]", "");
         _masterParameters.setLayout(pnlCommonLayout);
         _masterParameters.add(new JLabel("Clock cycle: "));
         _clockCycleTimeTxt = new JTextField(_clockCycleTime);
         _masterParameters.add(_clockCycleTimeTxt);
         _masterParameters.add(new JLabel("ms"));
 
-        MigLayout pnlButtonsLayout = new MigLayout("", "[center]", "");
+        MigLayout pnlButtonsLayout = new MigLayout("", "[]20[]", "");
         JPanel pnlButtons = new JPanel(pnlButtonsLayout);
-        pnlButtons.add(_buttonAccept, "cell 0 0, split 2");
-        pnlButtons.add(_buttonCancel, "cell 0 0");
+        pnlButtons.add(_buttonAccept);
+        pnlButtons.add(_buttonCancel);
 
         add(pnlButtons, "span 2, center, width pref!");
 
@@ -307,7 +368,6 @@ public class ConfigurationParameters extends JDialog {
     }
 
     private String checkData() {
-
         return "a";
     }
 
