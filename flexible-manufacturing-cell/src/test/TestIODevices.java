@@ -22,8 +22,8 @@ public class TestIODevices {
 
         Thread t = new Thread(new Runnable() {
             public void run() {
-                Master m = new Master();
-                m.startServer();
+               Master m = new Master();
+               m.startServer();
             }
         });
         t.start();

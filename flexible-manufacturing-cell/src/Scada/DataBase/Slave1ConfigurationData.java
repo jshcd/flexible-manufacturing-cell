@@ -14,6 +14,8 @@ public class Slave1ConfigurationData {
     public BeltConfigurationData _axisBeltConfiguration;
     public int _activationTime;
     
-    public void Slave1ConfigurationData(){}
+    public void Slave1ConfigurationData(){
+      
+    }
     
 }
