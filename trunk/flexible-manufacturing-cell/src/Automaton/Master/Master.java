@@ -25,9 +25,7 @@ public class Master {
     private MasterMailBox _mailBox;
     private DBManager _dbmanager;
     private MasterConfigurationData _configurationData;
-    //   private Canvas _canvas;
     private Robot2 _robot2;
-    // private ImageLoader _imageLoader;
     private MonitorWindow _monitor;
     private ConfigurationParameters _configurationParameters;
     private Report _report;
@@ -42,9 +40,9 @@ public class Master {
         _dbmanager = new DBManager();
         _configurationData = null;
         _robot2 = new Robot2();
-    //    _monitor = new MonitorWindow(this);
+        _monitor = new MonitorWindow(this);
         // _logger.addHandler(monitor.getLog().getLogHandler());
-        //TODO: _report = _dbmanager. leer Datos Informe
+       
 
     }
 
