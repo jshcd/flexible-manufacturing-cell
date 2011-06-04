@@ -134,7 +134,8 @@ public class ConfigurationParameters extends JDialog {
         _buttonCancel = new JButton("Cancel");
         _buttonCancel.addActionListener(btnActionListener);
 
-
+       // getValues(_masterAutomaton.getDbmanager().readParameters(), true);
+        
 
     }
 
@@ -316,21 +317,21 @@ public class ConfigurationParameters extends JDialog {
         this._masterConfiguration = configurationParameters;
         this._showResources = showResources;
 
-        _axisBeltSpeed = String.valueOf(_masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.getSpeed());
-        _axisBeltCapacity = String.valueOf(_masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.getCapacity());
-        _axisBeltLength = String.valueOf(_masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.getLength());
-        _gearBeltSpeed = String.valueOf(_masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.getSpeed());
-        _gearBeltCapacity = String.valueOf(_masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.getCapacity());
-        _gearBeltLength = String.valueOf(_masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.getLength());
-        _assemblyActivationTime = String.valueOf(_masterConfiguration._slave2ConfigurationData._activationTime);
-        _weldingBeltSpeed = String.valueOf(_masterConfiguration._slave2ConfigurationData._weldingBeltConfiguration.getSpeed());
-        _weldingBeltLength = String.valueOf(_masterConfiguration._slave2ConfigurationData._weldingBeltConfiguration.getLength());
-        _weldingActivationTime = String.valueOf(_masterConfiguration._slave2ConfigurationData._activationTime);
-        _OKBeltSpeed = String.valueOf(_masterConfiguration._slave3ConfigurationData._qualityControlBelt.getSpeed());
-        _OKBeltLength = String.valueOf(_masterConfiguration._slave3ConfigurationData._qualityControlBelt.getLength());
-        _notOKBeltLength = String.valueOf(_masterConfiguration._slave3ConfigurationData._notAcceptedBelt.getLength());
-        _qualityActivationTime = String.valueOf(_masterConfiguration._slave3ConfigurationData._activationTime);
-        _clockCycleTime = String.valueOf(_masterConfiguration._clockCycleTime);
+        _axisBeltSpeedTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.getSpeed()));
+        _axisBeltCapacityTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.getCapacity()));
+        _axisBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.getLength()));
+        _gearBeltSpeedTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.getSpeed()));
+        _gearBeltCapacityTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.getCapacity()));
+        _gearBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.getLength()));
+        _assemblyActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._activationTime));
+        _weldingBeltSpeedTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._weldingBeltConfiguration.getSpeed()));
+        _weldingBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._weldingBeltConfiguration.getLength()));
+        _weldingActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._activationTime));
+        _OKBeltSpeedTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._qualityControlBelt.getSpeed()));
+        _OKBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._qualityControlBelt.getLength()));
+        _notOKBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._notAcceptedBelt.getLength()));
+        _qualityActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._activationTime));
+        _clockCycleTimeTxt.setText(String.valueOf(_masterConfiguration._clockCycleTime));
 
         if (!showResources) {
             _axisBeltSpeedTxt.setEditable(false);
@@ -365,7 +366,7 @@ public class ConfigurationParameters extends JDialog {
             _qualityActivationTimeTxt.setEditable(true);
             _clockCycleTimeTxt.setEditable(true);
         }
-          
+        
     }
 
     private String checkData() {

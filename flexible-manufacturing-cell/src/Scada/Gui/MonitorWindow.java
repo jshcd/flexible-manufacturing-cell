@@ -106,7 +106,6 @@ public class MonitorWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createComponents();
         layoutComponents();
-
         pack();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
