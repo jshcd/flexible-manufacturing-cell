@@ -365,6 +365,7 @@ public class ConfigurationParameters extends JDialog {
             _qualityActivationTimeTxt.setEditable(true);
             _clockCycleTimeTxt.setEditable(true);
         }
+          
     }
 
     private String checkData() {

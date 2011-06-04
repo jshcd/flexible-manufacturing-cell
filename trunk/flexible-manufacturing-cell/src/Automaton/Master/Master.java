@@ -34,7 +34,7 @@ public class Master {
     protected Logger _logger = Logger.getLogger(Master.class.toString());
 
     public static void main(String[] args) {
-        // Master m = new Master();
+         Master m = new Master();
     }
 
     public Master() {
@@ -42,7 +42,7 @@ public class Master {
         _dbmanager = new DBManager();
         _configurationData = null;
         _robot2 = new Robot2();
-        _monitor = new MonitorWindow(this);
+    //    _monitor = new MonitorWindow(this);
         // _logger.addHandler(monitor.getLog().getLogHandler());
         //TODO: _report = _dbmanager. leer Datos Informe
 

@@ -17,7 +17,29 @@ public class MasterConfigurationData {
     /*public RobotConfigurationData _robot2ConfigurationData;*/
     public int _clockCycleTime;
     
-    public void MasterConfigurationData(){
+    public  MasterConfigurationData(){
     }
+
+    public void setClockCycleTime(int _clockCycleTime) {
+        this._clockCycleTime = _clockCycleTime;
+    }
+
+    public void setRobot1ConfigurationData(Robot1ConfigurationData _robot1ConfigurationData) {
+        this._robot1ConfigurationData = _robot1ConfigurationData;
+    }
+
+    public void setSlave1ConfigurationData(Slave1ConfigurationData _slave1ConfigurationData) {
+        this._slave1ConfigurationData = _slave1ConfigurationData;
+    }
+
+    public void setSlave2ConfigurationData(Slave2ConfigurationData _slave2ConfigurationData) {
+        this._slave2ConfigurationData = _slave2ConfigurationData;
+    }
+
+    public void setSlave3ConfigurationData(Slave3ConfigurationData _slave3ConfigurationData) {
+        this._slave3ConfigurationData = _slave3ConfigurationData;
+    }
+
+
     
 }
