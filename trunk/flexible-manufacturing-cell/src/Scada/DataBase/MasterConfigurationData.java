@@ -13,9 +13,10 @@ public class MasterConfigurationData {
     public Slave2ConfigurationData _slave2ConfigurationData;
     public Slave3ConfigurationData _slave3ConfigurationData;
     public Robot1ConfigurationData _robot1ConfigurationData;
-    /* Falta por incluir la configuracion del Robot2 */
-    /*public RobotConfigurationData _robot2ConfigurationData;*/
+    public Robot2ConfigurationData _robot2ConfigurationData;
     public int _clockCycleTime;
+    public int _sensorRange;
+    public int _pieceSize;
     
     public  MasterConfigurationData(){
     }
@@ -23,9 +24,21 @@ public class MasterConfigurationData {
     public void setClockCycleTime(int _clockCycleTime) {
         this._clockCycleTime = _clockCycleTime;
     }
+    
+    public void setSensorRange(int _sensorRange){
+        this._sensorRange = _sensorRange;
+    }
+    
+    public void setPieceSize(int _pieceSize){
+        this._pieceSize = _pieceSize;
+    }
 
     public void setRobot1ConfigurationData(Robot1ConfigurationData _robot1ConfigurationData) {
         this._robot1ConfigurationData = _robot1ConfigurationData;
+    }
+    
+    public void setRobot2ConfigurationData(Robot2ConfigurationData _robot2ConfigurationData){
+        this._robot2ConfigurationData = _robot2ConfigurationData;
     }
 
     public void setSlave1ConfigurationData(Slave1ConfigurationData _slave1ConfigurationData) {

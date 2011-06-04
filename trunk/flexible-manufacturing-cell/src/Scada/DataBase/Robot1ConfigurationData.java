@@ -12,65 +12,35 @@ public class Robot1ConfigurationData {
     private int _pickAndPlaceGearTime;
     private int _pickAndPlaceAxisTime;
     private int _pickAndPlaceAssemblyTime;
-    private int _assemblyTime;
-    private int _weldingTime;
-    private int _qualityControlTime;
-    
-    public Robot1ConfigurationData(int pickAndPlaceGearTime, int pickAndPlaceAxisTime, 
-            int pickAndPlaceAssemblyTime, int assemblyTime, int weldingTime, int qualityControlTime){
-        _pickAndPlaceGearTime = pickAndPlaceGearTime;
-        _pickAndPlaceAxisTime = pickAndPlaceAxisTime;
-        _pickAndPlaceAssemblyTime = pickAndPlaceAssemblyTime;
-        _assemblyTime = assemblyTime;
-        _weldingTime = weldingTime;
-        _qualityControlTime = qualityControlTime;
+
+    public Robot1ConfigurationData(int _pickAndPlaceGearTime, int _pickAndPlaceAxisTime, 
+            int _pickAndPlaceAssemblyTime) {
+        this._pickAndPlaceGearTime = _pickAndPlaceGearTime;
+        this._pickAndPlaceAxisTime = _pickAndPlaceAxisTime;
+        this._pickAndPlaceAssemblyTime = _pickAndPlaceAssemblyTime;
     }
-    
-    public int getPickAndPlaceGearTime(){
-        return _pickAndPlaceGearTime;
-    }
-    
-    public int getPickAndPlaceAxisTime(){
-        return _pickAndPlaceAxisTime;
-    }
-    
-    public int getPickAndPlaceAssemblyTime(){
+
+    public int getPickAndPlaceAssemblyTime() {
         return _pickAndPlaceAssemblyTime;
     }
-    
-    public int getAssemblyTime(){
-        return _assemblyTime;
+
+    public void setPickAndPlaceAssemblyTime(int _pickAndPlaceAssemblyTime) {
+        this._pickAndPlaceAssemblyTime = _pickAndPlaceAssemblyTime;
     }
-    
-    public int getWeldingTime(){
-        return _weldingTime;
+
+    public int getPickAndPlaceAxisTime() {
+        return _pickAndPlaceAxisTime;
     }
-    
-    public int getQualityControlTime(){
-        return _qualityControlTime;
+
+    public void setPickAndPlaceAxisTime(int _pickAndPlaceAxisTime) {
+        this._pickAndPlaceAxisTime = _pickAndPlaceAxisTime;
     }
-    
-    public void setPickAndPlaceGearTime(int pickAndPlaceGearTime){
-        _pickAndPlaceGearTime = pickAndPlaceGearTime;
+
+    public int getPickAndPlaceGearTime() {
+        return _pickAndPlaceGearTime;
     }
-    
-    public void setPickAndPlaceAxisTime(int pickAndPlaceAxisTime){
-        _pickAndPlaceAxisTime = pickAndPlaceAxisTime;
-    }
-    
-    public void setPickAndPlaceAssemblyTime(int pickAndPlaceAssemblyTime){
-        _pickAndPlaceAssemblyTime = pickAndPlaceAssemblyTime;
-    }
-    
-    public void setAssemblyTime(int assemblyTime){
-        _assemblyTime = assemblyTime;
-    }
-    
-    public void setWeldingTime(int weldingTime){
-        _weldingTime = weldingTime;
-    }
-    
-    public void setQualityControlTime(int qualityControlTime){
-        _qualityControlTime = qualityControlTime;
+
+    public void setPickAndPlaceGearTime(int _pickAndPlaceGearTime) {
+        this._pickAndPlaceGearTime = _pickAndPlaceGearTime;
     }
 }
