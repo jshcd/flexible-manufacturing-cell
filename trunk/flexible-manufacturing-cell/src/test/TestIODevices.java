@@ -7,9 +7,6 @@ package test;
 
 import Automaton.Master.Master;
 import Automaton.Slaves.Slave1;
-import Element.Other.Sensor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -27,10 +24,5 @@ public class TestIODevices {
             }
         });
         t.start();
-        try {
-            slave.getSensor1().activate();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(TestIODevices.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

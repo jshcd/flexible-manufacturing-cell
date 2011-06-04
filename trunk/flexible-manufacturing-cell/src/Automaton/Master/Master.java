@@ -125,7 +125,7 @@ public class Master {
                 Logger.getLogger(Master.class.getName()).log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                Logger.getLogger(Master.class.getName()).log(Level.INFO, "Received> {0}", (String) in.readObject());
+                Logger.getLogger(Master.class.getName()).log(Level.INFO, "Received> {0}", in.readObject());
                 // _logger.getLogger(Master.class.getName()).log(Level.INFO, "Received> {0}", (String) in.readObject());
 
                 int a = 0;

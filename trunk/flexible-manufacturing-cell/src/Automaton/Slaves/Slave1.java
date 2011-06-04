@@ -153,6 +153,12 @@ public class Slave1 implements Slave {
             _robot.setTrasportTime1(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1).getInt("time"));
             _robot.setTransportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2).getInt("time"));
             _robot.setTransportTime3(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3).getInt("time"));
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                   _robot.startServer();
+                }
+            });
+            t.start();
             (new Thread(_robot)).start();
 
         } catch (SQLException ex) {
@@ -271,8 +277,33 @@ public class Slave1 implements Slave {
     }
 
     public void orderToRobot(int orderNumber) {
-        throw new UnsupportedOperationException();
-        // OJO que aqui los parametros no tienen pq enviarse siempre al mismo robot.
+        try {
+            InputStream is = null;
+            Socket requestSocket = new Socket();
+            ObjectOutputStream out;
+            ObjectInputStream in;
+            Properties prop = new Properties();
+            is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            prop.load(is);
+            int port = Integer.parseInt(prop.getProperty("Robot1.port"));
+            String address = prop.getProperty("Robot1.ip");
+            requestSocket = new Socket(address, port);
+            out = new ObjectOutputStream(requestSocket.getOutputStream());
+            out.flush();
+            out.writeObject(orderNumber);
+            out.flush();
+            in = new ObjectInputStream(requestSocket.getInputStream());
+            try {
+                System.out.println(in.readObject());
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            requestSocket.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void reportToMaster(int orderNumber) {
