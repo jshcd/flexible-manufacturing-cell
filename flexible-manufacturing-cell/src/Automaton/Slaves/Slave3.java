@@ -1,6 +1,7 @@
 /* Slave 3 code */
 package Automaton.Slaves;
 
+import Automaton.Slaves.Data.Slave3Data;
 import Auxiliar.Constants;
 import Element.Station.QualityControlStation;
 import Element.Conveyor.ConveyorBelt;
@@ -32,6 +33,8 @@ public class Slave3 implements Slave {
     private Sensor _sensor9;
     private Sensor _sensor10;
     private Sensor _sensor11;
+    
+    private Slave3Data _statusData;
 
     public Slave3() {
         Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Slave 3 created");
@@ -43,6 +46,18 @@ public class Slave3 implements Slave {
     public Sensor getSensor11(){return _sensor11;}
     public ConveyorBelt getAcceptedBelt(){return _acceptedBelt;}
     public ConveyorBelt getRejectedBelt(){return _rejectedBelt;}
+    
+    public void updateStatusData(){
+        _statusData = new Slave3Data();
+        _statusData.setSensor8Status(_sensor8.isActivated());
+        _statusData.setSensor9Status(_sensor9.isActivated());
+        _statusData.setSensor10Status(_sensor10.isActivated());
+        _statusData.setSensor11Status(_sensor11.isActivated());
+        _statusData.setAcceptedBeltRunning(_acceptedBelt.isMoving());
+        _statusData.setAcceptedBeltPieces(_acceptedBelt.getPieces());
+        _statusData.setRejectedBeltPieces(_rejectedBelt.getPieces());
+        _statusData.setRejectedBeltRunning(_rejectedBelt.isMoving());
+    }
 
     public final void initialize() {
         _dbconnection = new DBConnection();

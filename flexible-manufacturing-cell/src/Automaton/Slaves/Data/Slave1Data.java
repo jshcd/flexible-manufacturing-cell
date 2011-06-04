@@ -48,6 +48,8 @@ public class Slave1Data implements Serializable {
         this._weldingBeltPieces = _weldingBeltPieces;
         this._assemblyStationPieces = _assemblyStationPieces;
     }
+    
+    public Slave1Data(){}
 
     public List<Piece> getAssemblyStationPieces() {
         return _assemblyStationPieces;

@@ -1,5 +1,6 @@
 package Scada.Gui;
 
+import Automaton.Slaves.Data.Slave1Data;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,9 +9,9 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import Auxiliar.Constants;
-import Automaton.Slaves.Slave1;
-import Automaton.Slaves.Slave2;
-import Automaton.Slaves.Slave3;
+import Automaton.Slaves.Data.Slave1Data;
+import Automaton.Slaves.Data.Slave2Data;
+import Automaton.Slaves.Data.Slave3Data;
 import Element.Piece.Piece;
 
 /**
@@ -27,9 +28,10 @@ public class Canvas extends JPanel {
     private QualityControlStation _quality;
     private WeldingStation _welding;
      */
-    private Slave1 _slave1;
-    private Slave2 _slave2;
-    private Slave3 _slave3;
+    
+    private Slave1Data _slave1Data;
+    private Slave2Data _slave2Data;
+    private Slave3Data _slave3Data;
     private boolean _emergencyStopped;
 
     /**
@@ -49,9 +51,9 @@ public class Canvas extends JPanel {
         _emergencyStopped = false;
     }
     
-    public void setSlave1Data(Slave1 slave){_slave1 = slave;}    
-    public void setSlave2Data(Slave2 slave){_slave2 = slave;}
-    public void setSlave3Data(Slave3 slave){_slave3 = slave;}
+    public void setSlave1Data(Slave1Data slaveData){_slave1Data = slaveData;}    
+    public void setSlave2Data(Slave2Data slaveData){_slave2Data = slaveData;}
+    public void setSlave3Data(Slave3Data slaveData){_slave3Data = slaveData;}
 
     /**
      * Tells the canvas whether the system is at an emergency stop or not.
@@ -79,30 +81,30 @@ public class Canvas extends JPanel {
     }
     
     public void paintSlave1(Graphics g){
-        if(_slave1 != null){
+        if(_slave1Data != null){
             /* Paint Gears */
-            for(Piece piece : _slave1.getGearBelt().getPieces()){
+            for(Piece piece : _slave1Data.getGearBeltPieces()){
                 if(piece.getType() == Element.Piece.Piece.PieceType.gear){
                     g.drawImage(_imageLoader._gear, piece.getPos().x, piece.getPos().y, null);
                 }
             }
             
             /* Paint Axis */
-            for(Piece piece : _slave1.getAxisBelt().getPieces()){
+            for(Piece piece : _slave1Data.getAxisBeltPieces()){
                 if(piece.getType() == Element.Piece.Piece.PieceType.axis){
                     g.drawImage(_imageLoader._axis, piece.getPos().x, piece.getPos().y, null);
                 }
             }
             
             /* Paint Assembled Pieces */
-            for(Piece piece : _slave1.getWeldingBelt().getPieces()){
+            for(Piece piece : _slave1Data.getWeldingBeltPieces()){
                 if(piece.getType() == Element.Piece.Piece.PieceType.assembly){
                     g.drawImage(_imageLoader._fullPiece, piece.getPos().x, piece.getPos().y, null);
                 }
             }
             
             /* Paint Sensor1 */
-            if(_slave1.getSensor1().isActivated()){
+            if(_slave1Data.isSensor1Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.GEAR_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.x, 
                         Constants.GEAR_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.y, 
@@ -115,7 +117,7 @@ public class Canvas extends JPanel {
             }
             
             /* Paint Sensor2 */
-            if(_slave1.getSensor2().isActivated()){
+            if(_slave1Data.isSensor2Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x, 
                         Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x, 
@@ -128,7 +130,7 @@ public class Canvas extends JPanel {
             }
             
             /* Paint Sensor3 */
-            if(_slave1.getSensor3().isActivated()){
+            if(_slave1Data.isSensor3Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.AXIS_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.x, 
                         Constants.AXIS_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.y, 
@@ -141,7 +143,7 @@ public class Canvas extends JPanel {
             }
             
              /* Paint Sensor4 */
-            if(_slave1.getSensor4().isActivated()){
+            if(_slave1Data.isSensor4Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x, 
                         Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y, 
@@ -155,7 +157,7 @@ public class Canvas extends JPanel {
             
             
             /* Paint Sensor5 */
-            if(_slave1.getSensor5().isActivated()){
+            if(_slave1Data.isSensor5Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.x, 
                         Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.y, 
@@ -168,7 +170,7 @@ public class Canvas extends JPanel {
             }
             
             /* Assembler Stamper */
-            if(_slave1.getAssemblyStation().isMoving()){
+            if(_slave1Data.isAssemblyStationRunning()){
                 g.drawImage(_imageLoader._assembler, 
                         Constants.WELDING_STAMPER_POSITION_ENABLED.x, 
                         Constants.WELDING_STAMPER_POSITION_ENABLED.y, null);
@@ -178,7 +180,7 @@ public class Canvas extends JPanel {
                         Constants.WELDING_STAMPER_POSITION_DISABLED.y, null);
                 
                 /* Check the pieces that are placed in the station to draw them */
-                 for(Piece piece : _slave1.getAssemblyStation().getPieces()){
+                 for(Piece piece : _slave1Data.getAssemblyStationPieces()){
                     if(piece.getType() == Element.Piece.Piece.PieceType.gear){
                         g.drawImage(_imageLoader._gear,
                                 Constants.WELDING_GEAR_POSITION.x, 
@@ -198,10 +200,10 @@ public class Canvas extends JPanel {
     }
     
     public void paintSlave2(Graphics g){
-        if(_slave2 != null){
+        if(_slave2Data != null){
             
             /* Paint Sensor6 */
-            if(_slave2.getSensor6().isActivated()){
+            if(_slave2Data.isSensor6Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.WELDING_STATION_SENSOR_LIGHT_POSITION.x, 
                         Constants.WELDING_STATION_SENSOR_LIGHT_POSITION.y, 
@@ -214,7 +216,7 @@ public class Canvas extends JPanel {
             }
             
             /* Paint Sensor7 */
-            if(_slave2.getSensor7().isActivated()){
+            if(_slave2Data.isSensor7Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.QUALITY_CONTROL_STATION_LIGHT_SENSOR_POSITION.x, 
                         Constants.QUALITY_CONTROL_STATION_LIGHT_SENSOR_POSITION.y, 
@@ -226,7 +228,7 @@ public class Canvas extends JPanel {
                         null);
             }
             
-            if(_slave2.getWeldingStation().isMoving()){
+            if(_slave2Data.isWeldingStationRunning()){
                 g.drawImage(_imageLoader._torchEnabled, 
                         Constants.TORCH_POSITION_ENABLED.x, 
                         Constants.TORCH_POSITION_ENABLED.y, null);
@@ -239,19 +241,19 @@ public class Canvas extends JPanel {
     }
     
     public void paintSlave3(Graphics g){
-        if(_slave3 != null){
+        if(_slave3Data != null){
             /* Paint Accepted Pieces */
-            for(Piece piece : _slave3.getAcceptedBelt().getPieces()){
+            for(Piece piece : _slave3Data.getAcceptedBeltPieces()){
                 g.drawImage(_imageLoader._fullPieceOk, piece.getPos().x, piece.getPos().y, null);
             }
             
             /* Paint Rejected Pieces */
-            for(Piece piece : _slave3.getRejectedBelt().getPieces()){
+            for(Piece piece : _slave3Data.getRejectedBeltPieces()){
                 g.drawImage(_imageLoader._fullPieceNotOk, piece.getPos().x, piece.getPos().y, null);
             }
             
             /* Paint Sensor8 */
-            if(_slave3.getSensor8().isActivated()){
+            if(_slave3Data.isSensor8Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.x, 
                         Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.y, 
@@ -264,7 +266,7 @@ public class Canvas extends JPanel {
             }
             
             /* Paint Sensor9 */
-            if(_slave3.getSensor9().isActivated()){
+            if(_slave3Data.isSensor9Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.OK_CONVEYOR_SENSOR_RIGHT_LIGHT_POSITION.x, 
                         Constants.OK_CONVEYOR_SENSOR_RIGHT_LIGHT_POSITION.y, 
@@ -277,7 +279,7 @@ public class Canvas extends JPanel {
             }
             
             /* Paint Sensor10 */
-            if(_slave3.getSensor10().isActivated()){
+            if(_slave3Data.isSensor10Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.NOTOK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.x, 
                         Constants.NOTOK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.y, 
@@ -290,7 +292,7 @@ public class Canvas extends JPanel {
             }
             
             /* Paint Sensor11 */
-            if(_slave3.getSensor11().isActivated()){
+            if(_slave3Data.isSensor11Status()){
                 g.drawImage(_imageLoader._sensorGreen, 
                         Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x, 
                         Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y, 

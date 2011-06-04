@@ -24,7 +24,9 @@ public class Slave3Data implements Serializable{
     private List<Piece> _acceptedBeltPieces;
     private List<Piece> _rejectedBeltPieces;
 
-    public Slave3Data(boolean _acceptedBeltRunning, boolean _rejectedBeltRunning, boolean _sensor8Status, boolean _sensor9Status, boolean _sensor10Status, boolean _sensor11Status, List<Piece> _acceptedBeltPieces, List<Piece> _rejectedBeltPieces) {
+    public Slave3Data(boolean _acceptedBeltRunning, boolean _rejectedBeltRunning, 
+            boolean _sensor8Status, boolean _sensor9Status, boolean _sensor10Status, 
+            boolean _sensor11Status, List<Piece> _acceptedBeltPieces, List<Piece> _rejectedBeltPieces) {
         this._acceptedBeltRunning = _acceptedBeltRunning;
         this._rejectedBeltRunning = _rejectedBeltRunning;
         this._sensor8Status = _sensor8Status;
@@ -34,6 +36,8 @@ public class Slave3Data implements Serializable{
         this._acceptedBeltPieces = _acceptedBeltPieces;
         this._rejectedBeltPieces = _rejectedBeltPieces;
     }
+    
+    public Slave3Data(){}
 
     public List<Piece> getAcceptedBeltPieces() {
         return _acceptedBeltPieces;

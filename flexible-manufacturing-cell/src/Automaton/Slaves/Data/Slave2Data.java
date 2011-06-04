@@ -20,23 +20,27 @@ public class Slave2Data implements Serializable{
     private boolean _sensor6Status;
     private boolean _sensor7Status;
     private List<Piece> _weldingStationPieces;
-    private List<Piece> _qualityStationPIeces;
+    private List<Piece> _qualityStationPieces;
 
-    public Slave2Data(boolean _weldingStationRunning, boolean _qualityStationRunning, boolean _sensor6Status, boolean _sensor7Status, List<Piece> _weldingStationPieces, List<Piece> _qualityStationPIeces) {
+    public Slave2Data(boolean _weldingStationRunning, boolean _qualityStationRunning, 
+            boolean _sensor6Status, boolean _sensor7Status, List<Piece> _weldingStationPieces, 
+            List<Piece> _qualityStationPIeces) {
         this._weldingStationRunning = _weldingStationRunning;
         this._qualityStationRunning = _qualityStationRunning;
         this._sensor6Status = _sensor6Status;
         this._sensor7Status = _sensor7Status;
         this._weldingStationPieces = _weldingStationPieces;
-        this._qualityStationPIeces = _qualityStationPIeces;
+        this._qualityStationPieces = _qualityStationPIeces;
+    }
+    
+    public Slave2Data(){}
+
+    public List<Piece> getQualityStationPieces() {
+        return _qualityStationPieces;
     }
 
-    public List<Piece> getQualityStationPIeces() {
-        return _qualityStationPIeces;
-    }
-
-    public void setQualityStationPIeces(List<Piece> _qualityStationPIeces) {
-        this._qualityStationPIeces = _qualityStationPIeces;
+    public void setQualityStationPieces(List<Piece> _qualityStationPieces) {
+        this._qualityStationPieces = _qualityStationPieces;
     }
 
     public boolean isQualityStationRunning() {
