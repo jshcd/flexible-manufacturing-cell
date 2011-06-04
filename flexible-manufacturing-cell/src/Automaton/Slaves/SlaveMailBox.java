@@ -1,5 +1,6 @@
 package Automaton.Slaves;
 
+import Automaton.Slaves.Data.SlaveData;
 import Auxiliar.MailBox;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -61,9 +62,9 @@ public class SlaveMailBox implements MailBox {
         }
     }
 
-    public void sendCommand(short command) {
+    public void sendCommand(SlaveData command) {
         try {
-            _out.writeObject(Short.toString(command));
+            _out.writeObject(command);
             _out.flush();
         } catch (IOException ex) {
             Logger.getLogger(SlaveMailBox.class.getName()).log(Level.SEVERE, null, ex);

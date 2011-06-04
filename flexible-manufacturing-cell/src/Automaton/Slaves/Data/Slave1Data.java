@@ -5,14 +5,13 @@
 package Automaton.Slaves.Data;
 
 import Element.Piece.Piece;
-import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author David
  */
-public class Slave1Data implements Serializable {
+public class Slave1Data extends SlaveData {
     
     private static final long serialVersionUID = 1L;
     private boolean _gearBeltRunning;
