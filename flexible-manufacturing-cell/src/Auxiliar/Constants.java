@@ -70,9 +70,8 @@ public class Constants {
     public final static int ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK = 402;
     public final static int SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK = 403;
     public final static int SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK = 404;
-    /* 
-     * Constants used in DB Queries 
-     */
+    
+    /* Constants used in DB Queries */
     public final static String DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION = "SELECT * FROM belts "
             + "WHERE belts.id = 1";
     public final static String DBQUERY_SELECT_SLAVE1_BELT2_CONFIGURATION = "SELECT * FROM belts "
@@ -82,63 +81,64 @@ public class Constants {
     public final static String DBQUERY_SELECT_SLAVE3_BELT1_CONFIGURATION = "SELECT * FROM belts "
             + "WHERE belts.id = 4";
     public final static String DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION = "SELECT * FROM belts "
-            + "WHERE belts.id = 5";
-    public final static String DBQUERY_SELECT_SLAVE1_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
-            + "FROM activation_times WHERE activation_times.time_name='t1'";
-    public final static String DBQUERY_SELECT_SLAVE2_BELT_CONFIGURATION = "SELECT * FROM belts "
-            + "WHERE belts.id = 3";
-    public final static String DBQUERY_SELECT_SLAVE2_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
-            + "FROM activation_times WHERE activation_times.time_name='t2'";
-    public final static String DBQUERY_SELECT_SLAVE3_ACTIVATION_TIME_CONFIGURATION = "SELECT * "
-            + "FROM activation_times WHERE activation_times.time_name='t3'";
-    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1 = "SELECT * FROM robot1 WHERE robot1.id = 1";
-    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2 = "SELECT * FROM robot1 WHERE robot1.id = 2";
-    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3 = "SELECT * FROM robot1 WHERE robot1.id = 3";
+            + "WHERE belts.id = 5";    
+    
     public final static String DBQUERY_SELECT_ASSEMBLY_STATION_TIME = "SELECT * FROM stations WHERE station_name = 'assembly'";
     public final static String DBQUERY_SELECT_WELDING_STATION_TIME = "SELECT * FROM stations WHERE station_name = 'welding'";
     public final static String DBQUERY_SELECT_QUALITY_STATION_TIME = "SELECT * FROM stations WHERE station_name = 'quality'";
-    public final static String DBQUERY_SELECT_ROBOT2_CONFIGURATION = "SELECT * FROM robots WHERE "
-            + "robots.id = 2";
+    
+    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1 = "SELECT * FROM robot1 WHERE robot1.id = 1";
+    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2 = "SELECT * FROM robot1 WHERE robot1.id = 2";
+    public final static String DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3 = "SELECT * FROM robot1 WHERE robot1.id = 3";
+    public final static String DBQUERY_SELECT_ROBOT2_CONFIGURATION_TR4 = "SELECT * FROM robot2 WHERE robot2.id = 1";
+    public final static String DBQUERY_SELECT_ROBOT2_CONFIGURATION_TR5 = "SELECT * FROM robot2 WHERE robot2.id = 2";
+    public final static String DBQUERY_SELECT_ROBOT2_CONFIGURATION_TR6 = "SELECT * FROM robot2 WHERE robot2.id = 3";
+    
     public final static String DBQUERY_SELECT_GLOBAL_TIMING_CONFIGURATION = "SELECT "
             + "configuration.value FROM configuration WHERE configuration.parameter = 'clock_cycle'";
     public final static String DBQUERY_SELECT_SENSOR_RANGE = "SELECT "
             + "configuration.value FROM configuration WHERE configuration.parameter = 'sensor_range'";
     public final static String DBQUERY_SELECT_PIECE_SIZE = "SELECT "
             + "configuration.value FROM configuration WHERE configuration.parameter = 'piece_size'";
-    /* Constants used in DB Updates */
+    
+    /* Constants used in DB Updates */    
     public final static String DBQUERY_UPDATE_SLAVE1_BELT1_CONFIGURATION = "UPDATE belts "
             + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 1";
     public final static String DBQUERY_UPDATE_SLAVE1_BELT2_CONFIGURATION = "UPDATE belts "
             + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 2";
-    public final static String DBQUERY_UPDATE_SLAVE1_ACTIVATION_TIME_CONFIGURATION = "UPDATE "
-            + "activation_times SET time = '[TIME]' WHERE time_name='t1'";
-    public final static String DBQUERY_UPDATE_SLAVE2_BELT_CONFIGURATION = "UPDATE belts "
-            + "SET length = '[LENGTH]', speed = '[SPEED]' WHERE id = 3";
-    public final static String DBQUERY_UPDATE_SLAVE2_ACTIVATION_TIME_CONFIGURATION = "UPDATE "
-            + "activation_times SET time = '[TIME]' WHERE time_name='t2'";
+    public final static String DBQUERY_UPDATE_SLAVE1_BELT3_CONFIGURATION = "UPDATE belts "
+            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 3";
     public final static String DBQUERY_UPDATE_SLAVE3_BELT1_CONFIGURATION = "UPDATE belts "
-            + "SET length = '[LENGTH]', speed = '[SPEED]' WHERE id = 4";
+            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 4";
     public final static String DBQUERY_UPDATE_SLAVE3_BELT2_CONFIGURATION = "UPDATE belts "
-            + "SET length = '[LENGTH]' WHERE id = 5";
-    public final static String DBQUERY_UPDATE_SLAVE3_ACTIVATION_TIME_CONFIGURATION = "UPDATE "
-            + "activation_times SET time = '[TIME]' WHERE time_name='t3'";
-    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_PICKANDPLACEGEAR =
-            "UPDATE robot1 SET time = '[TIME]' WHERE id=1";
-    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_PICKANDPLACEAXIS =
-            "UPDATE robot1 SET time = '[TIME]' WHERE id=2";
-    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_PICKANDPLACEASSEMBLY =
-            "UPDATE robot1 SET time = '[TIME]' WHERE id=3";
-    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_ASSEMBLYTIME =
-            "UPDATE robot1 SET time = '[TIME]' WHERE id=4";
-    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_WELDINGTIME =
-            "UPDATE robot1 SET time = '[TIME]' WHERE id=5";
-    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_QUALITYCONTROLTIME =
-            "UPDATE robot1 SET time = '[TIME]' WHERE id=6";
-//    public final static String DBQUERY_UPDATE_ROBOT2_CONFIGURATION = "UPDATE robots SET "
-//            + "picking_time = '[PICKING_TIME]', transport_element1 = '[TRANSPORT_TIMEA]', "
-//            + "transport_element2 = '[TRANSPORT_TIMEB]' WHERE id = '2'";
-    public final static String DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION = "UPDATE configuration "
-            + "SET value = '[VALUE]' WHERE parameter = 'clock_cycle'";
+            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 5";
+    
+    public final static String DBQUERY_UPDATE_ASSEMBLY_STATION_TIME = "UPDATE stations "
+            + "SET time = '[TIME]' WHERE station_name = 'assembly'";
+    public final static String DBQUERY_UPDATE_WELDING_STATION_TIME = "UPDATE stations "
+            + "SET time = '[TIME]' WHERE station_name = 'welding'";
+    public final static String DBQUERY_UPDATE_QUALITY_STATION_TIME = "UPDATE stations "
+            + "SET time = '[TIME]' WHERE station_name = 'quality'";
+    
+    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_TR1 = "UPDATE robot1 SET "
+            + "'[TIME]' WHERE robot1.id = 1";
+    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_TR2 = "UPDATE robot1 SET "
+            + "'[TIME]' WHERE robot1.id = 2";
+    public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_TR3 = "UPDATE robot1 SET "
+            + "'[TIME]' WHERE robot1.id = 3";
+    public final static String DBQUERY_UPDATE_ROBOT2_CONFIGURATION_TR4 = "UPDATE robot2 SET "
+            + "'[TIME]' WHERE robot2.id = 1";
+    public final static String DBQUERY_UPDATE_ROBOT2_CONFIGURATION_TR5 = "UPDATE robot2 SET "
+            + "'[TIME]' WHERE robot2.id = 2";
+    public final static String DBQUERY_UPDATE_ROBOT2_CONFIGURATION_TR6 = "UPDATE robot2 SET "
+            + "'[TIME]' WHERE robot2.id = 3";
+    
+    public final static String DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION = "UPDATE "
+            + "configuration SET value = '[VALUE]' WHERE configuration.parameter = 'clock_cycle'";
+    public final static String DBQUERY_UPDATE_SENSOR_RANGE = "UPDATE "
+            + "configuration SET value = '[VALUE]' WHERE configuration.parameter = 'sensor_range'";
+    public final static String DBQUERY_UPDATE_PIECE_SIZE = "UPDATE "
+            + "configuration SET value = '[VALUE]' WHERE configuration.parameter = 'piece_size'";
 
     /**
      * CONSTANTS used for GUI

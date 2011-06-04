@@ -10,16 +10,30 @@ package Scada.DataBase;
  */
 public class Slave2ConfigurationData {
     
-    public BeltConfigurationData _weldingBeltConfiguration;
-    public int _activationTime;
+    public int _weldingActivationTime;
+    public int _qualityControlActivationTime;
     
     public  Slave2ConfigurationData(){}
 
-    public Slave2ConfigurationData(BeltConfigurationData _weldingBeltConfiguration, int _activationTime) {
-        this._weldingBeltConfiguration = _weldingBeltConfiguration;
-        this._activationTime = _activationTime;
+    public Slave2ConfigurationData(int _weldingActivationTime, int _qualityControlActivationTime) {
+        this._weldingActivationTime = _weldingActivationTime;
+        this._qualityControlActivationTime = _qualityControlActivationTime;
     }
 
-    
+    public int getQualityControlActivationTime() {
+        return _qualityControlActivationTime;
+    }
+
+    public void setQualityControlActivationTime(int _qualityControlActivationTime) {
+        this._qualityControlActivationTime = _qualityControlActivationTime;
+    }
+
+    public int getWeldingActivationTime() {
+        return _weldingActivationTime;
+    }
+
+    public void setWeldingActivationTime(int _weldingActivationTime) {
+        this._weldingActivationTime = _weldingActivationTime;
+    }
     
 }

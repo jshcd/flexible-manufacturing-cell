@@ -9,17 +9,29 @@ package Scada.DataBase;
  * @author Ringare
  */
 public class Slave3ConfigurationData {
-    public BeltConfigurationData _qualityControlBelt;
+    public BeltConfigurationData _acceptedBelt;
     public BeltConfigurationData _notAcceptedBelt;
-    public int _activationTime;
     
     public  Slave3ConfigurationData(){}
 
-    public Slave3ConfigurationData(BeltConfigurationData _qualityControlBelt, BeltConfigurationData _notAcceptedBelt, int _activationTime) {
-        this._qualityControlBelt = _qualityControlBelt;
+    public Slave3ConfigurationData(BeltConfigurationData _acceptedBelt, BeltConfigurationData _notAcceptedBelt) {
+        this._acceptedBelt = _acceptedBelt;
         this._notAcceptedBelt = _notAcceptedBelt;
-        this._activationTime = _activationTime;
     }
 
-    
+    public BeltConfigurationData getNotAcceptedBelt() {
+        return _notAcceptedBelt;
+    }
+
+    public void setNotAcceptedBelt(BeltConfigurationData _notAcceptedBelt) {
+        this._notAcceptedBelt = _notAcceptedBelt;
+    }
+
+    public BeltConfigurationData getAcceptedBelt() {
+        return _acceptedBelt;
+    }
+
+    public void setAcceptedBelt(BeltConfigurationData _acceptedBelt) {
+        this._acceptedBelt = _acceptedBelt;
+    }
 }
