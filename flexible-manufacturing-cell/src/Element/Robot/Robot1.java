@@ -250,7 +250,7 @@ public class Robot1 implements Robot, Runnable {
                 Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
+                Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Received> {0}", in.readObject());
 
                 short a = (short) 0;
                 out.writeObject(a);
