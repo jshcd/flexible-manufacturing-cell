@@ -1,6 +1,7 @@
 /* Slave 1 code */
 package Automaton.Slaves;
 
+import Automaton.Slaves.Data.Slave1Data;
 import Element.Robot.Robot1;
 import Auxiliar.*;
 import Element.Conveyor.ConveyorBelt;
@@ -39,6 +40,8 @@ public class Slave1 implements Slave {
     protected Sensor _sensor4;
     protected Sensor _sensor5;
     protected boolean _finishing;
+    
+    protected Slave1Data _statusData;
 
     public Slave1() {
         Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Slave 1 created");
@@ -48,6 +51,22 @@ public class Slave1 implements Slave {
     public ConveyorBelt getAxisBelt(){return _axisBelt;}
     public ConveyorBelt getWeldingBelt(){return _weldingBelt;}
     public AssemblyStation getAssemblyStation(){return _assemblyStation;}
+    
+    public void updateStatusData(){
+        _statusData = new Slave1Data();
+        _statusData.setSensor1Status(_sensor1.isActivated());
+        _statusData.setSensor2Status(_sensor2.isActivated());
+        _statusData.setSensor3Status(_sensor3.isActivated());
+        _statusData.setSensor5Status(_sensor5.isActivated());
+        _statusData.setAssemblyStationPieces(_assemblyStation.getPieces());
+        _statusData.setAssemblyStationRunning(_assemblyStation.isMoving());
+        _statusData.setGearBeltPieces(_gearBelt.getPieces());
+        _statusData.setGearBeltRunning(_gearBelt.isMoving());
+        _statusData.setAxisBeltPieces(_axisBelt.getPieces());
+        _statusData.setAxisBeltRunning(_axisBelt.isMoving());
+        _statusData.setWeldingBeltPieces(_weldingBelt.getPieces());
+        _statusData.setWeldingBeltRunning(_weldingBelt.isMoving());
+    }
 
     public final void initialize() {
         _dbconnection = new DBConnection();

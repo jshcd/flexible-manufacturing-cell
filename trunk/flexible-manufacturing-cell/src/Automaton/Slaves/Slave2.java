@@ -1,6 +1,7 @@
 /* Slave 2 code */
 package Automaton.Slaves;
 
+import Automaton.Slaves.Data.Slave2Data;
 import Auxiliar.Constants;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
@@ -29,6 +30,8 @@ public class Slave2 implements Slave {
     private DBConnection _dbconnection;
     private Sensor _sensor6;
     private Sensor _sensor7;
+    
+    private Slave2Data _statusData;
 
     public Slave2() {
         Logger.getLogger(Slave2.class.getName()).log(Level.INFO, "Slave 2 created");
@@ -37,6 +40,16 @@ public class Slave2 implements Slave {
     public WeldingStation getWeldingStation(){return _weldingStation;}
     public Sensor getSensor6(){return _sensor6;}
     public Sensor getSensor7(){return _sensor7;}
+    
+    public void updateStatusData(){
+        _statusData = new Slave2Data();
+        _statusData.setSensor6Status(_sensor6.isActivated());
+        _statusData.setSensor7Status(_sensor7.isActivated());
+        _statusData.setQualityStationPieces(_qualityStation.getPieces());
+        _statusData.setQualityStationRunning(_qualityStation.isMoving());
+        _statusData.setWeldingStationPieces(_weldingStation.getPieces());
+        _statusData.setWeldingStationRunning(_weldingStation.isMoving());
+    }
 
     public final void initialize() {
         _dbconnection = new DBConnection();
