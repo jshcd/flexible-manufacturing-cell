@@ -33,6 +33,10 @@ public class Slave2 implements Slave {
     public Slave2() {
         Logger.getLogger(Slave2.class.getName()).log(Level.INFO, "Slave 2 created");
     }
+    
+    public WeldingStation getWeldingStation(){return _weldingStation;}
+    public Sensor getSensor6(){return _sensor6;}
+    public Sensor getSensor7(){return _sensor7;}
 
     public final void initialize() {
         _dbconnection = new DBConnection();

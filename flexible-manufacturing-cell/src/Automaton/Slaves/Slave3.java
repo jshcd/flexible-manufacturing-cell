@@ -36,6 +36,13 @@ public class Slave3 implements Slave {
     public Slave3() {
         Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Slave 3 created");
     }
+    
+    public Sensor getSensor8(){return _sensor8;}
+    public Sensor getSensor9(){return _sensor9;}
+    public Sensor getSensor10(){return _sensor10;}
+    public Sensor getSensor11(){return _sensor11;}
+    public ConveyorBelt getAcceptedBelt(){return _acceptedBelt;}
+    public ConveyorBelt getRejectedBelt(){return _rejectedBelt;}
 
     public final void initialize() {
         _dbconnection = new DBConnection();

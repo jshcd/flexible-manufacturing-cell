@@ -43,6 +43,11 @@ public class Slave1 implements Slave {
     public Slave1() {
         Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Slave 1 created");
     }
+    
+    public ConveyorBelt getGearBelt(){return _gearBelt;}
+    public ConveyorBelt getAxisBelt(){return _axisBelt;}
+    public ConveyorBelt getWeldingBelt(){return _weldingBelt;}
+    public AssemblyStation getAssemblyStation(){return _assemblyStation;}
 
     public final void initialize() {
         _dbconnection = new DBConnection();
@@ -165,6 +170,14 @@ public class Slave1 implements Slave {
 
     public Sensor getSensor3() {
         return _sensor3;
+    }
+    
+    public Sensor getSensor4() {
+        return _sensor4;
+    }
+
+    public Sensor getSensor5() {
+        return _sensor5;
     }
 
     /*
