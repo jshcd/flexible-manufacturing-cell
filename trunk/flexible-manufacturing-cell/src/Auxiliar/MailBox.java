@@ -6,7 +6,7 @@
 
 package Auxiliar;
 
-import Automaton.Slaves.Data.SlaveData;
+import Automaton.Slaves.Data.MailboxData;
 
 public interface MailBox {
     
@@ -16,7 +16,7 @@ public interface MailBox {
 
     public void acceptConnection();
 
-    public void sendCommand(SlaveData command);
+    public void sendCommand(MailboxData command);
 
     public void receiveCommand();
 

@@ -11,6 +11,6 @@ import java.io.Serializable;
  *
  * @author Javier
  */
-public class SlaveData implements Serializable {
+public class MailboxData implements Serializable {
 
 }

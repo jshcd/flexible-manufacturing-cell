@@ -1,6 +1,6 @@
 package Automaton.Slaves;
 
-import Automaton.Slaves.Data.SlaveData;
+import Automaton.Slaves.Data.MailboxData;
 import Auxiliar.MailBox;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -62,7 +62,7 @@ public class SlaveMailBox implements MailBox {
         }
     }
 
-    public void sendCommand(SlaveData command) {
+    public void sendCommand(MailboxData command) {
         try {
             _out.writeObject(command);
             _out.flush();
@@ -74,7 +74,7 @@ public class SlaveMailBox implements MailBox {
     public void receiveCommand() {
          try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
-            System.out.println(_in.readObject());
+            System.out.println("He recibido un objeto de la clase " + _in.readObject().getClass());
         } catch (IOException ex) {
             Logger.getLogger(SlaveMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

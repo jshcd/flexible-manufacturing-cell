@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author David
  */
-public class Slave1Data extends SlaveData {
+public class Slave1Data extends MailboxData {
     
     private static final long serialVersionUID = 1L;
     private boolean _gearBeltRunning;

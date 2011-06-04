@@ -111,33 +111,4 @@ public class Master {
     public MasterConfigurationData getConfigurationData() {
         return _configurationData;
     }
-
-    public void startServer() {
-        try {
-            Properties prop = new Properties();
-            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
-            prop.load(is);
-            int port = Integer.parseInt(prop.getProperty("Master.port"));
-            ServerSocket skServidor = new ServerSocket(port);
-            Logger.getLogger(Master.class.getName()).log(Level.INFO, "Server listening at port {0}", port);
-            while (true) {
-                Socket skCliente = skServidor.accept();
-                Logger.getLogger(Master.class.getName()).log(Level.INFO, "Information received");
-                ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                Logger.getLogger(Master.class.getName()).log(Level.INFO, "Received> {0}", in.readObject());
-                // _logger.getLogger(Master.class.getName()).log(Level.INFO, "Received> {0}", (String) in.readObject());
-
-                int a = 0;
-                out.writeObject(a);
-                skCliente.close();
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Master.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Master.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Master.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }
