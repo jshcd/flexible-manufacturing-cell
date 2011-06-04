@@ -89,6 +89,10 @@ public class Sensor implements Runnable {
         _activated = false;
         report(0);
     }
+    
+    public boolean isActivated(){
+        return _activated;
+    }
 
     private void report(int i) {
         _process.orderToRobot(_id * 10 + i);
