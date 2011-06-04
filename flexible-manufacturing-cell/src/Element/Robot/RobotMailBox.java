@@ -1,6 +1,6 @@
 package Element.Robot;
 
-import Automaton.Slaves.Data.SlaveData;
+import Automaton.Slaves.Data.MailboxData;
 import Auxiliar.MailBox;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class RobotMailBox implements MailBox {
         }
     }
 
-    public void sendCommand(SlaveData command) {
+    public void sendCommand(MailboxData command) {
          try {
             _out.writeObject(command);
             _out.flush();
@@ -81,7 +81,7 @@ public class RobotMailBox implements MailBox {
     public void receiveCommand() {
         try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
-            System.out.println(Short.parseShort((String) _in.readObject()));
+            System.out.println("He recibido un objeto de la clase " + _in.readObject().getClass());
         } catch (IOException ex) {
             Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

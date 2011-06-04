@@ -1,6 +1,6 @@
 package Automaton.Master;
 
-import Automaton.Slaves.Data.SlaveData;
+import Automaton.Slaves.Data.MailboxData;
 import Auxiliar.MailBox;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class MasterMailBox implements MailBox {
     private String _id;
     private ObjectOutputStream _out;
     private ObjectInputStream _in;
-    private SlaveData _message;
+    private MailboxData _message;
     private Socket _requestSocket;
 
     /**
@@ -61,7 +61,7 @@ public class MasterMailBox implements MailBox {
         }
     }
 
-    public void sendCommand(SlaveData command) {
+    public void sendCommand(MailboxData command) {
         try {
             _out.writeObject(command);
             _out.flush();
@@ -73,7 +73,7 @@ public class MasterMailBox implements MailBox {
     public void receiveCommand() {
         try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
-            _message = (SlaveData) _in.readObject();
+            _message = (MailboxData) _in.readObject();
             System.out.println("El objeto que ha llegado es del tipo " + _message.getClass());
         } catch (IOException ex) {
             Logger.getLogger(MasterMailBox.class.getName()).log(Level.SEVERE, null, ex);

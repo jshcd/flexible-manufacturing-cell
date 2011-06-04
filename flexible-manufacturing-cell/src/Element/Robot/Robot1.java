@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 public class Robot1 implements Robot, Runnable {
 
-    private RobotMailBox _mailBox;
     private AutomatonState _state;
     private Piece _loadedPiece;
     private int _transportTime1; // When the robot has moved the gear to the assembly table, the robot 1 waits until the sensor 2 is active.
@@ -31,7 +30,6 @@ public class Robot1 implements Robot, Runnable {
 
     public Robot1() {
         _state = AutomatonState.q0;
-        _mailBox = new RobotMailBox(1);
         _gearSensor = false;
         _axisSensor = false;
         _assemblySensor = false;
