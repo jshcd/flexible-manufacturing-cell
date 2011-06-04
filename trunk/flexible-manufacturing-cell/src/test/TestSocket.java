@@ -5,6 +5,7 @@
 
 package test;
 
+import Automaton.Slaves.Data.Slave1Data;
 import Automaton.Slaves.SlaveMailBox;
 import Scada.Communication.Server;
 
@@ -27,7 +28,7 @@ public class TestSocket {
 
         s1mb.startConnection();
         s1mb.acceptConnection();
-        short a = 100;
+        Slave1Data a = new Slave1Data();
 
         SlaveMailBox s2mb = new SlaveMailBox(2);
         s2mb.startConnection();

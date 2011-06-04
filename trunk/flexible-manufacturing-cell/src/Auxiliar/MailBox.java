@@ -6,6 +6,8 @@
 
 package Auxiliar;
 
+import Automaton.Slaves.Data.SlaveData;
+
 public interface MailBox {
     
     public void startConnection();
@@ -14,7 +16,7 @@ public interface MailBox {
 
     public void acceptConnection();
 
-    public void sendCommand(short command);
+    public void sendCommand(SlaveData command);
 
     public void receiveCommand();
 

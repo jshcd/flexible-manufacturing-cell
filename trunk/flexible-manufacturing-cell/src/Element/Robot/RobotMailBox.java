@@ -1,5 +1,6 @@
 package Element.Robot;
 
+import Automaton.Slaves.Data.SlaveData;
 import Auxiliar.MailBox;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -68,9 +69,9 @@ public class RobotMailBox implements MailBox {
         }
     }
 
-    public void sendCommand(short command) {
+    public void sendCommand(SlaveData command) {
          try {
-            _out.writeObject(Short.toString(command));
+            _out.writeObject(command);
             _out.flush();
         } catch (IOException ex) {
             Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
