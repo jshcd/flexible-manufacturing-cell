@@ -12,10 +12,11 @@ public class BeltConfigurationData {
     private int _length;
     private int _speed;
     private int _capacity;
+
+
+    public  BeltConfigurationData(){ }
     
-    public void BeltConfiguration(){ }
-    
-    public void BeltConfiguration(int length, int speed, int capacity){
+    public  BeltConfigurationData(int length, int speed, int capacity){
         _length = length;
         _speed = speed;
         _capacity = capacity;
