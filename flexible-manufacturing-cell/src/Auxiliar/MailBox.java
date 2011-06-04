@@ -6,8 +6,6 @@
 
 package Auxiliar;
 
-import Automaton.Slaves.Data.MailboxData;
-
 public interface MailBox {
     
     public void startConnection();

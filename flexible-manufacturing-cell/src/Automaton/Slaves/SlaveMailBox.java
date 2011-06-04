@@ -1,6 +1,6 @@
 package Automaton.Slaves;
 
-import Automaton.Slaves.Data.MailboxData;
+import Auxiliar.MailboxData;
 import Auxiliar.MailBox;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -34,8 +34,8 @@ public class SlaveMailBox implements MailBox {
             Properties prop = new Properties();
             InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
             prop.load(is);
-            _port = Integer.parseInt(prop.getProperty("Scada.port"));
-            _address = prop.getProperty("Scada.ip");
+            _port = Integer.parseInt(prop.getProperty("Master.port"));
+            _address = prop.getProperty("Master.ip");
             //_requestSocket = new Socket();
             _requestSocket = new Socket(_address, _port);
         } catch (UnknownHostException ex) {
