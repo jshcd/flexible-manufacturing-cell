@@ -1,12 +1,13 @@
 package Automaton.Master;
 
-import Automaton.Slaves.Data.MailboxData;
+import Auxiliar.MailboxData;
 import Auxiliar.MailBox;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Properties;
@@ -18,7 +19,7 @@ public class MasterMailBox implements MailBox {
     private ObjectOutputStream _out;
     private ObjectInputStream _in;
     private MailboxData _message;
-    private Socket _requestSocket;
+    private ServerSocket _serverSocket;
 
     /**
      * Constructs a new <code>MasterMailBox</code> with the indicated id
@@ -33,10 +34,9 @@ public class MasterMailBox implements MailBox {
             Properties prop = new Properties();
             InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
             prop.load(is);
-            int port = Integer.parseInt(prop.getProperty("Scada.port"));
-            String address = prop.getProperty("Scada.ip");
+            int port = Integer.parseInt(prop.getProperty("Master.port"));
 
-            _requestSocket = new Socket(address, port);
+            _serverSocket = new ServerSocket(port);
         } catch (UnknownHostException ex) {
             Logger.getLogger(MasterMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -46,7 +46,7 @@ public class MasterMailBox implements MailBox {
 
     public void endConnection() {
         try {
-            _requestSocket.close();
+            _serverSocket.close();
         } catch (IOException ex) {
             Logger.getLogger(MasterMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,7 +54,9 @@ public class MasterMailBox implements MailBox {
 
     public void acceptConnection() {
         try {
-            _out = new ObjectOutputStream(_requestSocket.getOutputStream());
+            Socket skCliente = _serverSocket.accept();
+            _out = new ObjectOutputStream(skCliente.getOutputStream());
+            _in = new ObjectInputStream(skCliente.getInputStream());
             _out.flush();
         } catch (IOException ex) {
             Logger.getLogger(MasterMailBox.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,7 +74,6 @@ public class MasterMailBox implements MailBox {
 
     public void receiveCommand() {
         try {
-            _in = new ObjectInputStream(_requestSocket.getInputStream());
             _message = (MailboxData) _in.readObject();
             System.out.println("El objeto que ha llegado es del tipo " + _message.getClass());
         } catch (IOException ex) {

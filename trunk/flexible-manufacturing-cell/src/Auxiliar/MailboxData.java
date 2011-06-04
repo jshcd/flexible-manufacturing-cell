@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Automaton.Slaves.Data;
+package Auxiliar;
 
 import java.io.Serializable;
 

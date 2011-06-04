@@ -4,6 +4,7 @@
  */
 package Automaton.Slaves.Data;
 
+import Auxiliar.MailboxData;
 import Element.Piece.Piece;
 import java.util.List;
 
