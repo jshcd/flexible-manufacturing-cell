@@ -2,6 +2,10 @@
 package Automaton.Slaves;
 
 import Automaton.Slaves.Data.Slave2Data;
+import Automaton.Slaves.Slave;
+import Automaton.Slaves.Slave;
+import Automaton.Slaves.SlaveMailBox;
+import Automaton.Slaves.SlaveMailBox;
 import Auxiliar.Constants;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
@@ -114,6 +118,9 @@ public class Slave2 implements Slave {
     public void runCommand(int command) {
         Piece p;
         switch (command) {
+            case Constants.START_SLAVE2:
+                start();
+                break;
             case Constants.ROBOT2_SLAVE2_REQUEST_WELDING:
                 _weldingStation.weld();
                 break;

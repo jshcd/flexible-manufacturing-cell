@@ -40,6 +40,7 @@ public class Slave1Test extends Slave1 {
     public void orderToRobot(int i) {
         test.sendToRobot1(i);
         test.sendToRobot2(i);
+        test.sendToSlave1(i);
         test.sendToSlave2(i);
         test.sendToSlave3(i);
 //        System.out.println("S1 " + i);

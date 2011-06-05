@@ -215,7 +215,7 @@ public class Slave1 implements Slave {
         _axisBelt.startContainer();
         _assemblyStation.startContainer();
         _weldingBelt.startContainer();
-        orderToRobot(Constants.START_ORDER);
+        orderToRobot(Constants.START_ROBOT1);
         reportToMaster(Constants.SLAVE_ONE_STARTING);
         mainLoop();
     }
@@ -236,7 +236,7 @@ public class Slave1 implements Slave {
     public void runCommand(int command) {
         Piece p;
         switch (command) {
-            case Constants.START_ORDER:
+            case Constants.START_SLAVE1:
                 start();
                 break;
             case Constants.EMERGENCY_STOP_ORDER:

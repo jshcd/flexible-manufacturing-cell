@@ -99,6 +99,8 @@ public class Robot1 implements Robot, Runnable {
                 case q9:
                     returnToIdle();
             }
+            
+            Thread.yield();
         }
     }
 
