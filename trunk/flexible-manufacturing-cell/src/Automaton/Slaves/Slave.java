@@ -2,6 +2,8 @@
 
 package Automaton.Slaves;
 
+import Scada.DataBase.MasterConfigurationData;
+
 public interface Slave {
     public void start();
 
@@ -14,4 +16,6 @@ public interface Slave {
     public void orderToRobot(int i);
 
     public void startServer();
+    
+    public void storeInitialConfiguration(MasterConfigurationData m);
 }

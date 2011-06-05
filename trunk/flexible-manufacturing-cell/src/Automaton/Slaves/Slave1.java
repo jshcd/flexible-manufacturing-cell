@@ -8,8 +8,10 @@ import Element.Conveyor.ConveyorBelt;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
 import Element.Piece.Piece.PieceType;
-import Scada.DataBase.DBConnection;
 import Element.Station.AssemblyStation;
+import Scada.DataBase.MasterConfigurationData;
+import Scada.DataBase.Robot1ConfigurationData;
+import Scada.DataBase.Slave1ConfigurationData;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,7 +34,6 @@ public class Slave1 implements Slave, IOProcess {
     protected ConveyorBelt _axisBelt;
     protected ConveyorBelt _weldingBelt;
     protected Robot1 _robot;
-    protected DBConnection _dbconnection;
     protected AssemblyStation _assemblyStation;
     protected Sensor _sensor1;
     protected Sensor _sensor2;
@@ -41,6 +42,10 @@ public class Slave1 implements Slave, IOProcess {
     protected Sensor _sensor5;
     protected boolean _finishing;
     protected Slave1Data _statusData;
+    protected Slave1ConfigurationData _slave1ConfigurationData;
+    protected Robot1ConfigurationData _robot1ConfigurationData;
+    protected double sensor_range;
+    protected double pieceSize;
     private IOInterface ioi;
 
     public static void main(String args[]) {
@@ -86,8 +91,6 @@ public class Slave1 implements Slave, IOProcess {
     }
 
     public final void initialize() {
-        _dbconnection = new DBConnection();
-        _dbconnection.connect();
 
         ioi = new IOInterface();
         ioi.setProcess(this);
@@ -95,115 +98,102 @@ public class Slave1 implements Slave, IOProcess {
         ioi.bind();
 
         _finishing = false;
-
         _mailBox = new SlaveOutputMailBox(1);
-        try {
-            // TODO: Estos parametros no deben cargase asi, pero lo dejamos de momento para hacer pruebas
-            int gearSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION).getInt("length");
-            int gearLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION).getInt("speed");
-            int axisSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT2_CONFIGURATION).getInt("length");
-            double axisLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT2_CONFIGURATION).getDouble("speed");
-            int weldingSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT3_CONFIGURATION).getInt("length");
-            double weldingLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT3_CONFIGURATION).getDouble("speed");
-            double sensor_range = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SENSOR_RANGE).getDouble("value");
 
-            _gearBelt = new ConveyorBelt(1, gearSpeed, gearLength);
-            _axisBelt = new ConveyorBelt(2, axisSpeed, axisLength);
+        int gearSpeed = _slave1ConfigurationData._gearBeltConfiguration.getSpeed();
+        double gearLength = (double) _slave1ConfigurationData._gearBeltConfiguration.getLength();
+        int axisSpeed = _slave1ConfigurationData._axisBeltConfiguration.getSpeed();
+        double axisLength = (double) _slave1ConfigurationData._axisBeltConfiguration.getLength();
+        int weldingSpeed = _slave1ConfigurationData._weldingBeltConfiguration.getSpeed();
+        double weldingLength = (double) _slave1ConfigurationData._weldingBeltConfiguration.getLength();
 
-            _assemblyStation = new AssemblyStation(3);
-            _assemblyStation.setAssemblyTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ASSEMBLY_STATION_TIME).getInt("time"));
-            _assemblyStation.setProcess(this);
+        _gearBelt = new ConveyorBelt(1, gearSpeed, gearLength);
+        _axisBelt = new ConveyorBelt(2, axisSpeed, axisLength);
 
-            _weldingBelt = new ConveyorBelt(4, weldingSpeed, weldingLength);
+        _assemblyStation = new AssemblyStation(3);
+        _assemblyStation.setAssemblyTime(_slave1ConfigurationData._assemblyActivationTime);
+        _assemblyStation.setProcess(this);
 
-            _sensor1 = new Sensor();
-            _sensor1.setSensorId(1);
-            _sensor1.setAssociatedContainer(_gearBelt);
-            _sensor1.setProcess(this);
-            _sensor1.setRange(sensor_range);
-            _sensor1.setPositionInBelt(gearLength - sensor_range);
+        _weldingBelt = new ConveyorBelt(4, weldingSpeed, weldingLength);
 
-            _sensor2 = new Sensor();
-            _sensor2.setSensorId(2);
-            _sensor2.setAssociatedContainer(_axisBelt);
-            _sensor2.setProcess(this);
-            _sensor2.setRange(sensor_range);
-            _sensor2.setPositionInBelt(axisLength - sensor_range);
+        _sensor1 = new Sensor();
+        _sensor1.setSensorId(1);
+        _sensor1.setAssociatedContainer(_gearBelt);
+        _sensor1.setProcess(this);
+        _sensor1.setRange(sensor_range);
+        _sensor1.setPositionInBelt(gearLength - sensor_range);
 
-            _sensor3 = new Sensor();
-            _sensor3.setSensorId(3);
-            _sensor3.setAssociatedContainer(_assemblyStation);
-            _sensor3.setProcess(this);
-            _sensor3.setRange(sensor_range);
-            _sensor3.setPositionInBelt(0);
+        _sensor2 = new Sensor();
+        _sensor2.setSensorId(2);
+        _sensor2.setAssociatedContainer(_axisBelt);
+        _sensor2.setProcess(this);
+        _sensor2.setRange(sensor_range);
+        _sensor2.setPositionInBelt(axisLength - sensor_range);
 
-            _sensor4 = new Sensor();
-            _sensor4.setSensorId(4);
-            _sensor4.setAssociatedContainer(_weldingBelt);
-            _sensor4.setProcess(this);
-            _sensor4.setRange(sensor_range);
-            _sensor4.setPositionInBelt(0);
+        _sensor3 = new Sensor();
+        _sensor3.setSensorId(3);
+        _sensor3.setAssociatedContainer(_assemblyStation);
+        _sensor3.setProcess(this);
+        _sensor3.setRange(sensor_range);
+        _sensor3.setPositionInBelt(0);
 
-            _sensor5 = new Sensor();
-            _sensor5.setSensorId(5);
-            _sensor5.setAssociatedContainer(_weldingBelt);
-            _sensor5.setProcess(this);
-            _sensor5.setRange(sensor_range);
-            _sensor5.setPositionInBelt(weldingLength - sensor_range);
+        _sensor4 = new Sensor();
+        _sensor4.setSensorId(4);
+        _sensor4.setAssociatedContainer(_weldingBelt);
+        _sensor4.setProcess(this);
+        _sensor4.setRange(sensor_range);
+        _sensor4.setPositionInBelt(0);
 
-            _gearBelt.addSensor(_sensor1);
-            _axisBelt.addSensor(_sensor2);
-            _assemblyStation.addSensor(_sensor3);
-            _weldingBelt.addSensor(_sensor4);
-            _weldingBelt.addSensor(_sensor5);
+        _sensor5 = new Sensor();
+        _sensor5.setSensorId(5);
+        _sensor5.setAssociatedContainer(_weldingBelt);
+        _sensor5.setProcess(this);
+        _sensor5.setRange(sensor_range);
+        _sensor5.setPositionInBelt(weldingLength - sensor_range);
 
-            // We start the belts
-            Thread gearBelt = new Thread(_gearBelt);
-            gearBelt.start();
-            Thread axisBelt = new Thread(_axisBelt);
-            axisBelt.start();
-            Thread assemblyStation = new Thread(_assemblyStation);
-            assemblyStation.start();
-            Thread weldingBelt = new Thread(_weldingBelt);
-            weldingBelt.start();
+        _gearBelt.addSensor(_sensor1);
+        _axisBelt.addSensor(_sensor2);
+        _assemblyStation.addSensor(_sensor3);
+        _weldingBelt.addSensor(_sensor4);
+        _weldingBelt.addSensor(_sensor5);
 
-            //We start the sensors
-            Thread sensor1 = new Thread(_sensor1);
-            sensor1.start();
-            Thread sensor2 = new Thread(_sensor2);
-            sensor2.start();
-            Thread sensor3 = new Thread(_sensor3);
-            sensor3.start();
-            Thread sensor4 = new Thread(_sensor4);
-            sensor4.start();
-            Thread sensor5 = new Thread(_sensor5);
-            sensor5.start();
+        // We start the belts
+        Thread gearBelt = new Thread(_gearBelt);
+        gearBelt.start();
+        Thread axisBelt = new Thread(_axisBelt);
+        axisBelt.start();
+        Thread assemblyStation = new Thread(_assemblyStation);
+        assemblyStation.start();
+        Thread weldingBelt = new Thread(_weldingBelt);
+        weldingBelt.start();
 
-        } catch (SQLException ex) {
-            System.err.println("Error at loading database at Slave 1");
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        //We start the sensors
+        Thread sensor1 = new Thread(_sensor1);
+        sensor1.start();
+        Thread sensor2 = new Thread(_sensor2);
+        sensor2.start();
+        Thread sensor3 = new Thread(_sensor3);
+        sensor3.start();
+        Thread sensor4 = new Thread(_sensor4);
+        sensor4.start();
+        Thread sensor5 = new Thread(_sensor5);
+        sensor5.start();
     }
 
     public void startRobot() {
         _robot = new Robot1();
-        try {
-            _robot.setTrasportTime1(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1).getInt("time"));
-            _robot.setTransportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2).getInt("time"));
-            _robot.setTransportTime3(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3).getInt("time"));
-            Thread t = new Thread(new Runnable() {
 
-                public void run() {
-                    _robot.startServer();
-                }
-            });
-            t.start();
-            (new Thread(_robot)).start();
+        _robot.setTrasportTime1(_robot1ConfigurationData.getPickAndPlaceGearTime());
+        _robot.setTransportTime2(_robot1ConfigurationData.getPickAndPlaceAxisTime());
+        _robot.setTransportTime3(_robot1ConfigurationData.getPickAndPlaceAssemblyTime());
+        Thread t = new Thread(new Runnable() {
 
-        } catch (SQLException ex) {
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            public void run() {
+                _robot.startServer();
+            }
+        });
+        t.start();
+        (new Thread(_robot)).start();
     }
 
     public Sensor getSensor1() {
@@ -357,10 +347,7 @@ public class Slave1 implements Slave, IOProcess {
     // This loop is intended to keep adding pieces to the starting belts while the system is working
     protected void mainLoop() {
 
-        double pieceSize;
         try {
-
-            pieceSize = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_PIECE_SIZE).getDouble("value");
             // if we didn't receive the order to finish, we keep adding pieces
             while (!_finishing) {
 
@@ -416,8 +403,6 @@ public class Slave1 implements Slave, IOProcess {
                 }
             }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
             Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -450,6 +435,13 @@ public class Slave1 implements Slave, IOProcess {
         } catch (IOException ex) {
             Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public void storeInitialConfiguration(MasterConfigurationData md) {
+        _slave1ConfigurationData = md._slave1ConfigurationData;
+        _robot1ConfigurationData = md._robot1ConfigurationData;
+        sensor_range = (double) md._sensorRange;
+        pieceSize = (double) md._pieceSize;
+        initialize();
     }
 
     
