@@ -52,6 +52,12 @@ public class Master {
 
     public void initialize() {
         _configurationData = _dbmanager.readParameters();
+        Thread t = new Thread(new Runnable() {
+           public void run() {
+               _mailBox.startServer();
+           }
+       });
+       t.start();
     }
     
     public void startRobot() {
