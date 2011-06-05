@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class Robot2 implements Robot,Runnable {
 
-    private RobotMailBox _mailBox;
+    private RobotOutputMailBox _mailBox;
     private AutomatonState _state;
     private Piece _loadedPiece;
     private boolean _weldingSensor;
@@ -34,7 +34,7 @@ public class Robot2 implements Robot,Runnable {
 
     public Robot2() {
         _state = AutomatonState.q0;
-        _mailBox = new RobotMailBox(2);
+        _mailBox = new RobotOutputMailBox(2);
         _weldingSensor = false;
         _qualityTableSensor = false;
         _weldingCompleted = false;

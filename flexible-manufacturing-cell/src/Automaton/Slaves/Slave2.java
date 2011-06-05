@@ -4,8 +4,8 @@ package Automaton.Slaves;
 import Automaton.Slaves.Data.Slave2Data;
 import Automaton.Slaves.Slave;
 import Automaton.Slaves.Slave;
-import Automaton.Slaves.SlaveMailBox;
-import Automaton.Slaves.SlaveMailBox;
+import Automaton.Slaves.SlaveOutputMailBox;
+import Automaton.Slaves.SlaveOutputMailBox;
 import Auxiliar.Constants;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 public class Slave2 implements Slave {
 
-    private SlaveMailBox _mailBox;
+    private SlaveOutputMailBox _mailBox;
     private WeldingStation _weldingStation;
     private QualityControlStation _qualityStation;
     private DBConnection _dbconnection;

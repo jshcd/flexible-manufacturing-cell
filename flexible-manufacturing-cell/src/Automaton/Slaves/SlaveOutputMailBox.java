@@ -1,4 +1,4 @@
-package Element.Robot;
+package Automaton.Slaves;
 
 import Auxiliar.MailboxData;
 import Auxiliar.MailBox;
@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class RobotMailBox implements MailBox {
+public class SlaveOutputMailBox implements MailBox {
+
     private String _id;
     private ObjectOutputStream _out;
     private ObjectInputStream _in;
@@ -22,16 +22,13 @@ public class RobotMailBox implements MailBox {
     private Socket _requestSocket;
 
     /**
-     * Constructs a new <code>RobotMailBox</code> with the indicated id
-     * @param id Identifier of the <code>RobotMailBox</code>
+     * Constructs a new <code>SlaveMailBox</code> with the indicated id
+     * @param id Identifier of the <code>SlaveMailBox</code>
      */
-    public RobotMailBox(int id){
-        _id = "Robot"+id;
+    public SlaveOutputMailBox (int id) {
+        _id = "Slave"+id;
     }
 
-    /**
-     *
-     */
     public void startConnection() {
         try {
             Properties prop = new Properties();
@@ -39,24 +36,20 @@ public class RobotMailBox implements MailBox {
             prop.load(is);
             _port = Integer.parseInt(prop.getProperty("Master.port"));
             _address = prop.getProperty("Master.ip");
-
+            //_requestSocket = new Socket();
             _requestSocket = new Socket(_address, _port);
         } catch (UnknownHostException ex) {
-            Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /**
-     *
-     * @param destiny
-     */
     public void endConnection() {
         try {
             _requestSocket.close();
         } catch (IOException ex) {
-            Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -65,33 +58,33 @@ public class RobotMailBox implements MailBox {
             _out = new ObjectOutputStream(_requestSocket.getOutputStream());
             _out.flush();
         } catch (IOException ex) {
-            Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void sendCommand(MailboxData command) {
-         try {
+        try {
             _out.writeObject(command);
             _out.flush();
         } catch (IOException ex) {
-            Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void receiveCommand() {
-        try {
+         try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
             System.out.println("He recibido un objeto de la clase " + _in.readObject().getClass());
         } catch (IOException ex) {
-            Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(RobotMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     /**
-     * Returns the identifier of the <code>RobotMailBox</code>
-     * @return Identifier of the <code>RobotMailBox</code>
+     * Returns the identifier of the <code>SlaveMailBox</code>
+     * @return Identifier of the <code>SlaveMailBox</code>
      */
     public String getId() {
         return _id;
