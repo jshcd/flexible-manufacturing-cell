@@ -25,30 +25,30 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Slave1Test extends Slave1 {
+public class Slave1Test extends Slave1 implements IOProcess {
 
-    TestAutomata test;
+    IOInterface ioi;
     Robot1Test _robot;
 
     public Slave1Test() {
         super();
+        ioi = new IOInterface();
+        ioi.setProcess(this);
+        ioi.setPortLag(0);
+        ioi.bind();
+        (new Thread(ioi)).start();
     }
 
     public void reportToMaster(int i) {
+        sendCommand(i);
     }
 
     public void orderToRobot(int i) {
-        test.sendToRobot1(i);
-        test.sendToRobot2(i);
-        test.sendToSlave1(i);
-        test.sendToSlave2(i);
-        test.sendToSlave3(i);
-//        System.out.println("S1 " + i);
+        sendCommand(i);
     }
 
     public void startRobot() {
         _robot = new Robot1Test();
-        _robot.setTest(test);
         try {
             _robot.setTrasportTime1(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1).getInt("time"));
             _robot.setTransportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2).getInt("time"));
@@ -77,13 +77,24 @@ public class Slave1Test extends Slave1 {
         Logger.getLogger(Slave1.class.getName()).log(Level.FINE, "Added axis");
     }
 
-    public void setTest(TestAutomata test) {
-        this.test = test;
-    }
-
     public Robot1Test getRobot() {
         return _robot;
     }
+
+    public void sendCommand(int command) {
+//        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+//        for (int i = 1; i < elements.length; i++) {
+//            StackTraceElement s = elements[i];
+//            System.out.println("\tat " + s.getClassName() + "." + s.getMethodName()
+//                    + "(" + s.getFileName() + ":" + s.getLineNumber() + ")");
+//        }
+//        System.out.println("SENGIND: " + command);
+        ioi.send((short) command);
+    }
     
-    
+    @Override
+    public void runCommand (int command){
+//        System.out.println("S1 running: " + command);
+        super.runCommand(command);
+    }
 }

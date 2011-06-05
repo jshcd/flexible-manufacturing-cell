@@ -25,7 +25,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Slave1 implements Slave {
+public class Slave1 implements Slave, IOProcess {
 
     protected SlaveOutputMailBox _mailBox;
     protected ConveyorBelt _gearBelt;
@@ -41,6 +41,7 @@ public class Slave1 implements Slave {
     protected Sensor _sensor5;
     protected boolean _finishing;
     protected Slave1Data _statusData;
+    private IOInterface ioi;
 
     public static void main(String args[]) {
         Slave1 s1 = new Slave1();
@@ -87,6 +88,11 @@ public class Slave1 implements Slave {
     public final void initialize() {
         _dbconnection = new DBConnection();
         _dbconnection.connect();
+
+        ioi = new IOInterface();
+        ioi.setProcess(this);
+        ioi.setPortLag(0);
+        ioi.bind();
 
         _finishing = false;
 
@@ -444,5 +450,10 @@ public class Slave1 implements Slave {
         } catch (IOException ex) {
             Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    
+    public void sendCommand(int command) {
+        ioi.send((short) command);
     }
 }
