@@ -1,19 +1,29 @@
-/*
- * This class is in charge of connecting to a database and retrieving and setting paremeter sets.
- * It also provides RMI access to send parameters.
- */
 package Scada.DataBase;
 
+/* Imports */
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Defines the different functionalities that the system will have to gather 
+ * and save the configuration parameters to the database
+ * @author Echoplex
+ */
 public class DBManager {
 
+    /**
+     * String that defines the report configuration file
+     */
     private static final String REPORTS_PATH = "report.properties";
 
+    /**
+     * Reads the configuration parameters from the database and 
+     * stores them in a new instance of MasterConfigurationData
+     * @return MasterConfigurationData instance with the gathered data
+     */
     public MasterConfigurationData readParameters() {
         MasterConfigurationData md = new MasterConfigurationData();
 
@@ -43,9 +53,9 @@ public class DBManager {
             s1 = new Slave1ConfigurationData(gearBelt, axisBelt, weldingBelt, assemblyActivationTime);
         } catch (SQLException e) {
             /* In case of exception set the values as default */
-            s1 = new Slave1ConfigurationData(   new BeltConfigurationData(10,20,50), 
-                    new BeltConfigurationData(10,20,50), 
-                    new BeltConfigurationData(10,20,50),
+            s1 = new Slave1ConfigurationData(new BeltConfigurationData(10, 20, 50),
+                    new BeltConfigurationData(10, 20, 50),
+                    new BeltConfigurationData(10, 20, 50),
                     300);
         }
 
@@ -58,7 +68,7 @@ public class DBManager {
             s2 = new Slave2ConfigurationData(weldingActivationTime, qualityStationActivationTime);
         } catch (SQLException e) {
             /* In case of exception set the values as default */
-            s2 = new Slave2ConfigurationData(3000,500);
+            s2 = new Slave2ConfigurationData(3000, 500);
         }
 
         /* Slave 3 Configuration */
@@ -70,36 +80,36 @@ public class DBManager {
             s3 = new Slave3ConfigurationData(okBelt, notOkBelt);
         } catch (SQLException e) {
             /* In case of exception set the values as default */
-            s3 = new Slave3ConfigurationData(new BeltConfigurationData(10,10,-1), new BeltConfigurationData(10,-1,-1));
+            s3 = new Slave3ConfigurationData(new BeltConfigurationData(10, 10, -1), new BeltConfigurationData(10, -1, -1));
         }
 
         /* Robot 1 Configuration */
-       try{
-           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1);
-           int tr1 = rs.getInt("time");
-           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2);
-           int tr2 = rs.getInt("time");
-           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3);
-           int tr3 = rs.getInt("time");
-           r1 = new Robot1ConfigurationData(tr1, tr2, tr3);
-       }catch(SQLException e){
+        try {
+            rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR1);
+            int tr1 = rs.getInt("time");
+            rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2);
+            int tr2 = rs.getInt("time");
+            rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3);
+            int tr3 = rs.getInt("time");
+            r1 = new Robot1ConfigurationData(tr1, tr2, tr3);
+        } catch (SQLException e) {
             /* In case of exception set the values as default */
-           r1 = new Robot1ConfigurationData(300,500,500);
-       }
+            r1 = new Robot1ConfigurationData(300, 500, 500);
+        }
 
         /* Robot 2 Configuration */
-       try{
-           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT2_CONFIGURATION_TR4);
-           int tr4 = rs.getInt("time");
-           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT2_CONFIGURATION_TR5);
-           int tr5 = rs.getInt("time");
-           rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT2_CONFIGURATION_TR6);
-           int tr6 = rs.getInt("time");
-           r2 = new Robot2ConfigurationData(tr4, tr5, tr6);
-       }catch(SQLException e){
-           /* In case of exception set the values as default */
-           r2 = new Robot2ConfigurationData(200,200,300);
-       }
+        try {
+            rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT2_CONFIGURATION_TR4);
+            int tr4 = rs.getInt("time");
+            rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT2_CONFIGURATION_TR5);
+            int tr5 = rs.getInt("time");
+            rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_ROBOT2_CONFIGURATION_TR6);
+            int tr6 = rs.getInt("time");
+            r2 = new Robot2ConfigurationData(tr4, tr5, tr6);
+        } catch (SQLException e) {
+            /* In case of exception set the values as default */
+            r2 = new Robot2ConfigurationData(200, 200, 300);
+        }
 
         /* General Configuration for Master */
         try {
@@ -114,7 +124,7 @@ public class DBManager {
             /* In case of exception set the value as default */
             /* md._clockCycleTime = 200;*/
             clockTime = 200;
-           
+
         }
 
         md.setClockCycleTime(clockTime);
@@ -132,6 +142,11 @@ public class DBManager {
         return md;
     }
 
+    /**
+     * Updates the configuration parameters stored in the system and probably updated 
+     * to the Database.
+     * @param md MasterConfigurationData instance containing the system current parameters
+     */
     public void updateParameters(MasterConfigurationData md) {
         DBConnection db = new DBConnection();
         db.connect();
@@ -153,7 +168,7 @@ public class DBManager {
                 String.valueOf(md._slave1ConfigurationData._axisBeltConfiguration.getSpeed()));
         query = query.replaceAll("\\[CAPACITY\\]",
                 String.valueOf(md._slave1ConfigurationData._axisBeltConfiguration.getCapacity()));
-        db.executeQuery(query);        
+        db.executeQuery(query);
         query = Auxiliar.Constants.DBQUERY_UPDATE_SLAVE1_BELT3_CONFIGURATION;
         query = query.replaceAll("\\[LENGTH\\]",
                 String.valueOf(md._slave1ConfigurationData._weldingBeltConfiguration.getLength()));
@@ -164,7 +179,7 @@ public class DBManager {
                  *  String.valueOf(md._slave1ConfigurationData._weldingBeltConfiguration.getCapacity()));
                  */
                 "capacity"); // Comment if included in GUI
-        
+
         db.executeQuery(query);
         query = Auxiliar.Constants.DBQUERY_UPDATE_SLAVE3_BELT1_CONFIGURATION;
         query = query.replaceAll("\\[LENGTH\\]",
@@ -173,7 +188,7 @@ public class DBManager {
                 String.valueOf(md._slave3ConfigurationData._acceptedBelt.getSpeed()));
         query = query.replaceAll("\\[CAPACITY\\]",
                 /* Uncomment if included in GUI 
-                *   String.valueOf(md._slave3ConfigurationData._acceptedBelt.getCapacity()));
+                 *   String.valueOf(md._slave3ConfigurationData._acceptedBelt.getCapacity()));
                  */
                 "capacity"); // Comment if included in GUI
         db.executeQuery(query);
@@ -191,7 +206,7 @@ public class DBManager {
                  */
                 "capacity"); // Comment if included in GUI
         db.executeQuery(query);
-        
+
         query = Auxiliar.Constants.DBQUERY_UPDATE_ASSEMBLY_STATION_TIME;
         query = query.replaceAll("\\[TIME\\]", String.valueOf(md._slave1ConfigurationData._assemblyActivationTime));
         db.executeQuery(query);
@@ -201,7 +216,7 @@ public class DBManager {
         query = Auxiliar.Constants.DBQUERY_UPDATE_QUALITY_STATION_TIME;
         query = query.replaceAll("\\[TIME\\]", String.valueOf(md._slave2ConfigurationData._qualityControlActivationTime));
         db.executeQuery(query);
-        
+
         query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT1_CONFIGURATION_TR1;
         query = query.replaceAll("\\[TIME\\]", String.valueOf(md._robot1ConfigurationData.getPickAndPlaceGearTime()));
         db.executeQuery(query);
@@ -220,7 +235,7 @@ public class DBManager {
         query = Auxiliar.Constants.DBQUERY_UPDATE_ROBOT2_CONFIGURATION_TR6;
         query = query.replaceAll("\\[TIME\\]", String.valueOf(md._robot2ConfigurationData.getPickAndTransportCheckedAssemblyTime()));
         db.executeQuery(query);
-        
+
         query = Auxiliar.Constants.DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION;
         query = query.replaceAll("\\[VALUE\\]", String.valueOf(md._clockCycleTime));
         db.executeQuery(query);
@@ -233,76 +248,68 @@ public class DBManager {
         query = Auxiliar.Constants.DBQUERY_UPDATE_PIECE_SIZE;
         query = query.replaceAll("\\[VALUE\\]", String.valueOf(md._pieceSize));
         db.executeQuery(query);
-        */
+         */
     }
 
-    	/**
-	 * Reads all the report data stored in the system database.
-	 *
-	 * @return Returns all the report data stored in the system database.
-	 */
-	public ReportData readReportData() {
-		ReportData data = new ReportData();
-		try {
-			// Reads the property file
-			Properties properties = new Properties();
-			properties.load(new FileInputStream(REPORTS_PATH));
+    /**
+     * Reads all the report data stored in the system database.
+     * @return Returns all the report data stored in the system database.
+     */
+    public ReportData readReportData() {
+        ReportData data = new ReportData();
+        try {
+            // Reads the property file
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(REPORTS_PATH));
 
-			data.rightPiecesCurrentExec = Integer.parseInt(properties.get(
-					"rightPackagesCurrentExec").toString());
-			data.wrongPiecesCurrentExec = Integer.parseInt(properties.get(
-					"wrongPackagesCurrentExec").toString());
-			data.rightPiecesAllExec = Integer.parseInt(properties.get(
-					"rightPackagesAllExec").toString());
-			data.wrongPiecesAllExec = Integer.parseInt(properties.get(
-					"wrongPackagesAllExec").toString());
+            data.rightPiecesCurrentExec = Integer.parseInt(properties.get(
+                    "rightPackagesCurrentExec").toString());
+            data.wrongPiecesCurrentExec = Integer.parseInt(properties.get(
+                    "wrongPackagesCurrentExec").toString());
+            data.rightPiecesAllExec = Integer.parseInt(properties.get(
+                    "rightPackagesAllExec").toString());
+            data.wrongPiecesAllExec = Integer.parseInt(properties.get(
+                    "wrongPackagesAllExec").toString());
 
-			data.nRestarts = Integer.parseInt(properties.get("nRestarts")
-					.toString());
-			data.nEmergencyStops = Integer.parseInt(properties.get(
-					"nEmergencyStops").toString());
-			data.nNormalStops = Integer.parseInt(properties.get("nNormalStops")
-					.toString());
-		} catch (Exception e) {
-			// If the property file does not exist, default values are loaded
-			data.wrongPiecesCurrentExec = 0;
-			data.wrongPiecesAllExec = 0;
-			data.nRestarts = 0;
-			data.nEmergencyStops = 0;
-			data.nNormalStops = 0;
-			data.firstStart = true;
-		}
+            data.nRestarts = Integer.parseInt(properties.get("nRestarts").toString());
+            data.nEmergencyStops = Integer.parseInt(properties.get(
+                    "nEmergencyStops").toString());
+            data.nNormalStops = Integer.parseInt(properties.get("nNormalStops").toString());
+        } catch (Exception e) {
+            // If the property file does not exist, default values are loaded
+            data.wrongPiecesCurrentExec = 0;
+            data.wrongPiecesAllExec = 0;
+            data.nRestarts = 0;
+            data.nEmergencyStops = 0;
+            data.nNormalStops = 0;
+            data.firstStart = true;
+        }
 
-		return data;
-	}
+        return data;
+    }
 
-	/**
-	 * Writes report data in the system database.
-	 *
-	 * @param data
-	 *            The report data to write.
-	 */
-	public void writeReportData(ReportData data) {
-		try {
-			Properties properties = new Properties();
+    /**
+     * Writes report data in the system database.
+     *
+     * @param data
+     *            The report data to write.
+     */
+    public void writeReportData(ReportData data) {
+        try {
+            Properties properties = new Properties();
 
-			properties.put("rightPackagesCurrentExec", String
-					.valueOf(data.rightPiecesCurrentExec));
-			properties.put("wrongPackagesCurrentExec", String
-					.valueOf(data.wrongPiecesCurrentExec));
-			properties.put("rightPackagesAllExec", String
-					.valueOf(data.rightPiecesAllExec));
-			properties.put("wrongPackagesAllExec", String
-					.valueOf(data.wrongPiecesAllExec));
+            properties.put("rightPackagesCurrentExec", String.valueOf(data.rightPiecesCurrentExec));
+            properties.put("wrongPackagesCurrentExec", String.valueOf(data.wrongPiecesCurrentExec));
+            properties.put("rightPackagesAllExec", String.valueOf(data.rightPiecesAllExec));
+            properties.put("wrongPackagesAllExec", String.valueOf(data.wrongPiecesAllExec));
 
-			properties.put("nNormalStops", String.valueOf(data.nNormalStops));
-			properties.put("nEmergencyStops", String
-					.valueOf(data.nEmergencyStops));
-			properties.put("nRestarts", String.valueOf(data.nRestarts));
+            properties.put("nNormalStops", String.valueOf(data.nNormalStops));
+            properties.put("nEmergencyStops", String.valueOf(data.nEmergencyStops));
+            properties.put("nRestarts", String.valueOf(data.nRestarts));
 
-			properties.store(new FileOutputStream(REPORTS_PATH),
-					"FlexManPie Auto-Generated");
-		} catch (Exception e) {
-		}
-	}
+            properties.store(new FileOutputStream(REPORTS_PATH),
+                    "FlexManPie Auto-Generated");
+        } catch (Exception e) {
+        }
+    }
 }
