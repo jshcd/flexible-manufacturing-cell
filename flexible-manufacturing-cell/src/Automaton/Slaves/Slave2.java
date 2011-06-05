@@ -41,11 +41,12 @@ public class Slave2 implements Slave {
 
     public static void main(String args[]) {
         Slave2 s2 = new Slave2();
-        s2.initialize();
     }
 
     public Slave2() {
         Logger.getLogger(Slave2.class.getName()).log(Level.INFO, "Slave 2 created");
+        _mailBox = new SlaveOutputMailBox(2);
+        reportToMaster(Constants.COMMAND_SLAVE2_CONNECTED);
     }
 
     public WeldingStation getWeldingStation() {
@@ -72,7 +73,6 @@ public class Slave2 implements Slave {
 
     public final void initialize() {
         
-        _mailBox = new SlaveOutputMailBox(2);
             _weldingStation = new WeldingStation(5);
             _weldingStation.setWeldingTime(_slave2ConfigurationData._weldingActivationTime);
             _weldingStation.setProcess(this);

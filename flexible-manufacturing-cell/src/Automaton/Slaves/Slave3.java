@@ -43,11 +43,12 @@ public class Slave3 implements Slave {
 
     public Slave3() {
         Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Slave 3 created");
+        _mailBox = new SlaveOutputMailBox(3);
+        reportToMaster(Constants.COMMAND_SLAVE3_CONNECTED);
     }
 
     public static void main(String args[]) {
         Slave3 s3 = new Slave3();
-        s3.initialize();
     }
 
     public Sensor getSensor8() {
@@ -88,7 +89,6 @@ public class Slave3 implements Slave {
 
     public final void initialize() {
 
-        _mailBox = new SlaveOutputMailBox(3);
         int acceptedSpeed = _slave3ConfigurationData._acceptedBelt.getSpeed();
         double acceptedLength = (double) _slave3ConfigurationData._acceptedBelt.getLength();
         int reyectedSpeed = _slave3ConfigurationData._notAcceptedBelt.getSpeed();

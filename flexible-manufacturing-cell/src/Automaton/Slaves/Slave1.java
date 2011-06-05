@@ -50,12 +50,13 @@ public class Slave1 implements Slave, IOProcess {
 
     public static void main(String args[]) {
         Slave1 s1 = new Slave1();
-        s1.initialize();
         s1.startRobot();
     }
 
     public Slave1() {
         Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Slave 1 created");
+        _mailBox = new SlaveOutputMailBox(1);
+        reportToMaster(Constants.COMMAND_SLAVE1_CONNECTED);
     }
 
     public ConveyorBelt getGearBelt() {
@@ -98,7 +99,6 @@ public class Slave1 implements Slave, IOProcess {
         ioi.bind();
 
         _finishing = false;
-        _mailBox = new SlaveOutputMailBox(1);
 
         int gearSpeed = _slave1ConfigurationData._gearBeltConfiguration.getSpeed();
         double gearLength = (double) _slave1ConfigurationData._gearBeltConfiguration.getLength();
