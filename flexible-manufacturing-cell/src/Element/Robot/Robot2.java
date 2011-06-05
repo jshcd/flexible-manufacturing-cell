@@ -277,4 +277,19 @@ public class Robot2 implements Robot,Runnable {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void setTransportTime4(int _transportTime4) {
+        this._transportTime4 = _transportTime4;
+    }
+
+    public void setTransportTime5(int _transportTime5) {
+        this._transportTime5 = _transportTime5;
+    }
+
+    public void setTransportTime6(int _transportTime6) {
+        this._transportTime6 = _transportTime6;
+    }
+
+    
+    
 }

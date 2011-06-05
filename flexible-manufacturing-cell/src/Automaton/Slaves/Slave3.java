@@ -33,26 +33,46 @@ public class Slave3 implements Slave {
     private DBConnection _dbconnection;
     private ConveyorBelt _acceptedBelt;
     private ConveyorBelt _rejectedBelt;
-    
     private Sensor _sensor8;
     private Sensor _sensor9;
     private Sensor _sensor10;
     private Sensor _sensor11;
-    
     private Slave3Data _statusData;
 
     public Slave3() {
         Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Slave 3 created");
     }
-    
-    public Sensor getSensor8(){return _sensor8;}
-    public Sensor getSensor9(){return _sensor9;}
-    public Sensor getSensor10(){return _sensor10;}
-    public Sensor getSensor11(){return _sensor11;}
-    public ConveyorBelt getAcceptedBelt(){return _acceptedBelt;}
-    public ConveyorBelt getRejectedBelt(){return _rejectedBelt;}
-    
-    public void updateStatusData(){
+
+    public static void main(String args[]) {
+        Slave3 s3 = new Slave3();
+        s3.initialize();
+    }
+
+    public Sensor getSensor8() {
+        return _sensor8;
+    }
+
+    public Sensor getSensor9() {
+        return _sensor9;
+    }
+
+    public Sensor getSensor10() {
+        return _sensor10;
+    }
+
+    public Sensor getSensor11() {
+        return _sensor11;
+    }
+
+    public ConveyorBelt getAcceptedBelt() {
+        return _acceptedBelt;
+    }
+
+    public ConveyorBelt getRejectedBelt() {
+        return _rejectedBelt;
+    }
+
+    public void updateStatusData() {
         _statusData = new Slave3Data();
         _statusData.setSensor8Status(_sensor8.isActivated());
         _statusData.setSensor9Status(_sensor9.isActivated());

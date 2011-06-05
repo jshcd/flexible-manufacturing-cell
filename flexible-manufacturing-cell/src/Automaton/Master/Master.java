@@ -1,5 +1,6 @@
 package Automaton.Master;
 
+import Auxiliar.Constants;
 import Scada.DataBase.DBManager;
 import Scada.Gui.Canvas;
 import Element.Robot.Robot2;
@@ -26,7 +27,7 @@ public class Master {
     private MasterInputMailBox _mailBox;
     private DBManager _dbmanager;
     private MasterConfigurationData _configurationData;
-    private Robot2 _robot2;
+    private Robot2 _robot;
     private MonitorWindow _monitor;
     private ConfigurationParameters _configurationParameters;
     private ReportData _report;
@@ -40,7 +41,6 @@ public class Master {
         _mailBox = new MasterInputMailBox();
         _dbmanager = new DBManager();
         _configurationData = null;
-        _robot2 = new Robot2();
         _monitor = new MonitorWindow(this);
         _report = _dbmanager.readReportData();
 	_report.setFirstStart(true);
@@ -51,6 +51,24 @@ public class Master {
 
     public void initialize() {
         _configurationData = _dbmanager.readParameters();
+    }
+    
+    public void startRobot() {
+        _robot = new Robot2();
+        //TODO: poner bien los valores del robot2
+        
+            _robot.setTransportTime4(300);
+            _robot.setTransportTime5(400);
+            _robot.setTransportTime6(500);
+            Thread t = new Thread(new Runnable() {
+
+                public void run() {
+                    _robot.startServer();
+                }
+            });
+            t.start();
+            (new Thread(_robot)).start();
+
     }
 
     public void startSystem() {
@@ -94,11 +112,11 @@ public class Master {
     }
 
     public Robot2 getRobot2() {
-        return _robot2;
+        return _robot;
     }
 
     public void setRobot2(Robot2 _robot2) {
-        this._robot2 = _robot2;
+        this._robot = _robot2;
     }
 
     public MonitorWindow getMonitor() {
