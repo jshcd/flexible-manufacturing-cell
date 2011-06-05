@@ -4,6 +4,7 @@ import Scada.DataBase.DBManager;
 import Scada.Gui.Canvas;
 import Element.Robot.Robot2;
 import Scada.DataBase.MasterConfigurationData;
+import Scada.DataBase.ReportData;
 import Scada.Gui.ConfigurationParameters;
 import Scada.Gui.ImageLoader;
 import Scada.Gui.MonitorWindow;
@@ -28,7 +29,7 @@ public class Master {
     private Robot2 _robot2;
     private MonitorWindow _monitor;
     private ConfigurationParameters _configurationParameters;
-    private Report _report;
+    private ReportData _report;
     protected Logger _logger = Logger.getLogger(Master.class.toString());
 
     public static void main(String[] args) {
@@ -41,6 +42,8 @@ public class Master {
         _configurationData = null;
         _robot2 = new Robot2();
         _monitor = new MonitorWindow(this);
+        _report = _dbmanager.readReportData();
+	_report.setFirstStart(true);
         // _logger.addHandler(monitor.getLog().getLogHandler());
        
 

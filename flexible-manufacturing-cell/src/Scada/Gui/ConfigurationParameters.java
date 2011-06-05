@@ -17,6 +17,7 @@ import javax.swing.KeyStroke;
 
 import net.miginfocom.swing.MigLayout;
 import Scada.DataBase.MasterConfigurationData;
+import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -57,7 +58,7 @@ public class ConfigurationParameters extends JDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == _buttonAccept) {
-                String errors = checkData();
+                String errors = validateData();
                 if (errors.length() > 0) {
                     JOptionPane.showMessageDialog(
                             ConfigurationParameters.this, errors,
@@ -80,7 +81,6 @@ public class ConfigurationParameters extends JDialog {
      */
     public ConfigurationParameters(Master masterAutomaton) {
         _masterAutomaton = masterAutomaton;
-        //  _masterConfiguration = _masterAutomaton.getConfigurationData();
 
         setTitle("Configuration Parameters");
         createComponents();
@@ -134,8 +134,7 @@ public class ConfigurationParameters extends JDialog {
         _buttonCancel = new JButton("Cancel");
         _buttonCancel.addActionListener(btnActionListener);
 
-       // getValues(_masterAutomaton.getDbmanager().readParameters(), true);
-        
+
 
     }
 
@@ -160,13 +159,13 @@ public class ConfigurationParameters extends JDialog {
         _slave1Parameters.add(new JLabel("Gear belt length: "));
         _gearBeltLengthTxt = new JTextField(_gearBeltLength);
         _slave1Parameters.add(_gearBeltLengthTxt);
-        _slave1Parameters.add(new JLabel("cm"));
+        _slave1Parameters.add(new JLabel("m"));
 
         _slave1Parameters.setLayout(pnlCommonLayout);
         _slave1Parameters.add(new JLabel("Gear belt speed: "));
         _gearBeltSpeedTxt = new JTextField(_gearBeltSpeed);
         _slave1Parameters.add(_gearBeltSpeedTxt);
-        _slave1Parameters.add(new JLabel("cm/minute"));
+        _slave1Parameters.add(new JLabel("m/minute"));
 
         _slave1Parameters.setLayout(pnlCommonLayout);
         _slave1Parameters.add(new JLabel("Gear belt capacity: "));
@@ -178,13 +177,13 @@ public class ConfigurationParameters extends JDialog {
         _slave1Parameters.add(new JLabel("Axis belt length: "));
         _axisBeltLengthTxt = new JTextField(_axisBeltLength);
         _slave1Parameters.add(_axisBeltLengthTxt);
-        _slave1Parameters.add(new JLabel("cm"));
+        _slave1Parameters.add(new JLabel("m"));
 
         _slave1Parameters.setLayout(pnlCommonLayout);
         _slave1Parameters.add(new JLabel("Axis belt speed: "));
         _axisBeltSpeedTxt = new JTextField(_axisBeltSpeed);
         _slave1Parameters.add(_axisBeltSpeedTxt);
-        _slave1Parameters.add(new JLabel("cm/minute"));
+        _slave1Parameters.add(new JLabel("m/minute"));
 
         _slave1Parameters.setLayout(pnlCommonLayout);
         _slave1Parameters.add(new JLabel("Axis belt capacity: "));
@@ -205,13 +204,13 @@ public class ConfigurationParameters extends JDialog {
         _slave2Parameters.add(new JLabel("Belt length: "));
         _weldingBeltLengthTxt = new JTextField(_weldingBeltLength);
         _slave2Parameters.add(_weldingBeltLengthTxt);
-        _slave2Parameters.add(new JLabel("cm"));
+        _slave2Parameters.add(new JLabel("m"));
 
         _slave2Parameters.setLayout(pnlCommonLayout);
         _slave2Parameters.add(new JLabel("Belt speed: "));
         _weldingBeltSpeedTxt = new JTextField(_weldingBeltSpeed);
         _slave2Parameters.add(_weldingBeltSpeedTxt);
-        _slave2Parameters.add(new JLabel("cm/minute"));
+        _slave2Parameters.add(new JLabel("m/minute"));
 
         _slave2Parameters.setLayout(pnlCommonLayout);
         _slave2Parameters.add(new JLabel("Activation time: "));
@@ -266,19 +265,19 @@ public class ConfigurationParameters extends JDialog {
         _slave3Parameters.add(new JLabel("OK Belt length: "));
         _OKBeltLengthTxt = new JTextField(_OKBeltLength);
         _slave3Parameters.add(_OKBeltLengthTxt);
-        _slave3Parameters.add(new JLabel("cm"));
+        _slave3Parameters.add(new JLabel("m"));
 
         _slave3Parameters.setLayout(pnlCommonLayout);
         _slave3Parameters.add(new JLabel("OK Belt speed: "));
         _OKBeltSpeedTxt = new JTextField(_OKBeltSpeed);
         _slave3Parameters.add(_OKBeltSpeedTxt);
-        _slave3Parameters.add(new JLabel("cm/minute"));
+        _slave3Parameters.add(new JLabel("m/minute"));
 
         _slave3Parameters.setLayout(pnlCommonLayout);
         _slave3Parameters.add(new JLabel("Not OK belt length: "));
         _notOKBeltLengthTxt = new JTextField(_notOKBeltLength);
         _slave3Parameters.add(_notOKBeltLengthTxt);
-        _slave3Parameters.add(new JLabel("cm"));
+        _slave3Parameters.add(new JLabel("m"));
 
         _slave3Parameters.setLayout(pnlCommonLayout);
         _slave3Parameters.add(new JLabel("Activation time: "));
@@ -287,11 +286,13 @@ public class ConfigurationParameters extends JDialog {
         _slave3Parameters.add(new JLabel("sec"));
 
         //Master
-        pnlCommonLayout = new MigLayout("wrap 3",
-                "[left][fill, grow, 40lp:40lp:][]", "");
+       pnlCommonLayout = new MigLayout("wrap 3",
+                "[60:80:80][20:60:60][]", "");
         _masterParameters.setLayout(pnlCommonLayout);
         _masterParameters.add(new JLabel("Clock cycle: "));
         _clockCycleTimeTxt = new JTextField(_clockCycleTime);
+        _clockCycleTimeTxt.setPreferredSize(new Dimension (60,15));
+        _clockCycleTimeTxt.setAlignmentX(this.RIGHT_ALIGNMENT);
         _masterParameters.add(_clockCycleTimeTxt);
         _masterParameters.add(new JLabel("ms"));
 
@@ -384,107 +385,247 @@ public class ConfigurationParameters extends JDialog {
             _robot2CheckedTxt.setEditable(true);
             _robot2WeldingTxt.setEditable(true);
         }
-        
+
     }
 
-    private String checkData() {
-        
-        /* Checking data */
-        String error = "";
-        if(Integer.valueOf(_axisBeltSpeedTxt.getText()) < 1)
-            error += "The Axis Belt Speed must be greater than 0\n";
-        if(Integer.valueOf(_axisBeltCapacityTxt.getText()) < 1)
-            error += "The Axis Belt Capacity must be greater than 0\n";
-        if(Integer.valueOf(_axisBeltLengthTxt.getText()) < 1)
-            error += "The Axis Belt Length must be greater thatn 0\n";
-        if(Integer.valueOf(_gearBeltSpeedTxt.getText()) < 1)
-            error += "The Gear Belt Speed must be greater than 0\n";
-        if(Integer.valueOf(_gearBeltCapacityTxt.getText()) < 1)
-            error += "The Gear Belt Capacity must be greater than 0\n";
-        if(Integer.valueOf(_gearBeltLengthTxt.getText()) < 1)
-            error += "The Gear Belt Length must be greater thatn 0\n";
-        if(Integer.valueOf(_weldingBeltSpeedTxt.getText()) < 1)
-            error += "The Welding Belt Speed must be greater than 0\n";
-        if(Integer.valueOf(_weldingBeltLengthTxt.getText()) < 1)
-            error += "The Welding Belt Length must be greater thatn 0\n";
-        if(Integer.valueOf(_OKBeltSpeedTxt.getText()) < 1)
-            error += "The Accepted Belt Speed must be greater than 0\n";
-        if(Integer.valueOf(_OKBeltLengthTxt.getText()) < 1)
-            error += "The Accepted Belt Length must be greater thatn 0\n";
-        if(Integer.valueOf(_notOKBeltLengthTxt.getText()) < 1)
-            error += "The Not Accepted Belt Length must be greater thatn 0\n";
-        if(Integer.valueOf(_assemblyActivationTimeTxt.getText()) < 1)
-            error += "The Assembly Activation Time must be greatear than 0\n";
-        if(Integer.valueOf(_weldingActivationTimeTxt.getText()) < 1)
-            error += "The Welding Activation Time must be greater than 0\n";
-        if(Integer.valueOf(_qualityActivationTimeTxt.getText()) < 1)
-            error += "The Quality Control Activation Time must be greater than 0\n";
-        if(Integer.valueOf(_robot1AxisTxt.getText()) < 1)
-            error += "The Robot 1 Axis Configuration must be greater than 0\n";
-        if(Integer.valueOf(_robot1GearTxt.getText()) < 1)
-            error += "The Robot 1 Gear Configuration must be greater than 0\n";
-        if(Integer.valueOf(_robot1AssemblyTxt.getText()) < 1)
-            error += "The Robot 1 Assembly Configuration must be greater than 0\n";
-        if(Integer.valueOf(_robot2AssemblyTxt.getText()) < 1)
-            error += "The Robot 2 Assembly Configuration must be greater than 0\n";
-        if(Integer.valueOf(_robot2CheckedTxt.getText()) < 1)
-            error += "The Robot 2 Checked Configuration must be greater than 0\n";
-        if(Integer.valueOf(_robot2WeldingTxt.getText()) < 1)
-            error += "The Robot 2 Welding Configuration must be greater than 0\n";
-        if(Integer.valueOf(_clockCycleTimeTxt.getText()) < 1)
-            error += "The Clock Cycle must be greater than 0\n";
-        
-        if(error.length() > 0){
-            return error;
-        }else{
-            /* Saving data in the configuration data class */
-            _masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.setLength(
-                    Integer.valueOf(_axisBeltLengthTxt.getText()));
-            _masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.setSpeed(
-                    Integer.valueOf(_axisBeltSpeedTxt.getText()));
-            _masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.setCapacity(
-                    Integer.valueOf(_axisBeltCapacityTxt.getText()));
-            _masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.setLength(
-                    Integer.valueOf(_gearBeltLengthTxt.getText()));
-            _masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.setSpeed(
-                    Integer.valueOf(_gearBeltSpeedTxt.getText()));
-            _masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.setCapacity(
-                    Integer.valueOf(_gearBeltCapacityTxt.getText()));
-            _masterConfiguration._slave1ConfigurationData._weldingBeltConfiguration.setLength(
-                    Integer.valueOf(_weldingBeltLengthTxt.getText()));
-            _masterConfiguration._slave1ConfigurationData._weldingBeltConfiguration.setSpeed(
-                    Integer.valueOf(_weldingBeltSpeedTxt.getText()));
-            _masterConfiguration._slave3ConfigurationData._acceptedBelt.setSpeed(
-                    Integer.valueOf(_OKBeltSpeedTxt.getText()));
-            _masterConfiguration._slave3ConfigurationData._acceptedBelt.setLength(
-                    Integer.valueOf(_OKBeltLengthTxt.getText()));
-            _masterConfiguration._slave3ConfigurationData._notAcceptedBelt.setLength(
-                    Integer.valueOf(_notOKBeltLengthTxt.getText()));
-            _masterConfiguration._slave1ConfigurationData._assemblyActivationTime = 
-                    Integer.valueOf(_assemblyActivationTimeTxt.getText());
-            _masterConfiguration._slave2ConfigurationData._qualityControlActivationTime = 
-                    Integer.valueOf(_qualityActivationTimeTxt.getText());
-            _masterConfiguration._slave2ConfigurationData._weldingActivationTime = 
-                    Integer.valueOf(_weldingActivationTimeTxt.getText());            
-            _masterConfiguration._robot1ConfigurationData.setPickAndPlaceAssemblyTime(
-                    Integer.valueOf(_robot1AssemblyTxt.getText()));
-            _masterConfiguration._robot1ConfigurationData.setPickAndPlaceAxisTime(
-                    Integer.valueOf(_robot1AxisTxt.getText()));
-            _masterConfiguration._robot1ConfigurationData.setPickAndPlaceGearTime(
-                    Integer.valueOf(_robot1GearTxt.getText()));
-            _masterConfiguration._robot2ConfigurationData.setPickAndTransportAssemblyTime(
-                    Integer.valueOf(_robot2AssemblyTxt.getText()));
-            _masterConfiguration._robot2ConfigurationData.setPickAndTransportCheckedAssemblyTime(
-                    Integer.valueOf(_robot2CheckedTxt.getText()));
-            _masterConfiguration._robot2ConfigurationData.setPickAndTransportWeldedAssemblyTime(
-                    Integer.valueOf(_robot2WeldingTxt.getText()));
-            _masterConfiguration._clockCycleTime = 
-                    Integer.valueOf(_clockCycleTimeTxt.getText());
-            
-            
-            /* Finally, sending the order to save new data in the database */
-            return "";            
+    private String validateData() {
+        StringBuilder errors = new StringBuilder();
+        int value;
+
+        try {
+            value = Integer.parseInt(_axisBeltSpeedTxt.getText());
+            if (value < 1) {
+                errors.append("'Axis belt speed' must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.setSpeed(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Axis belt speed' must be an integer greater or equal than 1.\n");
         }
+
+        try {
+            value = Integer.parseInt(_axisBeltCapacityTxt.getText());
+            if (value < 1) {
+                errors.append("'Axis belt capacity' must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.setCapacity(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Axis belt capacity' must be an integer greater or equal than 1.\n");
+        }
+
+        try {
+            value = Integer.parseInt(_axisBeltLengthTxt.getText());
+            if (value < 1) {
+                errors.append("'Axis belt length' must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.setLength(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Axis belt length' must be an integer greater or equal than 1.\n");
+        }
+
+        try {
+            value = Integer.parseInt(_gearBeltSpeedTxt.getText());
+            if (value < 1) {
+                errors.append("'Gear belt speed' must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.setSpeed(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Gear belt speed' must be an integer greater or equal than 1.\n");
+        }
+
+        try {
+            value = Integer.parseInt(_gearBeltCapacityTxt.getText());
+            if (value < 1) {
+                errors.append("'Gear belt capacity' must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.setCapacity(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Gear belt capacity' must be an integer greater or equal than 1.\n");
+        }
+
+        try {
+            value = Integer.parseInt(_gearBeltLengthTxt.getText());
+            if (value < 1) {
+                errors.append("'Gear belt length' must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.setLength(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Gear belt length' must be an integer greater or equal than 1.\n");
+        }
+
+        try {
+            value = Integer.parseInt(_assemblyActivationTimeTxt.getText());
+            if (value < 1) {
+                errors.append("'Activation time'in Assembly station must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._assemblyActivationTime = value;
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Activation time'in Assembly station must be an integer greater or equal than 1.\n");
+            }
+
+        try {
+            value = Integer.parseInt(_weldingBeltSpeedTxt.getText());
+            if (value < 1) {
+                errors.append("'Belt speed' in Welding station must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._weldingBeltConfiguration.setSpeed(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Belt speed' in Welding station must be an integer greater or equal than 1.\n");
+        }
+
+        try {
+            value = Integer.parseInt(_weldingBeltLengthTxt.getText());
+            if (value < 1) {
+                errors.append("'Belt length' in Welding station must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._weldingBeltConfiguration.setLength(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Belt length' in Welding station must be an integer greater or equal than 1.\n");
+        }
+
+        try {
+            value = Integer.parseInt(_OKBeltSpeedTxt.getText());
+            if (value < 1) {
+                errors.append("'Ok belt speed' in Quality station must be an integer greater or equal than 1.\n");
+            } else {
+                 _masterConfiguration._slave3ConfigurationData._acceptedBelt.setSpeed(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Ok belt speed' in Quality station must be an integer greater or equal than 1.\n");
+             }
+
+        try {
+            value = Integer.parseInt(_OKBeltLengthTxt.getText());
+            if (value < 1) {
+                errors.append("'Ok belt length' in Quality station must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave3ConfigurationData._acceptedBelt.setLength(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Ok belt length' in Quality station must be an integer greater or equal than 1.\n");
+        }
+
+        try {
+            value = Integer.parseInt(_notOKBeltLengthTxt.getText());
+            if (value < 1) {
+                errors.append("'Not OK belt length' in Quality station must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave3ConfigurationData._notAcceptedBelt.setLength(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Not OK belt length' in Quality station must be an integer greater or equal than 1.\n");
+        }
+
+        try {
+            value = Integer.parseInt(_assemblyActivationTimeTxt.getText());
+            if (value < 1) {
+                errors.append("'Activation time' in Assembly station must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave1ConfigurationData._assemblyActivationTime = value;
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Activation time' in Assembly station must be an integer greater or equal than 1.\n");
+        }
+        try {
+            value = Integer.parseInt(_weldingActivationTimeTxt.getText());
+            if (value < 1) {
+                errors.append("'Activation time' in Welding station must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave2ConfigurationData._weldingActivationTime = value;
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Activation time' in Welding station must be an integer greater or equal than 1.\n");
+        }
+        try {
+            value = Integer.parseInt(_qualityActivationTimeTxt.getText());
+            if (value < 1) {
+                errors.append("'Activation time' in Quality station must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._slave2ConfigurationData._qualityControlActivationTime = value;
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Activation time' in Quality station must be an integer greater or equal than 1.\n");
+        }
+        try {
+            value = Integer.parseInt(_robot1AxisTxt.getText());
+            if (value < 1) {
+                errors.append("'Axis picking/transport time'  must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._robot1ConfigurationData.setPickAndPlaceAxisTime(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Axis picking/transport time'  must be an integer greater or equal than 1.\n");
+        }
+        try {
+            value = Integer.parseInt(_robot1GearTxt.getText());
+            if (value < 1) {
+                errors.append("'Gear picking/transport time'  must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._robot1ConfigurationData.setPickAndPlaceGearTime(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Gear picking/transport time'  must be an integer greater or equal than 1.\n");
+        }
+        try {
+            value = Integer.parseInt(_robot1AssemblyTxt.getText());
+            if (value < 1) {
+                errors.append("'Assembly picking/transport time' in Robot 1 must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._robot1ConfigurationData.setPickAndPlaceAssemblyTime(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Assembly picking/transport time' in Robot 1 must be an integer greater or equal than 1.\n");
+        }
+        try {
+            value = Integer.parseInt(_robot2AssemblyTxt.getText());
+            if (value < 1) {
+                errors.append("'Assembly picking/transport time' in Robot 2 must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._robot2ConfigurationData.setPickAndTransportAssemblyTime(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Assembly picking/transport time' in Robot 2 must be an integer greater or equal than 1.\n");
+        }
+        try {
+            value = Integer.parseInt(_robot2CheckedTxt.getText());
+            if (value < 1) {
+                errors.append("'Checked Assembly picking/transport time'  must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._robot2ConfigurationData.setPickAndTransportCheckedAssemblyTime(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Checked Assembly picking/transport time'  must be an integer greater or equal than 1.\n");
+        }
+        try {
+            value = Integer.parseInt(_robot2WeldingTxt.getText());
+            if (value < 1) {
+                errors.append("'Welded Assembly picking/transport time'  must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._robot2ConfigurationData.setPickAndTransportWeldedAssemblyTime(value);
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Welded Assembly picking/transport time'  must be an integer greater or equal than 1.\n");
+        }
+        try {
+            value = Integer.parseInt(_clockCycleTimeTxt.getText());
+            if (value < 1) {
+                errors.append("'Clock cycle'  must be an integer greater or equal than 1.\n");
+            } else {
+                _masterConfiguration._clockCycleTime = value;
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Clock cycle' in Master must be an integer greater or equal than 1.\n");
+        }
+        return errors.toString();
+
     }
 
     /**

@@ -4,10 +4,15 @@
  */
 package Scada.DataBase;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DBManager {
+
+    private static final String REPORTS_PATH = "report.properties";
 
     public MasterConfigurationData readParameters() {
         MasterConfigurationData md = new MasterConfigurationData();
@@ -230,4 +235,74 @@ public class DBManager {
         db.executeQuery(query);
         */
     }
+
+    	/**
+	 * Reads all the report data stored in the system database.
+	 *
+	 * @return Returns all the report data stored in the system database.
+	 */
+	public ReportData readReportData() {
+		ReportData data = new ReportData();
+		try {
+			// Reads the property file
+			Properties properties = new Properties();
+			properties.load(new FileInputStream(REPORTS_PATH));
+
+			data.rightPiecesCurrentExec = Integer.parseInt(properties.get(
+					"rightPackagesCurrentExec").toString());
+			data.wrongPiecesCurrentExec = Integer.parseInt(properties.get(
+					"wrongPackagesCurrentExec").toString());
+			data.rightPiecesAllExec = Integer.parseInt(properties.get(
+					"rightPackagesAllExec").toString());
+			data.wrongPiecesAllExec = Integer.parseInt(properties.get(
+					"wrongPackagesAllExec").toString());
+
+			data.nRestarts = Integer.parseInt(properties.get("nRestarts")
+					.toString());
+			data.nEmergencyStops = Integer.parseInt(properties.get(
+					"nEmergencyStops").toString());
+			data.nNormalStops = Integer.parseInt(properties.get("nNormalStops")
+					.toString());
+		} catch (Exception e) {
+			// If the property file does not exist, default values are loaded
+			data.wrongPiecesCurrentExec = 0;
+			data.wrongPiecesAllExec = 0;
+			data.nRestarts = 0;
+			data.nEmergencyStops = 0;
+			data.nNormalStops = 0;
+			data.firstStart = true;
+		}
+
+		return data;
+	}
+
+	/**
+	 * Writes report data in the system database.
+	 *
+	 * @param data
+	 *            The report data to write.
+	 */
+	public void writeReportData(ReportData data) {
+		try {
+			Properties properties = new Properties();
+
+			properties.put("rightPackagesCurrentExec", String
+					.valueOf(data.rightPiecesCurrentExec));
+			properties.put("wrongPackagesCurrentExec", String
+					.valueOf(data.wrongPiecesCurrentExec));
+			properties.put("rightPackagesAllExec", String
+					.valueOf(data.rightPiecesAllExec));
+			properties.put("wrongPackagesAllExec", String
+					.valueOf(data.wrongPiecesAllExec));
+
+			properties.put("nNormalStops", String.valueOf(data.nNormalStops));
+			properties.put("nEmergencyStops", String
+					.valueOf(data.nEmergencyStops));
+			properties.put("nRestarts", String.valueOf(data.nRestarts));
+
+			properties.store(new FileOutputStream(REPORTS_PATH),
+					"FlexManPie Auto-Generated");
+		} catch (Exception e) {
+		}
+	}
 }
