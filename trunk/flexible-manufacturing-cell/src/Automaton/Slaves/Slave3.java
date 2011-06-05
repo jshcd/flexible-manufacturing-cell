@@ -6,6 +6,7 @@ import Automaton.Slaves.Slave;
 import Automaton.Slaves.Slave;
 import Automaton.Slaves.SlaveOutputMailBox;
 import Automaton.Slaves.SlaveOutputMailBox;
+import Auxiliar.Command;
 import Auxiliar.Constants;
 import Element.Station.QualityControlStation;
 import Element.Conveyor.ConveyorBelt;
@@ -175,8 +176,12 @@ public class Slave3 implements Slave {
         }
     }
 
-    public void reportToMaster(int i) {
-        throw new UnsupportedOperationException();
+    public void reportToMaster(int orderNumber) {
+        Command command = new Command(orderNumber);
+        _mailBox.startConnection();
+        _mailBox.acceptConnection();
+        _mailBox.sendCommand(command);
+        _mailBox.receiveCommand();
     }
 
     public void orderToRobot(int i) {
