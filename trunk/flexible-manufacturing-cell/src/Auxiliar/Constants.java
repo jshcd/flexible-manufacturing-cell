@@ -103,42 +103,42 @@ public class Constants {
     
     /* Constants used in DB Updates */    
     public final static String DBQUERY_UPDATE_SLAVE1_BELT1_CONFIGURATION = "UPDATE belts "
-            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 1";
+            + "SET length = [LENGTH], speed = [SPEED], capacity = [CAPACITY] WHERE id = 1";
     public final static String DBQUERY_UPDATE_SLAVE1_BELT2_CONFIGURATION = "UPDATE belts "
-            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 2";
+            + "SET length = [LENGTH], speed = [SPEED], capacity = [CAPACITY] WHERE id = 2";
     public final static String DBQUERY_UPDATE_SLAVE1_BELT3_CONFIGURATION = "UPDATE belts "
-            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 3";
+            + "SET length = [LENGTH], speed = [SPEED], capacity = [CAPACITY] WHERE id = 3";
     public final static String DBQUERY_UPDATE_SLAVE3_BELT1_CONFIGURATION = "UPDATE belts "
-            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 4";
+            + "SET length = [LENGTH], speed = [SPEED], capacity = [CAPACITY] WHERE id = 4";
     public final static String DBQUERY_UPDATE_SLAVE3_BELT2_CONFIGURATION = "UPDATE belts "
-            + "SET length = '[LENGTH]', speed = '[SPEED]', capacity = '[CAPACITY]' WHERE id = 5";
+            + "SET length = [LENGTH], speed = [SPEED], capacity = [CAPACITY] WHERE id = 5";
     
     public final static String DBQUERY_UPDATE_ASSEMBLY_STATION_TIME = "UPDATE stations "
-            + "SET time = '[TIME]' WHERE station_name = 'assembly'";
+            + "SET stations.time = [TIME] WHERE station_name = 'assembly'";
     public final static String DBQUERY_UPDATE_WELDING_STATION_TIME = "UPDATE stations "
-            + "SET time = '[TIME]' WHERE station_name = 'welding'";
+            + "SET stations.time = [TIME] WHERE station_name = 'welding'";
     public final static String DBQUERY_UPDATE_QUALITY_STATION_TIME = "UPDATE stations "
-            + "SET time = '[TIME]' WHERE station_name = 'quality'";
+            + "SET stations.time = [TIME] WHERE station_name = 'quality'";
     
     public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_TR1 = "UPDATE robot1 SET "
-            + "'[TIME]' WHERE robot1.id = 1";
+            + "robot1.time = [TIME] WHERE robot1.id = 1";
     public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_TR2 = "UPDATE robot1 SET "
-            + "'[TIME]' WHERE robot1.id = 2";
+            + "robot1.time = [TIME] WHERE robot1.id = 2";
     public final static String DBQUERY_UPDATE_ROBOT1_CONFIGURATION_TR3 = "UPDATE robot1 SET "
-            + "'[TIME]' WHERE robot1.id = 3";
+            + "robot1.time = [TIME] WHERE robot1.id = 3";
     public final static String DBQUERY_UPDATE_ROBOT2_CONFIGURATION_TR4 = "UPDATE robot2 SET "
-            + "'[TIME]' WHERE robot2.id = 1";
+            + "robot2.time = [TIME] WHERE robot2.id = 1";
     public final static String DBQUERY_UPDATE_ROBOT2_CONFIGURATION_TR5 = "UPDATE robot2 SET "
-            + "'[TIME]' WHERE robot2.id = 2";
+            + "robot2.time = [TIME] WHERE robot2.id = 2";
     public final static String DBQUERY_UPDATE_ROBOT2_CONFIGURATION_TR6 = "UPDATE robot2 SET "
-            + "'[TIME]' WHERE robot2.id = 3";
+            + "robot2.time = [TIME] WHERE robot2.id = 3";
     
     public final static String DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION = "UPDATE "
-            + "configuration SET value = '[VALUE]' WHERE configuration.parameter = 'clock_cycle'";
+            + "configuration SET configuration.value = [VALUE] WHERE configuration.parameter = 'clock_cycle'";
     public final static String DBQUERY_UPDATE_SENSOR_RANGE = "UPDATE "
-            + "configuration SET value = '[VALUE]' WHERE configuration.parameter = 'sensor_range'";
+            + "configuration SET configuration.value = [VALUE] WHERE configuration.parameter = 'sensor_range'";
     public final static String DBQUERY_UPDATE_PIECE_SIZE = "UPDATE "
-            + "configuration SET value = '[VALUE]' WHERE configuration.parameter = 'piece_size'";
+            + "configuration SET configuration.value = [VALUE] WHERE configuration.parameter = 'piece_size'";
 
     /**
      * CONSTANTS used for GUI

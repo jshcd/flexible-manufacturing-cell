@@ -388,7 +388,103 @@ public class ConfigurationParameters extends JDialog {
     }
 
     private String checkData() {
-        return "a";
+        
+        /* Checking data */
+        String error = "";
+        if(Integer.valueOf(_axisBeltSpeedTxt.getText()) < 1)
+            error += "The Axis Belt Speed must be greater than 0\n";
+        if(Integer.valueOf(_axisBeltCapacityTxt.getText()) < 1)
+            error += "The Axis Belt Capacity must be greater than 0\n";
+        if(Integer.valueOf(_axisBeltLengthTxt.getText()) < 1)
+            error += "The Axis Belt Length must be greater thatn 0\n";
+        if(Integer.valueOf(_gearBeltSpeedTxt.getText()) < 1)
+            error += "The Gear Belt Speed must be greater than 0\n";
+        if(Integer.valueOf(_gearBeltCapacityTxt.getText()) < 1)
+            error += "The Gear Belt Capacity must be greater than 0\n";
+        if(Integer.valueOf(_gearBeltLengthTxt.getText()) < 1)
+            error += "The Gear Belt Length must be greater thatn 0\n";
+        if(Integer.valueOf(_weldingBeltSpeedTxt.getText()) < 1)
+            error += "The Welding Belt Speed must be greater than 0\n";
+        if(Integer.valueOf(_weldingBeltLengthTxt.getText()) < 1)
+            error += "The Welding Belt Length must be greater thatn 0\n";
+        if(Integer.valueOf(_OKBeltSpeedTxt.getText()) < 1)
+            error += "The Accepted Belt Speed must be greater than 0\n";
+        if(Integer.valueOf(_OKBeltLengthTxt.getText()) < 1)
+            error += "The Accepted Belt Length must be greater thatn 0\n";
+        if(Integer.valueOf(_notOKBeltLengthTxt.getText()) < 1)
+            error += "The Not Accepted Belt Length must be greater thatn 0\n";
+        if(Integer.valueOf(_assemblyActivationTimeTxt.getText()) < 1)
+            error += "The Assembly Activation Time must be greatear than 0\n";
+        if(Integer.valueOf(_weldingActivationTimeTxt.getText()) < 1)
+            error += "The Welding Activation Time must be greater than 0\n";
+        if(Integer.valueOf(_qualityActivationTimeTxt.getText()) < 1)
+            error += "The Quality Control Activation Time must be greater than 0\n";
+        if(Integer.valueOf(_robot1AxisTxt.getText()) < 1)
+            error += "The Robot 1 Axis Configuration must be greater than 0\n";
+        if(Integer.valueOf(_robot1GearTxt.getText()) < 1)
+            error += "The Robot 1 Gear Configuration must be greater than 0\n";
+        if(Integer.valueOf(_robot1AssemblyTxt.getText()) < 1)
+            error += "The Robot 1 Assembly Configuration must be greater than 0\n";
+        if(Integer.valueOf(_robot2AssemblyTxt.getText()) < 1)
+            error += "The Robot 2 Assembly Configuration must be greater than 0\n";
+        if(Integer.valueOf(_robot2CheckedTxt.getText()) < 1)
+            error += "The Robot 2 Checked Configuration must be greater than 0\n";
+        if(Integer.valueOf(_robot2WeldingTxt.getText()) < 1)
+            error += "The Robot 2 Welding Configuration must be greater than 0\n";
+        if(Integer.valueOf(_clockCycleTimeTxt.getText()) < 1)
+            error += "The Clock Cycle must be greater than 0\n";
+        
+        if(error.length() > 0){
+            return error;
+        }else{
+            /* Saving data in the configuration data class */
+            _masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.setLength(
+                    Integer.valueOf(_axisBeltLengthTxt.getText()));
+            _masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.setSpeed(
+                    Integer.valueOf(_axisBeltSpeedTxt.getText()));
+            _masterConfiguration._slave1ConfigurationData._axisBeltConfiguration.setCapacity(
+                    Integer.valueOf(_axisBeltCapacityTxt.getText()));
+            _masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.setLength(
+                    Integer.valueOf(_gearBeltLengthTxt.getText()));
+            _masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.setSpeed(
+                    Integer.valueOf(_gearBeltSpeedTxt.getText()));
+            _masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.setCapacity(
+                    Integer.valueOf(_gearBeltCapacityTxt.getText()));
+            _masterConfiguration._slave1ConfigurationData._weldingBeltConfiguration.setLength(
+                    Integer.valueOf(_weldingBeltLengthTxt.getText()));
+            _masterConfiguration._slave1ConfigurationData._weldingBeltConfiguration.setSpeed(
+                    Integer.valueOf(_weldingBeltSpeedTxt.getText()));
+            _masterConfiguration._slave3ConfigurationData._acceptedBelt.setSpeed(
+                    Integer.valueOf(_OKBeltSpeedTxt.getText()));
+            _masterConfiguration._slave3ConfigurationData._acceptedBelt.setLength(
+                    Integer.valueOf(_OKBeltLengthTxt.getText()));
+            _masterConfiguration._slave3ConfigurationData._notAcceptedBelt.setLength(
+                    Integer.valueOf(_notOKBeltLengthTxt.getText()));
+            _masterConfiguration._slave1ConfigurationData._assemblyActivationTime = 
+                    Integer.valueOf(_assemblyActivationTimeTxt.getText());
+            _masterConfiguration._slave2ConfigurationData._qualityControlActivationTime = 
+                    Integer.valueOf(_qualityActivationTimeTxt.getText());
+            _masterConfiguration._slave2ConfigurationData._weldingActivationTime = 
+                    Integer.valueOf(_weldingActivationTimeTxt.getText());            
+            _masterConfiguration._robot1ConfigurationData.setPickAndPlaceAssemblyTime(
+                    Integer.valueOf(_robot1AssemblyTxt.getText()));
+            _masterConfiguration._robot1ConfigurationData.setPickAndPlaceAxisTime(
+                    Integer.valueOf(_robot1AxisTxt.getText()));
+            _masterConfiguration._robot1ConfigurationData.setPickAndPlaceGearTime(
+                    Integer.valueOf(_robot1GearTxt.getText()));
+            _masterConfiguration._robot2ConfigurationData.setPickAndTransportAssemblyTime(
+                    Integer.valueOf(_robot2AssemblyTxt.getText()));
+            _masterConfiguration._robot2ConfigurationData.setPickAndTransportCheckedAssemblyTime(
+                    Integer.valueOf(_robot2CheckedTxt.getText()));
+            _masterConfiguration._robot2ConfigurationData.setPickAndTransportWeldedAssemblyTime(
+                    Integer.valueOf(_robot2WeldingTxt.getText()));
+            _masterConfiguration._clockCycleTime = 
+                    Integer.valueOf(_clockCycleTimeTxt.getText());
+            
+            
+            /* Finally, sending the order to save new data in the database */
+            return "";            
+        }
     }
 
     /**

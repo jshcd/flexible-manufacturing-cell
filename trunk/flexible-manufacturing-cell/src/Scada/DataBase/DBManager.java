@@ -155,7 +155,11 @@ public class DBManager {
         query = query.replaceAll("\\[SPEED\\]",
                 String.valueOf(md._slave1ConfigurationData._weldingBeltConfiguration.getSpeed()));
         query = query.replaceAll("\\[CAPACITY\\]",
-                String.valueOf(md._slave1ConfigurationData._weldingBeltConfiguration.getCapacity()));
+                /* Uncomment if included in GUI 
+                 *  String.valueOf(md._slave1ConfigurationData._weldingBeltConfiguration.getCapacity()));
+                 */
+                "capacity"); // Comment if included in GUI
+        
         db.executeQuery(query);
         query = Auxiliar.Constants.DBQUERY_UPDATE_SLAVE3_BELT1_CONFIGURATION;
         query = query.replaceAll("\\[LENGTH\\]",
@@ -163,15 +167,24 @@ public class DBManager {
         query = query.replaceAll("\\[SPEED\\]",
                 String.valueOf(md._slave3ConfigurationData._acceptedBelt.getSpeed()));
         query = query.replaceAll("\\[CAPACITY\\]",
-                String.valueOf(md._slave3ConfigurationData._acceptedBelt.getCapacity()));
+                /* Uncomment if included in GUI 
+                *   String.valueOf(md._slave3ConfigurationData._acceptedBelt.getCapacity()));
+                 */
+                "capacity"); // Comment if included in GUI
         db.executeQuery(query);
         query = Auxiliar.Constants.DBQUERY_UPDATE_SLAVE3_BELT2_CONFIGURATION;
         query = query.replaceAll("\\[LENGTH\\]",
                 String.valueOf(md._slave3ConfigurationData._notAcceptedBelt.getLength()));
         query = query.replaceAll("\\[SPEED\\]",
-                String.valueOf(md._slave3ConfigurationData._notAcceptedBelt.getSpeed()));
+                /* Uncomment if included in GUI 
+                 *  String.valueOf(md._slave3ConfigurationData._notAcceptedBelt.getSpeed()));
+                 */
+                "speed"); // Comment if included in GUI
         query = query.replaceAll("\\[CAPACITY\\]",
-                String.valueOf(md._slave3ConfigurationData._notAcceptedBelt.getCapacity()));
+                /* Uncomment if included in GUI 
+                 *  String.valueOf(md._slave3ConfigurationData._notAcceptedBelt.getCapacity()));
+                 */
+                "capacity"); // Comment if included in GUI
         db.executeQuery(query);
         
         query = Auxiliar.Constants.DBQUERY_UPDATE_ASSEMBLY_STATION_TIME;
@@ -206,12 +219,15 @@ public class DBManager {
         query = Auxiliar.Constants.DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION;
         query = query.replaceAll("\\[VALUE\\]", String.valueOf(md._clockCycleTime));
         db.executeQuery(query);
+        /* 
+         * Uncomment this if these parameters are included in the GUI
+         * 
         query = Auxiliar.Constants.DBQUERY_UPDATE_SENSOR_RANGE;
         query = query.replaceAll("\\[VALUE\\]", String.valueOf(md._sensorRange));
         db.executeQuery(query);
         query = Auxiliar.Constants.DBQUERY_UPDATE_PIECE_SIZE;
         query = query.replaceAll("\\[VALUE\\]", String.valueOf(md._pieceSize));
         db.executeQuery(query);
-        
+        */
     }
 }

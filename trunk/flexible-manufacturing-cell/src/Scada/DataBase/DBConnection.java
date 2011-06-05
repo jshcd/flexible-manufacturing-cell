@@ -42,6 +42,7 @@ public class DBConnection{
             s.execute(query);
         }catch(SQLException e){
             System.out.println(e);
+            System.out.println(query);
         }
         return s;
     }
