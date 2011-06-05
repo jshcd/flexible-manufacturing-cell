@@ -88,6 +88,7 @@ public class Slave3 implements Slave {
         _dbconnection = new DBConnection();
         _dbconnection.connect();
 
+        _mailBox = new SlaveOutputMailBox(3);
         try {
 
             // TODO: Estos parametros no deben cargase asi, pero lo dejamos de momento para hacer pruebas

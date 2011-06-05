@@ -72,6 +72,7 @@ public class Slave2 implements Slave {
         _dbconnection = new DBConnection();
         _dbconnection.connect();
 
+        _mailBox = new SlaveOutputMailBox(2);
         try {
 
             // TODO: Estos parametros no deben cargase asi, pero lo dejamos de momento para hacer pruebas

@@ -82,7 +82,6 @@ public class Slave1 implements Slave {
         _statusData.setAxisBeltRunning(_axisBelt.isMoving());
         _statusData.setWeldingBeltPieces(_weldingBelt.getPieces());
         _statusData.setWeldingBeltRunning(_weldingBelt.isMoving());
-        _mailBox.sendCommand(_statusData);
     }
 
     public final void initialize() {
@@ -91,8 +90,8 @@ public class Slave1 implements Slave {
 
         _finishing = false;
 
+        _mailBox = new SlaveOutputMailBox(1);
         try {
-
             // TODO: Estos parametros no deben cargase asi, pero lo dejamos de momento para hacer pruebas
             int gearSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION).getInt("length");
             int gearLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION).getInt("speed");
