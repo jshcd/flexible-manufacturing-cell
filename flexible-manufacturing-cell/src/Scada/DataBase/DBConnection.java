@@ -1,23 +1,35 @@
 
-/*
- * This class is in charge of connecting and accepting connections from different terminals 
- * (other object of this class) and passing and receiving parameter sets.
- */
 package Scada.DataBase;
 
+/* Imports */
 import java.sql.Connection;
 import java.sql.DriverManager;	
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 
-
+/**
+ * This class specifies the routines to gather and save data to the database
+ * @author Echoplex
+ */
 public class DBConnection{
 
-   private  Connection _connection; 
+    /**
+     * Connection type instance to the database
+     */
+    private  Connection _connection; 
     
+    /**
+     * Constructor
+     */
     public DBConnection() {}    
     
+    /**
+     * Connects the database connection to the database location
+     * @see Auxiliar.Constants
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public void connect() {
         try{
             Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
@@ -29,12 +41,22 @@ public class DBConnection{
         }
   }
     
+    /**
+     * Disconnects the current connection
+     * @throws SQLException
+     */
     public void disconnect(){
         try{
             _connection.close();
         }catch(SQLException e){}
     }
 
+    /**
+     * Executes a query throgh the database connection
+     * @param query String that defines the query to execute
+     * @return New Statement as result of the query execution
+     * @throws SQLException
+     */
     public Statement executeQuery(String query){
         Statement s = null;
         try{
@@ -47,6 +69,11 @@ public class DBConnection{
         return s;
     }
     
+    /**
+     * Executes a SELECT query through the database connection
+     * @param selectQuery String that defines the SELECT query
+     * @return Result Set as result from the database select execution
+     */
     public ResultSet executeSelect(String selectQuery){
         Statement s = executeQuery(selectQuery);
         ResultSet rs = null;
