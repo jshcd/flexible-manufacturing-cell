@@ -75,6 +75,14 @@ public class Constants {
     public final static int SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK = 403;
     public final static int SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK = 404;
     
+    
+    public final static int SLAVE1_ID = 1;
+    public final static int SLAVE2_ID = 2;
+    public final static int SLAVE3_ID = 3;
+    public final static int COMMAND_SLAVE1_CONNECTED = 1;
+    public final static int COMMAND_SLAVE2_CONNECTED = 2;
+    public final static int COMMAND_SLAVE3_CONNECTED = 3;
+    
     /* Constants used in DB Queries */
     public final static String DBQUERY_SELECT_SLAVE1_BELT1_CONFIGURATION = "SELECT * FROM belts "
             + "WHERE belts.id = 1";

@@ -64,20 +64,20 @@ public class Connections extends JPanel {
     public void setConnectionStatus(int automatonID, boolean connected) {
 
         //if assembly station connected{
-        if (connected) {
+        if (connected && automatonID == Constants.SLAVE1_ID) {
             _assemblyStatus.setIcon(new ImageIcon(_imageLoader._on));
         } else {
             _assemblyStatus.setIcon(new ImageIcon(_imageLoader._off));
         }
         //} else if welding station connected {
-        if (connected) {
+        if (connected && automatonID == Constants.SLAVE2_ID) {
             _weldingStatus.setIcon(new ImageIcon(_imageLoader._on));
         } else {
             _weldingStatus.setIcon(new ImageIcon(
                     _imageLoader._off));
         }
         //} else if welding station connected {
-        if (connected) {
+        if (connected && automatonID == Constants.SLAVE3_ID) {
             _qualityStatus.setIcon(new ImageIcon(_imageLoader._on));
         } else {
             _qualityStatus.setIcon(new ImageIcon(_imageLoader._off));
