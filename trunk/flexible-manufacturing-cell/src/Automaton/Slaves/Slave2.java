@@ -35,18 +35,30 @@ public class Slave2 implements Slave {
     private DBConnection _dbconnection;
     private Sensor _sensor6;
     private Sensor _sensor7;
-    
     private Slave2Data _statusData;
+
+    public static void main(String args[]) {
+        Slave2 s2 = new Slave2();
+        s2.initialize();
+    }
 
     public Slave2() {
         Logger.getLogger(Slave2.class.getName()).log(Level.INFO, "Slave 2 created");
     }
-    
-    public WeldingStation getWeldingStation(){return _weldingStation;}
-    public Sensor getSensor6(){return _sensor6;}
-    public Sensor getSensor7(){return _sensor7;}
-    
-    public void updateStatusData(){
+
+    public WeldingStation getWeldingStation() {
+        return _weldingStation;
+    }
+
+    public Sensor getSensor6() {
+        return _sensor6;
+    }
+
+    public Sensor getSensor7() {
+        return _sensor7;
+    }
+
+    public void updateStatusData() {
         _statusData = new Slave2Data();
         _statusData.setSensor6Status(_sensor6.isActivated());
         _statusData.setSensor7Status(_sensor7.isActivated());

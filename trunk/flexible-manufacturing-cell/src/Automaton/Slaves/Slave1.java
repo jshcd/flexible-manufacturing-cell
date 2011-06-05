@@ -40,19 +40,35 @@ public class Slave1 implements Slave {
     protected Sensor _sensor4;
     protected Sensor _sensor5;
     protected boolean _finishing;
-    
     protected Slave1Data _statusData;
+
+    public static void main(String args[]) {
+        Slave1 s1 = new Slave1();
+        s1.initialize();
+        s1.startRobot();
+    }
 
     public Slave1() {
         Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Slave 1 created");
     }
-    
-    public ConveyorBelt getGearBelt(){return _gearBelt;}
-    public ConveyorBelt getAxisBelt(){return _axisBelt;}
-    public ConveyorBelt getWeldingBelt(){return _weldingBelt;}
-    public AssemblyStation getAssemblyStation(){return _assemblyStation;}
-    
-    public void updateStatusData(){
+
+    public ConveyorBelt getGearBelt() {
+        return _gearBelt;
+    }
+
+    public ConveyorBelt getAxisBelt() {
+        return _axisBelt;
+    }
+
+    public ConveyorBelt getWeldingBelt() {
+        return _weldingBelt;
+    }
+
+    public AssemblyStation getAssemblyStation() {
+        return _assemblyStation;
+    }
+
+    public void updateStatusData() {
         _statusData = new Slave1Data();
         _statusData.setSensor1Status(_sensor1.isActivated());
         _statusData.setSensor2Status(_sensor2.isActivated());
@@ -158,8 +174,6 @@ public class Slave1 implements Slave {
             Thread sensor5 = new Thread(_sensor5);
             sensor5.start();
 
-            startRobot();
-
         } catch (SQLException ex) {
             System.err.println("Error at loading database at Slave 1");
             Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
@@ -174,8 +188,9 @@ public class Slave1 implements Slave {
             _robot.setTransportTime2(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR2).getInt("time"));
             _robot.setTransportTime3(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_ROBOT1_CONFIGURATION_TR3).getInt("time"));
             Thread t = new Thread(new Runnable() {
+
                 public void run() {
-                   _robot.startServer();
+                    _robot.startServer();
                 }
             });
             t.start();
@@ -197,7 +212,7 @@ public class Slave1 implements Slave {
     public Sensor getSensor3() {
         return _sensor3;
     }
-    
+
     public Sensor getSensor4() {
         return _sensor4;
     }
