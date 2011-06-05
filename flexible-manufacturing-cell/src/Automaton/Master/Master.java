@@ -46,7 +46,6 @@ public class Master {
         _report = _dbmanager.readReportData();
 	_report.setFirstStart(true);
         _logger.addHandler(_monitor.getLog().getLogHandler());
-      
 
     }
 

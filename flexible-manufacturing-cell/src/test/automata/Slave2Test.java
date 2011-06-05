@@ -2,27 +2,37 @@
 package test.automata;
 
 import Automaton.Slaves.Slave2;
+import Auxiliar.IOInterface;
+import Auxiliar.IOProcess;
 
-public class Slave2Test extends Slave2 {
+public class Slave2Test extends Slave2 implements IOProcess{
     
-    TestAutomata test;
+    
+    IOInterface ioi;
 
     public Slave2Test() {
         super();
+        ioi = new IOInterface();
+        ioi.setProcess(this);
+        ioi.setPortLag(1);
+        ioi.bind();
+        (new Thread(ioi)).start();
     }
 
     public void reportToMaster(int i) {
+        sendCommand(i);
     }
 
     public void orderToRobot(int i) {
-        test.sendToRobot1(i);
-        test.sendToRobot2(i);
-        test.sendToSlave1(i);
-        test.sendToSlave3(i);
+        sendCommand(i);
     }
-    
-    
-    public void setTest(TestAutomata test) {
-        this.test = test;
+
+    public void sendCommand(int command) {
+        ioi.send((short)command);
+    }
+    @Override
+    public void runCommand (int command){
+//        System.out.println("S2 running: " + command);
+        super.runCommand(command);
     }
 }

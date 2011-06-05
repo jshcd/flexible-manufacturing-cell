@@ -15,7 +15,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Robot2 implements Robot,Runnable {
+public class Robot2 implements Robot, Runnable {
 
     private RobotOutputMailBox _mailBox;
     private AutomatonState _state;
@@ -46,15 +46,15 @@ public class Robot2 implements Robot,Runnable {
 
     @Override
     public void run() {
-        
+
         while (true) {
-            
+
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             switch (_state) {
                 case q0:
                     if (_weldingSensor) {
@@ -81,10 +81,11 @@ public class Robot2 implements Robot,Runnable {
                     }
                     break;
                 case q4:
-                    pickCheckedWeldedAssembly();
                     if (_qualityCompletedOK) {
+                        pickCheckedWeldedAssembly();
                         _state = AutomatonState.q7;
                     } else if (_qualityCompletedNotOK) {
+                        pickCheckedWeldedAssembly();
                         _state = AutomatonState.q6;
                     }
                     break;
@@ -289,7 +290,4 @@ public class Robot2 implements Robot,Runnable {
     public void setTransportTime6(int _transportTime6) {
         this._transportTime6 = _transportTime6;
     }
-
-    
-    
 }

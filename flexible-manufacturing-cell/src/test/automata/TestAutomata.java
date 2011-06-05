@@ -23,20 +23,12 @@ public class TestAutomata {
     public TestAutomata() {
         s1 = new Slave1Test();
         s2 = new Slave2Test();
-        s3 = new Slave3Test();
-        r2 = new Robot2Test();
-
-        s1.setTest(this);
-        s2.setTest(this);
-        s3.setTest(this);
-        r2.setTest(this);
-        r2.setTest(this);
+//        s3 = new Slave3Test();
 
         s1.initialize();
         s2.initialize();
-        s3.initialize();
+//        s3.initialize();
 
-        s1.getRobot().setTest(this);
         s1.startRobot();
 
         Thread t = new Thread(new Runnable() {
@@ -47,28 +39,10 @@ public class TestAutomata {
         });
         t.start();
 
-        Thread y = new Thread(r2);
-        y.start();
+//        r2 = new Robot2Test();
+//        
+//        Thread y = new Thread(r2);
+//        y.start();
 
-    }
-
-    public void sendToSlave1(int command) {
-        s1.runCommand(command);
-    }
-
-    public void sendToSlave2(int command) {
-        s2.runCommand(command);
-    }
-
-    public void sendToSlave3(int command) {
-        s3.runCommand(command);
-    }
-
-    public void sendToRobot1(int command) {
-        s1.getRobot().runCommand(command);
-    }
-
-    public void sendToRobot2(int command) {
-        r2.runCommand(command);
     }
 }

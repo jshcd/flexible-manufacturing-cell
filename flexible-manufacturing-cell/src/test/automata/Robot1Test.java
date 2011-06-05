@@ -1,26 +1,34 @@
 package test.automata;
 
+import Auxiliar.IOInterface;
+import Auxiliar.IOProcess;
 import Element.Robot.Robot1;
 
-public class Robot1Test extends Robot1 {
-
-    TestAutomata test;
+public class Robot1Test extends Robot1 implements IOProcess{
+    
+    IOInterface ioi;
 
     public Robot1Test() {
         super();
+        ioi = new IOInterface();
+        ioi.setProcess(this);
+        ioi.setPortLag(3);
+        ioi.bind();
+        (new Thread(ioi)).start();
     }
 
     public void reportProcess(int command) {
-        test.sendToRobot1(command);
-        test.sendToRobot2(command);
-        test.sendToSlave1(command);
-        test.sendToSlave2(command);
-        test.sendToSlave3(command);
+        sendCommand(command);
         System.out.println("R1 " + command);
         
     }
-    public void setTest(TestAutomata test) {
-        this.test = test;
-    }
 
+    public void sendCommand(int command) {
+        ioi.send((short)command);
+    }
+    @Override
+    public void runCommand (int command){
+//        System.out.println("R1 running: " + command);
+        super.runCommand(command);
+    }
 }
