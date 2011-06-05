@@ -103,7 +103,6 @@ public class MasterInputMailBox implements MailBox {
             try {
                 final Socket skCliente = _serverSocket.accept();
                 Thread t = new Thread(new Runnable() {
-
                     public void run() {
                         try {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
