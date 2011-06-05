@@ -44,8 +44,8 @@ public class Master {
         _monitor = new MonitorWindow(this);
         _report = _dbmanager.readReportData();
 	_report.setFirstStart(true);
-        // _logger.addHandler(monitor.getLog().getLogHandler());
-       
+        _logger.addHandler(_monitor.getLog().getLogHandler());
+      
 
     }
 
