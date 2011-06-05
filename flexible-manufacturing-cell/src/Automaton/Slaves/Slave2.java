@@ -13,7 +13,8 @@ import Element.Piece.Piece;
 import Element.Piece.Piece.PieceType;
 import Element.Station.QualityControlStation;
 import Element.Station.WeldingStation;
-import Scada.DataBase.DBConnection;
+import Scada.DataBase.MasterConfigurationData;
+import Scada.DataBase.Slave2ConfigurationData;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,10 +33,11 @@ public class Slave2 implements Slave {
     private SlaveOutputMailBox _mailBox;
     private WeldingStation _weldingStation;
     private QualityControlStation _qualityStation;
-    private DBConnection _dbconnection;
     private Sensor _sensor6;
     private Sensor _sensor7;
     private Slave2Data _statusData;
+    private Slave2ConfigurationData _slave2ConfigurationData;
+    private double sensor_range;
 
     public static void main(String args[]) {
         Slave2 s2 = new Slave2();
@@ -69,20 +71,13 @@ public class Slave2 implements Slave {
     }
 
     public final void initialize() {
-        _dbconnection = new DBConnection();
-        _dbconnection.connect();
-
+        
         _mailBox = new SlaveOutputMailBox(2);
-        try {
-
-            // TODO: Estos parametros no deben cargase asi, pero lo dejamos de momento para hacer pruebas
-            int sensor_range = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SENSOR_RANGE).getInt("value");
-
             _weldingStation = new WeldingStation(5);
-            _weldingStation.setWeldingTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_WELDING_STATION_TIME).getInt("time"));
+            _weldingStation.setWeldingTime(_slave2ConfigurationData._weldingActivationTime);
             _weldingStation.setProcess(this);
             _qualityStation = new QualityControlStation(6);
-            _qualityStation.setQualityTime(_dbconnection.executeSelect(Constants.DBQUERY_SELECT_QUALITY_STATION_TIME).getInt("time"));
+            _qualityStation.setQualityTime(_slave2ConfigurationData._qualityControlActivationTime);
             _qualityStation.setProcess(this);
 
             _sensor6 = new Sensor();
@@ -109,12 +104,6 @@ public class Slave2 implements Slave {
             //We start the sensors
             new Thread(_sensor6).start();
             new Thread(_sensor7).start();
-
-        } catch (SQLException ex) {
-            System.err.println("Error at loading database at Slave 1");
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     public void start() {
@@ -198,5 +187,11 @@ public class Slave2 implements Slave {
         } catch (IOException ex) {
             Logger.getLogger(Slave2.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void storeInitialConfiguration(MasterConfigurationData md){
+        _slave2ConfigurationData = md._slave2ConfigurationData;
+        sensor_range = (double)md._sensorRange;
+        initialize();
     }
 }

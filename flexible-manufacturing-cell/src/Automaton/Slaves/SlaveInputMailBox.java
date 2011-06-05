@@ -6,8 +6,11 @@
 package Automaton.Slaves;
 
 import Automaton.Master.Data.Ok;
+import Auxiliar.Command;
+import Auxiliar.Constants;
 import Auxiliar.MailBox;
 import Auxiliar.MailboxData;
+import Scada.DataBase.MasterConfigurationData;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,9 +31,11 @@ public class SlaveInputMailBox implements MailBox {
 
     private String _id;
     private ServerSocket _serverSocket;
+    private Slave _slave;
 
-    public SlaveInputMailBox(int id){
+    public SlaveInputMailBox(int id, Slave slave){
         _id = "Slave" + id;
+        _slave = slave;
     }
 
     public void startConnection() {
@@ -79,6 +84,22 @@ public class SlaveInputMailBox implements MailBox {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
                             Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.INFO, "Received> {0}", in.readObject());
+                            
+                            Object o = in.readObject();
+                            if(o instanceof Command){
+                                switch(((Command)o).getCommand()){
+                                    case Constants.START_SLAVE1:
+                                    case Constants.START_SLAVE2:
+                                    case Constants.START_SLAVE3:
+                                    case Constants.EMERGENCY_STOP_ORDER:
+                                    case Constants.NORMAL_STOP_ORDER:
+                                        _slave.runCommand(((Command)o).getCommand());
+                                }
+                            }else if(o instanceof MasterConfigurationData){
+                                _slave.storeInitialConfiguration((MasterConfigurationData)o);
+                            }
+                            
+                            
                             Ok ok = new Ok();
                             out.writeObject(ok);
                             skCliente.close();

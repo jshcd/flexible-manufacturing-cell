@@ -51,6 +51,9 @@ public class Master {
 
     public void initialize() {
         _configurationData = _dbmanager.readParameters();
+        _robot.setTransportTime4(_configurationData._robot2ConfigurationData.getPickAndTransportAssemblyTime());
+        _robot.setTransportTime5(_configurationData._robot2ConfigurationData.getPickAndTransportWeldedAssemblyTime());
+        _robot.setTransportTime6(_configurationData._robot2ConfigurationData.getPickAndTransportCheckedAssemblyTime());
         Thread t = new Thread(new Runnable() {
            public void run() {
                _mailBox.startServer();

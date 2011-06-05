@@ -13,7 +13,8 @@ import Element.Conveyor.ConveyorBelt;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
 import Element.Piece.Piece.PieceType;
-import Scada.DataBase.DBConnection;
+import Scada.DataBase.MasterConfigurationData;
+import Scada.DataBase.Slave3ConfigurationData;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,7 +31,6 @@ import java.util.logging.Logger;
 public class Slave3 implements Slave {
 
     private SlaveOutputMailBox _mailBox;
-    private DBConnection _dbconnection;
     private ConveyorBelt _acceptedBelt;
     private ConveyorBelt _rejectedBelt;
     private Sensor _sensor8;
@@ -38,6 +38,8 @@ public class Slave3 implements Slave {
     private Sensor _sensor10;
     private Sensor _sensor11;
     private Slave3Data _statusData;
+    private Slave3ConfigurationData _slave3ConfigurationData;
+    private double sensor_range;
 
     public Slave3() {
         Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Slave 3 created");
@@ -85,72 +87,58 @@ public class Slave3 implements Slave {
     }
 
     public final void initialize() {
-        _dbconnection = new DBConnection();
-        _dbconnection.connect();
 
         _mailBox = new SlaveOutputMailBox(3);
-        try {
+        int acceptedSpeed = _slave3ConfigurationData._acceptedBelt.getSpeed();
+        double acceptedLength = (double) _slave3ConfigurationData._acceptedBelt.getLength();
+        int reyectedSpeed = _slave3ConfigurationData._notAcceptedBelt.getSpeed();
+        double reyectedLength = (double) _slave3ConfigurationData._notAcceptedBelt.getLength();
 
-            // TODO: Estos parametros no deben cargase asi, pero lo dejamos de momento para hacer pruebas
-            double sensor_range = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SENSOR_RANGE).getDouble("value");
+        _acceptedBelt = new ConveyorBelt(7, acceptedSpeed, acceptedLength);
+        _rejectedBelt = new ConveyorBelt(8, reyectedSpeed, reyectedLength);
 
-            int acceptedSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT1_CONFIGURATION).getInt("speed");
-            double acceptedLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT1_CONFIGURATION).getDouble("length");
-            int reyectedSpeed = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION).getInt("speed");
-            double reyectedLength = _dbconnection.executeSelect(Constants.DBQUERY_SELECT_SLAVE3_BELT2_CONFIGURATION).getDouble("length");
+        _sensor8 = new Sensor();
+        _sensor8.setSensorId(8);
+        _sensor8.setAssociatedContainer(_rejectedBelt);
+        _sensor8.setProcess(this);
+        _sensor8.setRange(sensor_range);
+        _sensor8.setPositionInBelt(0);
 
-            _acceptedBelt = new ConveyorBelt(7, acceptedSpeed, acceptedLength);
-            _rejectedBelt = new ConveyorBelt(8, reyectedSpeed, reyectedLength);
+        _sensor9 = new Sensor();
+        _sensor9.setSensorId(9);
+        _sensor9.setAssociatedContainer(_acceptedBelt);
+        _sensor9.setProcess(this);
+        _sensor9.setRange(sensor_range);
+        _sensor9.setPositionInBelt(0);
 
-            _sensor8 = new Sensor();
-            _sensor8.setSensorId(8);
-            _sensor8.setAssociatedContainer(_rejectedBelt);
-            _sensor8.setProcess(this);
-            _sensor8.setRange(sensor_range);
-            _sensor8.setPositionInBelt(0);
+        _sensor10 = new Sensor();
+        _sensor10.setSensorId(10);
+        _sensor10.setAssociatedContainer(_rejectedBelt);
+        _sensor10.setProcess(this);
+        _sensor10.setRange(sensor_range);
+        _sensor10.setPositionInBelt(reyectedLength - sensor_range);
 
-            _sensor9 = new Sensor();
-            _sensor9.setSensorId(9);
-            _sensor9.setAssociatedContainer(_acceptedBelt);
-            _sensor9.setProcess(this);
-            _sensor9.setRange(sensor_range);
-            _sensor9.setPositionInBelt(0);
+        _sensor11 = new Sensor();
+        _sensor11.setSensorId(11);
+        _sensor11.setAssociatedContainer(_acceptedBelt);
+        _sensor11.setProcess(this);
+        _sensor11.setRange(sensor_range);
+        _sensor11.setPositionInBelt(acceptedLength - sensor_range);
 
-            _sensor10 = new Sensor();
-            _sensor10.setSensorId(10);
-            _sensor10.setAssociatedContainer(_rejectedBelt);
-            _sensor10.setProcess(this);
-            _sensor10.setRange(sensor_range);
-            _sensor10.setPositionInBelt(reyectedLength - sensor_range);
+        _acceptedBelt.addSensor(_sensor9);
+        _acceptedBelt.addSensor(_sensor11);
+        _rejectedBelt.addSensor(_sensor8);
+        _rejectedBelt.addSensor(_sensor10);
 
-            _sensor11 = new Sensor();
-            _sensor11.setSensorId(11);
-            _sensor11.setAssociatedContainer(_acceptedBelt);
-            _sensor11.setProcess(this);
-            _sensor11.setRange(sensor_range);
-            _sensor11.setPositionInBelt(acceptedLength - sensor_range);
+        // We start the belts
+        new Thread(_acceptedBelt).start();
+        new Thread(_rejectedBelt).start();
 
-            _acceptedBelt.addSensor(_sensor9);
-            _acceptedBelt.addSensor(_sensor11);
-            _rejectedBelt.addSensor(_sensor8);
-            _rejectedBelt.addSensor(_sensor10);
-
-            // We start the belts
-            new Thread(_acceptedBelt).start();
-            new Thread(_rejectedBelt).start();
-
-            //We start the sensors
-            new Thread(_sensor8).start();
-            new Thread(_sensor9).start();
-            new Thread(_sensor10).start();
-            new Thread(_sensor11).start();
-
-
-        } catch (SQLException ex) {
-            System.err.println("Error at loading database at Slave 1");
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        //We start the sensors
+        new Thread(_sensor8).start();
+        new Thread(_sensor9).start();
+        new Thread(_sensor10).start();
+        new Thread(_sensor11).start();
     }
 
     public void start() {
@@ -235,5 +223,11 @@ public class Slave3 implements Slave {
         } catch (IOException ex) {
             Logger.getLogger(Slave3.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void storeInitialConfiguration(MasterConfigurationData md) {
+        _slave3ConfigurationData = md._slave3ConfigurationData;
+        sensor_range = (double) md._sensorRange;
+        initialize();
     }
 }
