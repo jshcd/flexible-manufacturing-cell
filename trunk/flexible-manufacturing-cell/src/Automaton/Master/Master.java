@@ -35,6 +35,7 @@ public class Master {
 
     public static void main(String[] args) {
          Master m = new Master();
+         m.startRobot();
     }
 
     public Master() {
