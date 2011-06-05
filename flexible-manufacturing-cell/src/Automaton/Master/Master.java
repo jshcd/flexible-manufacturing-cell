@@ -1,6 +1,7 @@
 package Automaton.Master;
 
 import Auxiliar.Constants;
+import Auxiliar.MailboxData;
 import Scada.DataBase.DBManager;
 import Scada.Gui.Canvas;
 import Element.Robot.Robot2;
@@ -32,14 +33,13 @@ public class Master {
     private ConfigurationParameters _configurationParameters;
     private ReportData _report;
     protected Logger _logger = Logger.getLogger(Master.class.toString());
-
-    public static void main(String[] args) {
-         Master m = new Master();
-         m.startRobot();
-    }
+    
+    boolean _slave1Online = false;
+    boolean _slave2Online = false;
+    boolean _slave3Online = false;
 
     public Master() {
-        _mailBox = new MasterInputMailBox();
+        _mailBox = new MasterInputMailBox(this);
         _dbmanager = new DBManager();
         _configurationData = null;
         _monitor = new MonitorWindow(this);
@@ -58,6 +58,27 @@ public class Master {
            }
        });
        t.start();
+    }
+    
+    public void setConnectionStatus(int slaveId, boolean status){
+        switch(slaveId){
+            case Constants.SLAVE1_ID:
+                _slave1Online = status;
+                _monitor.setConnectionStatus(Constants.SLAVE2_ID, status);
+                break;
+            case Constants.SLAVE2_ID:
+                _slave2Online = status;
+                _monitor.setConnectionStatus(Constants.SLAVE2_ID, status);
+                break;
+            case Constants.SLAVE3_ID:
+                _slave3Online = status;
+                _monitor.setConnectionStatus(Constants.SLAVE3_ID, status);
+                break;
+        }
+    }
+    
+    public void setCanvasStatus(int slaveId, MailboxData data){
+        _monitor.setCanvasStatus(slaveId, data);
     }
     
     public void startRobot() {

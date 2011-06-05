@@ -1,6 +1,11 @@
 package Automaton.Master;
 
 import Automaton.Master.Data.Ok;
+import Automaton.Slaves.Data.Slave1Data;
+import Automaton.Slaves.Data.Slave2Data;
+import Automaton.Slaves.Data.Slave3Data;
+import Auxiliar.Command;
+import Auxiliar.Constants;
 import Auxiliar.MailboxData;
 import Auxiliar.MailBox;
 import java.io.FileInputStream;
@@ -18,13 +23,15 @@ import java.util.logging.Logger;
 public class MasterInputMailBox implements MailBox {
     private String _id;
     private ServerSocket _serverSocket;
+    private Master _master;
 
     /**
      * Constructs a new <code>MasterMailBox</code> with the indicated id
      * @param id Identifier of the <code>MasterMailBox</code>
      */
-    public MasterInputMailBox(){
+    public MasterInputMailBox(Master m){
         _id = "Master";
+        _master = m;
     }
 
     public void startConnection() {
@@ -108,6 +115,24 @@ public class MasterInputMailBox implements MailBox {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
                             Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.INFO, "Received> {0}", in.readObject());
+                            
+                            Object o = in.readObject();
+                            if(o instanceof Command){
+                                if(((Command)o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED){
+                                    _master.setConnectionStatus(Constants.SLAVE1_ID, true);
+                                }else if(((Command)o).getCommand() == Constants.COMMAND_SLAVE2_CONNECTED){
+                                    _master.setConnectionStatus(Constants.SLAVE2_ID, true);
+                                }else if(((Command)o).getCommand() == Constants.COMMAND_SLAVE3_CONNECTED){
+                                    _master.setConnectionStatus(Constants.SLAVE3_ID, true);
+                                }
+                            }else if(o instanceof Slave1Data){
+                                _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data)o);
+                            }else if(o instanceof Slave2Data){
+                                _master.setCanvasStatus(Constants.SLAVE2_ID, (Slave2Data)o);
+                            }else if(o instanceof Slave3Data){
+                                _master.setCanvasStatus(Constants.SLAVE3_ID, (Slave3Data)o);
+                            }
+                            
                             Ok ok = new Ok();
                             out.writeObject(ok);
                             skCliente.close();

@@ -1,6 +1,9 @@
 package Scada.Gui;
 
 import Automaton.Master.Master;
+import Automaton.Slaves.Data.Slave1Data;
+import Automaton.Slaves.Data.Slave2Data;
+import Automaton.Slaves.Data.Slave3Data;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -21,6 +24,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import Auxiliar.Constants;
+import Auxiliar.MailboxData;
 import java.awt.Dimension;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -227,6 +231,24 @@ public class MonitorWindow extends JFrame {
             return;
         }
     }
+    
+    public void setConnectionStatus(int slaveId, boolean status){
+        _connectionStatus.setConnectionStatus(slaveId, status);
+    }
+    
+    public void setCanvasStatus(int slaveId, MailboxData data){
+        switch(slaveId){
+            case Constants.SLAVE1_ID: 
+                _canvas.setSlave1Data((Slave1Data)data);
+                break;
+            case Constants.SLAVE2_ID:
+                _canvas.setSlave2Data((Slave2Data)data);
+                break;
+            case Constants.SLAVE3_ID:
+                _canvas.setSlave3Data((Slave3Data)data);
+                break;
+        }
+    }
 
     public static void main(String[] args) {
         try {
@@ -236,7 +258,9 @@ public class MonitorWindow extends JFrame {
         }
 
         try {
-            MonitorWindow w = new MonitorWindow(new Master());
+            Master m = new Master();
+            m.startRobot();
+            MonitorWindow w = new MonitorWindow(m);
             w.setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
