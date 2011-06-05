@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 public class Master {
 
-    private MasterMailBox _mailBox;
+    private MasterInputMailBox _mailBox;
     private DBManager _dbmanager;
     private MasterConfigurationData _configurationData;
     private Robot2 _robot2;
@@ -36,7 +36,7 @@ public class Master {
     }
 
     public Master() {
-        _mailBox = new MasterMailBox();
+        _mailBox = new MasterInputMailBox();
         _dbmanager = new DBManager();
         _configurationData = null;
         _robot2 = new Robot2();
@@ -82,11 +82,11 @@ public class Master {
         this._dbmanager = _dbmanager;
     }
 
-    public MasterMailBox getMailBox() {
+    public MasterInputMailBox getMailBox() {
         return _mailBox;
     }
 
-    public void setMailBox(MasterMailBox _mailBox) {
+    public void setMailBox(MasterInputMailBox _mailBox) {
         this._mailBox = _mailBox;
     }
 

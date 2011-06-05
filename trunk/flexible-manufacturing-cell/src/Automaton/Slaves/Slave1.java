@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 public class Slave1 implements Slave {
 
-    protected SlaveMailBox _mailBox;
+    protected SlaveOutputMailBox _mailBox;
     protected ConveyorBelt _gearBelt;
     protected ConveyorBelt _axisBelt;
     protected ConveyorBelt _weldingBelt;

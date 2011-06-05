@@ -6,13 +6,13 @@
 package test;
 
 import Automaton.Master.Data.Ok;
-import Automaton.Master.MasterMailBox;
+import Automaton.Master.MasterInputMailBox;
 import Automaton.Slaves.Data.Slave1Data;
 import Automaton.Slaves.Data.Slave2Data;
 import Automaton.Slaves.Data.Slave3Data;
-import Automaton.Slaves.SlaveMailBox;
+import Automaton.Slaves.SlaveOutputMailBox;
 import Element.Robot.Data.RobotData;
-import Element.Robot.RobotMailBox;
+import Element.Robot.RobotOutputMailBox;
 
 
 /**
@@ -21,11 +21,11 @@ import Element.Robot.RobotMailBox;
  */
 public class TestMailboxes {
     public static void main(String [] args) {
-        SlaveMailBox s1mb = new SlaveMailBox(1);
-        SlaveMailBox s2mb = new SlaveMailBox(2);
-        SlaveMailBox s3mb = new SlaveMailBox(3);
-        RobotMailBox r2mb = new RobotMailBox(2);
-        final MasterMailBox mmb = new MasterMailBox();
+        SlaveOutputMailBox s1mb = new SlaveOutputMailBox(1);
+        SlaveOutputMailBox s2mb = new SlaveOutputMailBox(2);
+        SlaveOutputMailBox s3mb = new SlaveOutputMailBox(3);
+        RobotOutputMailBox r2mb = new RobotOutputMailBox(2);
+        final MasterInputMailBox mmb = new MasterInputMailBox();
         Slave1Data a = new Slave1Data();
         Slave2Data b = new Slave2Data();
         Slave3Data c = new Slave3Data();
@@ -33,21 +33,7 @@ public class TestMailboxes {
 
         Thread t = new Thread(new Runnable() {
             public void run() {
-                mmb.startConnection();
-                mmb.acceptConnection();
-                while(true){
-                    Thread t1 = new Thread(new Runnable() {
-                        public void run() {
-                            mmb.receiveCommand();
-                            Ok ok = new Ok();
-                            //Check if data received is correct and if it is, to send
-                            //an ok command. Otherwise, it would make the ok value
-                            //false
-                            mmb.sendCommand(ok);
-                        }
-                    });
-                    t1.start();
-                }
+                mmb.startServer();
             }
         });
         t.start();
