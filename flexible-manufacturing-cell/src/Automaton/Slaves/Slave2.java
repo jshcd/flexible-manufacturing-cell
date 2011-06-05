@@ -6,6 +6,7 @@ import Automaton.Slaves.Slave;
 import Automaton.Slaves.Slave;
 import Automaton.Slaves.SlaveOutputMailBox;
 import Automaton.Slaves.SlaveOutputMailBox;
+import Auxiliar.Command;
 import Auxiliar.Constants;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
@@ -150,8 +151,12 @@ public class Slave2 implements Slave {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void reportToMaster(int i) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void reportToMaster(int orderNumber) {
+        Command command = new Command(orderNumber);
+        _mailBox.startConnection();
+        _mailBox.acceptConnection();
+        _mailBox.sendCommand(command);
+        _mailBox.receiveCommand();
     }
 
     public void startServer() {
