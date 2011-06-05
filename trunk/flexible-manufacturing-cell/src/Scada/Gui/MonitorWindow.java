@@ -23,6 +23,8 @@ import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import Auxiliar.Constants;
 import java.awt.Dimension;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Monitor where the whole system state is displayed: factory simulation,
@@ -46,6 +48,8 @@ public class MonitorWindow extends JFrame {
     private ConfigurationParameters _configurationParameters;
     private Report _report;
     private Master _masterAutomaton;
+    protected Logger _logger = Logger.getLogger(Master.class.toString());
+
     /* LISTENERS */
     private ActionListener _btnActionListener = new ActionListener() {
 
@@ -54,6 +58,7 @@ public class MonitorWindow extends JFrame {
 
             if (e.getSource() == _buttonStart) {
                 if (_masterAutomaton != null) {
+
                     JOptionPane.showMessageDialog(
                             MonitorWindow.this,
                             "The system cannot be started until all the slave automata have been connected.",
@@ -81,7 +86,7 @@ public class MonitorWindow extends JFrame {
                 _report.getValues(_masterAutomaton.getDbmanager().readReportData());
                 _report.setVisible(true);
             } else if (e.getSource() == _buttonConfiguration) {
-              _configurationParameters.getValues(_masterAutomaton.getDbmanager().readParameters(), _buttonStart.isEnabled());
+                _configurationParameters.getValues(_masterAutomaton.getDbmanager().readParameters(), _buttonStart.isEnabled());
                 _configurationParameters.setVisible(true);
             }
         }
@@ -96,6 +101,7 @@ public class MonitorWindow extends JFrame {
         _report = new Report();
         _masterAutomaton = master;
         _configurationParameters = new ConfigurationParameters(_masterAutomaton);
+      //  _logger.addHandler(_masterAutomaton.getMonitor().getLog().getLogHandler());
 
         Dimension size = new Dimension(Constants.GUI_WIDTH, Constants.GUI_HEIGHT);
         setMinimumSize(size);
@@ -114,6 +120,7 @@ public class MonitorWindow extends JFrame {
         Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
         _canvas = new Canvas(_imageLoader);
 
+        
         _buttonConfiguration = new JButton(new ImageIcon(_imageLoader._configurationButton));
         _buttonConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
         _buttonConfiguration.setCursor(handCursor);
@@ -205,21 +212,22 @@ public class MonitorWindow extends JFrame {
         _buttonEmergencyStop.setEnabled(false);
     }
 
-    public void  run(){
-         try {
+    public void run() {
+        try {
             UIManager.setLookAndFeel(new WindowsLookAndFeel());
         } catch (UnsupportedLookAndFeelException e1) {
             e1.printStackTrace();
         }
 
         try {
-           // MonitorWindow w = new MonitorWindow(new Master());
+            // MonitorWindow w = new MonitorWindow(new Master());
             this.setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
     }
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new WindowsLookAndFeel());
@@ -234,6 +242,6 @@ public class MonitorWindow extends JFrame {
             e.printStackTrace();
             return;
         }
-      
+
     }
 }

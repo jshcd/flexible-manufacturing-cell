@@ -23,6 +23,8 @@ public class QualityControlStation implements PieceContainer {
     private int _id;
     protected Slave _process;
     protected boolean _moving;
+    private int _rightPieces;
+    private int _wrongPieces;
 
     public QualityControlStation(int id) {
         _id = id;
