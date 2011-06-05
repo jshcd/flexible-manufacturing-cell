@@ -66,6 +66,7 @@ public class Slave1 implements Slave {
         _statusData.setAxisBeltRunning(_axisBelt.isMoving());
         _statusData.setWeldingBeltPieces(_weldingBelt.getPieces());
         _statusData.setWeldingBeltRunning(_weldingBelt.isMoving());
+        _mailBox.sendCommand(_statusData);
     }
 
     public final void initialize() {

@@ -39,13 +39,13 @@ public class ConfigurationParameters extends JDialog {
             _gearBeltCapacity, _gearBeltSpeed, _gearBeltLength, _assemblyActivationTime,
             _weldingBeltSpeed, _weldingBeltLength, _weldingActivationTime,
             _OKBeltSpeed, _OKBeltLength, _notOKBeltLength, _qualityActivationTime,
-            _robot1Axis, _robot1Gear, _robot1Assembly, _robot2Axis, _robot2Gear, _robot2Assembly;
+            _robot1Axis, _robot1Gear, _robot1Assembly, _robot2Welding, _robot2Checked, _robot2Assembly;
     private JTextField _axisBeltCapacityTxt, _axisBeltSpeedTxt, _axisBeltLengthTxt,
             _gearBeltCapacityTxt, _gearBeltSpeedTxt, _gearBeltLengthTxt, _assemblyActivationTimeTxt,
             _weldingBeltSpeedTxt, _weldingBeltLengthTxt, _weldingActivationTimeTxt,
             _OKBeltSpeedTxt, _OKBeltLengthTxt, _notOKBeltLengthTxt, _qualityActivationTimeTxt,
             _clockCycleTimeTxt, _robot1AxisTxt, _robot1GearTxt, _robot1AssemblyTxt,
-            _robot2AxisTxt, _robot2GearTxt, _robot2AssemblyTxt;
+            _robot2WeldingTxt, _robot2CheckedTxt, _robot2AssemblyTxt;
     private String _clockCycleTime;
     private MasterConfigurationData _masterConfiguration;
     private Master _masterAutomaton;
@@ -243,14 +243,14 @@ public class ConfigurationParameters extends JDialog {
         pnlCommonLayout = new MigLayout("wrap 3",
                 "[left][fill, grow, 40lp:40lp:][]", "");
         _robot2Parameters.setLayout(pnlCommonLayout);
-        _robot2Parameters.add(new JLabel("Axis picking/transport time: "));
-        _robot2AxisTxt = new JTextField(_robot2Axis);
-        _robot2Parameters.add(_robot2AxisTxt);
+        _robot2Parameters.add(new JLabel("Welded Assembly picking/transport time: "));
+        _robot2WeldingTxt = new JTextField(_robot2Welding);
+        _robot2Parameters.add(_robot2WeldingTxt);
         _robot2Parameters.add(new JLabel("sec"));
 
-        _robot2Parameters.add(new JLabel("Gear picking/transport time: "));
-        _robot2GearTxt = new JTextField(_robot2Gear);
-        _robot2Parameters.add(_robot2GearTxt);
+        _robot2Parameters.add(new JLabel("Checked Assembly picking/transport time: "));
+        _robot2CheckedTxt = new JTextField(_robot2Checked);
+        _robot2Parameters.add(_robot2CheckedTxt);
         _robot2Parameters.add(new JLabel("sec"));
 
         _robot2Parameters.setLayout(pnlCommonLayout);
@@ -323,15 +323,21 @@ public class ConfigurationParameters extends JDialog {
         _gearBeltSpeedTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.getSpeed()));
         _gearBeltCapacityTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.getCapacity()));
         _gearBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._gearBeltConfiguration.getLength()));
-        _assemblyActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._activationTime));
-        _weldingBeltSpeedTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._weldingBeltConfiguration.getSpeed()));
-        _weldingBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._weldingBeltConfiguration.getLength()));
-        _weldingActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._activationTime));
-        _OKBeltSpeedTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._qualityControlBelt.getSpeed()));
-        _OKBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._qualityControlBelt.getLength()));
+        _assemblyActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._assemblyActivationTime));
+        _weldingBeltSpeedTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._weldingBeltConfiguration.getSpeed()));
+        _weldingBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave1ConfigurationData._weldingBeltConfiguration.getLength()));
+        _weldingActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._weldingActivationTime));
+        _OKBeltSpeedTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._acceptedBelt.getSpeed()));
+        _OKBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._acceptedBelt.getLength()));
         _notOKBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._notAcceptedBelt.getLength()));
-        _qualityActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._activationTime));
+        _qualityActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._qualityControlActivationTime));
         _clockCycleTimeTxt.setText(String.valueOf(_masterConfiguration._clockCycleTime));
+        _robot1AssemblyTxt.setText(String.valueOf(_masterConfiguration._robot1ConfigurationData.getPickAndPlaceAssemblyTime()));
+        _robot1AxisTxt.setText(String.valueOf(_masterConfiguration._robot1ConfigurationData.getPickAndPlaceAxisTime()));
+        _robot1GearTxt.setText(String.valueOf(_masterConfiguration._robot1ConfigurationData.getPickAndPlaceGearTime()));
+        _robot2AssemblyTxt.setText(String.valueOf(_masterConfiguration._robot2ConfigurationData.getPickAndTransportAssemblyTime()));
+        _robot2CheckedTxt.setText(String.valueOf(_masterConfiguration._robot2ConfigurationData.getPickAndTransportCheckedAssemblyTime()));
+        _robot2WeldingTxt.setText(String.valueOf(_masterConfiguration._robot2ConfigurationData.getPickAndTransportWeldedAssemblyTime()));
 
         if (!showResources) {
             _axisBeltSpeedTxt.setEditable(false);
@@ -349,6 +355,12 @@ public class ConfigurationParameters extends JDialog {
             _notOKBeltLengthTxt.setEditable(false);
             _qualityActivationTimeTxt.setEditable(false);
             _clockCycleTimeTxt.setEditable(false);
+            _robot1AssemblyTxt.setEditable(false);
+            _robot1AxisTxt.setEditable(false);
+            _robot1GearTxt.setEditable(false);
+            _robot2AssemblyTxt.setEditable(false);
+            _robot2CheckedTxt.setEditable(false);
+            _robot2WeldingTxt.setEditable(false);
         } else {
             _axisBeltSpeedTxt.setEditable(true);
             _axisBeltCapacityTxt.setEditable(true);
@@ -365,6 +377,12 @@ public class ConfigurationParameters extends JDialog {
             _notOKBeltLengthTxt.setEditable(true);
             _qualityActivationTimeTxt.setEditable(true);
             _clockCycleTimeTxt.setEditable(true);
+            _robot1AssemblyTxt.setEditable(true);
+            _robot1AxisTxt.setEditable(true);
+            _robot1GearTxt.setEditable(true);
+            _robot2AssemblyTxt.setEditable(true);
+            _robot2CheckedTxt.setEditable(true);
+            _robot2WeldingTxt.setEditable(true);
         }
         
     }
