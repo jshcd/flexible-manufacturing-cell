@@ -11,6 +11,8 @@ public class Robot1Test extends Robot1 {
     }
 
     public void reportProcess(int command) {
+        test.sendToRobot1(command);
+        test.sendToRobot2(command);
         test.sendToSlave1(command);
         test.sendToSlave2(command);
         test.sendToSlave3(command);

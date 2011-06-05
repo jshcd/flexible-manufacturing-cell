@@ -2,6 +2,10 @@
 package Automaton.Slaves;
 
 import Automaton.Slaves.Data.Slave3Data;
+import Automaton.Slaves.Slave;
+import Automaton.Slaves.Slave;
+import Automaton.Slaves.SlaveMailBox;
+import Automaton.Slaves.SlaveMailBox;
 import Auxiliar.Constants;
 import Element.Station.QualityControlStation;
 import Element.Conveyor.ConveyorBelt;
@@ -142,6 +146,9 @@ public class Slave3 implements Slave {
     public void runCommand(int command) {
         Piece p;
         switch (command) {
+            case Constants.START_SLAVE3:
+                start();
+                break;
             case Constants.ROBOT2_SLAVE3_PLACES_WELDED_OK:
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);

@@ -19,7 +19,11 @@ public class Constants {
     /*
      *  Constants used by mailboxes
      */
-    public final static int START_ORDER = 0;
+    public final static int START_SLAVE1 = 1001;
+    public final static int START_SLAVE2 = 1002;
+    public final static int START_SLAVE3 = 1003;
+    public final static int START_ROBOT1 = 1004;
+    public final static int START_ROBOT2 = 1005;
     public final static int EMERGENCY_STOP_ORDER = 1;
     public final static int NORMAL_STOP_ORDER = 2;
     public final static int SLAVE_ONE_STARTING = 3;

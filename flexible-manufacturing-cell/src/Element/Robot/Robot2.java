@@ -101,6 +101,7 @@ public class Robot2 implements Robot,Runnable {
                     }
                     break;
             }
+            Thread.yield();
         }
     }
 

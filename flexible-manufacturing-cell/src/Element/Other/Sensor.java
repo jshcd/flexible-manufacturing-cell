@@ -68,6 +68,7 @@ public class Sensor implements Runnable {
                     disactivate();
                 }
 
+                Thread.yield();
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
             }

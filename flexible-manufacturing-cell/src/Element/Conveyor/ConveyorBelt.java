@@ -44,6 +44,7 @@ public class ConveyorBelt implements PieceContainer {
         while (true) {
             try {
                 Thread.sleep(100);
+                
                 if (_moving) {
                     synchronized (_pieces) {
                         Iterator i = _pieces.iterator();
@@ -56,6 +57,8 @@ public class ConveyorBelt implements PieceContainer {
                         }
                     }
                 }
+                
+                Thread.yield();
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
             }
