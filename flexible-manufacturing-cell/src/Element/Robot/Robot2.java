@@ -77,6 +77,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     break;
                 case q1:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q0;
+                        break;
+                    }
                     if (!_weldingTableSensor) {
                         _commandReceived = false;
                         transportAssembly(); // sends 301,303
@@ -84,6 +89,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     break;
                 case q2:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q1;
+                        break;
+                    }
                     if (_weldingCompleted) {
                         _commandReceived = false;
                         pickWeldedAssembly(); // 305
@@ -91,6 +101,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     break;
                 case q3:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q2;
+                        break;
+                    }
                     if (!_qualityTableSensor) {
                         _commandReceived = false;
                         transportWeldedAssembly(); // 306 304
@@ -98,6 +113,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     break;
                 case q4:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q3;
+                        break;
+                    }
                     if (_qualityCompletedOK) {
                         _commandReceived = false;
                         pickCheckedWeldedAssembly(); //310
@@ -109,6 +129,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     break;
                 case q6:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q4;
+                        break;
+                    }
                     if (!_OKTableSensor) {
                         transportWeldedOK(); //401
                         _previousState = AutomatonState.q6;
@@ -116,6 +141,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     break;
                 case q7:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q4;
+                        break;
+                    }
                     if (!_NotOKTableSensor) {
                         transportWeldedNotOK(); //402
                         _previousState = AutomatonState.q7;
@@ -206,9 +236,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     public void runCommand(int command) {
-//        if (command > 120) {
-//            System.out.println("R2 running: " + command);
-//        }
+        if (command > 120) {
+            System.out.println("R2 running: " + command);
+        }
         switch (command) {
             case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
                 _weldingSensor = true;
