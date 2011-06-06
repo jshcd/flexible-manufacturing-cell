@@ -1,12 +1,14 @@
 
 package Scada.DataBase;
 
+import java.io.Serializable;
+
 /**
  * Class that defines the configuration parameters gathered from the Database
  * that configure a Conveyor Belt
  * @author Echoplex
  */
-public class BeltConfigurationData {
+public class BeltConfigurationData implements Serializable {
     
     /**
      * Lenth of the belt

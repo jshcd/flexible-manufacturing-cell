@@ -4,11 +4,13 @@
  */
 package Scada.DataBase;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Ringare
  */
-public class Slave3ConfigurationData {
+public class Slave3ConfigurationData implements Serializable {
     public BeltConfigurationData _acceptedBelt;
     public BeltConfigurationData _notAcceptedBelt;
     

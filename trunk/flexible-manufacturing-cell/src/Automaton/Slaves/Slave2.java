@@ -32,7 +32,8 @@ import java.util.logging.Logger;
 
 public class Slave2 implements Slave, IOProcess {
 
-    private SlaveOutputMailBox _mailBox;
+    private SlaveOutputMailBox _outputMailBox;
+    protected SlaveInputMailBox _inputMailBox;
     private WeldingStation _weldingStation;
     private QualityControlStation _qualityStation;
     private Sensor _sensor6;
@@ -48,7 +49,14 @@ public class Slave2 implements Slave, IOProcess {
 
     public Slave2() {
         Logger.getLogger(Slave2.class.getName()).log(Level.INFO, "Slave 2 created");
-        _mailBox = new SlaveOutputMailBox(2);
+        _outputMailBox = new SlaveOutputMailBox(2);
+        _inputMailBox = new SlaveInputMailBox(2, this);
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                _inputMailBox.startServer();
+            }
+        });
+        t.start();
         reportToMaster(Constants.COMMAND_SLAVE2_CONNECTED);
     }
 
@@ -82,7 +90,7 @@ public class Slave2 implements Slave, IOProcess {
         ioi.bind();
         (new Thread(ioi)).start();
 
-        _mailBox = new SlaveOutputMailBox(2);
+        _outputMailBox = new SlaveOutputMailBox(2);
         
         _weldingStation = new WeldingStation(5);
         _weldingStation.setWeldingTime(_slave2ConfigurationData._weldingActivationTime);
@@ -170,10 +178,10 @@ public class Slave2 implements Slave, IOProcess {
     public void reportToMaster(int orderNumber) {
         // Esto está bien?
         Command command = new Command(orderNumber);
-        _mailBox.startConnection();
-        _mailBox.acceptConnection();
-        _mailBox.sendCommand(command);
-        _mailBox.receiveCommand();
+        _outputMailBox.startConnection();
+        _outputMailBox.acceptConnection();
+        _outputMailBox.sendCommand(command);
+        _outputMailBox.receiveCommand();
     }
 
     public void startServer() {

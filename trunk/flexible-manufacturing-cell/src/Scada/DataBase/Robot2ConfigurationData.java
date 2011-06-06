@@ -1,11 +1,13 @@
 
 package Scada.DataBase;
 
+import java.io.Serializable;
+
 /**
  * Defines the configuration parameter set for the Robot2
  * @author Echoplex
  */
-public class Robot2ConfigurationData {
+public class Robot2ConfigurationData implements Serializable {
     
     /**
      * Stablishes the time to pick and transport an assembly

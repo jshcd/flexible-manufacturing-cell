@@ -32,7 +32,8 @@ import java.util.logging.Logger;
 
 public class Slave3 implements Slave, IOProcess {
 
-    private SlaveOutputMailBox _mailBox;
+    private SlaveOutputMailBox _outputMailBox;
+    protected SlaveInputMailBox _inputMailBox;
     private ConveyorBelt _acceptedBelt;
     private ConveyorBelt _rejectedBelt;
     private Sensor _sensor8;
@@ -50,7 +51,14 @@ public class Slave3 implements Slave, IOProcess {
     
     public Slave3() {
         Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Slave 3 created");
-        _mailBox = new SlaveOutputMailBox(3);
+        _outputMailBox = new SlaveOutputMailBox(3);
+        _inputMailBox = new SlaveInputMailBox(3, this);
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                _inputMailBox.startServer();
+            }
+        });
+        t.start();
         reportToMaster(Constants.COMMAND_SLAVE3_CONNECTED);
     }
 
@@ -198,10 +206,10 @@ public class Slave3 implements Slave, IOProcess {
 
     public void reportToMaster(int orderNumber) {
         Command command = new Command(orderNumber);
-        _mailBox.startConnection();
-        _mailBox.acceptConnection();
-        _mailBox.sendCommand(command);
-        _mailBox.receiveCommand();
+        _outputMailBox.startConnection();
+        _outputMailBox.acceptConnection();
+        _outputMailBox.sendCommand(command);
+        _outputMailBox.receiveCommand();
     }
 
 
