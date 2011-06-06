@@ -19,4 +19,8 @@ public interface Slave {
     public void startServer();
     
     public void storeInitialConfiguration(MasterConfigurationData m);
+    
+    public void updateStatusData();
+    
+    
 }

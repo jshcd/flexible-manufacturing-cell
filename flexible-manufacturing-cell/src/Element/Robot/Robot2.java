@@ -73,54 +73,91 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                 case q0:
                     if (_weldingSensor) {
                         _state = AutomatonState.q1;
-                        pickAssembly();
+                        pickAssembly(); // sends 208
                     }
                     break;
                 case q1:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q0;
+                        break;
+                    }
                     if (!_weldingTableSensor) {
-                        transportAssembly();
+                        _commandReceived = false;
+                        transportAssembly(); // sends 301,303
                         _state = AutomatonState.q2;
                     }
                     break;
                 case q2:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q1;
+                        break;
+                    }
                     if (_weldingCompleted) {
                         _commandReceived = false;
-                        pickWeldedAssembly();
+                        pickWeldedAssembly(); // 305
                         _state = AutomatonState.q3;
                     }
                     break;
                 case q3:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q2;
+                        break;
+                    }
                     if (!_qualityTableSensor) {
-                        transportWeldedAssembly();
+                        _commandReceived = false;
+                        transportWeldedAssembly(); // 306 304
                         _state = AutomatonState.q4;
                     }
                     break;
                 case q4:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q3;
+                        break;
+                    }
                     if (_qualityCompletedOK) {
                         _commandReceived = false;
-                        pickCheckedWeldedAssembly();
+                        pickCheckedWeldedAssembly(); //310
                         _state = AutomatonState.q7;
                     } else if (_qualityCompletedNotOK) {
                         _commandReceived = false;
-                        pickCheckedWeldedAssembly();
+                        pickCheckedWeldedAssembly();//310
                         _state = AutomatonState.q6;
                     }
                     break;
                 case q6:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q4;
+                        break;
+                    }
                     if (!_OKTableSensor) {
-                        transportWeldedOK();
+                        transportWeldedOK(); //401
                         _previousState = AutomatonState.q6;
                         _state = AutomatonState.q8;
                     }
                     break;
                 case q7:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = AutomatonState.q4;
+                        break;
+                    }
                     if (!_NotOKTableSensor) {
-                        transportWeldedNotOK();
+                        transportWeldedNotOK(); //402
                         _previousState = AutomatonState.q7;
                         _state = AutomatonState.q8;
                     }
                     break;
                 case q8:
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = _previousState;
+                        break;
+                    }
                     returnToIdle();
             }
             Thread.yield();
@@ -262,6 +299,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             case Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED:
                 _commandReceived = true;
                 break;
+            case Constants.SLAVE2_ROBOT2_CHECKED_WELDED_ASSEMBLY_PICKED:
+                _commandReceived = true;
+                break;
         }
     }
 
@@ -299,6 +339,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     private void returnToIdle() {
         _commandReceived = false;
+        _qualityCompletedOK = false;
+        _qualityCompletedNotOK = false;
         try {
             switch (_state) {
                 case q0:

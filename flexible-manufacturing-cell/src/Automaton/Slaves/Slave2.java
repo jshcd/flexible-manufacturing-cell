@@ -169,6 +169,7 @@ public class Slave2 implements Slave, IOProcess {
                 break;
             case Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY:
                 _qualityStation.removeLastPiece();
+                sendCommand(Constants.SLAVE2_ROBOT2_CHECKED_WELDED_ASSEMBLY_PICKED);
                 break;
         }
     }
