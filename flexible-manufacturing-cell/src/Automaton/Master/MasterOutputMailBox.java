@@ -52,10 +52,6 @@ public class MasterOutputMailBox implements MailBox {
             String port;
             String ip;
             switch(_destination){
-                case 0:
-                    port = "Robot2.port";
-                    ip = "Robot2.ip";
-                    break;
                 case 1:
                     port = "Slave1.port";
                     ip = "Slave1.ip";
