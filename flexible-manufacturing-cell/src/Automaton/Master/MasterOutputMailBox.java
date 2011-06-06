@@ -49,8 +49,8 @@ public class MasterOutputMailBox implements MailBox {
             Properties prop = new Properties();
             InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
             prop.load(is);
-            String port;
-            String ip;
+            String port = "";
+            String ip = "";
             switch(_destination){
                 case 1:
                     port = "Slave1.port";
@@ -63,10 +63,6 @@ public class MasterOutputMailBox implements MailBox {
                 case 3:
                     port = "Slave3.port";
                     ip = "Slave3.ip";
-                    break;
-                default: //It should not enter here
-                    port = "Slave1.port";
-                    ip = "Slave1.ip";
             }
             _port = Integer.parseInt(prop.getProperty(port));
             _address = prop.getProperty(ip);
