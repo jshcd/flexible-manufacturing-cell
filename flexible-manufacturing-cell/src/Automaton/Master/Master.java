@@ -1,5 +1,6 @@
 package Automaton.Master;
 
+import Auxiliar.Command;
 import Auxiliar.Constants;
 import Auxiliar.MailboxData;
 import Scada.DataBase.DBManager;
@@ -86,6 +87,8 @@ public class Master {
                 break;
         }
         _outputMailBox.sendInformation(_configurationData, slaveId);
+        if(_slave1Online && _slave2Online && _slave3Online)
+            startSystem();
     }
 
     public void setCanvasStatus(int slaveId, MailboxData data) {
@@ -105,7 +108,12 @@ public class Master {
     }
 
     public void startSystem() {
-        throw new UnsupportedOperationException();
+        Command command1 = new Command(Constants.START_SLAVE1);
+        _outputMailBox.sendInformation(command1, Constants.SLAVE1_ID);
+        Command command2 = new Command(Constants.START_SLAVE2);
+        _outputMailBox.sendInformation(command2, Constants.SLAVE2_ID);
+        Command command3 = new Command(Constants.START_SLAVE3);
+        _outputMailBox.sendInformation(command3, Constants.SLAVE3_ID);
     }
 
     public void stopSystem() {

@@ -125,6 +125,8 @@ public class MasterInputMailBox implements MailBox {
                                     _master.setConnectionStatus(Constants.SLAVE2_ID, true);
                                 }else if(((Command)o).getCommand() == Constants.COMMAND_SLAVE3_CONNECTED){
                                     _master.setConnectionStatus(Constants.SLAVE3_ID, true);
+                                } else if(((Command)o).getCommand() == Constants.SLAVE_ONE_STARTING){
+                                    //_master.setConnectionStatus(Constants.SLAVE3_ID, true);
                                 }
                             }else if(o instanceof Slave1Data){
                                 _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data)o);
