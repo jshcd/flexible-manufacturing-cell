@@ -4,8 +4,9 @@
 package Element.Piece;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Piece {
+public class Piece implements Serializable{
 
     private Element.Piece.Piece.PieceType _type;
     private double _position;
