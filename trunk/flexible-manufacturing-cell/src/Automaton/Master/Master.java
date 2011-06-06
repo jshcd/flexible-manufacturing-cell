@@ -53,7 +53,12 @@ public class Master {
         _robot = new Robot2();
         _report.setFirstStart(true);
         _logger.addHandler(_monitor.getLog().getLogHandler());
-
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                _mailBox.startServer();
+            }
+        });
+        t.start();
     }
 
     public void initialize() {
@@ -61,13 +66,6 @@ public class Master {
         _robot.setTransportTime4(_configurationData._robot2ConfigurationData.getPickAndTransportAssemblyTime());
         _robot.setTransportTime5(_configurationData._robot2ConfigurationData.getPickAndTransportWeldedAssemblyTime());
         _robot.setTransportTime6(_configurationData._robot2ConfigurationData.getPickAndTransportCheckedAssemblyTime());
-        Thread t = new Thread(new Runnable() {
-
-            public void run() {
-                _mailBox.startServer();
-            }
-        });
-        t.start();
     }
 
     public void setConnectionStatus(int slaveId, boolean status) {
