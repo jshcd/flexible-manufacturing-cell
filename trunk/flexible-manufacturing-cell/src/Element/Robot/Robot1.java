@@ -29,6 +29,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
     private boolean _assemblySensor;
     private boolean _weldingSensor;
     private boolean _assemblyCompleted;
+    private boolean _running;
     private IOInterface ioi;
 
     public Logger _logger = Logger.getLogger(Robot1.class.toString());
@@ -40,6 +41,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         _assemblySensor = false;
         _weldingSensor = false;
         _assemblyCompleted = false;
+        _running = false;
         ioi = new IOInterface();
         ioi.setProcess(this);
         ioi.setPortLag(3);
@@ -116,6 +118,12 @@ public class Robot1 implements Robot, Runnable, IOProcess {
 
     public void runCommand(int command) {
         switch (command) {
+            case Constants.START_ROBOT1:
+                _running = true;
+                break;
+            case Constants.NORMAL_STOP_ORDER:
+                _running = false;
+                break;
             case Constants.SENSOR_GEAR_UNLOAD_ACTIVATED:
                 _gearSensor = true;
                 break;

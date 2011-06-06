@@ -25,8 +25,8 @@ public class SlaveOutputMailBox implements MailBox {
      * Constructs a new <code>SlaveMailBox</code> with the indicated id
      * @param id Identifier of the <code>SlaveMailBox</code>
      */
-    public SlaveOutputMailBox (int id) {
-        _id = "Slave"+id;
+    public SlaveOutputMailBox(int id) {
+        _id = "Slave" + id;
     }
 
     public void startConnection() {
@@ -55,8 +55,10 @@ public class SlaveOutputMailBox implements MailBox {
 
     public void acceptConnection() {
         try {
-            _out = new ObjectOutputStream(_requestSocket.getOutputStream());
-            _out.flush();
+            synchronized (_out) {
+                _out = new ObjectOutputStream(_requestSocket.getOutputStream());
+                _out.flush();
+            }
         } catch (IOException ex) {
             Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,15 +66,17 @@ public class SlaveOutputMailBox implements MailBox {
 
     public void sendCommand(MailboxData command) {
         try {
-            _out.writeObject(command);
-            _out.flush();
+            synchronized (_out) {
+                _out.writeObject(command);
+                _out.flush();
+            }
         } catch (IOException ex) {
             Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void receiveCommand() {
-         try {
+        try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
             Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.FINE, "Received response> Object of the class {0}", _in.readObject().getClass());
         } catch (IOException ex) {
