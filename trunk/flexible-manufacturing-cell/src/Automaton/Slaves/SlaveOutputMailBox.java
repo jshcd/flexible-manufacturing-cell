@@ -55,8 +55,8 @@ public class SlaveOutputMailBox implements MailBox {
 
     public void acceptConnection() {
         try {
+            _out = new ObjectOutputStream(_requestSocket.getOutputStream());
             synchronized (_out) {
-                _out = new ObjectOutputStream(_requestSocket.getOutputStream());
                 _out.flush();
             }
         } catch (IOException ex) {
