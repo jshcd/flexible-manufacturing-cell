@@ -175,7 +175,7 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public void runCommand(int command) {
-        if(command >80) System.out.println("S3 received: " + command);
+//        if(command >80) System.out.println("S3 received: " + command);
         Piece p;
         switch (command) {
             case Constants.START_SLAVE3:
