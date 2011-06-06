@@ -46,9 +46,9 @@ public class Auxiliar {
         s3.runCommand(command);
     }
 
-    public void sendToRobot1(int command) {
-        s1.getRobot().runCommand(command);
-    }
+    //public void sendToRobot1(int command) {
+    //    s1.getRobot().runCommand(command);
+    //}
 
     public void sendToRobot2(int command) {
         r2.runCommand(command);

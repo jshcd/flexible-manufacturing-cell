@@ -114,9 +114,10 @@ public class MasterInputMailBox implements MailBox {
                         try {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.INFO, "Received> {0}", in.readObject());
-                            
+
                             Object o = in.readObject();
+                            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.INFO, "Received> {0}", o);
+                            
                             if(o instanceof Command){
                                 if(((Command)o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED){
                                     _master.setConnectionStatus(Constants.SLAVE1_ID, true);

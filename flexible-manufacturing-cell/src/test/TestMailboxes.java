@@ -25,7 +25,7 @@ public class TestMailboxes {
         SlaveOutputMailBox s2mb = new SlaveOutputMailBox(2);
         SlaveOutputMailBox s3mb = new SlaveOutputMailBox(3);
         RobotOutputMailBox r2mb = new RobotOutputMailBox(2);
-        final MasterInputMailBox mmb = new MasterInputMailBox();
+        final MasterInputMailBox mmb = new MasterInputMailBox(null);
         Slave1Data a = new Slave1Data();
         Slave2Data b = new Slave2Data();
         Slave3Data c = new Slave3Data();
