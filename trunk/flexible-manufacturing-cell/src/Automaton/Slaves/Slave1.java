@@ -65,6 +65,8 @@ public class Slave1 implements Slave, IOProcess {
         });
         t.start();
         reportToMaster(new Command(Constants.COMMAND_SLAVE1_CONNECTED));
+
+
     }
 
     public ConveyorBelt getGearBelt() {
@@ -194,6 +196,19 @@ public class Slave1 implements Slave, IOProcess {
         startRobot();
 
         start();
+
+        Thread y = new Thread(new Runnable() {
+
+            public void run() {
+                try {
+                    Thread.sleep(50);
+                    updateStatusData();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        y.start();
 
     }
 
