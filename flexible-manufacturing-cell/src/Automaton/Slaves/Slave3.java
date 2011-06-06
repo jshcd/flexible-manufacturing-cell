@@ -172,10 +172,12 @@ public class Slave3 implements Slave, IOProcess {
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
                 _acceptedBelt.addPiece(p);
+                sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
             case Constants.ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK:
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
+                sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 _rejectedBelt.addPiece(p);
                 break;
             case Constants.SENSOR_OK_UNLOAD_ACTIVATED:

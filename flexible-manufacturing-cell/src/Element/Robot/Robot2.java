@@ -21,6 +21,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     private RobotOutputMailBox _mailBox;
     private AutomatonState _state;
+    private AutomatonState _previousState;
     private Piece _loadedPiece;
     private boolean _weldingSensor;
     private boolean _weldingTableSensor;
@@ -30,6 +31,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     private boolean _weldingCompleted;
     private boolean _qualityCompletedOK;
     private boolean _qualityCompletedNotOK;
+    private boolean _assemblyPicked;
+    private boolean _assemblyPlaced;
+    private boolean _weldedAssemblyPlaced;
+    private boolean _weldedAssemblyPicked;
+    private boolean _finalWeldedAssemblyPlaced;
     private int _transportTime4;
     private int _transportTime5;
     private int _transportTime6;
@@ -37,6 +43,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public Robot2() {
         _state = AutomatonState.q0;
+        _previousState = AutomatonState.q0;
         _mailBox = new RobotOutputMailBox(2);
         _weldingSensor = false;
         _qualityTableSensor = false;
@@ -45,6 +52,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         _qualityCompletedNotOK = false;
         _OKTableSensor = false;
         _NotOKTableSensor = false;
+        _assemblyPicked = false;
+        _assemblyPlaced = false;
+        _weldedAssemblyPicked = false;
+        _weldedAssemblyPlaced = false;
+        _finalWeldedAssemblyPlaced = false;
         ioi = new IOInterface();
         ioi.setProcess(this);
         ioi.setPortLag(4);
@@ -71,24 +83,45 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     break;
                 case q1:
+                    if (!_assemblyPicked) {
+                        _state = AutomatonState.q0;
+                        break;
+                    }
                     if (!_weldingTableSensor) {
                         transportAssembly();
                         _state = AutomatonState.q2;
                     }
                     break;
                 case q2:
+                    if (!_assemblyPlaced) {
+                        _state = AutomatonState.q1;
+                        break;
+                    }
                     if (_weldingCompleted) {
+                        _assemblyPicked = false;
+                        _assemblyPlaced = false;
                         pickWeldedAssembly();
                         _state = AutomatonState.q3;
                     }
                     break;
                 case q3:
+                    if (!_weldedAssemblyPicked) {
+                        _assemblyPlaced = true;
+                        _state = AutomatonState.q2;
+                        break;
+                    }
                     if (!_qualityTableSensor) {
                         transportWeldedAssembly();
                         _state = AutomatonState.q4;
                     }
                     break;
                 case q4:
+                    if (!_weldedAssemblyPlaced) {
+                        _state = AutomatonState.q3;
+                        break;
+                    }
+                    _weldedAssemblyPicked = false;
+                    _weldedAssemblyPlaced = false;
                     if (_qualityCompletedOK) {
                         pickCheckedWeldedAssembly();
                         _state = AutomatonState.q7;
@@ -100,15 +133,25 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                 case q6:
                     if (!_OKTableSensor) {
                         transportWeldedOK();
-                        returnToIdle();
+                        _previousState = AutomatonState.q6;
+                        _state = AutomatonState.q8;
                     }
                     break;
                 case q7:
                     if (!_NotOKTableSensor) {
                         transportWeldedNotOK();
-                        returnToIdle();
+                        _previousState = AutomatonState.q7;
+                        _state = AutomatonState.q8;
                     }
                     break;
+                case q8:
+                    if (_finalWeldedAssemblyPlaced) {
+                        _finalWeldedAssemblyPlaced = false;
+                    } else {
+                        _state = _previousState;
+                        break;
+                    }
+                    returnToIdle();
             }
             Thread.yield();
         }
@@ -230,6 +273,21 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             case Constants.SENSOR_NOT_OK_LOAD_DISACTIVATED:
                 _NotOKTableSensor = false;
                 break;
+            case Constants.SLAVE1_ROBOT2_ASSEMBLY_PICKED:
+                _assemblyPicked = true;
+                break;
+            case Constants.SLAVE2_ROBOT2_ASSEMBLY_PLACED:
+                _assemblyPlaced = true;
+                break;
+            case Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PICKED:
+                _weldedAssemblyPicked = true;
+                break;
+            case Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PLACED:
+                _weldedAssemblyPlaced = true;
+                break;
+            case Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED:
+                _finalWeldedAssemblyPlaced = true;
+                break;
         }
     }
 
@@ -266,6 +324,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     private void returnToIdle() {
+        _assemblyPicked = false;
+        _assemblyPlaced = false;
+        _weldedAssemblyPicked = false;
+        _weldedAssemblyPlaced = false;
+        _finalWeldedAssemblyPlaced = false;
         try {
             switch (_state) {
                 case q0:
@@ -283,7 +346,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     _state = AutomatonState.q0;
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Robot2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
