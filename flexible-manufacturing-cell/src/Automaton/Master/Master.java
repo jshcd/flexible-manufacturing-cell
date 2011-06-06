@@ -33,10 +33,16 @@ public class Master {
     private ConfigurationParameters _configurationParameters;
     private ReportData _report;
     protected Logger _logger = Logger.getLogger(Master.class.toString());
-    
     boolean _slave1Online = false;
     boolean _slave2Online = false;
     boolean _slave3Online = false;
+
+    // TODO: hay que borrarlo pero se usa para pruebas
+    public static void main(String args[]) {
+        Master m = new Master();
+        m.initialize();
+        m.startRobot();
+    }
 
     public Master() {
         _mailBox = new MasterInputMailBox(this);
@@ -44,7 +50,8 @@ public class Master {
         _configurationData = null;
         _monitor = new MonitorWindow(this);
         _report = _dbmanager.readReportData();
-	_report.setFirstStart(true);
+        _robot = new Robot2();
+        _report.setFirstStart(true);
         _logger.addHandler(_monitor.getLog().getLogHandler());
 
     }
@@ -55,15 +62,16 @@ public class Master {
         _robot.setTransportTime5(_configurationData._robot2ConfigurationData.getPickAndTransportWeldedAssemblyTime());
         _robot.setTransportTime6(_configurationData._robot2ConfigurationData.getPickAndTransportCheckedAssemblyTime());
         Thread t = new Thread(new Runnable() {
-           public void run() {
-               _mailBox.startServer();
-           }
-       });
-       t.start();
+
+            public void run() {
+                _mailBox.startServer();
+            }
+        });
+        t.start();
     }
-    
-    public void setConnectionStatus(int slaveId, boolean status){
-        switch(slaveId){
+
+    public void setConnectionStatus(int slaveId, boolean status) {
+        switch (slaveId) {
             case Constants.SLAVE1_ID:
                 _slave1Online = status;
                 _monitor.setConnectionStatus(Constants.SLAVE2_ID, status);
@@ -78,26 +86,20 @@ public class Master {
                 break;
         }
     }
-    
-    public void setCanvasStatus(int slaveId, MailboxData data){
+
+    public void setCanvasStatus(int slaveId, MailboxData data) {
         _monitor.setCanvasStatus(slaveId, data);
     }
-    
-    public void startRobot() {
-        _robot = new Robot2();
-        //TODO: poner bien los valores del robot2
-        
-            _robot.setTransportTime4(300);
-            _robot.setTransportTime5(400);
-            _robot.setTransportTime6(500);
-            Thread t = new Thread(new Runnable() {
 
-                public void run() {
-                    _robot.startServer();
-                }
-            });
-            t.start();
-            (new Thread(_robot)).start();
+    public void startRobot() {
+        Thread t = new Thread(new Runnable() {
+
+            public void run() {
+                _robot.startServer();
+            }
+        });
+        t.start();
+        (new Thread(_robot)).start();
 
     }
 

@@ -8,6 +8,8 @@ import Automaton.Slaves.SlaveOutputMailBox;
 import Automaton.Slaves.SlaveOutputMailBox;
 import Auxiliar.Command;
 import Auxiliar.Constants;
+import Auxiliar.IOInterface;
+import Auxiliar.IOProcess;
 import Element.Station.QualityControlStation;
 import Element.Conveyor.ConveyorBelt;
 import Element.Other.Sensor;
@@ -28,7 +30,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Slave3 implements Slave {
+public class Slave3 implements Slave, IOProcess {
 
     private SlaveOutputMailBox _mailBox;
     private ConveyorBelt _acceptedBelt;
@@ -38,17 +40,18 @@ public class Slave3 implements Slave {
     private Sensor _sensor10;
     private Sensor _sensor11;
     private Slave3Data _statusData;
+    private IOInterface ioi;
     private Slave3ConfigurationData _slave3ConfigurationData;
     private double sensor_range;
 
+    public static void main(String args[]) {
+        Slave3 s3 = new Slave3();
+    }
+    
     public Slave3() {
         Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Slave 3 created");
         _mailBox = new SlaveOutputMailBox(3);
         reportToMaster(Constants.COMMAND_SLAVE3_CONNECTED);
-    }
-
-    public static void main(String args[]) {
-        Slave3 s3 = new Slave3();
     }
 
     public Sensor getSensor8() {
@@ -88,6 +91,12 @@ public class Slave3 implements Slave {
     }
 
     public final void initialize() {
+        
+        ioi = new IOInterface();
+        ioi.setProcess(this);
+        ioi.setPortLag(2);
+        ioi.bind();
+        (new Thread(ioi)).start();
 
         int acceptedSpeed = _slave3ConfigurationData._acceptedBelt.getSpeed();
         double acceptedLength = (double) _slave3ConfigurationData._acceptedBelt.getLength();
@@ -193,8 +202,9 @@ public class Slave3 implements Slave {
         _mailBox.receiveCommand();
     }
 
-    public void orderToRobot(int i) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+    public void sendCommand(int command) {
+        ioi.send((short)command);
     }
 
     public void startServer() {

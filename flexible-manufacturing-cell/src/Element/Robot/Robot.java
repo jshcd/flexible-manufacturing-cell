@@ -4,7 +4,7 @@ public interface Robot {
 
     public void runCommand(int command);
 
-    public void reportProcess(int command);
+    public void sendCommand(int command);
 
     public void startServer();
 }

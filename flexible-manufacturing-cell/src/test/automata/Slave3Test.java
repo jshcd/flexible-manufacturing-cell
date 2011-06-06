@@ -22,13 +22,10 @@ public class Slave3Test extends Slave3 implements IOProcess{
         sendCommand(i);
     }
 
-    public void orderToRobot(int i) {
+    public void sendCommand(int i) {
         sendCommand(i);
     }
 
-    public void sendCommand(int command) {
-        ioi.send((short)command);
-    }
         @Override
     public void runCommand (int command){
 //        System.out.println("S3 running: " + command);

@@ -3,6 +3,8 @@ package Element.Robot;
 import Auxiliar.AutomatonState;
 import Element.Piece.Piece;
 import Auxiliar.Constants;
+import Auxiliar.IOInterface;
+import Auxiliar.IOProcess;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,7 +17,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Robot1 implements Robot, Runnable {
+public class Robot1 implements Robot, Runnable, IOProcess {
 
     private AutomatonState _state;
     private Piece _loadedPiece;
@@ -27,6 +29,7 @@ public class Robot1 implements Robot, Runnable {
     private boolean _assemblySensor;
     private boolean _weldingSensor;
     private boolean _assemblyCompleted;
+    private IOInterface ioi;
 
     public Robot1() {
         _state = AutomatonState.q0;
@@ -35,6 +38,11 @@ public class Robot1 implements Robot, Runnable {
         _assemblySensor = false;
         _weldingSensor = false;
         _assemblyCompleted = false;
+        ioi = new IOInterface();
+        ioi.setProcess(this);
+        ioi.setPortLag(3);
+        ioi.bind();
+        (new Thread(ioi)).start();
     }
 
     @Override
@@ -84,7 +92,7 @@ public class Robot1 implements Robot, Runnable {
                     _state = AutomatonState.q7;
                     break;
                 case q7:
-                    this.reportProcess(Constants.ROBOT1_SLAVE1_REQUEST_ASSEMBLY);
+                    this.sendCommand(Constants.ROBOT1_SLAVE1_REQUEST_ASSEMBLY);
                     if (_assemblyCompleted) {
                         pickAssembly();
                         _state = AutomatonState.q8;
@@ -99,7 +107,7 @@ public class Robot1 implements Robot, Runnable {
                 case q9:
                     returnToIdle();
             }
-            
+
             Thread.yield();
         }
     }
@@ -140,7 +148,7 @@ public class Robot1 implements Robot, Runnable {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.axis);
         _axisSensor = false;
-        reportProcess(Constants.ROBOT1_SLAVE1_PICKS_AXIS);
+        sendCommand(Constants.ROBOT1_SLAVE1_PICKS_AXIS);
         Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 picks axis");
 
     }
@@ -149,7 +157,7 @@ public class Robot1 implements Robot, Runnable {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.gear);
         _gearSensor = false;
-        reportProcess(Constants.ROBOT1_SLAVE1_PICKS_GEAR);
+        sendCommand(Constants.ROBOT1_SLAVE1_PICKS_GEAR);
         Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 picks gear");
     }
 
@@ -157,7 +165,7 @@ public class Robot1 implements Robot, Runnable {
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.assembly);
         _assemblyCompleted = false;
-        reportProcess(Constants.ROBOT1_SLAVE1_PICKS_ASSEMBLY);
+        sendCommand(Constants.ROBOT1_SLAVE1_PICKS_ASSEMBLY);
         Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 picks assembly from assembly station");
     }
 
@@ -167,7 +175,7 @@ public class Robot1 implements Robot, Runnable {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.ROBOT1_SLAVE1_PLACES_GEAR);
+        sendCommand(Constants.ROBOT1_SLAVE1_PLACES_GEAR);
         Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 places gear on assembly station");
         _loadedPiece = null;
     }
@@ -178,7 +186,7 @@ public class Robot1 implements Robot, Runnable {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.ROBOT1_SLAVE1_PLACES_AXIS);
+        sendCommand(Constants.ROBOT1_SLAVE1_PLACES_AXIS);
         Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 places axis on assembly station");
         _loadedPiece = null;
     }
@@ -189,7 +197,7 @@ public class Robot1 implements Robot, Runnable {
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        reportProcess(Constants.ROBOT1_SLAVE1_PLACES_ASSEMBLY);
+        sendCommand(Constants.ROBOT1_SLAVE1_PLACES_ASSEMBLY);
         Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1 places assembly on welding belt");
         _loadedPiece = null;
     }
@@ -231,10 +239,9 @@ public class Robot1 implements Robot, Runnable {
         Logger.getLogger(Robot1.class.getName()).log(Level.INFO, "Robot1: tr3 = {0}", transportTime3);
         this._transportTime3 = transportTime3;
     }
-
-    // TODO: rellenar con implementacion de Mailboxes
-    public void reportProcess(int command) {
-        throw new UnsupportedOperationException();
+    
+    public void sendCommand(int command) {
+        ioi.send((short)command);
     }
 
     public void startServer() {
@@ -264,4 +271,6 @@ public class Robot1 implements Robot, Runnable {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+
 }

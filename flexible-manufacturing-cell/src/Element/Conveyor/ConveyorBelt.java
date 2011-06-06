@@ -6,8 +6,10 @@ package Element.Conveyor;
 
 import Element.PieceContainer;
 import Automaton.Slaves.Slave;
+import Auxiliar.Constants;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -29,7 +31,7 @@ public class ConveyorBelt implements PieceContainer {
 
     public ConveyorBelt(int id, int speed, double length) {
         _id = id;
-        _pieces = Collections.synchronizedList(new ArrayList <Piece>());
+        _pieces = Collections.synchronizedList(new ArrayList<Piece>());
         _length = length;
         _speed = speed;
         _moving = false;
@@ -40,11 +42,10 @@ public class ConveyorBelt implements PieceContainer {
     public void run() {
         Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} starts running", _id);
 
-        // TODO: Check this works right
         while (true) {
             try {
                 Thread.sleep(100);
-                
+
                 if (_moving) {
                     synchronized (_pieces) {
                         Iterator i = _pieces.iterator();
@@ -53,11 +54,12 @@ public class ConveyorBelt implements PieceContainer {
                             p.setPosition(p.getPosition() + ((double) _speed / 100));
                             Logger.getLogger(ConveyorBelt.class.getName()).log(Level.FINEST, "ConveyorBelt " + _id + ": piece at {1}", p.getPosition());
 
+                            updatePosition(p);
 //                            System.out.println(p.getPosition());
                         }
                     }
                 }
-                
+
                 Thread.yield();
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,6 +138,7 @@ public class ConveyorBelt implements PieceContainer {
     @Override
     public void addPiece(Piece p) {
         _pieces.add(p);
+        updatePosition(p);
     }
 
     @Override
@@ -164,5 +167,31 @@ public class ConveyorBelt implements PieceContainer {
             _pieces.remove(last);
             this.startContainer();
         }
+    }
+
+    private void updatePosition(Piece piece) {
+        Point pointS = null;
+        Point pointE = null;
+
+        if (this._id == 1) { // Gear belt
+            pointS = Constants.GEAR_CONVEYOR_SENSOR_START_POSITION;
+            pointE = Constants.GEAR_CONVEYOR_SENSOR_END_POSITION;
+        } else if (this._id == 2) { // axis belt
+            pointS = Constants.AXIS_CONVEYOR_SENSOR_START_POSITION;
+            pointE = Constants.AXIS_CONVEYOR_SENSOR_END_POSITION;
+        } else if (this._id == 4) { // welding belt
+            pointS = Constants.WELDING_CONVEYOR_SENSOR_START_POSITION;
+            pointE = Constants.WELDING_CONVEYOR_SENSOR_END_POSITION;
+        } else if (this._id == 7) { // accepted belt
+            pointS = Constants.OK_CONVEYOR_SENSOR_START_POSITION;
+            pointE = Constants.OK_CONVEYOR_SENSOR_END_POSITION;
+        } else if (this._id == 8) { // rejected belt
+            pointS = Constants.NOTOK_CONVEYOR_SENSOR_START_POSITION;
+            pointE = Constants.NOTOK_CONVEYOR_SENSOR_END_POSITION;
+        }
+        
+        double x = ((pointE.getX() - pointS.getX()) / _length * piece.getPosition()) + pointS.getX();
+        pointS.setLocation(x, pointS.getY());
+        piece.setGuiPosition(pointS);
     }
 }

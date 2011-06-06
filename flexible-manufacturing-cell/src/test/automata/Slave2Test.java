@@ -19,17 +19,10 @@ public class Slave2Test extends Slave2 implements IOProcess{
         (new Thread(ioi)).start();
     }
 
-    public void reportToMaster(int i) {
+    public void sendCommand(int i) {
         sendCommand(i);
     }
 
-    public void orderToRobot(int i) {
-        sendCommand(i);
-    }
-
-    public void sendCommand(int command) {
-        ioi.send((short)command);
-    }
     @Override
     public void runCommand (int command){
 //        System.out.println("S2 running: " + command);
