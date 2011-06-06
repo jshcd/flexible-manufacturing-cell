@@ -41,21 +41,21 @@ public class Master {
 
     // TODO: hay que borrarlo pero se usa para pruebas
     public static void main(String args[]) {
-        Master m = new Master();
+        Master m = new Master(null);
         m.initialize();
         m.startRobot();
     }
 
-    public Master() {
+    public Master(MonitorWindow m) {
         _inputMailBox = new MasterInputMailBox(this);
         _outputMailBox = new MasterOutputMailBox();
         _dbmanager = new DBManager();
         _configurationData = null;
-        _monitor = new MonitorWindow(this);
+        _logger.addHandler(m.getLog().getLogHandler());
+        _monitor = m;
         _report = _dbmanager.readReportData();
         _robot = new Robot2();
         _report.setFirstStart(true);
-        _logger.addHandler(_monitor.getLog().getLogHandler());
         Thread t = new Thread(new Runnable() {
             public void run() {
                 _inputMailBox.startServer();

@@ -72,6 +72,7 @@ public class Connections extends JPanel {
         //} else if welding station connected {
         if (connected && automatonID == Constants.SLAVE2_ID) {
             _weldingStatus.setIcon(new ImageIcon(_imageLoader._on));
+            _weldingStatus.updateUI();
         } else {
             _weldingStatus.setIcon(new ImageIcon(
                     _imageLoader._off));
