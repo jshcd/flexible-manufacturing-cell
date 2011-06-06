@@ -160,6 +160,20 @@ public class Slave3 implements Slave, IOProcess {
         new Thread(_sensor9).start();
         new Thread(_sensor10).start();
         new Thread(_sensor11).start();
+        
+        
+        Thread y = new Thread(new Runnable() {
+
+            public void run() {
+                try {
+                    Thread.sleep(50);
+                    updateStatusData();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        y.start();
     }
 
     public void start() {
