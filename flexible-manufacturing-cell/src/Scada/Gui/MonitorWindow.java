@@ -100,11 +100,10 @@ public class MonitorWindow extends JFrame {
      * Constructs a monitor window and starts the master automaton.
      *
      */
-    public MonitorWindow(Master master) {
+    public MonitorWindow() {
         _imageLoader = new ImageLoader(this);
         _report = new Report();
-        _masterAutomaton = master;
-        _configurationParameters = new ConfigurationParameters(_masterAutomaton);
+
       //  _logger.addHandler(_masterAutomaton.getMonitor().getLog().getLogHandler());
 
         Dimension size = new Dimension(Constants.GUI_WIDTH, Constants.GUI_HEIGHT);
@@ -118,6 +117,10 @@ public class MonitorWindow extends JFrame {
         layoutComponents();
         pack();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        _masterAutomaton = new Master(this);
+        _configurationParameters = new ConfigurationParameters(_masterAutomaton);
+        _masterAutomaton.initialize();
+        _masterAutomaton.startRobot();
     }
 
     private void createComponents() {
@@ -258,10 +261,7 @@ public class MonitorWindow extends JFrame {
         }
 
         try {
-            Master m = new Master();
-            m.initialize();
-            m.startRobot();
-            MonitorWindow w = new MonitorWindow(m);
+            MonitorWindow w = new MonitorWindow();
             w.setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();

@@ -15,7 +15,7 @@ import Automaton.Slaves.Slave1;
 public class TestCommunication {
 
     public static void main(String [] args){
-        Master m = new Master();
+        Master m = new Master(null);
         Slave1 s = new Slave1();
     }
 
