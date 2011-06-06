@@ -32,8 +32,7 @@ public class MasterInputMailBox implements MailBox {
     public MasterInputMailBox(Master m){
         _id = "Master";
         _master = m;
-         _logger.addHandler(_master.getMonitor().getLog().getLogHandler());
-    }
+ }
 
     public void startConnection() {
        try {
