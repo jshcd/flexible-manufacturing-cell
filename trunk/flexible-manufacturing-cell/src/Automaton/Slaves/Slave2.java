@@ -162,8 +162,8 @@ public class Slave2 implements Slave, IOProcess {
             case Constants.ROBOT2_SLAVE2_PLACES_WELDED_ASSEMBLY:
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
-                sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 _qualityStation.addPiece(p);
+                sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
             case Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY:
                 _qualityStation.removeLastPiece();
