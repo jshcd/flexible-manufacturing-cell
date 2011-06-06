@@ -338,7 +338,6 @@ public class Slave1 implements Slave, IOProcess {
                 _weldingBelt.startContainer();
                 break;
         }
-        updateStatusData();
     }
 
     public void sendCommand(int command) {
