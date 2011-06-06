@@ -51,7 +51,7 @@ public class ConveyorBelt implements PieceContainer {
                         Iterator i = _pieces.iterator();
                         while (i.hasNext()) {
                             Piece p = (Piece) i.next();
-                            p.setPosition(p.getPosition() + ((double) _speed / 100));
+                            p.setPosition(p.getPosition() + ((double) _speed / 200));
                             Logger.getLogger(ConveyorBelt.class.getName()).log(Level.FINEST, "ConveyorBelt " + _id + ": piece at {1}", p.getPosition());
 
                             updatePosition(p);

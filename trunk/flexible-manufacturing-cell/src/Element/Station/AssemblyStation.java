@@ -34,17 +34,18 @@ public class AssemblyStation implements PieceContainer {
     @Override
     public synchronized void run() {
         while (true) {
-            if (_moving) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (!_pieces.isEmpty()) {
-                    if (_pieces.get(0).getType().equals(PieceType.assembly)) {
-                        this._process.sendCommand(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
+            try {
+                Thread.sleep(100);
+                if (_moving) {
+                    if (!_pieces.isEmpty()) {
+                        if (_pieces.get(0).getType().equals(PieceType.assembly)) {
+                            this._process.sendCommand(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
+                        }
                     }
                 }
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -25,19 +25,19 @@ public class WeldingStation implements PieceContainer {
 
     public WeldingStation(int id) {
         _id = id;
-        _pieces = Collections.synchronizedList(new ArrayList <Piece>());
+        _pieces = Collections.synchronizedList(new ArrayList<Piece>());
     }
 
     @Override
     public synchronized void run() {
         while (true) {
-            if (_moving) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                Thread.sleep(100);
+                if (_moving) {
+                    weld();
                 }
-                weld();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -56,6 +56,7 @@ public class WeldingStation implements PieceContainer {
             p.setType(Piece.PieceType.weldedAssembly);
             _pieces.add(p);
             this._process.sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED);
+            Logger.getLogger(WeldingStation.class.getName()).log(Level.INFO, "Welding completed");
             return true;
         } else {
             return false;
@@ -69,7 +70,7 @@ public class WeldingStation implements PieceContainer {
     public void setWeldingTime(int weldingTime) {
         this._weldingTime = weldingTime;
     }
-    
+
     public void addPiece(Piece p) {
         _pieces.add(p);
         updatePosition(p);
@@ -133,7 +134,7 @@ public class WeldingStation implements PieceContainer {
         }
         _moving = false;
     }
-    
+
     private void updatePosition(Piece piece) {
         piece.setGuiPosition(Constants.WELDING_STATION_CENTER_POSITION);
     }
