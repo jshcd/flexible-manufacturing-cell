@@ -249,6 +249,7 @@ public class Slave1 implements Slave, IOProcess {
      * Starts the system
      */
     public void start() {
+        System.out.println("S1 STARTING");
         _finishing = false;
         _gearBelt.startContainer();
         _axisBelt.startContainer();
@@ -262,6 +263,7 @@ public class Slave1 implements Slave, IOProcess {
      */
 
     public void stop() {
+        System.out.println("S1 STOPPING");
         _finishing = true;
         _gearBelt.stopContainer();
         _axisBelt.stopContainer();
