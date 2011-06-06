@@ -132,8 +132,10 @@ public class Slave2 implements Slave, IOProcess {
 
             public void run() {
                 try {
-                    Thread.sleep(50);
-                    updateStatusData();
+                    while (true) {
+                        Thread.sleep(50);
+                        updateStatusData();
+                    }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
                 }
