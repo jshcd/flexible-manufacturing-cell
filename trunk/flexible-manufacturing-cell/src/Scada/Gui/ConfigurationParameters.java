@@ -195,7 +195,7 @@ public class ConfigurationParameters extends JDialog {
         _slave1Parameters.add(new JLabel("Activation time: "));
         _assemblyActivationTimeTxt = new JTextField(_assemblyActivationTime);
         _slave1Parameters.add(_assemblyActivationTimeTxt);
-        _slave1Parameters.add(new JLabel("sec"));
+        _slave1Parameters.add(new JLabel("ms"));
 
         //slave 2
         pnlCommonLayout = new MigLayout("wrap 3",
@@ -225,18 +225,18 @@ public class ConfigurationParameters extends JDialog {
         _robot1Parameters.add(new JLabel("Axis picking/transport time: "));
         _robot1AxisTxt = new JTextField(_robot1Axis);
         _robot1Parameters.add(_robot1AxisTxt);
-        _robot1Parameters.add(new JLabel("sec"));
+        _robot1Parameters.add(new JLabel("ms"));
 
         _robot1Parameters.add(new JLabel("Gear picking/transport time: "));
         _robot1GearTxt = new JTextField(_robot1Gear);
         _robot1Parameters.add(_robot1GearTxt);
-        _robot1Parameters.add(new JLabel("sec"));
+        _robot1Parameters.add(new JLabel("ms"));
 
         _robot1Parameters.setLayout(pnlCommonLayout);
         _robot1Parameters.add(new JLabel("Assembly picking/transport time: "));
         _robot1AssemblyTxt = new JTextField(_robot1Assembly);
         _robot1Parameters.add(_robot1AssemblyTxt);
-        _robot1Parameters.add(new JLabel("sec"));
+        _robot1Parameters.add(new JLabel("ms"));
 
         //robot 2
         pnlCommonLayout = new MigLayout("wrap 3",
@@ -245,18 +245,18 @@ public class ConfigurationParameters extends JDialog {
         _robot2Parameters.add(new JLabel("Welded Assembly picking/transport time: "));
         _robot2WeldingTxt = new JTextField(_robot2Welding);
         _robot2Parameters.add(_robot2WeldingTxt);
-        _robot2Parameters.add(new JLabel("sec"));
+        _robot2Parameters.add(new JLabel("ms"));
 
         _robot2Parameters.add(new JLabel("Checked Assembly picking/transport time: "));
         _robot2CheckedTxt = new JTextField(_robot2Checked);
         _robot2Parameters.add(_robot2CheckedTxt);
-        _robot2Parameters.add(new JLabel("sec"));
+        _robot2Parameters.add(new JLabel("ms"));
 
         _robot2Parameters.setLayout(pnlCommonLayout);
         _robot2Parameters.add(new JLabel("Assembly picking/transport time: "));
         _robot2AssemblyTxt = new JTextField(_robot2Assembly);
         _robot2Parameters.add(_robot2AssemblyTxt);
-        _robot2Parameters.add(new JLabel("sec"));
+        _robot2Parameters.add(new JLabel("ms"));
 
         //slave 3
         pnlCommonLayout = new MigLayout("wrap 3",
@@ -283,7 +283,7 @@ public class ConfigurationParameters extends JDialog {
         _slave3Parameters.add(new JLabel("Activation time: "));
         _qualityActivationTimeTxt = new JTextField(_qualityActivationTime);
         _slave3Parameters.add(_qualityActivationTimeTxt, "left");
-        _slave3Parameters.add(new JLabel("sec"));
+        _slave3Parameters.add(new JLabel("ms"));
 
         //Master
        pnlCommonLayout = new MigLayout("wrap 3",

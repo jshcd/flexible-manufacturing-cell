@@ -48,14 +48,15 @@ public class Slave1 implements Slave, IOProcess {
     protected double sensor_range = 1.2;
     protected double pieceSize;
     private IOInterface ioi;
+    protected Logger _logger = Logger.getLogger(Slave1.class.toString());
 
     public static void main(String args[]) {
         Slave1 s1 = new Slave1();
     }
 
     public Slave1() {
-        Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Slave 1 created");
-        _outputMailBox = new SlaveOutputMailBox(1);
+        _logger.log(Level.INFO, "Slave 1 created");
+       _outputMailBox = new SlaveOutputMailBox(1);
         _inputMailBox = new SlaveInputMailBox(1, this);
         Thread t = new Thread(new Runnable() {
 
@@ -411,7 +412,7 @@ public class Slave1 implements Slave, IOProcess {
                         p.setType(PieceType.gear);
                         _gearBelt.addPiece(p);
 
-                        Logger.getLogger(Slave1.class.getName()).log(Level.FINE, "Added gear");
+                        _logger.log(Level.FINE, "Added gear");
                     }
                 }
 
@@ -434,13 +435,13 @@ public class Slave1 implements Slave, IOProcess {
                         p.setPosition(0);
                         p.setType(PieceType.axis);
                         _axisBelt.addPiece(p);
-                        Logger.getLogger(Slave1.class.getName()).log(Level.FINE, "Added axis");
+                        _logger.log(Level.FINE, "Added axis");
                     }
                 }
             }
 
         } catch (InterruptedException ex) {
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
 
     }
@@ -452,24 +453,24 @@ public class Slave1 implements Slave, IOProcess {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Slave1.port"));
             ServerSocket skServidor = new ServerSocket(port);
-            Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Server listening at port {0}", port);
+            _logger.log(Level.INFO, "Server listening at port {0}", port);
             while (true) {
                 Socket skCliente = skServidor.accept();
-                Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Information received");
+                _logger.log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
+                _logger.log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
 
                 short a = (short) 0;
                 out.writeObject(a);
                 skCliente.close();
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 

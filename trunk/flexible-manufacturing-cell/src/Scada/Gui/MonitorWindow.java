@@ -65,7 +65,7 @@ public class MonitorWindow extends JFrame {
 
                     JOptionPane.showMessageDialog(
                             MonitorWindow.this,
-                            "The system cannot be started until all the slave automata have been connected.",
+                            "The system cannot be started. Check if the master have received the right parameters.",
                             "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     _buttonStart.setEnabled(false);
@@ -104,8 +104,7 @@ public class MonitorWindow extends JFrame {
         _imageLoader = new ImageLoader(this);
         _report = new Report();
 
-      //  _logger.addHandler(_masterAutomaton.getMonitor().getLog().getLogHandler());
-
+       
         Dimension size = new Dimension(Constants.GUI_WIDTH, Constants.GUI_HEIGHT);
         setMinimumSize(size);
         setPreferredSize(size);
@@ -118,6 +117,8 @@ public class MonitorWindow extends JFrame {
         pack();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         _masterAutomaton = new Master(this);
+         _logger.addHandler(_masterAutomaton.getMonitor().getLog().getLogHandler());
+
         _configurationParameters = new ConfigurationParameters(_masterAutomaton);
         _masterAutomaton.initialize();
         _masterAutomaton.startRobot();

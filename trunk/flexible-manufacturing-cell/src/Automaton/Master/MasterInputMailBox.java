@@ -24,7 +24,7 @@ public class MasterInputMailBox implements MailBox {
     private String _id;
     private ServerSocket _serverSocket;
     private Master _master;
-
+     protected Logger _logger = Logger.getLogger(MasterInputMailBox.class.toString());
     /**
      * Constructs a new <code>MasterMailBox</code> with the indicated id
      * @param id Identifier of the <code>MasterMailBox</code>
@@ -32,6 +32,7 @@ public class MasterInputMailBox implements MailBox {
     public MasterInputMailBox(Master m){
         _id = "Master";
         _master = m;
+         _logger.addHandler(_master.getMonitor().getLog().getLogHandler());
     }
 
     public void startConnection() {
@@ -41,11 +42,11 @@ public class MasterInputMailBox implements MailBox {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Master.port"));
             _serverSocket = new ServerSocket(port);
-            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.INFO, "Server listening at port {0}", port);
+            _logger.log(Level.INFO, "Server listening at port {0}", port);
         } catch (UnknownHostException ex) {
-            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+           _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+           _logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -116,7 +117,7 @@ public class MasterInputMailBox implements MailBox {
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
 
                             Object o = in.readObject();
-                            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.INFO, "Received> {0}", o);
+                           _logger.log(Level.INFO, "Received> {0}", o);
                             
                             if(o instanceof Command){
                                 if(((Command)o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED){
@@ -138,15 +139,15 @@ public class MasterInputMailBox implements MailBox {
                             out.writeObject(ok);
                             skCliente.close();
                         } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+                            _logger.log(Level.SEVERE, null, ex);
                         } catch (IOException ex) {
-                            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+                           _logger.log(Level.SEVERE, null, ex);
                         }
                     }
                 });
                 t.start();
             } catch (IOException ex) {
-                Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+                _logger.log(Level.SEVERE, null, ex);
             }
         }
     }
