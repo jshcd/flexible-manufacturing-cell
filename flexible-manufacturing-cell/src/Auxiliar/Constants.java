@@ -73,12 +73,12 @@ public class Constants {
     public final static int SLAVE2_ROBOT2_WELDED_ASSEMBLY_PICKED = 308;
     public final static int ROBOT2_SLAVE2_PLACES_WELDED_ASSEMBLY = 306;
     public final static int SLAVE2_ROBOT2_WELDED_ASSEMBLY_PLACED = 309;
-    public final static int ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY = 400;
+    public final static int ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY = 310;
+    public final static int SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK = 311;
+    public final static int SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK = 312;
     public final static int ROBOT2_SLAVE3_PLACES_WELDED_OK = 401;
     public final static int ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK = 402;
-    public final static int SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK = 403;
-    public final static int SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK = 404;
-    public final static int SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED = 405;
+    public final static int SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED = 403;
     public final static int SLAVE1_ID = 1;
     public final static int SLAVE2_ID = 2;
     public final static int SLAVE3_ID = 3;

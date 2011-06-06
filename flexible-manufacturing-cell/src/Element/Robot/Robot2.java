@@ -31,11 +31,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     private boolean _weldingCompleted;
     private boolean _qualityCompletedOK;
     private boolean _qualityCompletedNotOK;
-    private boolean _assemblyPicked;
-    private boolean _assemblyPlaced;
-    private boolean _weldedAssemblyPlaced;
-    private boolean _weldedAssemblyPicked;
-    private boolean _finalWeldedAssemblyPlaced;
+    private boolean _commandReceived;
     private int _transportTime4;
     private int _transportTime5;
     private int _transportTime6;
@@ -52,11 +48,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         _qualityCompletedNotOK = false;
         _OKTableSensor = false;
         _NotOKTableSensor = false;
-        _assemblyPicked = false;
-        _assemblyPlaced = false;
-        _weldedAssemblyPicked = false;
-        _weldedAssemblyPlaced = false;
-        _finalWeldedAssemblyPlaced = false;
+
+        _commandReceived = false;
+
         ioi = new IOInterface();
         ioi.setProcess(this);
         ioi.setPortLag(4);
@@ -83,49 +77,31 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     break;
                 case q1:
-                    if (!_assemblyPicked) {
-                        _state = AutomatonState.q0;
-                        break;
-                    }
                     if (!_weldingTableSensor) {
                         transportAssembly();
                         _state = AutomatonState.q2;
                     }
                     break;
                 case q2:
-                    if (!_assemblyPlaced) {
-                        _state = AutomatonState.q1;
-                        break;
-                    }
                     if (_weldingCompleted) {
-                        _assemblyPicked = false;
-                        _assemblyPlaced = false;
+                        _commandReceived = false;
                         pickWeldedAssembly();
                         _state = AutomatonState.q3;
                     }
                     break;
                 case q3:
-                    if (!_weldedAssemblyPicked) {
-                        _assemblyPlaced = true;
-                        _state = AutomatonState.q2;
-                        break;
-                    }
                     if (!_qualityTableSensor) {
                         transportWeldedAssembly();
                         _state = AutomatonState.q4;
                     }
                     break;
                 case q4:
-                    if (!_weldedAssemblyPlaced) {
-                        _state = AutomatonState.q3;
-                        break;
-                    }
-                    _weldedAssemblyPicked = false;
-                    _weldedAssemblyPlaced = false;
                     if (_qualityCompletedOK) {
+                        _commandReceived = false;
                         pickCheckedWeldedAssembly();
                         _state = AutomatonState.q7;
                     } else if (_qualityCompletedNotOK) {
+                        _commandReceived = false;
                         pickCheckedWeldedAssembly();
                         _state = AutomatonState.q6;
                     }
@@ -145,12 +121,6 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     break;
                 case q8:
-                    if (_finalWeldedAssemblyPlaced) {
-                        _finalWeldedAssemblyPlaced = false;
-                    } else {
-                        _state = _previousState;
-                        break;
-                    }
                     returnToIdle();
             }
             Thread.yield();
@@ -229,10 +199,14 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     public void sendCommand(int command) {
+        System.out.println("R2 sending: " + command);
         ioi.send((short) command);
     }
 
     public void runCommand(int command) {
+        if (command > 120) {
+            System.out.println("R2 running: " + command);
+        }
         switch (command) {
             case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
                 _weldingSensor = true;
@@ -255,10 +229,10 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             case Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED:
                 _weldingCompleted = true;
                 break;
-            case Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK:
+            case Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK:
                 _qualityCompletedOK = true;
                 break;
-            case Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK:
+            case Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK:
                 _qualityCompletedNotOK = true;
                 break;
             case Constants.SENSOR_OK_LOAD_ACTIVATED:
@@ -274,19 +248,19 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                 _NotOKTableSensor = false;
                 break;
             case Constants.SLAVE1_ROBOT2_ASSEMBLY_PICKED:
-                _assemblyPicked = true;
+                _commandReceived = true;
                 break;
             case Constants.SLAVE2_ROBOT2_ASSEMBLY_PLACED:
-                _assemblyPlaced = true;
+                _commandReceived = true;
                 break;
             case Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PICKED:
-                _weldedAssemblyPicked = true;
+                _commandReceived = true;
                 break;
             case Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PLACED:
-                _weldedAssemblyPlaced = true;
+                _commandReceived = true;
                 break;
             case Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED:
-                _finalWeldedAssemblyPlaced = true;
+                _commandReceived = true;
                 break;
         }
     }
@@ -324,11 +298,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     private void returnToIdle() {
-        _assemblyPicked = false;
-        _assemblyPlaced = false;
-        _weldedAssemblyPicked = false;
-        _weldedAssemblyPlaced = false;
-        _finalWeldedAssemblyPlaced = false;
+        _commandReceived = false;
         try {
             switch (_state) {
                 case q0:

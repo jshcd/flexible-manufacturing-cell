@@ -35,18 +35,6 @@ public class QualityControlStation implements PieceContainer {
 
     @Override
     public synchronized void run() {
-        while (true) {
-
-            try {
-                Thread.sleep(100);
-                if (_moving) {
-
-                    checkQuality();
-                }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     public boolean checkQuality() {
@@ -61,10 +49,10 @@ public class QualityControlStation implements PieceContainer {
             int random = (int) Math.random() * 100;
             if (random > _sucessRate) {
                 Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed OK");
-                this._process.sendCommand(Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
+                this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
             } else {
                 Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed NOT OK");
-                this._process.sendCommand(Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
+                this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
             }
             return true;
         } else {

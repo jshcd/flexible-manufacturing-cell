@@ -30,27 +30,17 @@ public class WeldingStation implements PieceContainer {
 
     @Override
     public synchronized void run() {
-        while (true) {
-            try {
-                Thread.sleep(100);
-                if (_moving) {
-                    weld();
-                }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(QualityControlStation.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     public boolean weld() {
         if (_pieces.size() == 1) {
-            _pieces.remove(0);
-
             try {
                 Thread.sleep(_weldingTime);
             } catch (InterruptedException ex) {
                 Logger.getLogger(AssemblyStation.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            _pieces.remove(0);
 
             Piece p = new Piece();
             p.setType(Piece.PieceType.weldedAssembly);
