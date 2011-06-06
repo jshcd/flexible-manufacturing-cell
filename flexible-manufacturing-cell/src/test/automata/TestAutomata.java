@@ -22,14 +22,14 @@ public class TestAutomata {
 
     public TestAutomata() {
         s1 = new Slave1Test();
-        s2 = new Slave2Test();
+//        s2 = new Slave2Test();
 //        s3 = new Slave3Test();
 
         s1.initialize();
-        s2.initialize();
+//        s2.initialize();
 //        s3.initialize();
 
-        s1.startRobot();
+//        s1.startRobot();
 
         Thread t = new Thread(new Runnable() {
 

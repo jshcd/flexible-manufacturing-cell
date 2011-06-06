@@ -49,7 +49,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(50);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -241,6 +241,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
     }
     
     public void sendCommand(int command) {
+        System.out.println("R1 :" + command);
         ioi.send((short)command);
     }
 

@@ -45,13 +45,12 @@ public class Slave1 implements Slave, IOProcess {
     protected Slave1Data _statusData;
     protected Slave1ConfigurationData _slave1ConfigurationData;
     protected Robot1ConfigurationData _robot1ConfigurationData;
-    protected double sensor_range;
+    protected double sensor_range = 1.2;
     protected double pieceSize;
     private IOInterface ioi;
 
     public static void main(String args[]) {
         Slave1 s1 = new Slave1();
-        s1.startRobot();
     }
 
     public Slave1() {
@@ -59,6 +58,7 @@ public class Slave1 implements Slave, IOProcess {
         _outputMailBox = new SlaveOutputMailBox(1);
         _inputMailBox = new SlaveInputMailBox(1, this);
         Thread t = new Thread(new Runnable() {
+
             public void run() {
                 _inputMailBox.startServer();
             }
@@ -106,6 +106,8 @@ public class Slave1 implements Slave, IOProcess {
         ioi.setPortLag(0);
         ioi.bind();
 
+        (new Thread(ioi)).start();
+
         _finishing = false;
 
         int gearSpeed = _slave1ConfigurationData._gearBeltConfiguration.getSpeed();
@@ -115,6 +117,7 @@ public class Slave1 implements Slave, IOProcess {
         int weldingSpeed = _slave1ConfigurationData._weldingBeltConfiguration.getSpeed();
         double weldingLength = (double) _slave1ConfigurationData._weldingBeltConfiguration.getLength();
 
+        // TODO: falta que llegue aqui el sensor range
         _gearBelt = new ConveyorBelt(1, gearSpeed, gearLength);
         _axisBelt = new ConveyorBelt(2, axisSpeed, axisLength);
 
@@ -186,6 +189,11 @@ public class Slave1 implements Slave, IOProcess {
         sensor4.start();
         Thread sensor5 = new Thread(_sensor5);
         sensor5.start();
+
+        startRobot();
+
+        start();
+
     }
 
     public void startRobot() {
@@ -234,7 +242,6 @@ public class Slave1 implements Slave, IOProcess {
         _assemblyStation.startContainer();
         _weldingBelt.startContainer();
         sendCommand(Constants.START_ROBOT1);
-        reportToMaster(Constants.SLAVE_ONE_STARTING);
         mainLoop();
     }
     /*
@@ -253,6 +260,7 @@ public class Slave1 implements Slave, IOProcess {
 
     public void runCommand(int command) {
         Piece p;
+//        System.out.println("S1 receives: " + command);
         switch (command) {
             case Constants.START_SLAVE1:
                 start();
@@ -313,7 +321,8 @@ public class Slave1 implements Slave, IOProcess {
                 _weldingBelt.startContainer();
                 break;
         }
-    }    
+    }
+
     public void sendCommand(int command) {
         ioi.send((short) command);
     }
@@ -347,7 +356,6 @@ public class Slave1 implements Slave, IOProcess {
 //            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-
     public void reportToMaster(int orderNumber) {
         Command command = new Command(orderNumber);
         _outputMailBox.startConnection();
@@ -448,6 +456,7 @@ public class Slave1 implements Slave, IOProcess {
             Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public void storeInitialConfiguration(MasterConfigurationData md) {
         _slave1ConfigurationData = md._slave1ConfigurationData;
         _robot1ConfigurationData = md._robot1ConfigurationData;
@@ -455,6 +464,4 @@ public class Slave1 implements Slave, IOProcess {
         pieceSize = (double) md._pieceSize;
         initialize();
     }
-
-
 }

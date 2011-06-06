@@ -13,8 +13,6 @@ public class Slave1Test extends Slave1 implements IOProcess {
 
     public static void main(String args[]) {
         Slave1Test s1 = new Slave1Test();
-        s1.initialize();
-        s1.startRobot();
     }
 
     public Slave1Test() {

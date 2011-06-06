@@ -259,6 +259,7 @@ public class MonitorWindow extends JFrame {
 
         try {
             Master m = new Master();
+            m.initialize();
             m.startRobot();
             MonitorWindow w = new MonitorWindow(m);
             w.setVisible(true);

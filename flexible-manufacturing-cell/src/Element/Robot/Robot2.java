@@ -70,7 +70,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         while (true) {
 
             try {
-                Thread.sleep(50);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
             }
