@@ -89,11 +89,16 @@ public class SlaveInputMailBox implements MailBox {
                             if(o instanceof Command){
                                 switch(((Command)o).getCommand()){
                                     case Constants.START_SLAVE1:
+                                        _slave.start();
                                     case Constants.START_SLAVE2:
+                                        _slave.start();
                                     case Constants.START_SLAVE3:
+                                        _slave.start();
                                     case Constants.EMERGENCY_STOP_ORDER:
-                                    case Constants.NORMAL_STOP_ORDER:
+                                        //TO-DO Create emergencyStop() method in slaves.
                                         _slave.runCommand(((Command)o).getCommand());
+                                    case Constants.NORMAL_STOP_ORDER:
+                                        _slave.stop();
                                 }
                             }else if(o instanceof MasterConfigurationData){
                                 _slave.storeInitialConfiguration((MasterConfigurationData)o);
