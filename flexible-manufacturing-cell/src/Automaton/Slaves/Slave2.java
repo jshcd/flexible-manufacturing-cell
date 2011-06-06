@@ -10,6 +10,7 @@ import Auxiliar.Command;
 import Auxiliar.Constants;
 import Auxiliar.IOInterface;
 import Auxiliar.IOProcess;
+import Auxiliar.MailboxData;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
 import Element.Piece.Piece.PieceType;
@@ -57,7 +58,7 @@ public class Slave2 implements Slave, IOProcess {
             }
         });
         t.start();
-        reportToMaster(Constants.COMMAND_SLAVE2_CONNECTED);
+        reportToMaster(new Command(Constants.COMMAND_SLAVE2_CONNECTED));
     }
 
     public WeldingStation getWeldingStation() {
@@ -80,6 +81,7 @@ public class Slave2 implements Slave, IOProcess {
         _statusData.setQualityStationRunning(_qualityStation.isMoving());
         _statusData.setWeldingStationPieces(_weldingStation.getPieces());
         _statusData.setWeldingStationRunning(_weldingStation.isMoving());
+        reportToMaster(_statusData);
     }
 
     public final void initialize() {
@@ -128,13 +130,13 @@ public class Slave2 implements Slave, IOProcess {
     public void start() {
         _weldingStation.startContainer();
         _qualityStation.startContainer();
-        reportToMaster(Constants.SLAVE_TWO_STARTING);
+        reportToMaster(new Command(Constants.SLAVE_TWO_STARTING));
     }
 
     public void stop() {
         _weldingStation.stopContainer();
         _qualityStation.stopContainer();
-        reportToMaster(Constants.SLAVE_TWO_STOPPING);
+        reportToMaster(new Command(Constants.SLAVE_TWO_STOPPING));
     }
 
     public void runCommand(int command) {
@@ -175,12 +177,10 @@ public class Slave2 implements Slave, IOProcess {
         ioi.send((short) command);
     }
 
-    public void reportToMaster(int orderNumber) {
-        // Esto está bien?
-        Command command = new Command(orderNumber);
+    public void reportToMaster(MailboxData data) {
         _outputMailBox.startConnection();
         _outputMailBox.acceptConnection();
-        _outputMailBox.sendCommand(command);
+        _outputMailBox.sendCommand(data);
         _outputMailBox.receiveCommand();
     }
 

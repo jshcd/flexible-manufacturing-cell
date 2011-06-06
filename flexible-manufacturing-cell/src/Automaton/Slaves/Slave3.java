@@ -10,6 +10,7 @@ import Auxiliar.Command;
 import Auxiliar.Constants;
 import Auxiliar.IOInterface;
 import Auxiliar.IOProcess;
+import Auxiliar.MailboxData;
 import Element.Station.QualityControlStation;
 import Element.Conveyor.ConveyorBelt;
 import Element.Other.Sensor;
@@ -59,7 +60,7 @@ public class Slave3 implements Slave, IOProcess {
             }
         });
         t.start();
-        reportToMaster(Constants.COMMAND_SLAVE3_CONNECTED);
+        reportToMaster(new Command(Constants.COMMAND_SLAVE3_CONNECTED));
     }
 
     public Sensor getSensor8() {
@@ -96,6 +97,7 @@ public class Slave3 implements Slave, IOProcess {
         _statusData.setAcceptedBeltPieces(_acceptedBelt.getPieces());
         _statusData.setRejectedBeltPieces(_rejectedBelt.getPieces());
         _statusData.setRejectedBeltRunning(_rejectedBelt.isMoving());
+        reportToMaster(_statusData);
     }
 
     public final void initialize() {
@@ -161,13 +163,13 @@ public class Slave3 implements Slave, IOProcess {
     public void start() {
         _acceptedBelt.startContainer();
         _rejectedBelt.startContainer();
-        reportToMaster(Constants.SLAVE_THREE_STARTING);
+        reportToMaster(new Command(Constants.SLAVE_THREE_STARTING));
     }
 
     public void stop() {
         _acceptedBelt.stopContainer();
         _rejectedBelt.stopContainer();
-        reportToMaster(Constants.SLAVE_THREE_STOPPING);
+        reportToMaster(new Command(Constants.SLAVE_THREE_STOPPING));
     }
 
     public void runCommand(int command) {
@@ -204,11 +206,10 @@ public class Slave3 implements Slave, IOProcess {
         }
     }
 
-    public void reportToMaster(int orderNumber) {
-        Command command = new Command(orderNumber);
+    public void reportToMaster(MailboxData data) {
         _outputMailBox.startConnection();
         _outputMailBox.acceptConnection();
-        _outputMailBox.sendCommand(command);
+        _outputMailBox.sendCommand(data);
         _outputMailBox.receiveCommand();
     }
 

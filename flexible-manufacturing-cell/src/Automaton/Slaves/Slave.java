@@ -2,6 +2,7 @@
 
 package Automaton.Slaves;
 
+import Auxiliar.MailboxData;
 import Scada.DataBase.MasterConfigurationData;
 
 public interface Slave {
@@ -11,7 +12,7 @@ public interface Slave {
     
     public void runCommand(int command);
 
-    public void reportToMaster(int i);
+    public void reportToMaster(MailboxData data);
     
     public void sendCommand(int i);
 

@@ -64,7 +64,7 @@ public class Slave1 implements Slave, IOProcess {
             }
         });
         t.start();
-        reportToMaster(Constants.COMMAND_SLAVE1_CONNECTED);
+        reportToMaster(new Command(Constants.COMMAND_SLAVE1_CONNECTED));
     }
 
     public ConveyorBelt getGearBelt() {
@@ -97,6 +97,7 @@ public class Slave1 implements Slave, IOProcess {
         _statusData.setAxisBeltRunning(_axisBelt.isMoving());
         _statusData.setWeldingBeltPieces(_weldingBelt.getPieces());
         _statusData.setWeldingBeltRunning(_weldingBelt.isMoving());
+        reportToMaster(_statusData);
     }
 
     public final void initialize() {
@@ -255,7 +256,7 @@ public class Slave1 implements Slave, IOProcess {
         _assemblyStation.stopContainer();
         _weldingBelt.stopContainer();
         sendCommand(Constants.EMERGENCY_STOP_ORDER);
-        reportToMaster(Constants.SLAVE_ONE_STOPPING);
+        reportToMaster(new Command(Constants.SLAVE_ONE_STOPPING));
     }
 
     public void runCommand(int command) {
@@ -356,11 +357,10 @@ public class Slave1 implements Slave, IOProcess {
 //            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-    public void reportToMaster(int orderNumber) {
-        Command command = new Command(orderNumber);
+    public void reportToMaster(MailboxData data) {
         _outputMailBox.startConnection();
         _outputMailBox.acceptConnection();
-        _outputMailBox.sendCommand(command);
+        _outputMailBox.sendCommand(data);
         _outputMailBox.receiveCommand();
     }
 
