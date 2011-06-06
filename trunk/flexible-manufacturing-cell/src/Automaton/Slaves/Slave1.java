@@ -174,13 +174,9 @@ public class Slave1 implements Slave, IOProcess {
 
         // We start the belts
         Thread gearBelt = new Thread(_gearBelt);
-        gearBelt.start();
         Thread axisBelt = new Thread(_axisBelt);
-        axisBelt.start();
         Thread assemblyStation = new Thread(_assemblyStation);
-        assemblyStation.start();
         Thread weldingBelt = new Thread(_weldingBelt);
-        weldingBelt.start();
 
         //We start the sensors
         Thread sensor1 = new Thread(_sensor1);
@@ -195,8 +191,6 @@ public class Slave1 implements Slave, IOProcess {
         sensor5.start();
 
         startRobot();
-
-        start();
 
         Thread y = new Thread(new Runnable() {
 
