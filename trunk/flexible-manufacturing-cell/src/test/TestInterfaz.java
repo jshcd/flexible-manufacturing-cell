@@ -17,7 +17,7 @@ public class TestInterfaz {
      public static void main(String[] args) {
           Master m = new Master(null);
           MonitorWindow interfaz = new MonitorWindow();
-         interfaz.run();
+         //interfaz.run();
     }
 
 

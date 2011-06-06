@@ -61,7 +61,7 @@ public class MonitorWindow extends JFrame {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == _buttonStart) {
-                if (_masterAutomaton != null) {
+                if (_masterAutomaton == null) {
 
                     JOptionPane.showMessageDialog(
                             MonitorWindow.this,
@@ -72,7 +72,7 @@ public class MonitorWindow extends JFrame {
                     _buttonStop.setEnabled(true);
                     _buttonEmergencyStop.setEnabled(true);
                     _canvas.setEmergencyStopped(false);
-                    _masterAutomaton.startSystem();
+                    _masterAutomaton.startSystem(); 
                 }
             } else if (e.getSource() == _buttonEmergencyStop) {
                 _buttonStart.setEnabled(true);
@@ -219,21 +219,6 @@ public class MonitorWindow extends JFrame {
         _buttonEmergencyStop.setEnabled(false);
     }
 
-    public void run() {
-        try {
-            UIManager.setLookAndFeel(new WindowsLookAndFeel());
-        } catch (UnsupportedLookAndFeelException e1) {
-            e1.printStackTrace();
-        }
-
-        try {
-            // MonitorWindow w = new MonitorWindow(new Master());
-            this.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-    }
     
     public void setConnectionStatus(int slaveId, boolean status){
         _connectionStatus.setConnectionStatus(slaveId, status);
