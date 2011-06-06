@@ -265,7 +265,6 @@ public class Slave1 implements Slave, IOProcess {
         _axisBelt.stopContainer();
         _assemblyStation.stopContainer();
         _weldingBelt.stopContainer();
-        sendCommand(Constants.EMERGENCY_STOP_ORDER);
         reportToMaster(new Command(Constants.SLAVE_ONE_STOPPING));
     }
 

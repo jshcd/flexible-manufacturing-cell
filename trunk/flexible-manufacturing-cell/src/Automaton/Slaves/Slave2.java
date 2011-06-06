@@ -126,6 +126,20 @@ public class Slave2 implements Slave, IOProcess {
         //We start the sensors
         new Thread(_sensor6).start();
         new Thread(_sensor7).start();
+        
+        
+        Thread y = new Thread(new Runnable() {
+
+            public void run() {
+                try {
+                    Thread.sleep(50);
+                    updateStatusData();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        y.start();
     }
 
     public void start() {
