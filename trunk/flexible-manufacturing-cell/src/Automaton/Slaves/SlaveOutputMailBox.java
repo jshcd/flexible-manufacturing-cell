@@ -74,7 +74,7 @@ public class SlaveOutputMailBox implements MailBox {
     public void receiveCommand() {
          try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
-            System.out.println("He recibido un objeto de la clase " + _in.readObject().getClass());
+            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.INFO, "Received response> Object of the class {0}", _in.readObject().getClass());
         } catch (IOException ex) {
             Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
