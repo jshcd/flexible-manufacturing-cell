@@ -117,11 +117,17 @@ public class Master {
     }
 
     public void stopSystem() {
-        throw new UnsupportedOperationException();
+        Command command = new Command(Constants.NORMAL_STOP_ORDER);
+        _outputMailBox.sendInformation(command, Constants.SLAVE1_ID);
+        _outputMailBox.sendInformation(command, Constants.SLAVE2_ID);
+        _outputMailBox.sendInformation(command, Constants.SLAVE3_ID);
     }
 
     public void emergencyStop() {
-        throw new UnsupportedOperationException();
+        Command command = new Command(Constants.EMERGENCY_STOP_ORDER);
+        _outputMailBox.sendInformation(command, Constants.SLAVE1_ID);
+        _outputMailBox.sendInformation(command, Constants.SLAVE2_ID);
+        _outputMailBox.sendInformation(command, Constants.SLAVE3_ID);
     }
 
     public void failureStop() {
