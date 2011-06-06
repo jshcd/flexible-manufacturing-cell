@@ -45,13 +45,14 @@ public class Slave3 implements Slave, IOProcess {
     private IOInterface ioi;
     private Slave3ConfigurationData _slave3ConfigurationData;
     private double sensor_range;
+    protected Logger _logger = Logger.getLogger(Slave3.class.toString());
 
     public static void main(String args[]) {
         Slave3 s3 = new Slave3();
     }
     
     public Slave3() {
-        Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Slave 3 created");
+        _logger.log(Level.INFO, "Slave 3 created");
         _outputMailBox = new SlaveOutputMailBox(3);
         _inputMailBox = new SlaveInputMailBox(3, this);
         Thread t = new Thread(new Runnable() {
@@ -225,24 +226,24 @@ public class Slave3 implements Slave, IOProcess {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Slave3.port"));
             ServerSocket skServidor = new ServerSocket(port);
-            Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Server listening at port {0}", port);
+           _logger.log(Level.INFO, "Server listening at port {0}", port);
             while (true) {
                 Socket skCliente = skServidor.accept();
-                Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Information received");
+                _logger.log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                Logger.getLogger(Slave3.class.getName()).log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
+               _logger.log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
 
                 short a = (short) 0;
                 out.writeObject(a);
                 skCliente.close();
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Slave3.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Slave3.class.getName()).log(Level.SEVERE, null, ex);
+           _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Slave3.class.getName()).log(Level.SEVERE, null, ex);
+           _logger.log(Level.SEVERE, null, ex);
         }
     }
 
