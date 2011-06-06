@@ -17,12 +17,6 @@ public class Robot1Test extends Robot1 implements IOProcess{
         (new Thread(ioi)).start();
     }
 
-    public void reportProcess(int command) {
-        sendCommand(command);
-        System.out.println("R1 " + command);
-        
-    }
-
     public void sendCommand(int command) {
         ioi.send((short)command);
     }

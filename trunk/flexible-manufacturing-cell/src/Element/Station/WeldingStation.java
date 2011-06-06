@@ -55,7 +55,7 @@ public class WeldingStation implements PieceContainer {
             Piece p = new Piece();
             p.setType(Piece.PieceType.weldedAssembly);
             _pieces.add(p);
-            this._process.orderToRobot(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED);
+            this._process.sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED);
             return true;
         } else {
             return false;
@@ -72,6 +72,7 @@ public class WeldingStation implements PieceContainer {
     
     public void addPiece(Piece p) {
         _pieces.add(p);
+        updatePosition(p);
     }
 
     public void addSensor(Sensor s) {
@@ -131,5 +132,9 @@ public class WeldingStation implements PieceContainer {
             Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Assembly table with id {0} has stopped", _id);
         }
         _moving = false;
+    }
+    
+    private void updatePosition(Piece piece) {
+        piece.setGuiPosition(Constants.WELDING_STATION_CENTER_POSITION);
     }
 }

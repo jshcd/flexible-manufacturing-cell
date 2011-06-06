@@ -8,6 +8,8 @@ import Automaton.Slaves.SlaveOutputMailBox;
 import Automaton.Slaves.SlaveOutputMailBox;
 import Auxiliar.Command;
 import Auxiliar.Constants;
+import Auxiliar.IOInterface;
+import Auxiliar.IOProcess;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
 import Element.Piece.Piece.PieceType;
@@ -28,7 +30,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Slave2 implements Slave {
+public class Slave2 implements Slave, IOProcess {
 
     private SlaveOutputMailBox _mailBox;
     private WeldingStation _weldingStation;
@@ -36,6 +38,7 @@ public class Slave2 implements Slave {
     private Sensor _sensor6;
     private Sensor _sensor7;
     private Slave2Data _statusData;
+    IOInterface ioi;
     private Slave2ConfigurationData _slave2ConfigurationData;
     private double sensor_range;
 
@@ -72,38 +75,46 @@ public class Slave2 implements Slave {
     }
 
     public final void initialize() {
+
+        ioi = new IOInterface();
+        ioi.setProcess(this);
+        ioi.setPortLag(1);
+        ioi.bind();
+        (new Thread(ioi)).start();
+
+        _mailBox = new SlaveOutputMailBox(2);
         
-            _weldingStation = new WeldingStation(5);
-            _weldingStation.setWeldingTime(_slave2ConfigurationData._weldingActivationTime);
-            _weldingStation.setProcess(this);
-            _qualityStation = new QualityControlStation(6);
-            _qualityStation.setQualityTime(_slave2ConfigurationData._qualityControlActivationTime);
-            _qualityStation.setProcess(this);
+        _weldingStation = new WeldingStation(5);
+        _weldingStation.setWeldingTime(_slave2ConfigurationData._weldingActivationTime);
+        _weldingStation.setProcess(this);
+        _qualityStation = new QualityControlStation(6);
+        _qualityStation.setQualityTime(_slave2ConfigurationData._qualityControlActivationTime);
+        _qualityStation.setProcess(this);
 
-            _sensor6 = new Sensor();
-            _sensor6.setSensorId(6);
-            _sensor6.setAssociatedContainer(_weldingStation);
-            _sensor6.setProcess(this);
-            _sensor6.setRange(sensor_range);
-            _sensor6.setPositionInBelt(0);
+        _sensor6 = new Sensor();
+        _sensor6.setSensorId(6);
+        _sensor6.setAssociatedContainer(_weldingStation);
+        _sensor6.setProcess(this);
+        _sensor6.setRange(sensor_range);
+        _sensor6.setPositionInBelt(0);
 
-            _sensor7 = new Sensor();
-            _sensor7.setSensorId(7);
-            _sensor7.setAssociatedContainer(_qualityStation);
-            _sensor7.setProcess(this);
-            _sensor7.setRange(sensor_range);
-            _sensor7.setPositionInBelt(0);
+        _sensor7 = new Sensor();
+        _sensor7.setSensorId(7);
+        _sensor7.setAssociatedContainer(_qualityStation);
+        _sensor7.setProcess(this);
+        _sensor7.setRange(sensor_range);
+        _sensor7.setPositionInBelt(0);
 
-            _weldingStation.addSensor(_sensor6);
-            _qualityStation.addSensor(_sensor7);
+        _weldingStation.addSensor(_sensor6);
+        _qualityStation.addSensor(_sensor7);
 
-            // We start the belts
-            new Thread(_weldingStation).start();
-            new Thread(_qualityStation).start();
+        // We start the belts
+        new Thread(_weldingStation).start();
+        new Thread(_qualityStation).start();
 
-            //We start the sensors
-            new Thread(_sensor6).start();
-            new Thread(_sensor7).start();
+        //We start the sensors
+        new Thread(_sensor6).start();
+        new Thread(_sensor7).start();
     }
 
     public void start() {
@@ -149,11 +160,12 @@ public class Slave2 implements Slave {
         }
     }
 
-    public void orderToRobot(int i) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void sendCommand(int command) {
+        ioi.send((short) command);
     }
 
     public void reportToMaster(int orderNumber) {
+        // Esto está bien?
         Command command = new Command(orderNumber);
         _mailBox.startConnection();
         _mailBox.acceptConnection();
@@ -188,10 +200,10 @@ public class Slave2 implements Slave {
             Logger.getLogger(Slave2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void storeInitialConfiguration(MasterConfigurationData md){
+
+    public void storeInitialConfiguration(MasterConfigurationData md) {
         _slave2ConfigurationData = md._slave2ConfigurationData;
-        sensor_range = (double)md._sensorRange;
+        sensor_range = (double) md._sensorRange;
         initialize();
     }
 }

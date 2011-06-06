@@ -13,7 +13,7 @@ public interface Slave {
 
     public void reportToMaster(int i);
     
-    public void orderToRobot(int i);
+    public void sendCommand(int i);
 
     public void startServer();
     

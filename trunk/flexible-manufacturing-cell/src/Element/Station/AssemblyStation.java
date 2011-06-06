@@ -8,7 +8,9 @@ import Auxiliar.Constants;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
 import Element.Conveyor.ConveyorBelt;
+import Element.Piece.Piece.PieceType;
 import Element.PieceContainer;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +28,7 @@ public class AssemblyStation implements PieceContainer {
 
     public AssemblyStation(int id) {
         _id = id;
-        _pieces = Collections.synchronizedList(new ArrayList <Piece>());
+        _pieces = Collections.synchronizedList(new ArrayList<Piece>());
     }
 
     @Override
@@ -55,7 +57,8 @@ public class AssemblyStation implements PieceContainer {
                 }
                 p.setType(Piece.PieceType.assembly);
                 _pieces.add(p);
-                this._process.orderToRobot(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
+                updatePosition(p);
+                this._process.sendCommand(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
                 Logger.getLogger(AssemblyStation.class.getName()).log(Level.INFO, "Assembly completed");
 
                 return true;
@@ -75,6 +78,7 @@ public class AssemblyStation implements PieceContainer {
 
     public void addPiece(Piece p) {
         _pieces.add(p);
+        updatePosition(p);
     }
 
     public void addSensor(Sensor s) {
@@ -123,7 +127,7 @@ public class AssemblyStation implements PieceContainer {
     @Override
     public void startContainer() {
         if (!_moving) {
-            Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Conveyor Belt with id {0} has started", _id);
+            Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Assembly table with id {0} has started", _id);
         }
         _moving = true;
     }
@@ -134,5 +138,15 @@ public class AssemblyStation implements PieceContainer {
             Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Assembly table with id {0} has stopped", _id);
         }
         _moving = false;
+    }
+
+    private void updatePosition(Piece piece) {
+        if (piece.getType().equals(PieceType.assembly)) {
+            piece.setGuiPosition(Constants.ASSEMBLY_STATION_GEAR_POSITION);
+        } else if (piece.getType().equals(PieceType.gear)) {
+            piece.setGuiPosition(Constants.ASSEMBLY_STATION_GEAR_POSITION);
+        } else if (piece.getType().equals(PieceType.axis)) {
+            piece.setGuiPosition(Constants.ASSEMBLY_STATION_AXIS_POSITION);
+        }
     }
 }

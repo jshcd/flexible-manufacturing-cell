@@ -96,7 +96,7 @@ public class Sensor implements Runnable {
     }
 
     private void report(int i) {
-        _process.orderToRobot(_id * 10 + i);
+        _process.sendCommand(_id * 10 + i);
     }
 
     public double getPositionInBelt() {

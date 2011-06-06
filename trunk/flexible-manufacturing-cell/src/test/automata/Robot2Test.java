@@ -17,15 +17,12 @@ public class Robot2Test extends Robot2 implements IOProcess{
         (new Thread(ioi)).start();
     }
 
-    public void reportProcess(int command) {
+    public void sendCommand(int command) {
         sendCommand(command);
 //        System.out.println("R2 " + command);
         
     }
 
-    public void sendCommand(int command) {
-        ioi.send((short)command);
-    }
     @Override
     public void runCommand (int command){
 //        System.out.println("R2 running: " + command);

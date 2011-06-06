@@ -8,7 +8,9 @@ import Auxiliar.Constants;
 import Element.Conveyor.ConveyorBelt;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
+import Element.Piece.Piece.PieceType;
 import Element.PieceContainer;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +30,7 @@ public class QualityControlStation implements PieceContainer {
 
     public QualityControlStation(int id) {
         _id = id;
-        _pieces = Collections.synchronizedList(new ArrayList <Piece>());
+        _pieces = Collections.synchronizedList(new ArrayList<Piece>());
     }
 
     @Override
@@ -56,14 +58,15 @@ public class QualityControlStation implements PieceContainer {
 
             int random = (int) Math.random() * 100;
             if (random > _sucessRate) {
-                this._process.orderToRobot(Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
+                this._process.sendCommand(Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
             } else {
-                this._process.orderToRobot(Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
+                this._process.sendCommand(Constants.SLAVE3_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
             }
             return true;
         } else {
             return false;
         }
+
     }
 
     public int getQualityTime() {
@@ -81,8 +84,10 @@ public class QualityControlStation implements PieceContainer {
     public void setSucessRate(int sucessRate) {
         this._sucessRate = sucessRate;
     }
+
     public void addPiece(Piece p) {
         _pieces.add(p);
+        updatePosition(p);
     }
 
     public void addSensor(Sensor s) {
@@ -142,5 +147,9 @@ public class QualityControlStation implements PieceContainer {
             Logger.getLogger(ConveyorBelt.class.getName()).log(Level.INFO, "Assembly table with id {0} has stopped", _id);
         }
         _moving = false;
+    }
+
+    private void updatePosition(Piece piece) {
+        piece.setGuiPosition(Constants.QUALITY_STATION_CENTER_POSITION);
     }
 }

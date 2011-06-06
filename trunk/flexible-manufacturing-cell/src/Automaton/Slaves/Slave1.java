@@ -225,7 +225,7 @@ public class Slave1 implements Slave, IOProcess {
         _axisBelt.startContainer();
         _assemblyStation.startContainer();
         _weldingBelt.startContainer();
-        orderToRobot(Constants.START_ROBOT1);
+        sendCommand(Constants.START_ROBOT1);
         reportToMaster(Constants.SLAVE_ONE_STARTING);
         mainLoop();
     }
@@ -239,7 +239,7 @@ public class Slave1 implements Slave, IOProcess {
         _axisBelt.stopContainer();
         _assemblyStation.stopContainer();
         _weldingBelt.stopContainer();
-        orderToRobot(Constants.EMERGENCY_STOP_ORDER);
+        sendCommand(Constants.EMERGENCY_STOP_ORDER);
         reportToMaster(Constants.SLAVE_ONE_STOPPING);
     }
 
@@ -304,37 +304,40 @@ public class Slave1 implements Slave, IOProcess {
                 _weldingBelt.startContainer();
                 break;
         }
+    }    
+    public void sendCommand(int command) {
+        ioi.send((short) command);
     }
 
-    public void orderToRobot(int orderNumber) {
-        try {
-            InputStream is = null;
-            Socket requestSocket = new Socket();
-            ObjectOutputStream out;
-            ObjectInputStream in;
-            Properties prop = new Properties();
-            is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
-            prop.load(is);
-            int port = Integer.parseInt(prop.getProperty("Robot1.port"));
-            String address = prop.getProperty("Robot1.ip");
-            requestSocket = new Socket(address, port);
-            out = new ObjectOutputStream(requestSocket.getOutputStream());
-            out.flush();
-            out.writeObject(orderNumber);
-            out.flush();
-            in = new ObjectInputStream(requestSocket.getInputStream());
-            try {
-                System.out.println(in.readObject());
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            requestSocket.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public void o(int orderNumber) {
+//        try {
+//            InputStream is = null;
+//            Socket requestSocket = new Socket();
+//            ObjectOutputStream out;
+//            ObjectInputStream in;
+//            Properties prop = new Properties();
+//            is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+//            prop.load(is);
+//            int port = Integer.parseInt(prop.getProperty("Robot1.port"));
+//            String address = prop.getProperty("Robot1.ip");
+//            requestSocket = new Socket(address, port);
+//            out = new ObjectOutputStream(requestSocket.getOutputStream());
+//            out.flush();
+//            out.writeObject(orderNumber);
+//            out.flush();
+//            in = new ObjectInputStream(requestSocket.getInputStream());
+//            try {
+//                System.out.println(in.readObject());
+//            } catch (ClassNotFoundException ex) {
+//                Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            requestSocket.close();
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 
     public void reportToMaster(int orderNumber) {
         Command command = new Command(orderNumber);
@@ -444,8 +447,5 @@ public class Slave1 implements Slave, IOProcess {
         initialize();
     }
 
-    
-    public void sendCommand(int command) {
-        ioi.send((short) command);
-    }
+
 }

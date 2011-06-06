@@ -32,7 +32,7 @@ public class NoCommSlave extends Slave1 {
     public void reportToMaster(int i) {
     }
 
-    public void orderToRobot(int i) {
+    public void sendCommand(int i) {
     }
     
     public Robot1 getRobot(){
