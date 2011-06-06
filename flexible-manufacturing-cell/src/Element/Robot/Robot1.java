@@ -247,7 +247,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
     public void startServer() {
         try {
             Properties prop = new Properties();
-            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//IODevices.properties");
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Robot1.port"));
             ServerSocket skServidor = new ServerSocket(port);
