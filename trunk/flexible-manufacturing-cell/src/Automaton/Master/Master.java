@@ -87,8 +87,6 @@ public class Master {
                 break;
         }
         _outputMailBox.sendInformation(_configurationData, slaveId);
-        if(_slave1Online && _slave2Online && _slave3Online)
-            startSystem();
     }
 
     public void setCanvasStatus(int slaveId, MailboxData data) {
@@ -97,7 +95,6 @@ public class Master {
 
     public void startRobot() {
         Thread t = new Thread(new Runnable() {
-
             public void run() {
                 _robot.startServer();
             }
