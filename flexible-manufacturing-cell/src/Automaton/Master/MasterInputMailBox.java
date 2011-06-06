@@ -116,7 +116,10 @@ public class MasterInputMailBox implements MailBox {
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
 
                             Object o = in.readObject();
-                           _logger.log(Level.INFO, "Received> {0}", o);
+                            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.FINE, "Received> {0}", o);
+
+                           _logger.log(Level.FINE, "Received> {0}", o);
+
                             
                             if(o instanceof Command){
                                 if(((Command)o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED){

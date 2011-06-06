@@ -64,7 +64,7 @@ public class Master {
         });
         t.start();
     }
-
+    
     public void initialize() {
         _configurationData = _dbmanager.readParameters();
         _robot.setTransportTime4(_configurationData._robot2ConfigurationData.getPickAndTransportAssemblyTime());
