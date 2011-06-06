@@ -50,12 +50,13 @@ public class Slave3 implements Slave, IOProcess {
     public static void main(String args[]) {
         Slave3 s3 = new Slave3();
     }
-    
+
     public Slave3() {
         _logger.log(Level.INFO, "Slave 3 created");
         _outputMailBox = new SlaveOutputMailBox(3);
         _inputMailBox = new SlaveInputMailBox(3, this);
         Thread t = new Thread(new Runnable() {
+
             public void run() {
                 _inputMailBox.startServer();
             }
@@ -102,7 +103,7 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public final void initialize() {
-        
+
         ioi = new IOInterface();
         ioi.setProcess(this);
         ioi.setPortLag(2);
@@ -174,6 +175,7 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public void runCommand(int command) {
+        if(command >80) System.out.println("S3 received: " + command);
         Piece p;
         switch (command) {
             case Constants.START_SLAVE3:
@@ -214,9 +216,8 @@ public class Slave3 implements Slave, IOProcess {
         _outputMailBox.receiveCommand();
     }
 
-
     public void sendCommand(int command) {
-        ioi.send((short)command);
+        ioi.send((short) command);
     }
 
     public void startServer() {
@@ -226,13 +227,13 @@ public class Slave3 implements Slave, IOProcess {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Slave3.port"));
             ServerSocket skServidor = new ServerSocket(port);
-           _logger.log(Level.INFO, "Server listening at port {0}", port);
+            _logger.log(Level.INFO, "Server listening at port {0}", port);
             while (true) {
                 Socket skCliente = skServidor.accept();
                 _logger.log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-               _logger.log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
+                _logger.log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
 
                 short a = (short) 0;
                 out.writeObject(a);
@@ -241,9 +242,9 @@ public class Slave3 implements Slave, IOProcess {
         } catch (FileNotFoundException ex) {
             _logger.log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-           _logger.log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-           _logger.log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
