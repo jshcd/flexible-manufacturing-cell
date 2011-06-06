@@ -1,11 +1,13 @@
 
 package Scada.DataBase;
 
+import java.io.Serializable;
+
 /**
  * Defines the configuration parameters for the Slave2
  * @author Echoplex
  */
-public class Slave2ConfigurationData {
+public class Slave2ConfigurationData implements Serializable {
     
     /**
      * Welding Station activation time

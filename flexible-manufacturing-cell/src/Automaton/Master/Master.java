@@ -25,7 +25,8 @@ import java.util.logging.Logger;
 
 public class Master {
 
-    private MasterInputMailBox _mailBox;
+    private MasterInputMailBox _inputMailBox;
+    private MasterOutputMailBox _outputMailBox;
     private DBManager _dbmanager;
     private MasterConfigurationData _configurationData;
     private Robot2 _robot;
@@ -45,7 +46,8 @@ public class Master {
     }
 
     public Master() {
-        _mailBox = new MasterInputMailBox(this);
+        _inputMailBox = new MasterInputMailBox(this);
+        _outputMailBox = new MasterOutputMailBox();
         _dbmanager = new DBManager();
         _configurationData = null;
         _monitor = new MonitorWindow(this);
@@ -55,7 +57,7 @@ public class Master {
         _logger.addHandler(_monitor.getLog().getLogHandler());
         Thread t = new Thread(new Runnable() {
             public void run() {
-                _mailBox.startServer();
+                _inputMailBox.startServer();
             }
         });
         t.start();
@@ -72,7 +74,7 @@ public class Master {
         switch (slaveId) {
             case Constants.SLAVE1_ID:
                 _slave1Online = status;
-                _monitor.setConnectionStatus(Constants.SLAVE2_ID, status);
+                _monitor.setConnectionStatus(Constants.SLAVE1_ID, status);
                 break;
             case Constants.SLAVE2_ID:
                 _slave2Online = status;
@@ -83,6 +85,7 @@ public class Master {
                 _monitor.setConnectionStatus(Constants.SLAVE3_ID, status);
                 break;
         }
+        _outputMailBox.sendInformation(_configurationData, slaveId);
     }
 
     public void setCanvasStatus(int slaveId, MailboxData data) {
@@ -134,11 +137,11 @@ public class Master {
     }
 
     public MasterInputMailBox getMailBox() {
-        return _mailBox;
+        return _inputMailBox;
     }
 
     public void setMailBox(MasterInputMailBox _mailBox) {
-        this._mailBox = _mailBox;
+        this._inputMailBox = _mailBox;
     }
 
     public Robot2 getRobot2() {

@@ -1,11 +1,13 @@
 
 package Scada.DataBase;
 
+import java.io.Serializable;
+
 /**
  * Defines the configuration parameters for the Slave1
  * @author Echoplex
  */
-public class Slave1ConfigurationData {
+public class Slave1ConfigurationData implements Serializable {
     
     /**
      * Gear Belt configuration instance

@@ -83,7 +83,7 @@ public class SlaveInputMailBox implements MailBox {
                         try {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                            Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.INFO, "Received> {0}", in.readObject());
+                            //Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.INFO, "Received> {0}", in.readObject());
                             
                             Object o = in.readObject();
                             if(o instanceof Command){

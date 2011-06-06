@@ -1,11 +1,13 @@
 
 package Scada.DataBase;
 
+import Auxiliar.MailboxData;
+
 /**
  * Defines the instance that stores all the configuration parameters of the application
  * @author Echoplex
  */
-public class MasterConfigurationData {
+public class MasterConfigurationData extends MailboxData {
     public Slave1ConfigurationData _slave1ConfigurationData;
     public Slave2ConfigurationData _slave2ConfigurationData;
     public Slave3ConfigurationData _slave3ConfigurationData;

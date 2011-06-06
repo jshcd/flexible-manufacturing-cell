@@ -29,7 +29,8 @@ import java.util.logging.Logger;
 
 public class Slave1 implements Slave, IOProcess {
 
-    protected SlaveOutputMailBox _mailBox;
+    protected SlaveOutputMailBox _outputMailBox;
+    protected SlaveInputMailBox _inputMailBox;
     protected ConveyorBelt _gearBelt;
     protected ConveyorBelt _axisBelt;
     protected ConveyorBelt _weldingBelt;
@@ -55,7 +56,14 @@ public class Slave1 implements Slave, IOProcess {
 
     public Slave1() {
         Logger.getLogger(Slave1.class.getName()).log(Level.INFO, "Slave 1 created");
-        _mailBox = new SlaveOutputMailBox(1);
+        _outputMailBox = new SlaveOutputMailBox(1);
+        _inputMailBox = new SlaveInputMailBox(1, this);
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                _inputMailBox.startServer();
+            }
+        });
+        t.start();
         reportToMaster(Constants.COMMAND_SLAVE1_CONNECTED);
     }
 
@@ -342,10 +350,10 @@ public class Slave1 implements Slave, IOProcess {
 
     public void reportToMaster(int orderNumber) {
         Command command = new Command(orderNumber);
-        _mailBox.startConnection();
-        _mailBox.acceptConnection();
-        _mailBox.sendCommand(command);
-        _mailBox.receiveCommand();
+        _outputMailBox.startConnection();
+        _outputMailBox.acceptConnection();
+        _outputMailBox.sendCommand(command);
+        _outputMailBox.receiveCommand();
     }
 
     // This loop is intended to keep adding pieces to the starting belts while the system is working
