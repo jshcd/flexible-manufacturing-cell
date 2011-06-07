@@ -54,7 +54,7 @@ public class Master {
         _monitor = m;
         _report = _dbmanager.readReportData();
         _robot = new Robot2();
-        _report.setFirstStart(true);
+        _report._firstStart = true;
          _inputMailBox = new MasterInputMailBox(this);       
         _logger.log(Level.INFO,"prueba");
         Thread t = new Thread(new Runnable() {
