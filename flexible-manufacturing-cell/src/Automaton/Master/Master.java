@@ -123,6 +123,8 @@ public class Master {
         _outputMailBox.sendInformation(command2, Constants.SLAVE2_ID);
         Command command3 = new Command(Constants.START_SLAVE3);
         _outputMailBox.sendInformation(command3, Constants.SLAVE3_ID);
+
+
     }
 
     public void stopSystem() {
