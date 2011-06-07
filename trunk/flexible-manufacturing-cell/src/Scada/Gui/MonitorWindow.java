@@ -52,8 +52,7 @@ public class MonitorWindow extends JFrame {
             _buttonEmergencyStop;
     private ImageLoader _imageLoader;
     private ConfigurationParameters _configurationParameters;
-    private Report _report;
-    private ReportData _reportData;
+    private Report _report;  
     private Master _masterAutomaton;
     /* LISTENERS */
     private ActionListener _btnActionListener = new ActionListener() {
@@ -79,7 +78,6 @@ public class MonitorWindow extends JFrame {
                 _buttonStop.setEnabled(false);
                 _buttonEmergencyStop.setEnabled(false);
                 _canvas.setEmergencyStopped(true);
-                _reportData._nEmergencyStops++;
                 _masterAutomaton.emergencyStop();
 
                 ;
@@ -87,11 +85,11 @@ public class MonitorWindow extends JFrame {
                 _buttonStart.setEnabled(false);
                 _buttonStop.setEnabled(false);
                 _buttonEmergencyStop.setEnabled(false);
-                _reportData._nNormalStops++;
+                _masterAutomaton.getReportData()._nNormalStops++;
                 _masterAutomaton.stopSystem();
             } else if (e.getSource() == _buttonReport) {
-                if(!_reportData._firstStart) {
-                    _masterAutomaton.getDbmanager().writeReportData(_reportData);
+                if(! _masterAutomaton.getReportData()._firstStart) {
+                    _masterAutomaton.getDbmanager().writeReportData( _masterAutomaton.getReportData());
                 }
                 _report.getValues(_masterAutomaton.getDbmanager().readReportData());
                 _report.setVisible(true);
@@ -122,7 +120,6 @@ public class MonitorWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         _masterAutomaton = new Master(this);
         _configurationParameters = new ConfigurationParameters(_masterAutomaton);
-        _reportData = _masterAutomaton.getDbmanager().readReportData();
         _masterAutomaton.initialize();
         _masterAutomaton.startRobot();
     }
@@ -205,13 +202,6 @@ public class MonitorWindow extends JFrame {
         return _report;
     }
 
-    public ReportData getReportData() {
-        return _reportData;
-    }
-
-    public void setReportData(ReportData _reportData) {
-        this._reportData = _reportData;
-    }
 
 
     /**
