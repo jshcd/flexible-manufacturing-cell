@@ -19,6 +19,7 @@ public class Connections extends JPanel {
     private JLabel _assembly, _welding, _quality, _master;
     private JLabel _assemblyStatus, _weldingStatus, _qualityStatus, _masterStatus;
     private ImageLoader _imageLoader;
+    private boolean _slave1Connected, _slave2Connected, _slave3Connected;
 
     /**
      * Constructs a connections panel.
@@ -44,6 +45,9 @@ public class Connections extends JPanel {
         _qualityStatus = new JLabel(new ImageIcon(
                 _imageLoader._off));
         _masterStatus = new JLabel(new ImageIcon(_imageLoader._on));
+        _slave1Connected = false;
+        _slave2Connected = false;
+        _slave3Connected = false;
     }
 
     private void layoutComponents() {
@@ -65,14 +69,31 @@ public class Connections extends JPanel {
 
         if (connected && automatonID == Constants.SLAVE1_ID) {
             _assemblyStatus.setIcon(new ImageIcon(_imageLoader._on));
-        } 
+            _slave1Connected = true;
+
+        }
 
         if (connected && automatonID == Constants.SLAVE2_ID) {
             _weldingStatus.setIcon(new ImageIcon(_imageLoader._on));
-        } 
+            _slave2Connected = true;
+
+        }
 
         if (connected && automatonID == Constants.SLAVE3_ID) {
             _qualityStatus.setIcon(new ImageIcon(_imageLoader._on));
+            _slave3Connected = true;
         }
+    }
+
+    public boolean getConnectionStatus(int automatonID) {
+       boolean state=false;
+        if (automatonID == Constants.SLAVE1_ID) {
+            state=  _slave1Connected;
+        } else if (automatonID == Constants.SLAVE2_ID) {
+            state = _slave1Connected;
+        } else if (automatonID == Constants.SLAVE3_ID) {
+            state = _slave1Connected;
+        }
+       return state;
     }
 }

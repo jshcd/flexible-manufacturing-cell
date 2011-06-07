@@ -206,7 +206,7 @@ public class Slave3 implements Slave, IOProcess {
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
                 _acceptedBelt.addPiece(p);
-               // _statusData.setRightPieces(_statusData.getRightPieces()+1);
+               _statusData.setRightPieces(_statusData.getRightPieces()+1);
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
             case Constants.ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK:
@@ -214,7 +214,8 @@ public class Slave3 implements Slave, IOProcess {
                 p.setType(PieceType.weldedAssembly);
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                _rejectedBelt.addPiece(p);
-               // _statusData.setWrongPieces(_statusData.getWrongPieces()+1);
+             
+                _statusData.setWrongPieces(_statusData.getWrongPieces()+1);
                  break;
         }
         if (!_stopped) {

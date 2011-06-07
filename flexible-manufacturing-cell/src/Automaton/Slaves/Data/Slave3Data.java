@@ -37,8 +37,8 @@ public class Slave3Data extends MailboxData {
         this._sensor11Status = _sensor11Status;
         this._acceptedBeltPieces = _acceptedBeltPieces;
         this._rejectedBeltPieces = _rejectedBeltPieces;
-    //    this._rightPieces = 0;
-     //   this._wrongPieces = 0;
+        this._rightPieces = 0;
+        this._wrongPieces = 0;
     }
 
     public Slave3Data() {
