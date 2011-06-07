@@ -276,7 +276,7 @@ public class Canvas extends JPanel {
     public void paintSlave3(Graphics g) {
         if (_slave3Data != null) {
             /* Paint Accepted Pieces */
-             System.out.println("tamano: "+ _slave3Data.getAcceptedBeltPieces().size());
+            
 
           for (Piece piece : _slave3Data.getAcceptedBeltPieces()) {
                 g.drawImage(_imageLoader._fullPieceOk, piece.getPos().x, piece.getPos().y, null);

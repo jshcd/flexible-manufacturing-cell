@@ -66,7 +66,16 @@ public class MonitorWindow extends JFrame {
                             MonitorWindow.this,
                             "The system cannot be started. Check if the master have received the right parameters.",
                             "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
+                } else if (!_connectionStatus.getConnectionStatus(Constants.SLAVE1_ID) &&
+                        !_connectionStatus.getConnectionStatus(Constants.SLAVE1_ID) &&
+                        !_connectionStatus.getConnectionStatus(Constants.SLAVE1_ID)){
+                         JOptionPane.showMessageDialog(
+                            MonitorWindow.this,
+                            "The system cannot be started until all the slave automata have been connected.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                else {
                     _buttonStart.setEnabled(false);
                     _buttonStop.setEnabled(true);
                     _buttonEmergencyStop.setEnabled(true);
@@ -225,6 +234,8 @@ public class MonitorWindow extends JFrame {
     public void setConnectionStatus(int slaveId, boolean status) {
         _connectionStatus.setConnectionStatus(slaveId, status);
     }
+
+
 
     public void setCanvasStatus(int slaveId, MailboxData data) {
         switch (slaveId) {
