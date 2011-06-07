@@ -34,6 +34,7 @@ public class MasterOutputMailBox implements MailBox {
 
     public MasterOutputMailBox(){
         _id = "Master";
+
     }
 
     public void sendInformation(MailboxData command, int destination){

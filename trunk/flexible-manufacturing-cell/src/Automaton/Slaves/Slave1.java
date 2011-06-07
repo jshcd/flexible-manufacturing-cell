@@ -12,6 +12,8 @@ import Element.Station.AssemblyStation;
 import Scada.DataBase.MasterConfigurationData;
 import Scada.DataBase.Robot1ConfigurationData;
 import Scada.DataBase.Slave1ConfigurationData;
+import Scada.Gui.JTextAreaHandler;
+import Scada.Gui.MonitorWindow;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -49,12 +51,12 @@ public class Slave1 implements Slave, IOProcess {
     protected double pieceSize;
     private IOInterface ioi;
     protected Logger _logger = Logger.getLogger(Slave1.class.toString());
-
     public static void main(String args[]) {
         Slave1 s1 = new Slave1();
     }
 
     public Slave1() {
+       
         _logger.log(Level.INFO, "Slave 1 created");
         _outputMailBox = new SlaveOutputMailBox(1);
         _inputMailBox = new SlaveInputMailBox(1, this);

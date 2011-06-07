@@ -32,6 +32,8 @@ public class MasterInputMailBox implements MailBox {
     public MasterInputMailBox(Master m){
         _id = "Master";
         _master = m;
+      //  _logger.addHandler(m.getMonitor().getLog().getLogHandler());
+       
  }
 
     public void startConnection() {
@@ -41,7 +43,8 @@ public class MasterInputMailBox implements MailBox {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Master.port"));
             _serverSocket = new ServerSocket(port);
-            _logger.log(Level.INFO, "Server listening at port {0}", port);
+            _logger.log(Level.FINE, "Server listening at port {0}", port);
+
         } catch (UnknownHostException ex) {
            _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
