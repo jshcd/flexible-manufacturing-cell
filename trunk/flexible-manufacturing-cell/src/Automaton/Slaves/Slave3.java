@@ -48,7 +48,6 @@ public class Slave3 implements Slave, IOProcess {
     private boolean _stopped;
     protected Logger _logger = Logger.getLogger(Slave3.class.toString());
 
-
     public static void main(String args[]) {
         Slave3 s3 = new Slave3();
     }
@@ -171,7 +170,9 @@ public class Slave3 implements Slave, IOProcess {
                 try {
                     while (true) {
                         Thread.sleep(50);
-                        if(!_stopped) updateStatusData();
+                        if (!_stopped) {
+                            updateStatusData();
+                        }
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
@@ -206,27 +207,31 @@ public class Slave3 implements Slave, IOProcess {
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
                 _acceptedBelt.addPiece(p);
-               _statusData.setRightPieces(_statusData.getRightPieces()+1);
+                _statusData.setRightPieces(_statusData.getRightPieces() + 1);
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
             case Constants.ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK:
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
-               _rejectedBelt.addPiece(p);
-             
-                _statusData.setWrongPieces(_statusData.getWrongPieces()+1);
-                 break;
+                _rejectedBelt.addPiece(p);
+
+                _statusData.setWrongPieces(_statusData.getWrongPieces() + 1);
+                break;
         }
         if (!_stopped) {
             switch (command) {
                 case Constants.SENSOR_OK_UNLOAD_ACTIVATED:
+                    _acceptedBelt.removeLastPiece();
+                    _logger.log(Level.INFO, "Piece taken out from accepted belt");
                     _acceptedBelt.stopContainer();
                     break;
                 case Constants.SENSOR_OK_UNLOAD_DISACTIVATED:
                     _acceptedBelt.startContainer();
                     break;
                 case Constants.SENSOR_NOT_OK_UNLOAD_ACTIVATED:
+                    _rejectedBelt.removeLastPiece();
+                    _logger.log(Level.INFO, "Piece taken out from rejected belt");
                     _rejectedBelt.stopContainer();
                     break;
                 case Constants.SENSOR_NOT_OK_UNLOAD_DISACTIVATED:
