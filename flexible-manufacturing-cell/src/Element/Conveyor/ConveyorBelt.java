@@ -56,7 +56,7 @@ public class ConveyorBelt implements PieceContainer {
                             Logger.getLogger(ConveyorBelt.class.toString()).log(Level.FINEST, "ConveyorBelt " + _id + ": piece at {1}", p.getPosition());
 
                             updatePosition(p);
-//                            System.out.println(p.getPosition());
+                            System.out.println(p.getPos());
                         }
                     }
                 }
@@ -192,7 +192,8 @@ public class ConveyorBelt implements PieceContainer {
         }
         
         double x = ((pointE.getX() - pointS.getX()) / _length * piece.getPosition()) + pointS.getX();
-        pointS.setLocation(x, pointS.getY());
-        piece.setGuiPosition(pointS);
+        Point p = new Point();
+        p.setLocation(x, pointS.getY());
+        piece.setGuiPosition(p);
     }
 }
