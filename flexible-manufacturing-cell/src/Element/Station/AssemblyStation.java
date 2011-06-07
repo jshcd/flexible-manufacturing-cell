@@ -25,7 +25,7 @@ public class AssemblyStation implements PieceContainer {
     private int _id;
     protected Slave _process;
     protected boolean _moving;
-     protected Logger _logger = Logger.getLogger(AssemblyStation.class.toString());
+  //   protected Logger _logger = Logger.getLogger(AssemblyStation.class.toString());
 
     public AssemblyStation(int id) {
         _id = id;
@@ -46,7 +46,7 @@ public class AssemblyStation implements PieceContainer {
                 }
 
             } catch (InterruptedException ex) {
-                _logger.log(Level.SEVERE, null, ex);
+                Logger.getLogger(AssemblyStation.class.toString()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -60,13 +60,13 @@ public class AssemblyStation implements PieceContainer {
                 try {
                     Thread.sleep(_assemblyTime);
                 } catch (InterruptedException ex) {
-                    _logger.log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AssemblyStation.class.toString()).log(Level.SEVERE, null, ex);
                 }
                 p.setType(Piece.PieceType.assembly);
                 _pieces.add(p);
                 updatePosition(p);
                 this._process.sendCommand(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
-               _logger.log(Level.INFO, "Assembly completed");
+               Logger.getLogger(AssemblyStation.class.toString()).log(Level.INFO, "Assembly completed");
 
                 return true;
             } else {
@@ -101,7 +101,7 @@ public class AssemblyStation implements PieceContainer {
 
     public void removeLastPiece() {
         if (_pieces.isEmpty()) {
-            _logger.log(Level.SEVERE, "Assembly station with id {0}: unable to remove last element", _id);
+            Logger.getLogger(AssemblyStation.class.toString()).log(Level.SEVERE, "Assembly station with id {0}: unable to remove last element", _id);
             return;
         }
         _pieces.remove(0);
@@ -134,7 +134,7 @@ public class AssemblyStation implements PieceContainer {
     @Override
     public void startContainer() {
         if (!_moving) {
-           _logger.log(Level.INFO, "Assembly table with id {0} has started", _id);
+           Logger.getLogger(AssemblyStation.class.toString()).log(Level.INFO, "Assembly table with id {0} has started", _id);
         }
         _moving = true;
     }
@@ -142,7 +142,7 @@ public class AssemblyStation implements PieceContainer {
     @Override
     public void stopContainer() {
         if (_moving) {
-           _logger.log(Level.INFO, "Assembly table with id {0} has stopped", _id);
+           Logger.getLogger(AssemblyStation.class.toString()).log(Level.INFO, "Assembly table with id {0} has stopped", _id);
         }
         _moving = false;
     }

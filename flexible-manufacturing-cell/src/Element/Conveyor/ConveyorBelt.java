@@ -28,7 +28,7 @@ public class ConveyorBelt implements PieceContainer {
     protected ArrayList<Sensor> _sensors;
     // Process for which it works
     protected Slave _process;
-    protected Logger _logger = Logger.getLogger(ConveyorBelt.class.toString());
+   // protected Logger _logger = Logger.getLogger(ConveyorBelt.class.toString());
 
     public ConveyorBelt(int id, int speed, double length) {
         _id = id;
@@ -41,7 +41,7 @@ public class ConveyorBelt implements PieceContainer {
 
     @Override
     public void run() {
-        _logger.log(Level.INFO, "Conveyor Belt with id {0} has been created", _id);
+        Logger.getLogger(ConveyorBelt.class.toString()).log(Level.INFO, "Conveyor Belt with id {0} has been created", _id);
 
         while (true) {
             try {
@@ -53,7 +53,7 @@ public class ConveyorBelt implements PieceContainer {
                         while (i.hasNext()) {
                             Piece p = (Piece) i.next();
                             p.setPosition(p.getPosition() + ((double) _speed / 200));
-                           _logger.log(Level.FINEST, "ConveyorBelt " + _id + ": piece at {1}", p.getPosition());
+                            Logger.getLogger(ConveyorBelt.class.toString()).log(Level.FINEST, "ConveyorBelt " + _id + ": piece at {1}", p.getPosition());
 
                             updatePosition(p);
 //                            System.out.println(p.getPosition());
@@ -63,7 +63,7 @@ public class ConveyorBelt implements PieceContainer {
 
                 Thread.yield();
             } catch (InterruptedException ex) {
-                _logger.log(Level.SEVERE, null, ex);
+                 Logger.getLogger(ConveyorBelt.class.toString()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -71,7 +71,7 @@ public class ConveyorBelt implements PieceContainer {
     @Override
     public void startContainer() {
         if (!_moving) {
-            _logger.log(Level.INFO, "Conveyor Belt with id {0} has started", _id);
+             Logger.getLogger(ConveyorBelt.class.toString()).log(Level.INFO, "Conveyor Belt with id {0} has started", _id);
         }
 
         _moving = true;
@@ -80,7 +80,7 @@ public class ConveyorBelt implements PieceContainer {
     @Override
     public void stopContainer() {
         if (_moving) {
-            _logger.log(Level.INFO, "Conveyor Belt with id {0} has stopped", _id);
+             Logger.getLogger(ConveyorBelt.class.toString()).log(Level.INFO, "Conveyor Belt with id {0} has stopped", _id);
         }
         _moving = false;
     }
@@ -151,7 +151,7 @@ public class ConveyorBelt implements PieceContainer {
     @Override
     public void removeLastPiece() {
         if (_pieces.isEmpty()) {
-            _logger.log(Level.SEVERE, "Conveyor Belt with id {0}: unable to remove last element", _id);
+             Logger.getLogger(ConveyorBelt.class.toString()).log(Level.SEVERE, "Conveyor Belt with id {0}: unable to remove last element", _id);
             return;
         }
 
