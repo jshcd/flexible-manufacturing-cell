@@ -91,7 +91,7 @@ public class Canvas extends JPanel {
     public void paintSlave1(Graphics g) {
         if (_slave1Data != null) {
             /* Paint Gears */
-            for (Piece piece : _slave1Data.getGearBeltPieces()) {
+           for (Piece piece : _slave1Data.getGearBeltPieces()) {
                 if (piece.getType() == Element.Piece.Piece.PieceType.gear) {
                     g.drawImage(_imageLoader._gear, piece.getPos().x, piece.getPos().y, null);
                 }
@@ -276,6 +276,8 @@ public class Canvas extends JPanel {
     public void paintSlave3(Graphics g) {
         if (_slave3Data != null) {
             /* Paint Accepted Pieces */
+             System.out.println("tamano: "+ _slave3Data.getAcceptedBeltPieces().size());
+
           for (Piece piece : _slave3Data.getAcceptedBeltPieces()) {
                 g.drawImage(_imageLoader._fullPieceOk, piece.getPos().x, piece.getPos().y, null);
             }
