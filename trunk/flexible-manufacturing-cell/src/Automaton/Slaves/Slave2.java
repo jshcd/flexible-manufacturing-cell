@@ -44,7 +44,8 @@ public class Slave2 implements Slave, IOProcess {
     IOInterface ioi;
     private Slave2ConfigurationData _slave2ConfigurationData;
     private double sensor_range;
-     protected Logger _logger = Logger.getLogger(Slave2.class.toString());
+    protected Logger _logger = Logger.getLogger(Slave2.class.toString());
+    private int _sucessRate;
 
     public static void main(String args[]) {
         Slave2 s2 = new Slave2();
@@ -55,7 +56,9 @@ public class Slave2 implements Slave, IOProcess {
         _outputMailBox = new SlaveOutputMailBox(2);
         _inputMailBox = new SlaveInputMailBox(2, this);
         _stopped = true;
+        _sucessRate = 50;
         Thread t = new Thread(new Runnable() {
+
             public void run() {
                 _inputMailBox.startServer();
             }
@@ -94,15 +97,16 @@ public class Slave2 implements Slave, IOProcess {
         ioi.setPortLag(1);
         ioi.bind();
         (new Thread(ioi)).start();
-        
+
 
         _outputMailBox = new SlaveOutputMailBox(2);
-        
+
         _weldingStation = new WeldingStation(5);
         _weldingStation.setWeldingTime(_slave2ConfigurationData._weldingActivationTime);
         _weldingStation.setProcess(this);
         _qualityStation = new QualityControlStation(6);
         _qualityStation.setQualityTime(_slave2ConfigurationData._qualityControlActivationTime);
+        _qualityStation.setSucessRate(_sucessRate);
         _qualityStation.setProcess(this);
 
         _sensor6 = new Sensor();
@@ -129,15 +133,17 @@ public class Slave2 implements Slave, IOProcess {
         //We start the sensors
         new Thread(_sensor6).start();
         new Thread(_sensor7).start();
-        
-        
+
+
         Thread y = new Thread(new Runnable() {
 
             public void run() {
                 try {
                     while (true) {
                         Thread.sleep(50);
-                        if(!_stopped) updateStatusData();
+                        if (!_stopped) {
+                            updateStatusData();
+                        }
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
@@ -229,7 +235,7 @@ public class Slave2 implements Slave, IOProcess {
         } catch (FileNotFoundException ex) {
             _logger.log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-           _logger.log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             _logger.log(Level.SEVERE, null, ex);
         }
@@ -238,6 +244,7 @@ public class Slave2 implements Slave, IOProcess {
     public void storeInitialConfiguration(MasterConfigurationData md) {
         _slave2ConfigurationData = md._slave2ConfigurationData;
         sensor_range = (double) md._sensorRange;
+        _sucessRate = md._successRate;
         initialize();
     }
 }
