@@ -22,9 +22,12 @@ public class WeldingStation implements PieceContainer {
     private int _id;
     protected Slave _process;
     protected boolean _moving;
+    private boolean _actuating;
 
     public WeldingStation(int id) {
         _id = id;
+        _moving = false;
+        _actuating = false;
         _pieces = Collections.synchronizedList(new ArrayList<Piece>());
     }
 
@@ -34,11 +37,13 @@ public class WeldingStation implements PieceContainer {
 
     public boolean weld() {
         if (_pieces.size() == 1) {
+            _actuating = true;
             try {
                 Thread.sleep(_weldingTime);
             } catch (InterruptedException ex) {
                 Logger.getLogger(AssemblyStation.class.getName()).log(Level.SEVERE, null, ex);
             }
+            _actuating = false;
 
             _pieces.remove(0);
 
@@ -127,5 +132,9 @@ public class WeldingStation implements PieceContainer {
 
     private void updatePosition(Piece piece) {
         piece.setGuiPosition(Constants.WELDING_STATION_CENTER_POSITION);
+    }
+
+    public boolean isActuating() {
+        return _actuating;
     }
 }

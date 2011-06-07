@@ -49,7 +49,7 @@ public class Slave1 implements Slave, IOProcess {
     protected Slave1ConfigurationData _slave1ConfigurationData;
     protected Robot1ConfigurationData _robot1ConfigurationData;
     protected double sensor_range = 1.2;
-    protected double pieceSize;
+    protected double pieceSize = 1.5;
     private IOInterface ioi;
     protected Logger _logger = Logger.getLogger(Slave1.class.toString());
     public static void main(String args[]) {
@@ -131,7 +131,6 @@ public class Slave1 implements Slave, IOProcess {
         int weldingSpeed = _slave1ConfigurationData._weldingBeltConfiguration.getSpeed();
         double weldingLength = (double) _slave1ConfigurationData._weldingBeltConfiguration.getLength();
 
-        // TODO: falta que llegue aqui el sensor range
         _gearBelt = new ConveyorBelt(1, gearSpeed, gearLength);
         _axisBelt = new ConveyorBelt(2, axisSpeed, axisLength);
 
