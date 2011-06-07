@@ -243,6 +243,16 @@ public class Canvas extends JPanel {
                         Constants.TORCH_POSITION_DISABLED.x,
                         Constants.TORCH_POSITION_DISABLED.y, null);
             }
+            
+            if(_slave2Data.isQualityStationRunning()){                
+                g.drawImage(_imageLoader._glassEnabled,
+                        Constants.GLASS_POSITION_ENABLED.x,
+                        Constants.GLASS_POSITION_ENABLED.y, null);
+            }else{                
+                g.drawImage(_imageLoader._glassDisabled,
+                        Constants.GLASS_POSITION_ENABLED.x,
+                        Constants.GLASS_POSITION_ENABLED.y, null);                
+            }
         }
     }
 
