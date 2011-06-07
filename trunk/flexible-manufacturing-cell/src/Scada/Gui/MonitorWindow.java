@@ -70,6 +70,7 @@ public class MonitorWindow extends JFrame {
                     _buttonStart.setEnabled(false);
                     _buttonStop.setEnabled(true);
                     _buttonEmergencyStop.setEnabled(true);
+
                     _canvas.setEmergencyStopped(false);
                     _masterAutomaton.startSystem();
                 }
@@ -91,6 +92,7 @@ public class MonitorWindow extends JFrame {
                 if (!_masterAutomaton.getReportData()._firstStart) {
                     _masterAutomaton.getDbmanager().writeReportData(_masterAutomaton.getReportData());
                 }
+               
                 _report.getValues(_masterAutomaton.getDbmanager().readReportData());
                 _report.setVisible(true);
             } else if (e.getSource() == _buttonConfiguration) {
@@ -233,7 +235,7 @@ public class MonitorWindow extends JFrame {
                 _canvas.setSlave2Data((Slave2Data) data);
                 break;
             case Constants.SLAVE3_ID:
-                _canvas.setSlave3Data((Slave3Data) data);
+                _canvas.setSlave3Data((Slave3Data) data);                
                 break;
         }
     }
