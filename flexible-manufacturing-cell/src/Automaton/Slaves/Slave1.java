@@ -44,6 +44,7 @@ public class Slave1 implements Slave, IOProcess {
     protected Sensor _sensor4;
     protected Sensor _sensor5;
     protected boolean _finishing;
+    private boolean _stopped;
     protected Slave1Data _statusData;
     protected Slave1ConfigurationData _slave1ConfigurationData;
     protected Robot1ConfigurationData _robot1ConfigurationData;
@@ -121,6 +122,7 @@ public class Slave1 implements Slave, IOProcess {
         (new Thread(ioi)).start();
 
         _finishing = false;
+        _stopped = true;
 
         int gearSpeed = _slave1ConfigurationData._gearBeltConfiguration.getSpeed();
         double gearLength = (double) _slave1ConfigurationData._gearBeltConfiguration.getLength();
@@ -203,7 +205,6 @@ public class Slave1 implements Slave, IOProcess {
         sensor5.start();
 
         startRobot();
-        start();
 
         Thread y = new Thread(new Runnable() {
 
@@ -211,7 +212,7 @@ public class Slave1 implements Slave, IOProcess {
                 try {
                     while (true) {
                         Thread.sleep(50);
-                        updateStatusData();
+                        if(!_stopped) updateStatusData();
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
@@ -265,6 +266,8 @@ public class Slave1 implements Slave, IOProcess {
     public void start() {
         System.out.println("S1 STARTING");
         _finishing = false;
+        _stopped = false;
+        
         _gearBelt.startContainer();
         _axisBelt.startContainer();
         _assemblyStation.startContainer();
@@ -287,6 +290,7 @@ public class Slave1 implements Slave, IOProcess {
     public void stop() {
         System.out.println("S1 STOPPING");
         _finishing = true;
+        _stopped = true;
         _gearBelt.stopContainer();
         _axisBelt.stopContainer();
         _assemblyStation.stopContainer();
@@ -297,6 +301,7 @@ public class Slave1 implements Slave, IOProcess {
     public void runCommand(int command) {
         Piece p;
 //        System.out.println("S1 receives: " + command);
+
         switch (command) {
             case Constants.START_SLAVE1:
                 start();
@@ -341,21 +346,26 @@ public class Slave1 implements Slave, IOProcess {
             case Constants.SENSOR_GEAR_UNLOAD_ACTIVATED:
                 _gearBelt.stopContainer();
                 break;
-            case Constants.SENSOR_GEAR_UNLOAD_DISACTIVATED:
-                _gearBelt.startContainer();
-                break;
-            case Constants.SENSOR_AXIS_UNLOAD_ACTIVATED:
-                _axisBelt.stopContainer();
-                break;
-            case Constants.SENSOR_AXIS_UNLOAD_DISACTIVATED:
-                _axisBelt.startContainer();
-                break;
-            case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
-                _weldingBelt.stopContainer();
-                break;
-            case Constants.SENSOR_WELDING_UNLOAD_DISACTIVATED:
-                _weldingBelt.startContainer();
-                break;
+
+        }
+        if (!_stopped) {
+            switch (command) {
+                case Constants.SENSOR_GEAR_UNLOAD_DISACTIVATED:
+                    _gearBelt.startContainer();
+                    break;
+                case Constants.SENSOR_AXIS_UNLOAD_ACTIVATED:
+                    _axisBelt.stopContainer();
+                    break;
+                case Constants.SENSOR_AXIS_UNLOAD_DISACTIVATED:
+                    _axisBelt.startContainer();
+                    break;
+                case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
+                    _weldingBelt.stopContainer();
+                    break;
+                case Constants.SENSOR_WELDING_UNLOAD_DISACTIVATED:
+                    _weldingBelt.startContainer();
+                    break;
+            }
         }
     }
 
