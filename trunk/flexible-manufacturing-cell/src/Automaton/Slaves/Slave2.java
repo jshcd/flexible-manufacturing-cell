@@ -40,6 +40,7 @@ public class Slave2 implements Slave, IOProcess {
     private Sensor _sensor6;
     private Sensor _sensor7;
     private Slave2Data _statusData;
+    private boolean _stopped;
     IOInterface ioi;
     private Slave2ConfigurationData _slave2ConfigurationData;
     private double sensor_range;
@@ -92,6 +93,8 @@ public class Slave2 implements Slave, IOProcess {
         ioi.setPortLag(1);
         ioi.bind();
         (new Thread(ioi)).start();
+        
+        _stopped = true;
 
         _outputMailBox = new SlaveOutputMailBox(2);
         
@@ -145,12 +148,14 @@ public class Slave2 implements Slave, IOProcess {
     }
 
     public void start() {
+        _stopped = false;
         _weldingStation.startContainer();
         _qualityStation.startContainer();
         reportToMaster(new Command(Constants.SLAVE_TWO_STARTING));
     }
 
     public void stop() {
+        _stopped = true;
         _weldingStation.stopContainer();
         _qualityStation.stopContainer();
         reportToMaster(new Command(Constants.SLAVE_TWO_STOPPING));

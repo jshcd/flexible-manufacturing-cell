@@ -45,6 +45,7 @@ public class Slave3 implements Slave, IOProcess {
     private IOInterface ioi;
     private Slave3ConfigurationData _slave3ConfigurationData;
     private double sensor_range;
+    private boolean _stopped;
     protected Logger _logger = Logger.getLogger(Slave3.class.toString());
 
     public static void main(String args[]) {
@@ -179,12 +180,14 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public void start() {
+        _stopped = false;
         _acceptedBelt.startContainer();
         _rejectedBelt.startContainer();
         reportToMaster(new Command(Constants.SLAVE_THREE_STARTING));
     }
 
     public void stop() {
+        _stopped = true;
         _acceptedBelt.stopContainer();
         _rejectedBelt.stopContainer();
         reportToMaster(new Command(Constants.SLAVE_THREE_STOPPING));
@@ -209,19 +212,22 @@ public class Slave3 implements Slave, IOProcess {
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 _rejectedBelt.addPiece(p);
                 break;
-            case Constants.SENSOR_OK_UNLOAD_ACTIVATED:
-                _acceptedBelt.stopContainer();
-                break;
-            case Constants.SENSOR_OK_UNLOAD_DISACTIVATED:
-                _acceptedBelt.startContainer();
-                break;
-            case Constants.SENSOR_NOT_OK_UNLOAD_ACTIVATED:
-                _rejectedBelt.stopContainer();
-                break;
-            case Constants.SENSOR_NOT_OK_UNLOAD_DISACTIVATED:
-                _rejectedBelt.startContainer();
-                break;
-
+        }
+        if (!_stopped) {
+            switch (command) {
+                case Constants.SENSOR_OK_UNLOAD_ACTIVATED:
+                    _acceptedBelt.stopContainer();
+                    break;
+                case Constants.SENSOR_OK_UNLOAD_DISACTIVATED:
+                    _acceptedBelt.startContainer();
+                    break;
+                case Constants.SENSOR_NOT_OK_UNLOAD_ACTIVATED:
+                    _rejectedBelt.stopContainer();
+                    break;
+                case Constants.SENSOR_NOT_OK_UNLOAD_DISACTIVATED:
+                    _rejectedBelt.startContainer();
+                    break;
+            }
         }
     }
 
