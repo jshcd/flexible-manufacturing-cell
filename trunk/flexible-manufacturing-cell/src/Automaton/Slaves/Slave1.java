@@ -441,7 +441,7 @@ public class Slave1 implements Slave, IOProcess {
                         p.setType(PieceType.gear);
                         _gearBelt.addPiece(p);
 
-                        _logger.log(Level.FINE, "Added gear");
+                        _logger.log(Level.INFO, "Added gear");
                     }
                 }
 
@@ -464,7 +464,7 @@ public class Slave1 implements Slave, IOProcess {
                         p.setPosition(0);
                         p.setType(PieceType.axis);
                         _axisBelt.addPiece(p);
-                        _logger.log(Level.FINE, "Added axis");
+                        _logger.log(Level.INFO, "Added axis");
                     }
                 }
             }
