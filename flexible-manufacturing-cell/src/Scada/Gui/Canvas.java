@@ -234,6 +234,7 @@ public class Canvas extends JPanel {
                         null);
             }
 
+            /* Paint torch */
             if (_slave2Data.isWeldingStationRunning()) {
                 g.drawImage(_imageLoader._torchEnabled,
                         Constants.TORCH_POSITION_ENABLED.x,
@@ -244,6 +245,7 @@ public class Canvas extends JPanel {
                         Constants.TORCH_POSITION_DISABLED.y, null);
             }
             
+            /* Paint glass */
             if(_slave2Data.isQualityStationRunning()){                
                 g.drawImage(_imageLoader._glassEnabled,
                         Constants.GLASS_POSITION_ENABLED.x,
@@ -252,6 +254,18 @@ public class Canvas extends JPanel {
                 g.drawImage(_imageLoader._glassDisabled,
                         Constants.GLASS_POSITION_ENABLED.x,
                         Constants.GLASS_POSITION_ENABLED.y, null);                
+            }
+            
+            /* Paint Torched Pieces */
+            if(!_slave2Data.getWeldingStationPieces().isEmpty()) {
+                g.drawImage(_imageLoader._fullPiece, Constants.WELDING_STATION_CENTER_POSITION.x, 
+                        Constants.WELDING_STATION_CENTER_POSITION.y, null);
+            }
+            
+            /* Paint Quality Pieces */
+            if(!_slave2Data.getQualityStationPieces().isEmpty()) {
+                g.drawImage(_imageLoader._fullPiece, Constants.QUALITY_STATION_CENTER_POSITION.x, 
+                        Constants.QUALITY_STATION_CENTER_POSITION.y, null);
             }
         }
     }

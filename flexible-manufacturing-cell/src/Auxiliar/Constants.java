@@ -183,8 +183,8 @@ public class Constants {
     /* ASSEMBLY STATION */
     public static final Point ASSEMBLY_STATION_GEAR_POSITION = new Point(453, 313);
     public static final Point ASSEMBLY_STATION_AXIS_POSITION = new Point(500, 280);
-    public static final Point WELDING_STATION_CENTER_POSITION = new Point(849, 296);
-    public static final Point QUALITY_STATION_CENTER_POSITION = new Point(762, 167);
+    public static final Point WELDING_STATION_CENTER_POSITION = new Point(824, 183);
+    public static final Point QUALITY_STATION_CENTER_POSITION = new Point(742, 314);
     /* TORCH */
     public static final Point TORCH_POSITION_ENABLED = new Point(833, 114);
     public static final Point TORCH_POSITION_DISABLED = new Point(833, 74);
