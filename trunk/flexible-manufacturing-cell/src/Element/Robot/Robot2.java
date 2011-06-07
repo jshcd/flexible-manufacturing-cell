@@ -123,11 +123,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     if (_qualityCompletedOK) {
                         _commandReceived = false;
                         pickCheckedWeldedAssembly(); //310
-                        _state = AutomatonState.q7;
+                        _state = AutomatonState.q6;
                     } else if (_qualityCompletedNotOK) {
                         _commandReceived = false;
                         pickCheckedWeldedAssembly();//310
-                        _state = AutomatonState.q6;
+                        _state = AutomatonState.q7;
                     }
                     break;
                 case q6:
@@ -254,7 +254,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void runCommand(int command) {
         if (command > 120) {
-            System.out.println("R2 running: " + command);
+            System.out.println("R2 running: " + command + " state: " + _state);
         }
         switch (command) {
             case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
