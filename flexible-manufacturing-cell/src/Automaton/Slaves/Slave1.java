@@ -61,6 +61,8 @@ public class Slave1 implements Slave, IOProcess {
         _logger.log(Level.INFO, "Slave 1 created");
         _outputMailBox = new SlaveOutputMailBox(1);
         _inputMailBox = new SlaveInputMailBox(1, this);
+        
+        _stopped = true;
 
         _statusData = new Slave1Data();
         Thread t = new Thread(new Runnable() {

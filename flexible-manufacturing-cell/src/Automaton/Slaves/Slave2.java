@@ -54,6 +54,7 @@ public class Slave2 implements Slave, IOProcess {
         _logger.log(Level.INFO, "Slave 2 created");
         _outputMailBox = new SlaveOutputMailBox(2);
         _inputMailBox = new SlaveInputMailBox(2, this);
+        _stopped = true;
         Thread t = new Thread(new Runnable() {
             public void run() {
                 _inputMailBox.startServer();
@@ -94,7 +95,6 @@ public class Slave2 implements Slave, IOProcess {
         ioi.bind();
         (new Thread(ioi)).start();
         
-        _stopped = true;
 
         _outputMailBox = new SlaveOutputMailBox(2);
         

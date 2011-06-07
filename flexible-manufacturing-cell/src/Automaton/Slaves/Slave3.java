@@ -57,6 +57,7 @@ public class Slave3 implements Slave, IOProcess {
         _logger.log(Level.INFO, "Slave 3 created");
         _outputMailBox = new SlaveOutputMailBox(3);
         _inputMailBox = new SlaveInputMailBox(3, this);
+        _stopped = true;
         Thread t = new Thread(new Runnable() {
 
             public void run() {
