@@ -43,6 +43,7 @@ public class Canvas extends JPanel {
         setPreferredSize(size);
         setMaximumSize(size);
         _emergencyStopped = false;
+       
     }
 
     public void setSlave1Data(Slave1Data slaveData) {
