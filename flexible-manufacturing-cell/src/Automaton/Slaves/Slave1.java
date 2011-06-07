@@ -56,8 +56,10 @@ public class Slave1 implements Slave, IOProcess {
 
     public Slave1() {
         _logger.log(Level.INFO, "Slave 1 created");
-       _outputMailBox = new SlaveOutputMailBox(1);
+        _outputMailBox = new SlaveOutputMailBox(1);
         _inputMailBox = new SlaveInputMailBox(1, this);
+
+        _statusData = new Slave1Data();
         Thread t = new Thread(new Runnable() {
 
             public void run() {
@@ -87,20 +89,24 @@ public class Slave1 implements Slave, IOProcess {
     }
 
     public void updateStatusData() {
-        _statusData = new Slave1Data();
-        _statusData.setSensor1Status(_sensor1.isActivated());
-        _statusData.setSensor2Status(_sensor2.isActivated());
-        _statusData.setSensor3Status(_sensor3.isActivated());
-        _statusData.setSensor5Status(_sensor5.isActivated());
-        _statusData.setAssemblyStationPieces(_assemblyStation.getPieces());
-        _statusData.setAssemblyStationRunning(_assemblyStation.isMoving());
-        _statusData.setGearBeltPieces(_gearBelt.getPieces());
-        _statusData.setGearBeltRunning(_gearBelt.isMoving());
-        _statusData.setAxisBeltPieces(_axisBelt.getPieces());
-        _statusData.setAxisBeltRunning(_axisBelt.isMoving());
-        _statusData.setWeldingBeltPieces(_weldingBelt.getPieces());
-        _statusData.setWeldingBeltRunning(_weldingBelt.isMoving());
-        reportToMaster(_statusData);
+        try {
+            synchronized (_statusData) {
+                _statusData.setSensor1Status(_sensor1.isActivated());
+                _statusData.setSensor2Status(_sensor2.isActivated());
+                _statusData.setSensor3Status(_sensor3.isActivated());
+                _statusData.setSensor5Status(_sensor5.isActivated());
+                _statusData.setAssemblyStationPieces(_assemblyStation.getPieces());
+                _statusData.setAssemblyStationRunning(_assemblyStation.isMoving());
+                _statusData.setGearBeltPieces(_gearBelt.getPieces());
+                _statusData.setGearBeltRunning(_gearBelt.isMoving());
+                _statusData.setAxisBeltPieces(_axisBelt.getPieces());
+                _statusData.setAxisBeltRunning(_axisBelt.isMoving());
+                _statusData.setWeldingBeltPieces(_weldingBelt.getPieces());
+                _statusData.setWeldingBeltRunning(_weldingBelt.isMoving());
+            }
+            reportToMaster(_statusData);
+        } catch (java.util.ConcurrentModificationException e) {
+        }
     }
 
     public final void initialize() {
@@ -174,9 +180,13 @@ public class Slave1 implements Slave, IOProcess {
 
         // We start the belts
         Thread gearBelt = new Thread(_gearBelt);
+        gearBelt.start();
         Thread axisBelt = new Thread(_axisBelt);
+        axisBelt.start();
         Thread assemblyStation = new Thread(_assemblyStation);
+        assemblyStation.start();
         Thread weldingBelt = new Thread(_weldingBelt);
+        weldingBelt.start();
 
         //We start the sensors
         Thread sensor1 = new Thread(_sensor1);
@@ -191,6 +201,7 @@ public class Slave1 implements Slave, IOProcess {
         sensor5.start();
 
         startRobot();
+        start();
 
         Thread y = new Thread(new Runnable() {
 
@@ -206,6 +217,7 @@ public class Slave1 implements Slave, IOProcess {
             }
         });
         y.start();
+
 
     }
 
@@ -256,7 +268,15 @@ public class Slave1 implements Slave, IOProcess {
         _assemblyStation.startContainer();
         _weldingBelt.startContainer();
         sendCommand(Constants.START_ROBOT1);
-        mainLoop();
+
+        Thread t = new Thread(new Runnable() {
+
+            public void run() {
+                mainLoop();
+            }
+        });
+        t.start();
+
     }
     /*
      * Emergency stop
@@ -371,10 +391,12 @@ public class Slave1 implements Slave, IOProcess {
 //        }
 //    }
     public void reportToMaster(MailboxData data) {
-        _outputMailBox.startConnection();
-        _outputMailBox.acceptConnection();
-        _outputMailBox.sendCommand(data);
-        _outputMailBox.receiveCommand();
+        synchronized (data) {
+            _outputMailBox.startConnection();
+            _outputMailBox.acceptConnection();
+            _outputMailBox.sendCommand(data);
+            _outputMailBox.receiveCommand();
+        }
     }
 
     // This loop is intended to keep adding pieces to the starting belts while the system is working
