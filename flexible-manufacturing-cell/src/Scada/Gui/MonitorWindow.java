@@ -25,7 +25,9 @@ import net.miginfocom.swing.MigLayout;
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import Auxiliar.Constants;
 import Auxiliar.MailboxData;
+import Scada.DataBase.ReportData;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,9 +53,8 @@ public class MonitorWindow extends JFrame {
     private ImageLoader _imageLoader;
     private ConfigurationParameters _configurationParameters;
     private Report _report;
+    private ReportData _reportData;
     private Master _masterAutomaton;
-
-   
     /* LISTENERS */
     private ActionListener _btnActionListener = new ActionListener() {
 
@@ -71,21 +72,27 @@ public class MonitorWindow extends JFrame {
                     _buttonStop.setEnabled(true);
                     _buttonEmergencyStop.setEnabled(true);
                     _canvas.setEmergencyStopped(false);
-                    _masterAutomaton.startSystem(); 
+                    _masterAutomaton.startSystem();
                 }
             } else if (e.getSource() == _buttonEmergencyStop) {
                 _buttonStart.setEnabled(true);
                 _buttonStop.setEnabled(false);
                 _buttonEmergencyStop.setEnabled(false);
                 _canvas.setEmergencyStopped(true);
+                _reportData._nEmergencyStops++;
                 _masterAutomaton.emergencyStop();
+
                 ;
             } else if (e.getSource() == _buttonStop) {
                 _buttonStart.setEnabled(false);
                 _buttonStop.setEnabled(false);
                 _buttonEmergencyStop.setEnabled(false);
+                _reportData._nNormalStops++;
                 _masterAutomaton.stopSystem();
             } else if (e.getSource() == _buttonReport) {
+                if(!_reportData._firstStart) {
+                    _masterAutomaton.getDbmanager().writeReportData(_reportData);
+                }
                 _report.getValues(_masterAutomaton.getDbmanager().readReportData());
                 _report.setVisible(true);
             } else if (e.getSource() == _buttonConfiguration) {
@@ -102,8 +109,6 @@ public class MonitorWindow extends JFrame {
     public MonitorWindow() {
         _imageLoader = new ImageLoader(this);
         _report = new Report();
-
-       
         Dimension size = new Dimension(Constants.GUI_WIDTH, Constants.GUI_HEIGHT);
         setMinimumSize(size);
         setPreferredSize(size);
@@ -116,8 +121,8 @@ public class MonitorWindow extends JFrame {
         pack();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         _masterAutomaton = new Master(this);
-       
         _configurationParameters = new ConfigurationParameters(_masterAutomaton);
+        _reportData = _masterAutomaton.getDbmanager().readReportData();
         _masterAutomaton.initialize();
         _masterAutomaton.startRobot();
     }
@@ -126,7 +131,7 @@ public class MonitorWindow extends JFrame {
         Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
         _canvas = new Canvas(_imageLoader);
 
-      
+
         _buttonConfiguration = new JButton(new ImageIcon(_imageLoader._configurationButton));
         _buttonConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
         _buttonConfiguration.setCursor(handCursor);
@@ -200,6 +205,15 @@ public class MonitorWindow extends JFrame {
         return _report;
     }
 
+    public ReportData getReportData() {
+        return _reportData;
+    }
+
+    public void setReportData(ReportData _reportData) {
+        this._reportData = _reportData;
+    }
+
+
     /**
      * Enables the start button and disables the stop buttons.
      */
@@ -218,21 +232,20 @@ public class MonitorWindow extends JFrame {
         _buttonEmergencyStop.setEnabled(false);
     }
 
-    
-    public void setConnectionStatus(int slaveId, boolean status){
+    public void setConnectionStatus(int slaveId, boolean status) {
         _connectionStatus.setConnectionStatus(slaveId, status);
     }
-    
-    public void setCanvasStatus(int slaveId, MailboxData data){
-        switch(slaveId){
-            case Constants.SLAVE1_ID: 
-                _canvas.setSlave1Data((Slave1Data)data);
+
+    public void setCanvasStatus(int slaveId, MailboxData data) {
+        switch (slaveId) {
+            case Constants.SLAVE1_ID:
+                _canvas.setSlave1Data((Slave1Data) data);
                 break;
             case Constants.SLAVE2_ID:
-                _canvas.setSlave2Data((Slave2Data)data);
+                _canvas.setSlave2Data((Slave2Data) data);
                 break;
             case Constants.SLAVE3_ID:
-                _canvas.setSlave3Data((Slave3Data)data);
+                _canvas.setSlave3Data((Slave3Data) data);
                 break;
         }
     }
@@ -247,10 +260,13 @@ public class MonitorWindow extends JFrame {
         try {
             MonitorWindow w = new MonitorWindow();
             w.setVisible(true);
+
+
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
+
 
     }
 }

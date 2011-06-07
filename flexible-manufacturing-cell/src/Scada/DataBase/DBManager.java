@@ -1,6 +1,7 @@
 package Scada.DataBase;
 
 /* Imports */
+import Auxiliar.Constants;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
@@ -13,11 +14,6 @@ import java.util.Properties;
  * @author Echoplex
  */
 public class DBManager {
-
-    /**
-     * String that defines the report configuration file
-     */
-    private static final String REPORTS_PATH = "report.properties";
 
     /**
      * Reads the configuration parameters from the database and 
@@ -260,29 +256,31 @@ public class DBManager {
         try {
             // Reads the property file
             Properties properties = new Properties();
-            properties.load(new FileInputStream(REPORTS_PATH));
+            properties.load(new FileInputStream(Constants.REPORTS_PATH));
 
-            data.rightPiecesCurrentExec = Integer.parseInt(properties.get(
-                    "rightPackagesCurrentExec").toString());
-            data.wrongPiecesCurrentExec = Integer.parseInt(properties.get(
-                    "wrongPackagesCurrentExec").toString());
-            data.rightPiecesAllExec = Integer.parseInt(properties.get(
-                    "rightPackagesAllExec").toString());
-            data.wrongPiecesAllExec = Integer.parseInt(properties.get(
-                    "wrongPackagesAllExec").toString());
+            data._rightPiecesCurrentExec = Integer.parseInt(properties.get(
+                    "rightPiecesCurrentExec").toString());
+            data._wrongPiecesCurrentExec = Integer.parseInt(properties.get(
+                    "wrongPiecesCurrentExec").toString());
+            data._rightPiecesAllExec = Integer.parseInt(properties.get(
+                    "rightPiecesAllExec").toString());
+            data._wrongPiecesAllExec = Integer.parseInt(properties.get(
+                    "wrongPiecesAllExec").toString());
 
-            data.nRestarts = Integer.parseInt(properties.get("nRestarts").toString());
-            data.nEmergencyStops = Integer.parseInt(properties.get(
+            data._nRestarts = Integer.parseInt(properties.get("nRestarts").toString());
+            data._nEmergencyStops = Integer.parseInt(properties.get(
                     "nEmergencyStops").toString());
-            data.nNormalStops = Integer.parseInt(properties.get("nNormalStops").toString());
+            data._nNormalStops = Integer.parseInt(properties.get("nNormalStops").toString());
         } catch (Exception e) {
             // If the property file does not exist, default values are loaded
-            data.wrongPiecesCurrentExec = 0;
-            data.wrongPiecesAllExec = 0;
-            data.nRestarts = 0;
-            data.nEmergencyStops = 0;
-            data.nNormalStops = 0;
-            data.firstStart = true;
+            data._wrongPiecesCurrentExec = 0;
+            data._wrongPiecesAllExec = 0;
+            data._rightPiecesAllExec = 0;
+            data._rightPiecesCurrentExec = 0;
+            data._nRestarts = 0;
+            data._nEmergencyStops = 0;
+            data._nNormalStops = 0;
+            data._firstStart = true;
         }
 
         return data;
@@ -298,17 +296,17 @@ public class DBManager {
         try {
             Properties properties = new Properties();
 
-            properties.put("rightPackagesCurrentExec", String.valueOf(data.rightPiecesCurrentExec));
-            properties.put("wrongPackagesCurrentExec", String.valueOf(data.wrongPiecesCurrentExec));
-            properties.put("rightPackagesAllExec", String.valueOf(data.rightPiecesAllExec));
-            properties.put("wrongPackagesAllExec", String.valueOf(data.wrongPiecesAllExec));
+            properties.put("rightPiecesCurrentExec", String.valueOf(data._rightPiecesCurrentExec));
+            properties.put("wrongPiecesCurrentExec", String.valueOf(data._wrongPiecesCurrentExec));
+            properties.put("rightPiecesAllExec", String.valueOf(data._rightPiecesAllExec));
+            properties.put("wrongPiecesAllExec", String.valueOf(data._wrongPiecesAllExec));
 
-            properties.put("nNormalStops", String.valueOf(data.nNormalStops));
-            properties.put("nEmergencyStops", String.valueOf(data.nEmergencyStops));
-            properties.put("nRestarts", String.valueOf(data.nRestarts));
+            properties.put("nNormalStops", String.valueOf(data._nNormalStops));
+            properties.put("nEmergencyStops", String.valueOf(data._nEmergencyStops));
+            properties.put("nRestarts", String.valueOf(data._nRestarts));
 
-            properties.store(new FileOutputStream(REPORTS_PATH),
-                    "FlexManPie Auto-Generated");
+            properties.store(new FileOutputStream(Constants.REPORTS_PATH),
+                    "Flexible-manufacturing-cell Auto-Generated");
         } catch (Exception e) {
         }
     }

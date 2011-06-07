@@ -64,7 +64,6 @@ public class Constants {
     public final static int SLAVE1_ROBOT1_ASSEMBLY_COMPLETED = 207;
     public final static int ROBOT2_SLAVE1_PICKS_ASSEMBLY = 208;
     public final static int SLAVE1_ROBOT2_ASSEMBLY_PICKED = 209;
-    
     public final static int ROBOT2_SLAVE2_REQUEST_WELDING = 301;
     public final static int SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED = 300;
     public final static int ROBOT2_SLAVE2_PLACES_ASSEMBLY = 303;
@@ -186,8 +185,8 @@ public class Constants {
     /* ASSEMBLY STATION */
     public static final Point ASSEMBLY_STATION_GEAR_POSITION = new Point(453, 313);
     public static final Point ASSEMBLY_STATION_AXIS_POSITION = new Point(500, 280);
-    public static final Point WELDING_STATION_CENTER_POSITION= new Point(849, 296);
-    public static final Point QUALITY_STATION_CENTER_POSITION= new Point(762, 167);
+    public static final Point WELDING_STATION_CENTER_POSITION = new Point(849, 296);
+    public static final Point QUALITY_STATION_CENTER_POSITION = new Point(762, 167);
     /* TORCH */
     public static final Point TORCH_POSITION_ENABLED = new Point(833, 114);
     public static final Point TORCH_POSITION_DISABLED = new Point(833, 74);
@@ -224,4 +223,8 @@ public class Constants {
     public static final String DEFAULT_MASTER_IP = "localhost";
     public static final int DEFAULT_MASTER_PORT = 42680;
     public static final int UPDATE_FREQUENCY = 30;
+    /**
+     * String that defines the report configuration file
+     */
+    public static final String REPORTS_PATH = "report.properties";
 }

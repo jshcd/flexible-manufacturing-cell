@@ -137,13 +137,13 @@ public class Report extends JDialog {
      *            The report data to show.
      */
     public void getValues(ReportData reportData) {
-        _currentRightPiecesTxt.setText(String.valueOf(reportData.getRightPackagesCurrentExec()));
-        _currentWrongPiecesTxt.setText(String.valueOf(reportData.getWrongPackagesCurrentExec()));
-        _totalRightPiecesTxt.setText(String.valueOf(reportData.getRightPackagesAllExec()));
-        _totalWrongPiecesTxt.setText(String.valueOf(reportData.getWrongPackagesAllExec()));
-        _totalNormalStopsTxt.setText(String.valueOf(reportData.getnNormalStops()));
-        _totalEmergencyStopsTxt.setText(String.valueOf(reportData.getnEmergencyStops()));
-        _totalRestartsTxt.setText(String.valueOf(reportData.getnRestarts()));
+        _currentRightPiecesTxt.setText(String.valueOf(reportData._rightPiecesCurrentExec));
+        _currentWrongPiecesTxt.setText(String.valueOf(reportData._wrongPiecesCurrentExec));
+        _totalRightPiecesTxt.setText(String.valueOf(reportData._rightPiecesAllExec));
+        _totalWrongPiecesTxt.setText(String.valueOf(reportData._wrongPiecesAllExec));
+        _totalNormalStopsTxt.setText(String.valueOf(reportData._nNormalStops));
+        _totalEmergencyStopsTxt.setText(String.valueOf(reportData._nEmergencyStops));
+        _totalRestartsTxt.setText(String.valueOf(reportData._nRestarts));
     }
 
 }

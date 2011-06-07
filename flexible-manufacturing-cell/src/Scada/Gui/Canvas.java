@@ -23,12 +23,7 @@ public class Canvas extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private ImageLoader _imageLoader;
-    /*
-    private AssemblyStation _assembly;
-    private QualityControlStation _quality;
-    private WeldingStation _welding;
-     */
-    
+   
     private Slave1Data _slave1Data;
     private Slave2Data _slave2Data;
     private Slave3Data _slave3Data;
@@ -72,10 +67,10 @@ public class Canvas extends JPanel {
     public void paintComponent(Graphics g) {
         // Erases the panel
         g.drawImage(_imageLoader._background, 0, 0, null);
-
+       
         // Paints the different automata
         //paintMasterAutomaton(g);
-        paintSlave1(g);
+       paintSlave1(g);
         paintSlave2(g);
         paintSlave3(g);
     }
