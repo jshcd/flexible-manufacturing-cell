@@ -41,7 +41,7 @@ public class ConveyorBelt implements PieceContainer {
 
     @Override
     public void run() {
-        _logger.log(Level.INFO, "Conveyor Belt with id {0} starts running", _id);
+        _logger.log(Level.INFO, "Conveyor Belt with id {0} has been created", _id);
 
         while (true) {
             try {
