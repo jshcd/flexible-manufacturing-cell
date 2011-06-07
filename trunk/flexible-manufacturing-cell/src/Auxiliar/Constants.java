@@ -163,9 +163,7 @@ public class Constants {
     public static final String REPORT_TOOL_TIP = "Report generation";
     /* CONSTANTS used in GUI for ELEMENT POSITIONING */
     /* SENSOR LIGHT POSITIONS */
-    public static final Point GEAR_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION = new Point(67, 54);
     public static final Point GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION = new Point(267, 54);
-    public static final Point AXIS_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION = new Point(67, 174);
     public static final Point AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION = new Point(267, 174);
     public static final Point WELDING_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION = new Point(580, 29);
     public static final Point WELDING_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION = new Point(778, 29);

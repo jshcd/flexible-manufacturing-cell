@@ -112,52 +112,52 @@ public class Canvas extends JPanel {
             /* Paint Sensor1 */
             if (_slave1Data.isSensor1Status()) {
                 g.drawImage(_imageLoader._sensorGreen,
-                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.x,
-                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.y,
+                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
                         null);
             } else {
                 g.drawImage(_imageLoader._sensorRed,
-                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.x,
-                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.y,
+                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
                         null);
             }
 
             /* Paint Sensor2 */
             if (_slave1Data.isSensor2Status()) {
                 g.drawImage(_imageLoader._sensorGreen,
-                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
-                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
                         null);
             } else {
                 g.drawImage(_imageLoader._sensorRed,
-                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
-                        Constants.GEAR_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
                         null);
             }
 
             /* Paint Sensor3 */
             if (_slave1Data.isSensor3Status()) {
                 g.drawImage(_imageLoader._sensorGreen,
-                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.x,
-                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.y,
+                        Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.x,
+                        Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.y,
                         null);
             } else {
                 g.drawImage(_imageLoader._sensorRed,
-                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.x,
-                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.y,
+                        Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.x,
+                        Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.y,
                         null);
             }
 
             /* Paint Sensor4 */
             if (_slave1Data.isSensor4Status()) {
                 g.drawImage(_imageLoader._sensorGreen,
-                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
-                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
+                        Constants.WELDING_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.x,
+                        Constants.WELDING_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.y,
                         null);
             } else {
                 g.drawImage(_imageLoader._sensorRed,
-                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
-                        Constants.AXIS_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
+                        Constants.WELDING_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.x,
+                        Constants.WELDING_CONVEYOR_SENSOR_LIGHT_LEFT_POSITION.y,
                         null);
             }
 
@@ -165,13 +165,13 @@ public class Canvas extends JPanel {
             /* Paint Sensor5 */
             if (_slave1Data.isSensor5Status()) {
                 g.drawImage(_imageLoader._sensorGreen,
-                        Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.x,
-                        Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.y,
+                        Constants.WELDING_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.WELDING_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
                         null);
             } else {
                 g.drawImage(_imageLoader._sensorRed,
-                        Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.x,
-                        Constants.ASSEMBLY_STATION_SENSOR_LIGHT_POSITION.y,
+                        Constants.WELDING_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.WELDING_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
                         null);
             }
 
