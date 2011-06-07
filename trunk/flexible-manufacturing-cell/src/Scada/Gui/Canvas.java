@@ -84,7 +84,7 @@ public class Canvas extends JPanel {
         paintSlave2(g);
         paintSlave3(g);
     }
-
+    
     public void paintSlave1(Graphics g) {
         if (_slave1Data != null) {
             /* Paint Gears */

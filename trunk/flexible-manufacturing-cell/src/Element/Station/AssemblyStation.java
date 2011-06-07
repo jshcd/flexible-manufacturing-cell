@@ -25,10 +25,13 @@ public class AssemblyStation implements PieceContainer {
     private int _id;
     protected Slave _process;
     protected boolean _moving;
-  //   protected Logger _logger = Logger.getLogger(AssemblyStation.class.toString());
+    private boolean _actuating;
+    protected Logger _logger = Logger.getLogger(AssemblyStation.class.toString());
 
     public AssemblyStation(int id) {
         _id = id;
+        _moving = false;
+        _actuating = false;
         _pieces = Collections.synchronizedList(new ArrayList<Piece>());
     }
 
@@ -57,16 +60,19 @@ public class AssemblyStation implements PieceContainer {
                 _pieces.remove(1);
                 _pieces.remove(0);
                 Piece p = new Piece();
+                _actuating = true;
                 try {
                     Thread.sleep(_assemblyTime);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(AssemblyStation.class.toString()).log(Level.SEVERE, null, ex);
                 }
+                _actuating = false;
+
                 p.setType(Piece.PieceType.assembly);
                 _pieces.add(p);
                 updatePosition(p);
                 this._process.sendCommand(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
-               Logger.getLogger(AssemblyStation.class.toString()).log(Level.INFO, "Assembly completed");
+                _logger.log(Level.INFO, "Assembly completed");
 
                 return true;
             } else {
@@ -134,7 +140,7 @@ public class AssemblyStation implements PieceContainer {
     @Override
     public void startContainer() {
         if (!_moving) {
-           Logger.getLogger(AssemblyStation.class.toString()).log(Level.INFO, "Assembly table with id {0} has started", _id);
+            _logger.log(Level.INFO, "Assembly table with id {0} has started", _id);
         }
         _moving = true;
     }
@@ -142,7 +148,7 @@ public class AssemblyStation implements PieceContainer {
     @Override
     public void stopContainer() {
         if (_moving) {
-           Logger.getLogger(AssemblyStation.class.toString()).log(Level.INFO, "Assembly table with id {0} has stopped", _id);
+            _logger.log(Level.INFO, "Assembly table with id {0} has stopped", _id);
         }
         _moving = false;
     }
@@ -155,5 +161,9 @@ public class AssemblyStation implements PieceContainer {
         } else if (piece.getType().equals(PieceType.axis)) {
             piece.setGuiPosition(Constants.ASSEMBLY_STATION_AXIS_POSITION);
         }
+    }
+
+    public boolean isActuating() {
+        return _actuating;
     }
 }

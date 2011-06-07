@@ -25,9 +25,12 @@ public class QualityControlStation implements PieceContainer {
     private int _id;
     protected Slave _process;
     protected boolean _moving;
+    private boolean _actuating;
 
     public QualityControlStation(int id) {
         _id = id;
+        _moving = false;
+        _actuating = false;
         _pieces = Collections.synchronizedList(new ArrayList<Piece>());
     }
 
@@ -38,11 +41,13 @@ public class QualityControlStation implements PieceContainer {
     public boolean checkQuality() {
         if (_pieces.size() == 1) {
 
+            _actuating = true;
             try {
                 Thread.sleep(_qualityTime);
             } catch (InterruptedException ex) {
                 Logger.getLogger(AssemblyStation.class.getName()).log(Level.SEVERE, null, ex);
             }
+            _actuating = false;
 
             int random = (int) Math.random() * 100;
             if (random > _sucessRate) {
@@ -141,5 +146,10 @@ public class QualityControlStation implements PieceContainer {
 
     private void updatePosition(Piece piece) {
         piece.setGuiPosition(Constants.QUALITY_STATION_CENTER_POSITION);
+    }
+    
+    
+    public boolean isActuating() {
+        return _actuating;
     }
 }
