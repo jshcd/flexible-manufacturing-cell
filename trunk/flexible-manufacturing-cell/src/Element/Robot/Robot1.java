@@ -31,7 +31,6 @@ public class Robot1 implements Robot, Runnable, IOProcess {
     private boolean _assemblyCompleted;
     private boolean _running;
     private IOInterface ioi;
-
     public Logger _logger = Logger.getLogger(Robot1.class.toString());
 
     public Robot1() {
@@ -168,7 +167,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         _loadedPiece.setType(Piece.PieceType.gear);
         _gearSensor = false;
         sendCommand(Constants.ROBOT1_SLAVE1_PICKS_GEAR);
-       _logger.log(Level.INFO, "Robot1 picks gear");
+        _logger.log(Level.INFO, "Robot1 picks gear");
     }
 
     public void pickAssembly() {
@@ -176,7 +175,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         _loadedPiece.setType(Piece.PieceType.assembly);
         _assemblyCompleted = false;
         sendCommand(Constants.ROBOT1_SLAVE1_PICKS_ASSEMBLY);
-       _logger.log(Level.INFO, "Robot1 picks assembly from assembly station");
+        _logger.log(Level.INFO, "Robot1 picks assembly from assembly station");
     }
 
     public void transportGear() {
@@ -194,10 +193,10 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         try {
             Thread.sleep(_transportTime2);
         } catch (InterruptedException ex) {
-           _logger.log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
         sendCommand(Constants.ROBOT1_SLAVE1_PLACES_AXIS);
-       _logger.log(Level.INFO, "Robot1 places axis on assembly station");
+        _logger.log(Level.INFO, "Robot1 places axis on assembly station");
         _loadedPiece = null;
     }
 
@@ -205,10 +204,10 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         try {
             Thread.sleep(_transportTime3);
         } catch (InterruptedException ex) {
-           _logger.log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
         sendCommand(Constants.ROBOT1_SLAVE1_PLACES_ASSEMBLY);
-       _logger.log(Level.INFO, "Robot1 places assembly on welding belt");
+        _logger.log(Level.INFO, "Robot1 places assembly on welding belt");
         _loadedPiece = null;
     }
 
@@ -241,7 +240,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
     }
 
     public void setTransportTime2(int transportTime2) {
-       _logger.log(Level.INFO, "Robot1: tr2 = {0}", transportTime2);
+        _logger.log(Level.INFO, "Robot1: tr2 = {0}", transportTime2);
         this._transportTime2 = transportTime2;
     }
 
@@ -249,10 +248,10 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         _logger.log(Level.INFO, "Robot1: tr3 = {0}", transportTime3);
         this._transportTime3 = transportTime3;
     }
-    
+
     public void sendCommand(int command) {
         System.out.println("R1 :" + command);
-        ioi.send((short)command);
+        ioi.send((short) command);
     }
 
     public void startServer() {
@@ -262,7 +261,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Robot1.port"));
             ServerSocket skServidor = new ServerSocket(port);
-          _logger.log(Level.INFO, "Server listening at port {0}", port);
+            _logger.log(Level.INFO, "Server listening at port {0}", port);
             while (true) {
                 Socket skCliente = skServidor.accept();
                 _logger.log(Level.INFO, "Information received");
@@ -275,13 +274,11 @@ public class Robot1 implements Robot, Runnable, IOProcess {
                 skCliente.close();
             }
         } catch (FileNotFoundException ex) {
-           _logger.log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-           _logger.log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
-    
-
 }
