@@ -52,6 +52,7 @@ public class Slave1 implements Slave, IOProcess {
     protected double pieceSize = 1.5;
     private IOInterface ioi;
     protected Logger _logger = Logger.getLogger(Slave1.class.toString());
+    
     public static void main(String args[]) {
         Slave1 s1 = new Slave1();
     }
