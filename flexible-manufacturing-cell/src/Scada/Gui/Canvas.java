@@ -43,6 +43,7 @@ public class Canvas extends JPanel {
         setPreferredSize(size);
         setMaximumSize(size);
         _emergencyStopped = false;
+      
        
     }
 
@@ -71,6 +72,8 @@ public class Canvas extends JPanel {
         this._emergencyStopped = emergencyStopped;
         repaint();
     }
+
+
 
     /**
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
@@ -273,13 +276,14 @@ public class Canvas extends JPanel {
     public void paintSlave3(Graphics g) {
         if (_slave3Data != null) {
             /* Paint Accepted Pieces */
-            for (Piece piece : _slave3Data.getAcceptedBeltPieces()) {
+          for (Piece piece : _slave3Data.getAcceptedBeltPieces()) {
                 g.drawImage(_imageLoader._fullPieceOk, piece.getPos().x, piece.getPos().y, null);
             }
 
             /* Paint Rejected Pieces */
             for (Piece piece : _slave3Data.getRejectedBeltPieces()) {
                 g.drawImage(_imageLoader._fullPieceNotOk, piece.getPos().x, piece.getPos().y, null);
+               
             }
 
             /* Paint Sensor8 */

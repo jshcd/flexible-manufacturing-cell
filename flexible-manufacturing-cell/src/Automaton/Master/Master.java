@@ -96,10 +96,14 @@ public class Master {
     public void setCanvasStatus(int slaveId, MailboxData data) {
         if(slaveId == Constants.SLAVE3_ID){
         Slave3Data d = ((Slave3Data) data);
-                _reportData._rightPiecesCurrentExec = d._rightPieces;
-                _reportData._wrongPiecesCurrentExec = d._wrongPieces;
+
+                System.out.println("ok pieces " +d.getAcceptedBeltPieces().size());
+               _reportData._rightPiecesCurrentExec = d.getRightPieces();
+                _reportData._wrongPiecesCurrentExec = d.getWrongPieces();
                 _dbmanager.writeReportData(_reportData);
+             
            }
+
         _monitor.setCanvasStatus(slaveId, data);
     }
 
@@ -145,6 +149,8 @@ public class Master {
 
     public void emergencyStop() {
          _reportData._nEmergencyStops++;
+         _reportData._rightPiecesCurrentExec = 0;
+         _reportData._wrongPiecesCurrentExec = 0;
         _dbmanager.writeReportData(_reportData);
         Command command = new Command(Constants.EMERGENCY_STOP_ORDER);
         _outputMailBox.sendInformation(command, Constants.SLAVE1_ID);
