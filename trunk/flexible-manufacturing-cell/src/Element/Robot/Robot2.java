@@ -236,9 +236,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     public void runCommand(int command) {
-        if (command > 120) {
-            System.out.println("R2 running: " + command);
-        }
+//        if (command > 120) {
+//            System.out.println("R2 running: " + command);
+//        }
         switch (command) {
             case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
                 _weldingSensor = true;
