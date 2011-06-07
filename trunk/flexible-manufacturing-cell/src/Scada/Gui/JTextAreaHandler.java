@@ -24,7 +24,7 @@ public class JTextAreaHandler extends Handler {
 	 * @param txtLog
 	 *            The <code>JTextArea</code>.
 	 */
-	public JTextAreaHandler(JTextArea txtLog) {
+        public JTextAreaHandler(JTextArea txtLog) {
 		this._txtLog = txtLog;
 		_dateFormatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 	}
