@@ -99,7 +99,7 @@ public class Slave1 implements Slave, IOProcess {
                 _statusData.setSensor3Status(_sensor3.isActivated());
                 _statusData.setSensor5Status(_sensor5.isActivated());
                 _statusData.setAssemblyStationPieces(_assemblyStation.getPieces());
-                _statusData.setAssemblyStationRunning(_assemblyStation.isMoving());
+                _statusData.setAssemblyStationRunning(_assemblyStation.isActuating());
                 _statusData.setGearBeltPieces(_gearBelt.getPieces());
                 _statusData.setGearBeltRunning(_gearBelt.isMoving());
                 _statusData.setAxisBeltPieces(_axisBelt.getPieces());

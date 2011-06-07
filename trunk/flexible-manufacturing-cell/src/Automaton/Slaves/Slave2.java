@@ -80,9 +80,9 @@ public class Slave2 implements Slave, IOProcess {
         _statusData.setSensor6Status(_sensor6.isActivated());
         _statusData.setSensor7Status(_sensor7.isActivated());
         _statusData.setQualityStationPieces(_qualityStation.getPieces());
-        _statusData.setQualityStationRunning(_qualityStation.isMoving());
+        _statusData.setQualityStationRunning(_qualityStation.isActuating());
         _statusData.setWeldingStationPieces(_weldingStation.getPieces());
-        _statusData.setWeldingStationRunning(_weldingStation.isMoving());
+        _statusData.setWeldingStationRunning(_weldingStation.isActuating());
         reportToMaster(_statusData);
     }
 

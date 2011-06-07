@@ -188,6 +188,8 @@ public class Constants {
     /* TORCH */
     public static final Point TORCH_POSITION_ENABLED = new Point(833, 114);
     public static final Point TORCH_POSITION_DISABLED = new Point(833, 74);
+    /* GLASS */
+    public static final Point GLASS_POSITION_ENABLED = new Point(730, 316);
     /* STARTING POSITIONS FOR CONVEYOR BELTS */
     public static final Point GEAR_CONVEYOR_START_POSITION = new Point(26, 87);
     public static final Point AXIS_CONVEYOR_START_POSITION = new Point(13, 200);

@@ -55,6 +55,10 @@ public class ImageLoader {
             ImageLoader.class.getResource(IMAGES_FOLDER + "/torchDisabled.png"));    
     public Image _torchEnabled = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/torchEnabled.png"));
+    public Image _glassEnabled = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/glassEnabled.png"));    
+    public Image _glassDisabled = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/glassDisabled.png"));
 
     /**
      * Constructs an image loader associated to a particular component.
