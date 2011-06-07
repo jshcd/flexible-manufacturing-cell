@@ -51,9 +51,9 @@ public class Canvas extends JPanel {
         _emergencyStopped = false;
     }
     
-    public void setSlave1Data(Slave1Data slaveData){_slave1Data = slaveData;}    
-    public void setSlave2Data(Slave2Data slaveData){_slave2Data = slaveData;}
-    public void setSlave3Data(Slave3Data slaveData){_slave3Data = slaveData;}
+    public void setSlave1Data(Slave1Data slaveData){_slave1Data = slaveData;repaint();}    
+    public void setSlave2Data(Slave2Data slaveData){_slave2Data = slaveData;repaint();}
+    public void setSlave3Data(Slave3Data slaveData){_slave3Data = slaveData;repaint();}
 
     /**
      * Tells the canvas whether the system is at an emergency stop or not.
