@@ -61,8 +61,8 @@ public class IOInterface implements Runnable {
                 ByteBuffer bb = ByteBuffer.wrap(buf);
 
                 short s = bb.getShort();
-//                System.out.println(s);
-                process.runCommand(s);
+ //               System.out.println(s);
+                if (process != null )process.runCommand(s);
             }
 
         } catch (IOException ex) {
