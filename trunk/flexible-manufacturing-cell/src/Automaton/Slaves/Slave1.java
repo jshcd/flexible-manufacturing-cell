@@ -100,6 +100,7 @@ public class Slave1 implements Slave, IOProcess {
                 _statusData.setSensor1Status(_sensor1.isActivated());
                 _statusData.setSensor2Status(_sensor2.isActivated());
                 _statusData.setSensor3Status(_sensor3.isActivated());
+                _statusData.setSensor4Status(_sensor4.isActivated());
                 _statusData.setSensor5Status(_sensor5.isActivated());
                 _statusData.setAssemblyStationPieces(_assemblyStation.getPieces());
                 _statusData.setAssemblyStationRunning(_assemblyStation.isActuating());
