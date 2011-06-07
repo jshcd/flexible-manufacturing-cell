@@ -13,7 +13,7 @@ import java.util.List;
  * @author David
  */
 public class Slave3Data extends MailboxData {
-    
+
     private static final long serialVersionUID = 1L;
     private boolean _acceptedBeltRunning;
     private boolean _rejectedBeltRunning;
@@ -23,9 +23,11 @@ public class Slave3Data extends MailboxData {
     private boolean _sensor11Status;
     private List<Piece> _acceptedBeltPieces;
     private List<Piece> _rejectedBeltPieces;
+    public int _rightPieces;
+    public int _wrongPieces;
 
-    public Slave3Data(boolean _acceptedBeltRunning, boolean _rejectedBeltRunning, 
-            boolean _sensor8Status, boolean _sensor9Status, boolean _sensor10Status, 
+    public Slave3Data(boolean _acceptedBeltRunning, boolean _rejectedBeltRunning,
+            boolean _sensor8Status, boolean _sensor9Status, boolean _sensor10Status,
             boolean _sensor11Status, List<Piece> _acceptedBeltPieces, List<Piece> _rejectedBeltPieces) {
         this._acceptedBeltRunning = _acceptedBeltRunning;
         this._rejectedBeltRunning = _rejectedBeltRunning;
@@ -35,9 +37,12 @@ public class Slave3Data extends MailboxData {
         this._sensor11Status = _sensor11Status;
         this._acceptedBeltPieces = _acceptedBeltPieces;
         this._rejectedBeltPieces = _rejectedBeltPieces;
+        this._rightPieces = 0;
+        this._wrongPieces = 0;
     }
-    
-    public Slave3Data(){}
+
+    public Slave3Data() {
+    }
 
     public List<Piece> getAcceptedBeltPieces() {
         return _acceptedBeltPieces;
