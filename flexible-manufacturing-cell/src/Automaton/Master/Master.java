@@ -47,15 +47,15 @@ public class Master {
     }
 
     public Master(MonitorWindow m) {
-        _inputMailBox = new MasterInputMailBox(this);
+         _logger.addHandler(m.getLog().getLogHandler());
         _outputMailBox = new MasterOutputMailBox();
         _dbmanager = new DBManager();
         _configurationData = null;
-        _logger.addHandler(m.getLog().getLogHandler());
         _monitor = m;
         _report = _dbmanager.readReportData();
         _robot = new Robot2();
         _report.setFirstStart(true);
+         _inputMailBox = new MasterInputMailBox(this);       
         _logger.log(Level.INFO,"prueba");
         Thread t = new Thread(new Runnable() {
             public void run() {

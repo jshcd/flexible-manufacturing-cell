@@ -52,14 +52,13 @@ public class MonitorWindow extends JFrame {
     private ConfigurationParameters _configurationParameters;
     private Report _report;
     private Master _masterAutomaton;
-    protected Logger _logger = Logger.getLogger(Master.class.toString());
 
+   
     /* LISTENERS */
     private ActionListener _btnActionListener = new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
             if (e.getSource() == _buttonStart) {
                 if (_masterAutomaton == null) {
 
@@ -117,8 +116,7 @@ public class MonitorWindow extends JFrame {
         pack();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         _masterAutomaton = new Master(this);
-         _logger.addHandler(_masterAutomaton.getMonitor().getLog().getLogHandler());
-
+       
         _configurationParameters = new ConfigurationParameters(_masterAutomaton);
         _masterAutomaton.initialize();
         _masterAutomaton.startRobot();
@@ -128,7 +126,7 @@ public class MonitorWindow extends JFrame {
         Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
         _canvas = new Canvas(_imageLoader);
 
-        
+      
         _buttonConfiguration = new JButton(new ImageIcon(_imageLoader._configurationButton));
         _buttonConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
         _buttonConfiguration.setCursor(handCursor);
