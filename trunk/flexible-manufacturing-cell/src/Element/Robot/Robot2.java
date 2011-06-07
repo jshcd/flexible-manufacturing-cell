@@ -162,6 +162,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     public void pickAssembly() {
+        try {
+            Thread.sleep(_transportTime4/3);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
+        }
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.assembly);
         sendCommand(Constants.ROBOT2_SLAVE1_PICKS_ASSEMBLY);
@@ -170,7 +175,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void transportAssembly() {
         try {
-            Thread.sleep(_transportTime4);
+            Thread.sleep(_transportTime4/3*2);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -181,6 +186,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     public void pickWeldedAssembly() {
+        try {
+            Thread.sleep(_transportTime5/3);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
+        }
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.weldedAssembly);
         _weldingCompleted = false;
@@ -190,7 +200,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void transportWeldedAssembly() {
         try {
-            Thread.sleep(_transportTime5);
+            Thread.sleep(_transportTime5/3*2);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -201,6 +211,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     public void pickCheckedWeldedAssembly() {
+        try {
+            Thread.sleep(_transportTime6/3);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
+        }
         _loadedPiece = new Piece();
         _loadedPiece.setType(Piece.PieceType.weldedAssembly);
         _weldingCompleted = false;
@@ -210,7 +225,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void transportWeldedOK() {
         try {
-            Thread.sleep(_transportTime6);
+            Thread.sleep(_transportTime6/3*2);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -222,7 +237,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void transportWeldedNotOK() {
         try {
-            Thread.sleep(_transportTime6);
+            Thread.sleep(_transportTime6/3*2);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
