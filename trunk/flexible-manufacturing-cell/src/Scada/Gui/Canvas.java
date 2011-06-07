@@ -285,13 +285,13 @@ public class Canvas extends JPanel {
             /* Paint Sensor8 */
             if (_slave3Data.isSensor8Status()) {
                 g.drawImage(_imageLoader._sensorGreen,
-                        Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.x,
-                        Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.y,
+                        Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
                         null);
             } else {
                 g.drawImage(_imageLoader._sensorRed,
-                        Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.x,
-                        Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.y,
+                        Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
+                        Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
                         null);
             }
 
@@ -324,13 +324,13 @@ public class Canvas extends JPanel {
             /* Paint Sensor11 */
             if (_slave3Data.isSensor11Status()) {
                 g.drawImage(_imageLoader._sensorGreen,
-                        Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
-                        Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
+                        Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.x,
+                        Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.y,
                         null);
             } else {
                 g.drawImage(_imageLoader._sensorRed,
-                        Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.x,
-                        Constants.NOTOK_CONVEYOR_SENSOR_LIGHT_RIGHT_POSITION.y,
+                        Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.x,
+                        Constants.OK_CONVEYOR_SENSOR_LEFT_LIGHT_POSITION.y,
                         null);
             }
         }
