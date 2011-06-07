@@ -107,4 +107,22 @@ public class Slave3Data extends MailboxData {
     public void setSensor9Status(boolean _sensor9Status) {
         this._sensor9Status = _sensor9Status;
     }
+
+    public int getRightPieces() {
+        return _rightPieces;
+    }
+
+    public int getWrongPieces() {
+        return _wrongPieces;
+    }
+
+    public void setRightPieces(int _rightPieces) {
+        this._rightPieces = _rightPieces;
+    }
+
+    public void setWrongPieces(int _wrongPieces) {
+        this._wrongPieces = _wrongPieces;
+    }
+
+
 }

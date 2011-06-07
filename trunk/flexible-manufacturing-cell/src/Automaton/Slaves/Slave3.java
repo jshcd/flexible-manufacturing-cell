@@ -46,8 +46,6 @@ public class Slave3 implements Slave, IOProcess {
     private Slave3ConfigurationData _slave3ConfigurationData;
     private double sensor_range;
     private boolean _stopped;
-      public int _rightPieces;
-    public int _wrongPieces;
     protected Logger _logger = Logger.getLogger(Slave3.class.toString());
 
 
@@ -103,8 +101,6 @@ public class Slave3 implements Slave, IOProcess {
         _statusData.setAcceptedBeltPieces(_acceptedBelt.getPieces());
         _statusData.setRejectedBeltPieces(_rejectedBelt.getPieces());
         _statusData.setRejectedBeltRunning(_rejectedBelt.isMoving());
-        _statusData._rightPieces = _rightPieces;
-        _statusData._wrongPieces = _wrongPieces;
         reportToMaster(_statusData);
     }
 
@@ -209,14 +205,14 @@ public class Slave3 implements Slave, IOProcess {
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
                 _acceptedBelt.addPiece(p);
-                _rightPieces++;
+                _statusData._rightPieces++;
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
             case Constants.ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK:
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
-                _wrongPieces++;
+                _statusData._wrongPieces++;
                 _rejectedBelt.addPiece(p);
                 break;
         }

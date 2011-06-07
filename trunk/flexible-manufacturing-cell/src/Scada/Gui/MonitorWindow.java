@@ -52,7 +52,7 @@ public class MonitorWindow extends JFrame {
             _buttonEmergencyStop;
     private ImageLoader _imageLoader;
     private ConfigurationParameters _configurationParameters;
-    private Report _report;  
+    private Report _report;
     private Master _masterAutomaton;
     /* LISTENERS */
     private ActionListener _btnActionListener = new ActionListener() {
@@ -88,8 +88,8 @@ public class MonitorWindow extends JFrame {
                 _masterAutomaton.getReportData()._nNormalStops++;
                 _masterAutomaton.stopSystem();
             } else if (e.getSource() == _buttonReport) {
-                if(! _masterAutomaton.getReportData()._firstStart) {
-                    _masterAutomaton.getDbmanager().writeReportData( _masterAutomaton.getReportData());
+                if (!_masterAutomaton.getReportData()._firstStart) {
+                    _masterAutomaton.getDbmanager().writeReportData(_masterAutomaton.getReportData());
                 }
                 _report.getValues(_masterAutomaton.getDbmanager().readReportData());
                 _report.setVisible(true);
@@ -201,8 +201,6 @@ public class MonitorWindow extends JFrame {
     public Report getReport() {
         return _report;
     }
-
-
 
     /**
      * Enables the start button and disables the stop buttons.

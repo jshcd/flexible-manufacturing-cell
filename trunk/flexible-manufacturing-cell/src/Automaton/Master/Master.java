@@ -1,5 +1,6 @@
 package Automaton.Master;
 
+import Automaton.Slaves.Data.Slave3Data;
 import Auxiliar.Command;
 import Auxiliar.Constants;
 import Auxiliar.MailboxData;
@@ -93,6 +94,12 @@ public class Master {
     }
 
     public void setCanvasStatus(int slaveId, MailboxData data) {
+        if(slaveId == Constants.SLAVE3_ID){
+        Slave3Data d = ((Slave3Data) data);
+                _reportData._rightPiecesCurrentExec = d._rightPieces;
+                _reportData._wrongPiecesCurrentExec = d._wrongPieces;
+                _dbmanager.writeReportData(_reportData);
+           }
         _monitor.setCanvasStatus(slaveId, data);
     }
 
