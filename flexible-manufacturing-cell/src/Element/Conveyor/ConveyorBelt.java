@@ -56,7 +56,7 @@ public class ConveyorBelt implements PieceContainer {
                             Logger.getLogger(ConveyorBelt.class.toString()).log(Level.FINEST, "ConveyorBelt " + _id + ": piece at {1}", p.getPosition());
 
                             updatePosition(p);
-                            System.out.println(p.getPos());
+//                            System.out.println(p.getPos());
                         }
                     }
                 }

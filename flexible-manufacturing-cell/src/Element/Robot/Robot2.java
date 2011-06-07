@@ -68,6 +68,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+//            System.out.println(_state);
 
             switch (_state) {
                 case q0:
@@ -231,7 +233,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     public void sendCommand(int command) {
-        System.out.println("R2 sending: " + command);
+//        System.out.println("R2 sending: " + command);
         ioi.send((short) command);
     }
 
@@ -340,6 +342,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             switch (_state) {
                 case q0:
                     break;
+                case q8:
                 case q7:
                 case q6:
                     Thread.sleep(_transportTime6);
