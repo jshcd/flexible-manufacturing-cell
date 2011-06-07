@@ -26,6 +26,7 @@ public class DBManager {
         int clockTime = 0;
         int sensorRange = 0;
         int pieceSize = 0;
+        int successRate = 0;
         Slave1ConfigurationData s1 = null;
         Slave2ConfigurationData s2 = null;
         Slave3ConfigurationData s3 = null;
@@ -115,6 +116,8 @@ public class DBManager {
             sensorRange = rs.getInt("value");
             rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_PIECE_SIZE);
             pieceSize = rs.getInt("value");
+            rs = db.executeSelect(Auxiliar.Constants.DBQUERY_SELECT_SUCCESS_RATE);
+            successRate = rs.getInt("value");
 
         } catch (SQLException e) {
             /* In case of exception set the value as default */
@@ -126,6 +129,7 @@ public class DBManager {
         md.setClockCycleTime(clockTime);
         md.setSensorRange(sensorRange);
         md.setPieceSize(pieceSize);
+        md.setSuccessRate(successRate);
         md.setSlave1ConfigurationData(s1);
         md.setSlave2ConfigurationData(s2);
         md.setSlave3ConfigurationData(s3);
@@ -234,6 +238,10 @@ public class DBManager {
 
         query = Auxiliar.Constants.DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION;
         query = query.replaceAll("\\[VALUE\\]", String.valueOf(md._clockCycleTime));
+        db.executeQuery(query);
+        
+        query = Auxiliar.Constants.DBQUERY_UPDATE_SUCCESS_RATE;
+        query = query.replaceAll("\\[VALUE\\]", String.valueOf(md._successRate));
         db.executeQuery(query);
         /* 
          * Uncomment this if these parameters are included in the GUI

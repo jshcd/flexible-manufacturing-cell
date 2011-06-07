@@ -16,6 +16,7 @@ public class MasterConfigurationData extends MailboxData {
     public int _clockCycleTime;
     public int _sensorRange;
     public int _pieceSize;
+    public int _successRate;
     
     /** Constructor */
     public  MasterConfigurationData(){}
@@ -43,7 +44,15 @@ public class MasterConfigurationData extends MailboxData {
     public void setPieceSize(int _pieceSize){
         this._pieceSize = _pieceSize;
     }
-
+    
+    /**
+     * Sets the success rate
+     * @param _successRate New Success Rate value
+     */
+    public void setSuccessRate(int _successRate){
+        this._successRate = _successRate;
+    }
+    
     /**
      * Sets a new instance for the Robot1 configuration parameters
      * @param _robot1ConfigurationData New instance of Robot1 Parameter Set

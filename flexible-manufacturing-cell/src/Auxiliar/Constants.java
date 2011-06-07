@@ -112,6 +112,8 @@ public class Constants {
             + "configuration.value FROM configuration WHERE configuration.parameter = 'sensor_range'";
     public final static String DBQUERY_SELECT_PIECE_SIZE = "SELECT "
             + "configuration.value FROM configuration WHERE configuration.parameter = 'piece_size'";
+    public final static String DBQUERY_SELECT_SUCCESS_RATE = "SELECT "
+            + "configuration.value FROM configuration WHERE configuration.parameter = 'success_rate'";
     /* Constants used in DB Updates */
     public final static String DBQUERY_UPDATE_SLAVE1_BELT1_CONFIGURATION = "UPDATE belts "
             + "SET length = [LENGTH], speed = [SPEED], capacity = [CAPACITY] WHERE id = 1";
@@ -147,6 +149,8 @@ public class Constants {
             + "configuration SET configuration.value = [VALUE] WHERE configuration.parameter = 'sensor_range'";
     public final static String DBQUERY_UPDATE_PIECE_SIZE = "UPDATE "
             + "configuration SET configuration.value = [VALUE] WHERE configuration.parameter = 'piece_size'";
+    public final static String DBQUERY_UPDATE_SUCCESS_RATE = "UPDATE "
+            + "configuration SET configuration.value = [VALUE] WHERE configuration.parameter = 'success_rate'";
     /**
      * CONSTANTS used for GUI
      */

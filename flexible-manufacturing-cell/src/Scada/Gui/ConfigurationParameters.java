@@ -39,12 +39,12 @@ public class ConfigurationParameters extends JDialog {
     private String _axisBeltCapacity, _axisBeltSpeed, _axisBeltLength,
             _gearBeltCapacity, _gearBeltSpeed, _gearBeltLength, _assemblyActivationTime,
             _weldingBeltSpeed, _weldingBeltLength, _weldingActivationTime,
-            _OKBeltSpeed, _OKBeltLength, _notOKBeltLength, _qualityActivationTime,
+            _OKBeltSpeed, _OKBeltLength, _notOKBeltLength, _qualityActivationTime, _successRate, 
             _robot1Axis, _robot1Gear, _robot1Assembly, _robot2Welding, _robot2Checked, _robot2Assembly;
     private JTextField _axisBeltCapacityTxt, _axisBeltSpeedTxt, _axisBeltLengthTxt,
             _gearBeltCapacityTxt, _gearBeltSpeedTxt, _gearBeltLengthTxt, _assemblyActivationTimeTxt,
             _weldingBeltSpeedTxt, _weldingBeltLengthTxt, _weldingActivationTimeTxt,
-            _OKBeltSpeedTxt, _OKBeltLengthTxt, _notOKBeltLengthTxt, _qualityActivationTimeTxt,
+            _OKBeltSpeedTxt, _OKBeltLengthTxt, _notOKBeltLengthTxt, _qualityActivationTimeTxt, _successRateTxt, 
             _clockCycleTimeTxt, _robot1AxisTxt, _robot1GearTxt, _robot1AssemblyTxt,
             _robot2WeldingTxt, _robot2CheckedTxt, _robot2AssemblyTxt;
     private String _clockCycleTime;
@@ -284,6 +284,12 @@ public class ConfigurationParameters extends JDialog {
         _qualityActivationTimeTxt = new JTextField(_qualityActivationTime);
         _slave3Parameters.add(_qualityActivationTimeTxt, "left");
         _slave3Parameters.add(new JLabel("ms"));
+        
+        _slave3Parameters.setLayout(pnlCommonLayout);
+        _slave3Parameters.add(new JLabel("Success Rate: "));
+        _successRateTxt = new JTextField(_successRate);
+        _slave3Parameters.add(_successRateTxt);
+        _slave3Parameters.add(new JLabel("%"));
 
         //Master
        pnlCommonLayout = new MigLayout("wrap 3",
@@ -332,6 +338,7 @@ public class ConfigurationParameters extends JDialog {
         _OKBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._acceptedBelt.getLength()));
         _notOKBeltLengthTxt.setText(String.valueOf(_masterConfiguration._slave3ConfigurationData._notAcceptedBelt.getLength()));
         _qualityActivationTimeTxt.setText(String.valueOf(_masterConfiguration._slave2ConfigurationData._qualityControlActivationTime));
+        _successRateTxt.setText(String.valueOf(_masterConfiguration._successRate));
         _clockCycleTimeTxt.setText(String.valueOf(_masterConfiguration._clockCycleTime));
         _robot1AssemblyTxt.setText(String.valueOf(_masterConfiguration._robot1ConfigurationData.getPickAndPlaceAssemblyTime()));
         _robot1AxisTxt.setText(String.valueOf(_masterConfiguration._robot1ConfigurationData.getPickAndPlaceAxisTime()));
@@ -355,6 +362,7 @@ public class ConfigurationParameters extends JDialog {
             _OKBeltLengthTxt.setEditable(false);
             _notOKBeltLengthTxt.setEditable(false);
             _qualityActivationTimeTxt.setEditable(false);
+            _successRateTxt.setEditable(false);
             _clockCycleTimeTxt.setEditable(false);
             _robot1AssemblyTxt.setEditable(false);
             _robot1AxisTxt.setEditable(false);
@@ -377,6 +385,7 @@ public class ConfigurationParameters extends JDialog {
             _OKBeltLengthTxt.setEditable(true);
             _notOKBeltLengthTxt.setEditable(true);
             _qualityActivationTimeTxt.setEditable(true);
+            _successRateTxt.setEditable(true);
             _clockCycleTimeTxt.setEditable(true);
             _robot1AssemblyTxt.setEditable(true);
             _robot1AxisTxt.setEditable(true);
@@ -624,6 +633,18 @@ public class ConfigurationParameters extends JDialog {
         } catch (NumberFormatException e) {
             errors.append("'Clock cycle' in Master must be an integer greater or equal than 1.\n");
         }
+        
+        try {
+            value = Integer.parseInt(_successRateTxt.getText());
+            if (value < 0 || value > 100) {
+                errors.append("'Success Rate' must be greater than 0 and less than 100.\n");
+            } else {
+                _masterConfiguration._successRate = value;
+            }
+        } catch (NumberFormatException e) {
+            errors.append("'Success Rate' must be a number greater than 0 and less than 100.\n");
+        }
+        
         return errors.toString();
 
     }
