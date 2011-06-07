@@ -50,6 +50,7 @@ public class Log extends JPanel {
         add(_scrLogs, BorderLayout.CENTER);
     }
 
+  
     /**
      * Gets the handler that a <code>Logger</code> can use to send log messages.
      *
