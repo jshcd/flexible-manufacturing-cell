@@ -1,10 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Automaton.Master;
 
+import Auxiliar.Constants;
 import Auxiliar.MailBox;
 import Auxiliar.MailboxData;
 import java.io.FileInputStream;
@@ -28,15 +24,28 @@ public class MasterOutputMailBox implements MailBox {
     private int _port;
     private String _address;
     private Socket _requestSocket;
-    private int _destination; //0: Robot2, 1: Slave1, 2: Slave2 and 3: Slave3
+    private int _destination;
     private ObjectOutputStream _out;
     private ObjectInputStream _in;
+    private final static Logger _logger = Logger.getLogger(MasterOutputMailBox.class.getName());
 
+    /**
+     * Constructor of the class
+     */
     public MasterOutputMailBox(){
         _id = "Master";
-
     }
 
+    /**
+     * Sends the indicated <code>MailboxData</code> command to a the indicated
+     * <code>SlaveInputMailBox</code>
+     *
+     * @param <code>MailboxData</code> command which is going to be send
+     * @param destination <code>SlaveInputMailBox</code>
+     * 1 in case of Slave1
+     * 2 in case of Slave2
+     * 3 in case of Slave3
+     */
     public void sendInformation(MailboxData command, int destination){
         setDestination(destination);
         startConnection();
@@ -45,10 +54,13 @@ public class MasterOutputMailBox implements MailBox {
         receiveCommand();
     }
 
+    /**
+     * Starts a connection to a concrete <code>SlaveInputMailBox</code>
+     */
     public void startConnection() {
         try {
             Properties prop = new Properties();
-            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
             String port = "";
             String ip = "";
@@ -65,57 +77,88 @@ public class MasterOutputMailBox implements MailBox {
                     port = "Slave3.port";
                     ip = "Slave3.ip";
             }
-            _port = Integer.parseInt(prop.getProperty(port));
-            _address = prop.getProperty(ip);
-            _requestSocket = new Socket(_address, _port);
+            if(port.compareTo("") != 0) {
+                _port = Integer.parseInt(prop.getProperty(port));
+                _address = prop.getProperty(ip);
+                _requestSocket = new Socket(_address, _port);
+            } else {
+                _logger.log(Level.INFO, null, "The connection could not be made");
+            }
         } catch (UnknownHostException ex) {
-            Logger.getLogger(MasterOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(MasterOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Closes the connection with the <code>SlaveInputMailBox</code>
+     */
     public void endConnection() {
         try {
             _requestSocket.close();
         } catch (IOException ex) {
-            Logger.getLogger(MasterOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Access the connection with the <code>SlaveInputMailBox</code>
+     */
     public void acceptConnection() {
         try {
             _out = new ObjectOutputStream(_requestSocket.getOutputStream());
             _out.flush();
         } catch (IOException ex) {
-            Logger.getLogger(MasterOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Sends a <code>MailboxData</code> command to the correspondent
+     * <code>MasterOutputMailBox</code>
+     * @param command which is going to be sended
+     */
     public void sendCommand(MailboxData command) {
         try {
             _out.writeObject(command);
             _out.flush();
         } catch (IOException ex) {
-            Logger.getLogger(MasterOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Receives the response from the correspondent <code>MasterOutputMailBox</code>
+     */
     public void receiveCommand() {
         try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
-            System.out.println("He recibido un objeto de la clase " + _in.readObject().getClass());
         } catch (IOException ex) {
-            Logger.getLogger(MasterOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MasterOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Returns the <code>MasterOutputMailBox</code> identifier
+     * @return <code>MasterOutputMailBox</code> identifier
+     */
     public String getId() {
         return _id;
     }
-    
+
+    /**
+     * Returns identifier of the destination <code>SlaveInputMailBox</code>
+     * @return <code>SlaveInputMailBox</code> identifier
+     */
+    public int getDestination() {
+        return _destination;
+    }
+
+    /**
+     * Sets the value of the destination <code>SlaveInputMailBox</code>
+     * @param destination <code>SlaveInputMailBox</code>
+     */
     public void setDestination(int destination){
         _destination = destination;
     }
