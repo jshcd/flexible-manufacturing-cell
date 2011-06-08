@@ -22,6 +22,7 @@ public interface Slave {
     public void storeInitialConfiguration(MasterConfigurationData m);
     
     public void updateStatusData();
-    
+
+    public void normalStop();
     
 }
