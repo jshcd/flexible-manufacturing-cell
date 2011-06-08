@@ -58,18 +58,22 @@ public class SlaveInputMailBox implements MailBox {
     }
 
     public void endConnection() {
+        _logger.log(Level.FINE, "Not supoorted yet.");
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void acceptConnection() {
+        _logger.log(Level.FINE, "Not supoorted yet.");
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void sendCommand(MailboxData command) {
+        _logger.log(Level.FINE, "Not supoorted yet.");
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void receiveCommand() {
+        _logger.log(Level.FINE, "Not supoorted yet.");
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
