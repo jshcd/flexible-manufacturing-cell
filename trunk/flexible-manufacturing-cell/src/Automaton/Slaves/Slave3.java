@@ -46,10 +46,8 @@ public class Slave3 implements Slave, IOProcess {
     private Slave3ConfigurationData _slave3ConfigurationData;
     private double sensor_range;
     private boolean _stopped;
-    
     private int _rightPieces;
     private int _wrongPieces;
-    
     protected Logger _logger = Logger.getLogger(Slave3.class.toString());
 
     public static void main(String args[]) {
@@ -179,7 +177,10 @@ public class Slave3 implements Slave, IOProcess {
                     while (true) {
                         Thread.sleep(50);
                         if (!_stopped) {
-                            updateStatusData();
+                            try {
+                                updateStatusData();
+                            } catch (java.util.ConcurrentModificationException e) {
+                            }
                         }
                     }
                 } catch (InterruptedException ex) {
