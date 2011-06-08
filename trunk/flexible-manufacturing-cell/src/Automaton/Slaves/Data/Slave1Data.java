@@ -4,6 +4,7 @@
  */
 package Automaton.Slaves.Data;
 
+import Auxiliar.AutomatonState;
 import Auxiliar.MailboxData;
 import Element.Piece.Piece;
 import java.util.List;
@@ -28,6 +29,9 @@ public class Slave1Data extends MailboxData {
     private List<Piece> _axisBeltPieces;
     private List<Piece> _weldingBeltPieces;
     private List<Piece> _assemblyStationPieces;
+    private AutomatonState _R1state;
+    private Piece _R1loadedPiece;
+    
 
     public Slave1Data(boolean _gearBeltRunning, boolean _axisBeltRunning, 
             boolean _weldingBeltRunning, boolean _assemblyStationRunning, boolean _sensor1Status, 
@@ -154,4 +158,22 @@ public class Slave1Data extends MailboxData {
     public void setWeldingBeltRunning(boolean _weldingBeltRunning) {
         this._weldingBeltRunning = _weldingBeltRunning;
     }
+
+    public Piece getR1loadedPiece() {
+        return _R1loadedPiece;
+    }
+
+    public void setR1loadedPiece(Piece _R1loadedPiece) {
+        this._R1loadedPiece = _R1loadedPiece;
+    }
+
+    public AutomatonState getR1state() {
+        return _R1state;
+    }
+
+    public void setR1state(AutomatonState _R1state) {
+        this._R1state = _R1state;
+    }
+    
+    
 }
