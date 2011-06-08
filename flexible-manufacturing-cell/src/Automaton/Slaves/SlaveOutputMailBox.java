@@ -42,6 +42,14 @@ public class SlaveOutputMailBox implements MailBox {
             Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+
+            System.out.println("Master not found: retrying in 5 secs");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex1) {
+                Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex1);
+                startConnection();
+            }
         }
     }
 
@@ -64,23 +72,17 @@ public class SlaveOutputMailBox implements MailBox {
         }
     }
 
-    public void sendCommand(MailboxData command) {
-        try {
-            synchronized (_out) {
-                _out.writeObject(command);
-                _out.flush();
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+    public void sendCommand(MailboxData command) throws IOException {
+        synchronized (_out) {
+            _out.writeObject(command);
+            _out.flush();
         }
     }
 
-    public void receiveCommand() {
+    public void receiveCommand() throws IOException {
         try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
             Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.FINE, "Received response> Object of the class {0}", _in.readObject().getClass());
-        } catch (IOException ex) {
-            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }

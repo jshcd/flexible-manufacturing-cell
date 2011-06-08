@@ -52,17 +52,17 @@ public class Slave1 implements Slave, IOProcess {
     protected double pieceSize = 1.5;
     private IOInterface ioi;
     protected Logger _logger = Logger.getLogger(Slave1.class.toString());
-    
+
     public static void main(String args[]) {
         Slave1 s1 = new Slave1();
     }
 
     public Slave1() {
-       
+
         _logger.log(Level.INFO, "Slave 1 created");
         _outputMailBox = new SlaveOutputMailBox(1);
         _inputMailBox = new SlaveInputMailBox(1, this);
-        
+
         _stopped = true;
 
         _statusData = new Slave1Data();
@@ -73,9 +73,18 @@ public class Slave1 implements Slave, IOProcess {
             }
         });
         t.start();
-        reportToMaster(new Command(Constants.COMMAND_SLAVE1_CONNECTED));
 
+        connectToMaster();
 
+    }
+
+    public void connectToMaster() {
+        try {
+            reportToMaster(new Command(Constants.COMMAND_SLAVE1_CONNECTED));
+        } catch (IOException ex) {
+            this._outputMailBox.startConnection();
+            connectToMaster();
+        }
     }
 
     public ConveyorBelt getGearBelt() {
@@ -111,7 +120,12 @@ public class Slave1 implements Slave, IOProcess {
                 _statusData.setWeldingBeltPieces(_weldingBelt.getPieces());
                 _statusData.setWeldingBeltRunning(_weldingBelt.isMoving());
             }
-            reportToMaster(_statusData);
+            try {
+                reportToMaster(_statusData);
+            } catch (IOException ex) {
+                this._outputMailBox.startConnection();
+
+            }
         } catch (java.util.ConcurrentModificationException e) {
         }
     }
@@ -215,7 +229,9 @@ public class Slave1 implements Slave, IOProcess {
                 try {
                     while (true) {
                         Thread.sleep(50);
-                        if(!_stopped) updateStatusData();
+                        if (!_stopped) {
+                            updateStatusData();
+                        }
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
@@ -270,7 +286,7 @@ public class Slave1 implements Slave, IOProcess {
         System.out.println("S1 STARTING");
         _finishing = false;
         _stopped = false;
-        
+
         _gearBelt.startContainer();
         _axisBelt.startContainer();
         _assemblyStation.startContainer();
@@ -298,7 +314,12 @@ public class Slave1 implements Slave, IOProcess {
         _axisBelt.stopContainer();
         _assemblyStation.stopContainer();
         _weldingBelt.stopContainer();
-        reportToMaster(new Command(Constants.SLAVE_ONE_STOPPING));
+        try {
+            reportToMaster(new Command(Constants.SLAVE_ONE_STOPPING));
+        } catch (IOException ex) {
+            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+            this._outputMailBox.startConnection();
+        }
     }
 
     public void runCommand(int command) {
@@ -405,7 +426,7 @@ public class Slave1 implements Slave, IOProcess {
 //            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-    public void reportToMaster(MailboxData data) {
+    public void reportToMaster(MailboxData data) throws IOException {
         synchronized (data) {
             _outputMailBox.startConnection();
             _outputMailBox.acceptConnection();

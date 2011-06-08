@@ -64,7 +64,16 @@ public class Slave2 implements Slave, IOProcess {
             }
         });
         t.start();
-        reportToMaster(new Command(Constants.COMMAND_SLAVE2_CONNECTED));
+        connectToMaster();
+    }
+
+    public void connectToMaster() {
+        try {
+            reportToMaster(new Command(Constants.COMMAND_SLAVE2_CONNECTED));
+        } catch (IOException ex) {
+            this._outputMailBox.startConnection();
+            connectToMaster();
+        }
     }
 
     public WeldingStation getWeldingStation() {
@@ -87,7 +96,12 @@ public class Slave2 implements Slave, IOProcess {
         _statusData.setQualityStationRunning(_qualityStation.isActuating());
         _statusData.setWeldingStationPieces(_weldingStation.getPieces());
         _statusData.setWeldingStationRunning(_weldingStation.isActuating());
-        reportToMaster(_statusData);
+
+        try {
+            reportToMaster(_statusData);
+        } catch (IOException ex) {
+            this._outputMailBox.startConnection();
+        }
     }
 
     public final void initialize() {
@@ -160,14 +174,22 @@ public class Slave2 implements Slave, IOProcess {
         _stopped = false;
         _weldingStation.startContainer();
         _qualityStation.startContainer();
-        reportToMaster(new Command(Constants.SLAVE_TWO_STARTING));
+        try {
+            reportToMaster(new Command(Constants.SLAVE_TWO_STARTING));
+        } catch (IOException ex) {
+            Logger.getLogger(Slave2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void stop() {
         _stopped = true;
         _weldingStation.stopContainer();
         _qualityStation.stopContainer();
-        reportToMaster(new Command(Constants.SLAVE_TWO_STOPPING));
+        try {
+            reportToMaster(new Command(Constants.SLAVE_TWO_STOPPING));
+        } catch (IOException ex) {
+            Logger.getLogger(Slave2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void runCommand(int command) {
@@ -209,7 +231,7 @@ public class Slave2 implements Slave, IOProcess {
         ioi.send((short) command);
     }
 
-    public void reportToMaster(MailboxData data) {
+    public void reportToMaster(MailboxData data) throws IOException {
         _outputMailBox.startConnection();
         _outputMailBox.acceptConnection();
         _outputMailBox.sendCommand(data);

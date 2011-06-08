@@ -97,7 +97,7 @@ public class Master {
         if(slaveId == Constants.SLAVE3_ID){
         Slave3Data d = ((Slave3Data) data);
 
-                System.out.println("ok pieces " +d.getAcceptedBeltPieces().size());
+//                System.out.println("ok pieces " +d.getAcceptedBeltPieces().size());
                _reportData._rightPiecesCurrentExec = d.getRightPieces();
                 _reportData._wrongPiecesCurrentExec = d.getWrongPieces();
                 _dbmanager.writeReportData(_reportData);
