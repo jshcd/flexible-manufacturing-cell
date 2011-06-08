@@ -612,7 +612,7 @@ public class Slave1 implements Slave, IOProcess {
     public void startServer() {
         try {
             Properties prop = new Properties();
-            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Slave1.port"));
             ServerSocket skServidor = new ServerSocket(port);
