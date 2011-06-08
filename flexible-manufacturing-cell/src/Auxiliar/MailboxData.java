@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Auxiliar;
 
 import java.io.Serializable;
 
 /**
- *
- * @author Javier
+ * Class that defines the type of data which is used to be sended between
+ * <code>MailBox</code> instances
+ * @author Echoplex
  */
 public class MailboxData implements Serializable {
 
