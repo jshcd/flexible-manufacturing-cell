@@ -12,8 +12,6 @@ import Element.Station.AssemblyStation;
 import Scada.DataBase.MasterConfigurationData;
 import Scada.DataBase.Robot1ConfigurationData;
 import Scada.DataBase.Slave1ConfigurationData;
-import Scada.Gui.JTextAreaHandler;
-import Scada.Gui.MonitorWindow;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -537,6 +535,50 @@ public class Slave1 implements Slave, IOProcess {
 
     public void normalStop() {
         _finishing = true;
+        int numGears = _gearBelt.getPieces().size();
+        int numAxis = _axisBelt.getPieces().size();
+
+        AutomatonState robotState = _robot.getState();
+        List<Piece> assemblyTablePieces = _assemblyStation.getPieces();
+        
+        if(robotState == AutomatonState.q4) {//Transporting Ax
+            numAxis++;
+        } else if(robotState == AutomatonState.q3) {//Transporting Gear
+            numGears++;
+        }
+        if (assemblyTablePieces.size() == 1){
+            Piece p = assemblyTablePieces.get(0);
+            if(p.getType() == Piece.PieceType.axis){
+                numAxis++;
+            } else {
+                numGears++;
+            }
+        }
+        int difference = numGears - numAxis;
+        try {
+            if(difference < 0){
+                for(int i=0; i < Math.abs(difference); i++) { //Add n gears
+                        //Add n gears
+                        System.out.println("Adding gear");
+                        Piece p = new Piece();
+                        p.setPosition(0);
+                        p.setType(PieceType.gear);
+                        _gearBelt.addPiece(p);
+                        Thread.sleep(50);
+                }
+            } else if(difference > 0) {
+                for(int i=0; i < Math.abs(difference); i++) { //Add n axis
+                    System.out.println("Adding axis");
+                    Piece p = new Piece();
+                    p.setPosition(0);
+                    p.setType(PieceType.axis);
+                    _axisBelt.addPiece(p);
+                    Thread.sleep(50);
+                }
+            }
+        } catch (InterruptedException ex) {
+            _logger.log(Level.SEVERE, null, ex);
+        }
     }
 
     public void updateRobot(AutomatonState automatonState, Piece piece) {
