@@ -67,7 +67,6 @@ public class Slave1 implements Slave, IOProcess {
 
         _statusData = new Slave1Data();
         Thread t = new Thread(new Runnable() {
-
             public void run() {
                 _inputMailBox.startServer();
             }
@@ -250,7 +249,6 @@ public class Slave1 implements Slave, IOProcess {
         _robot.setTransportTime2(_robot1ConfigurationData.getPickAndPlaceAxisTime());
         _robot.setTransportTime3(_robot1ConfigurationData.getPickAndPlaceAssemblyTime());
         Thread t = new Thread(new Runnable() {
-
             public void run() {
                 _robot.startServer();
             }
@@ -441,9 +439,7 @@ public class Slave1 implements Slave, IOProcess {
         try {
             // if we didn't receive the order to finish, we keep adding pieces
             while (!_finishing) {
-
                 Thread.sleep((int) (500 * (Math.random()) + 1000));
-
                 boolean roomInGearBelt = true;
                 boolean roomInAxisBelt = true;
 
@@ -469,7 +465,6 @@ public class Slave1 implements Slave, IOProcess {
                         _logger.log(Level.INFO, "Added gear");
                     }
                 }
-
                 pieces = _axisBelt.getPieces();
                 synchronized (pieces) {
 

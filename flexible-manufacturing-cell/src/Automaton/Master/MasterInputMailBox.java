@@ -150,11 +150,11 @@ public class MasterInputMailBox implements MailBox {
                                 skCliente.close();
                             } catch (SocketException ex1) {
                                 if (o instanceof Slave1Data) {
-                                    _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data) o);
+                                    _master.setConnectionStatus(Constants.SLAVE1_ID, false);
                                 } else if (o instanceof Slave2Data) {
-                                    _master.setCanvasStatus(Constants.SLAVE2_ID, (Slave2Data) o);
+                                    _master.setConnectionStatus(Constants.SLAVE2_ID, false);
                                 } else if (o instanceof Slave3Data) {
-                                    _master.setCanvasStatus(Constants.SLAVE3_ID, (Slave3Data) o);
+                                    _master.setConnectionStatus(Constants.SLAVE3_ID, false);
                                 }
                             } catch (IOException ex1) {
                                 Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex1);

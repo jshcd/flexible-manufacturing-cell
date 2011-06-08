@@ -207,6 +207,7 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public void start() {
+        System.out.println("S3 STARTING");
         _stopped = false;
         _acceptedBelt.startContainer();
         _rejectedBelt.startContainer();

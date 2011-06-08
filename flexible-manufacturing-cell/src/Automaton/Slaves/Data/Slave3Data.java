@@ -6,13 +6,14 @@ package Automaton.Slaves.Data;
 
 import Auxiliar.MailboxData;
 import Element.Piece.Piece;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author David
  */
-public class Slave3Data extends MailboxData {
+public class Slave3Data extends MailboxData implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private boolean _acceptedBeltRunning;

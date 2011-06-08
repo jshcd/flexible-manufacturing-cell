@@ -43,6 +43,7 @@ public class MasterOutputMailBox implements MailBox {
         acceptConnection();
         sendCommand(command);
         receiveCommand();
+        endConnection();
     }
 
     public void startConnection() {

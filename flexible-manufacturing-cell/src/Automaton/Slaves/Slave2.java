@@ -171,6 +171,7 @@ public class Slave2 implements Slave, IOProcess {
     }
 
     public void start() {
+        System.out.println("S2 STARTING");
         _stopped = false;
         _weldingStation.startContainer();
         _qualityStation.startContainer();
