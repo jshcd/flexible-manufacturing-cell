@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Automaton.Slaves;
 
 import Automaton.Master.Data.Ok;
@@ -34,11 +29,19 @@ public class SlaveInputMailBox implements MailBox {
     private Slave _slave;
     private final static Logger _logger = Logger.getLogger(SlaveInputMailBox.class.getName());
 
+    /**
+     * Constructor of the class
+     * @param Identifier of the <code>Slave</code> who owns the <code>SlaveInputMailBox</code>
+     * @param <code>Slave</code> who owns the <code>SlaveInputMailBox</code>
+     */
     public SlaveInputMailBox(int id, Slave slave){
         _id = "Slave" + id;
         _slave = slave;
     }
 
+    /**
+     * Starts a connection at the corresponding port
+     */
     public void startConnection() {
         try {
             Properties prop = new Properties();
@@ -46,7 +49,7 @@ public class SlaveInputMailBox implements MailBox {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty(_id + ".port"));
             _serverSocket = new ServerSocket(port);
-            _logger.log(Level.INFO, "Server listening at port {0}", port);
+            _logger.log(Level.INFO, "{0} SlaveInputMailBox listening at port {1}", new Object [] {_id, port});
         } catch (UnknownHostException ex) {
             _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -70,10 +73,17 @@ public class SlaveInputMailBox implements MailBox {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Returns the id of the <code>SlaveInputMailBox</code>
+     * @return Id of the <code>SlaveInputMailBox</code>
+     */
     public String getId() {
         return _id;
     }
 
+    /**
+     *  Server starts listening for connections from <code>MasterOutputMailBox</code>
+     */
     public void startServer() {
         startConnection();
         while (true) {
@@ -84,32 +94,34 @@ public class SlaveInputMailBox implements MailBox {
                         try {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                            //_logger.log(Level.INFO, "Received> {0}", in.readObject());
                             
                             Object o = in.readObject();
+                            _logger.log(Level.FINE, "Slave {0} SlaveInputMailBox received {1}", new Object[] {_id, o});
                             if(o instanceof Command){
                                 switch(((Command)o).getCommand()){
                                     case Constants.START_SLAVE1:
                                         _slave.start();
+                                        _logger.log(Level.INFO, "Slave 1 starts");
                                         break;
                                     case Constants.START_SLAVE2:
                                         _slave.start();
+                                        _logger.log(Level.INFO, "Slave 2 starts");
                                         break;
                                     case Constants.START_SLAVE3:
                                         _slave.start();
+                                        _logger.log(Level.INFO, "Slave 3 starts");
                                         break;
                                     case Constants.EMERGENCY_STOP_ORDER:
                                         _slave.stop();
+                                        _logger.log(Level.INFO, "Emergency Stop");
                                         break;
                                     case Constants.NORMAL_STOP_ORDER:
-                                        //TO-DO
-                                        _slave.stop();
+                                        _slave.normalStop();
+                                        _logger.log(Level.INFO, "Normal Stop");
                                 }
                             }else if(o instanceof MasterConfigurationData){
                                 _slave.storeInitialConfiguration((MasterConfigurationData)o);
                             }
-                            
-                            
                             Ok ok = new Ok();
                             out.writeObject(ok);
                             skCliente.close();
