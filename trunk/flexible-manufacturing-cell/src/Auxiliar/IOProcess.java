@@ -7,7 +7,14 @@ package Auxiliar;
  */
 public interface IOProcess {
     
+    /**
+     * Sends a command
+     * @param command Command identifier 
+     */
     public void sendCommand(int command);
-        
+      /**
+       * runs the command
+       * @param command Command identifier
+       */
     public void runCommand(int command);
 }
