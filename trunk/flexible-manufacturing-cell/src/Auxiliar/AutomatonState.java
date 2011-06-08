@@ -1,5 +1,9 @@
 package Auxiliar;
 
+/**
+ * Enumeration of the Generic Automaton Status
+ * @author Echoplex
+ */
 public enum AutomatonState {
 	q0,
 	q1,
