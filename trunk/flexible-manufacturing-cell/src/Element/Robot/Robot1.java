@@ -109,6 +109,10 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         ioi.bind();
         (new Thread(ioi)).start();
     }
+
+    public AutomatonState getState() {
+        return _state;
+    }
     
     /**
      * Run method
@@ -416,9 +420,5 @@ public class Robot1 implements Robot, Runnable, IOProcess {
      */
     public void setSlave(Slave1 _slave) {
         this._slave = _slave;
-    }
-
-    public AutomatonState getState() {
-        return _state;
     }
 }
