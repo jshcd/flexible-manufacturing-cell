@@ -7,15 +7,14 @@ import java.awt.Toolkit;
 
 /**
  * Loads all the images required for the application.
- * 
- * @author
+ * @author Echoplex
  */
 public class ImageLoader {
 
     private static final String IMAGES_FOLDER = "Images";
     private MediaTracker _mediaTracker;
 
-     /* CANVAS IMAGES */
+    /* CANVAS IMAGES */
     public Image _background = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/background.png"));
     /* APPLICATION IMAGES */
@@ -34,7 +33,7 @@ public class ImageLoader {
     public Image _off = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/panelOff.png"));
     public Image _sensorOff = Toolkit.getDefaultToolkit().getImage(
-            ImageLoader.class.getResource(IMAGES_FOLDER + "/sensorOff.png"));    
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/sensorOff.png"));
     public Image _sensorGreen = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/sensorGreenLight.png"));
     public Image _sensorRed = Toolkit.getDefaultToolkit().getImage(
@@ -52,11 +51,11 @@ public class ImageLoader {
     public Image _assembler = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/assembler.png"));
     public Image _torchDisabled = Toolkit.getDefaultToolkit().getImage(
-            ImageLoader.class.getResource(IMAGES_FOLDER + "/torchDisabled.png"));    
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/torchDisabled.png"));
     public Image _torchEnabled = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/torchEnabled.png"));
     public Image _glassEnabled = Toolkit.getDefaultToolkit().getImage(
-            ImageLoader.class.getResource(IMAGES_FOLDER + "/glassEnabled.png"));    
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/glassEnabled.png"));
     public Image _glassDisabled = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/glassDisabled.png"));
     public Image _robot1 = Toolkit.getDefaultToolkit().getImage(
@@ -64,7 +63,7 @@ public class ImageLoader {
     public Image _robot1Gear = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/robot1Gear.png"));
     public Image _robot1Axis = Toolkit.getDefaultToolkit().getImage(
-            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot1Axis.png"));    
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot1Axis.png"));
     public Image _robot1Assembly = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/robot1Assembly.png"));
     public Image _robot2 = Toolkit.getDefaultToolkit().getImage(
@@ -75,8 +74,6 @@ public class ImageLoader {
             ImageLoader.class.getResource(IMAGES_FOLDER + "/robot2AssemblyOk.png"));
     public Image _robot2AssemblyNotOk = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/robot2AssemblyNotOk.png"));
-    
-    
 
     /**
      * Constructs an image loader associated to a particular component.

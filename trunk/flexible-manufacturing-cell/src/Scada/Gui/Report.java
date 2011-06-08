@@ -1,6 +1,5 @@
 package Scada.Gui;
 
-import Scada.DataBase.MasterConfigurationData;
 import Scada.DataBase.ReportData;
 import java.awt.*;
 import java.awt.event.*;
@@ -9,17 +8,18 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout.Constraints;
 import net.miginfocom.swing.MigLayout;
 
+/**
+ * Class the represents the window in which the reports are shown.
+ * @author Echoplex
+ */
 public class Report extends JDialog {
 
+    /* GUI COMPONENTS */
     private JButton _buttonClose;
     private JPanel _panel1, _panel2, _panel3;
     private String _currentRightPieces, _currentWrongPieces, _totalRightPieces,
@@ -38,6 +38,9 @@ public class Report extends JDialog {
         }
     };
 
+    /**
+     * Constructor of the class
+     */
     public Report() {
         setTitle("Report");
         createComponents();
@@ -46,6 +49,9 @@ public class Report extends JDialog {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Initializes the components of the panel
+     */
     private void createComponents() {
         Border paneEdge = BorderFactory.createEmptyBorder(0, 10, 10, 10);
         TitledBorder titled;
@@ -72,6 +78,9 @@ public class Report extends JDialog {
         _buttonClose.addActionListener(_btnActionListener);
     }
 
+    /**
+     * Distributes the components in the panel
+     */
     private void layoutComponents() {
 
         MigLayout contentPaneLayout = new MigLayout("wrap 2",
@@ -145,5 +154,4 @@ public class Report extends JDialog {
         _totalEmergencyStopsTxt.setText(String.valueOf(reportData._nEmergencyStops));
         _totalRestartsTxt.setText(String.valueOf(reportData._nRestarts));
     }
-
 }

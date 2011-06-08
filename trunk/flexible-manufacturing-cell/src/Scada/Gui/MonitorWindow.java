@@ -19,20 +19,18 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
 import net.miginfocom.swing.MigLayout;
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import Auxiliar.Constants;
 import Auxiliar.MailboxData;
 import Element.Piece.Piece;
-import Scada.DataBase.ReportData;
 import java.awt.Dimension;
 
 /**
  * Monitor where the whole system state is displayed: factory simulation,
  * automata connectivity, log messages...
  *
- * @author
+ * @author Echoplex
  */
 public class MonitorWindow extends JFrame {
 
@@ -117,11 +115,12 @@ public class MonitorWindow extends JFrame {
         _masterAutomaton.startRobot();
     }
 
+    /**
+     * Initializes the components of the GUI
+     */
     private void createComponents() {
         Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
         _canvas = new Canvas(_imageLoader);
-
-
         _buttonConfiguration = new JButton(new ImageIcon(_imageLoader._configurationButton));
         _buttonConfiguration.setToolTipText(Constants.CONFIGURATION_TOOL_TIP);
         _buttonConfiguration.setCursor(handCursor);
@@ -149,6 +148,9 @@ public class MonitorWindow extends JFrame {
 
     }
 
+    /**
+     * Distributes the components in the panel
+     */
     private void layoutComponents() {
         MigLayout contentPaneLayout = new MigLayout("wrap 3",
                 "[fill][fill][fill]", "[fill, grow][fill]");
@@ -165,7 +167,6 @@ public class MonitorWindow extends JFrame {
         pnlButtons.add(_buttonStop, "wrap");
         contentPane.add(_canvas, "span 3, wrap, center");
         contentPane.add(pnlButtons, "");
-
         contentPane.add(_connectionStatus, "");
         contentPane.add(_log, "");
     }
@@ -179,18 +180,34 @@ public class MonitorWindow extends JFrame {
         return _canvas;
     }
 
+    /**
+     * Gets the connection status
+     * @return the Connections
+     */
     public Connections getConnectionStatus() {
         return _connectionStatus;
     }
 
+    /**
+     * Gets the GUI images
+     * @return the ImageLoader
+     */
     public ImageLoader getImageLoader() {
         return _imageLoader;
     }
 
+    /**
+     * Gets the log panel
+     * @return the log panel
+     */
     public Log getLog() {
         return _log;
     }
 
+    /**
+     * Gets the report panel
+     * @return the report panel
+     */
     public Report getReport() {
         return _report;
     }
@@ -213,10 +230,20 @@ public class MonitorWindow extends JFrame {
         _buttonEmergencyStop.setEnabled(false);
     }
 
+    /**
+     * Sets the state of the slave
+     * @param slaveId Slave identifier
+     * @param status If it is connected or not
+     */
     public void setConnectionStatus(int slaveId, boolean status) {
         _connectionStatus.setConnectionStatus(slaveId, status);
     }
 
+    /**
+     * Sets the slave status in the canvas
+     * @param slaveId Slave identifier
+     * @param data Information to be updated
+     */
     public void setCanvasStatus(int slaveId, MailboxData data) {
         switch (slaveId) {
             case Constants.SLAVE1_ID:
@@ -231,10 +258,19 @@ public class MonitorWindow extends JFrame {
         }
     }
 
+    /**
+     * Update the robot2 status
+     * @param automatonState  State of the automaton who control the robot
+     * @param piece The piece that the robot takes
+     */
     public void updateRobot2(AutomatonState automatonState, Piece piece) {
         _canvas.updateRobot2(automatonState, piece);
     }
 
+    /**
+     * Main class
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new WindowsLookAndFeel());

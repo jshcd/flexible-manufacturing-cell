@@ -49,7 +49,6 @@ public class Master {
         _robot = new Robot2();
         _robot.setMaster(this);
         _inputMailBox = new MasterInputMailBox(this);
-        _logger.log(Level.INFO, "System started");
         Thread t = new Thread(new Runnable() {
 
             public void run() {
@@ -110,6 +109,7 @@ public class Master {
     }
 
     public void startSystem() {
+        _logger.log(Level.INFO, "System started");
         if (_reportData._firstStart) {
             _reportData._firstStart = false;
             _reportData._rightPiecesAllExec = 0;
