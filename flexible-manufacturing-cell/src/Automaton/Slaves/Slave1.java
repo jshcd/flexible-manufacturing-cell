@@ -229,9 +229,7 @@ public class Slave1 implements Slave, IOProcess {
                 try {
                     while (true) {
                         Thread.sleep(50);
-                        if (!_stopped) {
-                            updateStatusData();
-                        }
+                        updateStatusData();
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
