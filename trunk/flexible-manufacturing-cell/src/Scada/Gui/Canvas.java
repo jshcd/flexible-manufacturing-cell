@@ -18,12 +18,12 @@ import Element.Piece.Piece.PieceType;
 
 /**
  * Canvas where the factory simulation is displayed.
- *
- * @author
+ * @author Echoplex
  */
 public class Canvas extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    /* GUI COMPONENTS */
     private ImageLoader _imageLoader;
     private Slave1Data _slave1Data;
     private Slave2Data _slave2Data;
@@ -47,26 +47,43 @@ public class Canvas extends JPanel {
         setPreferredSize(size);
         setMaximumSize(size);
         _emergencyStopped = false;
-      
-       
+
+
     }
 
+    /**
+     * Sets the Slave1 data
+     * @param slaveData Data from the slave 1
+     */
     public void setSlave1Data(Slave1Data slaveData) {
         _slave1Data = slaveData;
         repaint();
     }
 
+    /**
+     * Sets the Slave2 data
+     * @param slaveData Data from the slave 2
+     */
     public void setSlave2Data(Slave2Data slaveData) {
         _slave2Data = slaveData;
         repaint();
     }
 
+    /**
+     * Sets the Slave3 data
+     * @param slaveData Data from the slave 3
+     */
     public void setSlave3Data(Slave3Data slaveData) {
         _slave3Data = slaveData;
         repaint();
     }
-    
-    public void updateRobot2(AutomatonState automatonState, Piece piece){
+
+    /**
+     * Updates the state of the robot 2
+     * @param automatonState State of the automaton
+     * @param piece Piece that the robot takes
+     */
+    public void updateRobot2(AutomatonState automatonState, Piece piece) {
         _robot2State = automatonState;
         _robot2Piece = piece;
         repaint();
@@ -83,8 +100,6 @@ public class Canvas extends JPanel {
         repaint();
     }
 
-
-
     /**
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
@@ -98,56 +113,64 @@ public class Canvas extends JPanel {
         paintSlave3(g);
         paintRobot2(g);
     }
-    
-    public void paintRobot2(Graphics g){
+
+    /**
+     * Paints the robot 2
+     * @param g
+     */
+    public void paintRobot2(Graphics g) {
         if (_robot2Piece != null) {
             if (_robot2Piece.getType().equals(PieceType.assembly)) {
-                g.drawImage(_imageLoader._robot2Assembly, Constants.ROBOT2_POSITION.x, 
+                g.drawImage(_imageLoader._robot2Assembly, Constants.ROBOT2_POSITION.x,
                         Constants.ROBOT2_POSITION.y, null);
             } else if (_robot2Piece.getType().equals(PieceType.weldedAssembly)) {
-                g.drawImage(_imageLoader._robot2Assembly, Constants.ROBOT2_POSITION.x, 
+                g.drawImage(_imageLoader._robot2Assembly, Constants.ROBOT2_POSITION.x,
                         Constants.ROBOT2_POSITION.y, null);
             } else if (_robot2Piece.getType().equals(PieceType.weldedAssemblyOk)) {
-                g.drawImage(_imageLoader._robot2AssemblyOk, Constants.ROBOT2_POSITION.x, 
+                g.drawImage(_imageLoader._robot2AssemblyOk, Constants.ROBOT2_POSITION.x,
                         Constants.ROBOT2_POSITION.y, null);
             } else if (_robot2Piece.getType().equals(PieceType.weldedAssemblyNotOk)) {
-                g.drawImage(_imageLoader._robot2AssemblyNotOk, Constants.ROBOT2_POSITION.x, 
+                g.drawImage(_imageLoader._robot2AssemblyNotOk, Constants.ROBOT2_POSITION.x,
                         Constants.ROBOT2_POSITION.y, null);
-            }else{
-                g.drawImage(_imageLoader._robot2, Constants.ROBOT2_POSITION.x, 
-                    Constants.ROBOT2_POSITION.y, null);
+            } else {
+                g.drawImage(_imageLoader._robot2, Constants.ROBOT2_POSITION.x,
+                        Constants.ROBOT2_POSITION.y, null);
             }
-        }else{
-            g.drawImage(_imageLoader._robot2, Constants.ROBOT2_POSITION.x, 
+        } else {
+            g.drawImage(_imageLoader._robot2, Constants.ROBOT2_POSITION.x,
                     Constants.ROBOT2_POSITION.y, null);
         }
     }
-    
+
+    /**
+     * Paints slave 1
+     * @param g
+     */
     public void paintSlave1(Graphics g) {
         if (_slave1Data != null) {
-            
+
             /* Paint Robot1 */
             if (_slave1Data.getR1loadedPiece() != null) {
-                if(_slave1Data.getR1loadedPiece().getType().equals(PieceType.axis)){
-                    g.drawImage(_imageLoader._robot1Axis, Constants.ROBOT1_POSITION.x, 
-                        Constants.ROBOT1_POSITION.y, null);
-                }else if(_slave1Data.getR1loadedPiece().getType().equals(PieceType.gear)){
-                    g.drawImage(_imageLoader._robot1Gear, Constants.ROBOT1_POSITION.x, 
-                        Constants.ROBOT1_POSITION.y, null);
-                }else if(_slave1Data.getR1loadedPiece().getType().equals(PieceType.assembly)){
-                    g.drawImage(_imageLoader._robot1Assembly, Constants.ROBOT1_POSITION.x, 
-                        Constants.ROBOT1_POSITION.y, null);
-                }else{
-                    g.drawImage(_imageLoader._robot1, Constants.ROBOT1_POSITION.x, 
-                        Constants.ROBOT1_POSITION.y, null);
+                if (_slave1Data.getR1loadedPiece().getType().equals(PieceType.axis)) {
+                    g.drawImage(_imageLoader._robot1Axis, Constants.ROBOT1_POSITION.x,
+                            Constants.ROBOT1_POSITION.y, null);
+                } else if (_slave1Data.getR1loadedPiece().getType().equals(PieceType.gear)) {
+                    g.drawImage(_imageLoader._robot1Gear, Constants.ROBOT1_POSITION.x,
+                            Constants.ROBOT1_POSITION.y, null);
+                } else if (_slave1Data.getR1loadedPiece().getType().equals(PieceType.assembly)) {
+                    g.drawImage(_imageLoader._robot1Assembly, Constants.ROBOT1_POSITION.x,
+                            Constants.ROBOT1_POSITION.y, null);
+                } else {
+                    g.drawImage(_imageLoader._robot1, Constants.ROBOT1_POSITION.x,
+                            Constants.ROBOT1_POSITION.y, null);
                 }
-            }else{
-                g.drawImage(_imageLoader._robot1, Constants.ROBOT1_POSITION.x, 
-                    Constants.ROBOT1_POSITION.y, null);
+            } else {
+                g.drawImage(_imageLoader._robot1, Constants.ROBOT1_POSITION.x,
+                        Constants.ROBOT1_POSITION.y, null);
             }
-            
+
             /* Paint Gears */
-           for (Piece piece : _slave1Data.getGearBeltPieces()) {
+            for (Piece piece : _slave1Data.getGearBeltPieces()) {
                 if (piece.getType() == Element.Piece.Piece.PieceType.gear) {
                     g.drawImage(_imageLoader._gear, piece.getPos().x, piece.getPos().y, null);
                 }
@@ -261,12 +284,16 @@ public class Canvas extends JPanel {
                     }
                 }
             }
-        }else{
-            g.drawImage(_imageLoader._robot1, Constants.ROBOT1_POSITION.x, 
+        } else {
+            g.drawImage(_imageLoader._robot1, Constants.ROBOT1_POSITION.x,
                     Constants.ROBOT1_POSITION.y, null);
         }
     }
 
+    /**
+     * Paints the slave 2
+     * @param g
+     */
     public void paintSlave2(Graphics g) {
         if (_slave2Data != null) {
 
@@ -306,45 +333,49 @@ public class Canvas extends JPanel {
                         Constants.TORCH_POSITION_DISABLED.x,
                         Constants.TORCH_POSITION_DISABLED.y, null);
             }
-            
+
             /* Paint glass */
-            if(_slave2Data.isQualityStationRunning()){                
+            if (_slave2Data.isQualityStationRunning()) {
                 g.drawImage(_imageLoader._glassEnabled,
                         Constants.GLASS_POSITION_ENABLED.x,
                         Constants.GLASS_POSITION_ENABLED.y, null);
-            }else{                
+            } else {
                 g.drawImage(_imageLoader._glassDisabled,
                         Constants.GLASS_POSITION_ENABLED.x,
-                        Constants.GLASS_POSITION_ENABLED.y, null);                
+                        Constants.GLASS_POSITION_ENABLED.y, null);
             }
-            
+
             /* Paint Torched Pieces */
-            if(!_slave2Data.getWeldingStationPieces().isEmpty()) {
-                g.drawImage(_imageLoader._fullPiece, Constants.WELDING_STATION_CENTER_POSITION.x, 
+            if (!_slave2Data.getWeldingStationPieces().isEmpty()) {
+                g.drawImage(_imageLoader._fullPiece, Constants.WELDING_STATION_CENTER_POSITION.x,
                         Constants.WELDING_STATION_CENTER_POSITION.y, null);
             }
-            
+
             /* Paint Quality Pieces */
-            if(!_slave2Data.getQualityStationPieces().isEmpty()) {
-                g.drawImage(_imageLoader._fullPiece, Constants.QUALITY_STATION_CENTER_POSITION.x, 
+            if (!_slave2Data.getQualityStationPieces().isEmpty()) {
+                g.drawImage(_imageLoader._fullPiece, Constants.QUALITY_STATION_CENTER_POSITION.x,
                         Constants.QUALITY_STATION_CENTER_POSITION.y, null);
             }
         }
     }
 
+    /**
+     * Paints the slave 3
+     * @param g
+     */
     public void paintSlave3(Graphics g) {
         if (_slave3Data != null) {
             /* Paint Accepted Pieces */
-            
-         //  System.out.println("ok : "+_slave3Data.getAcceptedBeltPieces().size());
-          for (Piece piece : _slave3Data.getAcceptedBeltPieces()) {
+
+            //  System.out.println("ok : "+_slave3Data.getAcceptedBeltPieces().size());
+            for (Piece piece : _slave3Data.getAcceptedBeltPieces()) {
                 g.drawImage(_imageLoader._fullPieceOk, piece.getPos().x, piece.getPos().y, null);
             }
 
             /* Paint Rejected Pieces */
             for (Piece piece : _slave3Data.getRejectedBeltPieces()) {
                 g.drawImage(_imageLoader._fullPieceNotOk, piece.getPos().x, piece.getPos().y, null);
-               
+
             }
 
             /* Paint Sensor8 */

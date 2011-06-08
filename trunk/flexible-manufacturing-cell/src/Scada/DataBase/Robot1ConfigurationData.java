@@ -1,4 +1,3 @@
-
 package Scada.DataBase;
 
 import java.io.Serializable;
@@ -8,17 +7,15 @@ import java.io.Serializable;
  * @author Echoplex
  */
 public class Robot1ConfigurationData implements Serializable {
-    
+
     /**
      * Integer that stablishes the time to pick and place a gear
      */
     private int _pickAndPlaceGearTime;
-    
     /**
      * Integer that stablishes the time to pick and place an axis
      */
     private int _pickAndPlaceAxisTime;
-    
     /**
      * Integer that stablishes the time to pick and place an assembly
      */
@@ -30,7 +27,7 @@ public class Robot1ConfigurationData implements Serializable {
      * @param _pickAndPlaceAxisTime Time to pick and Place an Axis
      * @param _pickAndPlaceAssemblyTime  Time to pick and Place an Assembly
      */
-    public Robot1ConfigurationData(int _pickAndPlaceGearTime, int _pickAndPlaceAxisTime, 
+    public Robot1ConfigurationData(int _pickAndPlaceGearTime, int _pickAndPlaceAxisTime,
             int _pickAndPlaceAssemblyTime) {
         this._pickAndPlaceGearTime = _pickAndPlaceGearTime;
         this._pickAndPlaceAxisTime = _pickAndPlaceAxisTime;

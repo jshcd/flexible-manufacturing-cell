@@ -26,8 +26,7 @@ import javax.swing.border.TitledBorder;
 /**
  * Dialog that allows the user to view and/or modify the configuration
  * parameters.
- *
- * @author
+ * @author Echoplex
  */
 public class ConfigurationParameters extends JDialog {
 
@@ -39,12 +38,12 @@ public class ConfigurationParameters extends JDialog {
     private String _axisBeltCapacity, _axisBeltSpeed, _axisBeltLength,
             _gearBeltCapacity, _gearBeltSpeed, _gearBeltLength, _assemblyActivationTime,
             _weldingBeltSpeed, _weldingBeltLength, _weldingActivationTime,
-            _OKBeltSpeed, _OKBeltLength, _notOKBeltLength, _qualityActivationTime, _successRate, 
+            _OKBeltSpeed, _OKBeltLength, _notOKBeltLength, _qualityActivationTime, _successRate,
             _robot1Axis, _robot1Gear, _robot1Assembly, _robot2Welding, _robot2Checked, _robot2Assembly;
     private JTextField _axisBeltCapacityTxt, _axisBeltSpeedTxt, _axisBeltLengthTxt,
             _gearBeltCapacityTxt, _gearBeltSpeedTxt, _gearBeltLengthTxt, _assemblyActivationTimeTxt,
             _weldingBeltSpeedTxt, _weldingBeltLengthTxt, _weldingActivationTimeTxt,
-            _OKBeltSpeedTxt, _OKBeltLengthTxt, _notOKBeltLengthTxt, _qualityActivationTimeTxt, _successRateTxt, 
+            _OKBeltSpeedTxt, _OKBeltLengthTxt, _notOKBeltLengthTxt, _qualityActivationTimeTxt, _successRateTxt,
             _clockCycleTimeTxt, _robot1AxisTxt, _robot1GearTxt, _robot1AssemblyTxt,
             _robot2WeldingTxt, _robot2CheckedTxt, _robot2AssemblyTxt;
     private String _clockCycleTime;
@@ -81,15 +80,16 @@ public class ConfigurationParameters extends JDialog {
      */
     public ConfigurationParameters(Master masterAutomaton) {
         _masterAutomaton = masterAutomaton;
-
         setTitle("Configuration Parameters");
         createComponents();
         layoutComponents();
-
         pack();
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Initializes the components of the panel
+     */
     private void createComponents() {
 
         Border paneEdge = BorderFactory.createEmptyBorder(0, 10, 10, 10);
@@ -134,10 +134,11 @@ public class ConfigurationParameters extends JDialog {
         _buttonCancel = new JButton("Cancel");
         _buttonCancel.addActionListener(btnActionListener);
 
-
-
     }
 
+    /**
+     * Distributes the components in the panel
+     */
     private void layoutComponents() {
         MigLayout contentPaneLayout = new MigLayout("wrap 2",
                 "[fill, grow][fill, grow]",
@@ -284,7 +285,7 @@ public class ConfigurationParameters extends JDialog {
         _qualityActivationTimeTxt = new JTextField(_qualityActivationTime);
         _slave3Parameters.add(_qualityActivationTimeTxt, "left");
         _slave3Parameters.add(new JLabel("ms"));
-        
+
         _slave3Parameters.setLayout(pnlCommonLayout);
         _slave3Parameters.add(new JLabel("Success Rate: "));
         _successRateTxt = new JTextField(_successRate);
@@ -292,12 +293,12 @@ public class ConfigurationParameters extends JDialog {
         _slave3Parameters.add(new JLabel("%"));
 
         //Master
-       pnlCommonLayout = new MigLayout("wrap 3",
+        pnlCommonLayout = new MigLayout("wrap 3",
                 "[60:80:80][20:60:60][]", "");
         _masterParameters.setLayout(pnlCommonLayout);
         _masterParameters.add(new JLabel("Clock cycle: "));
         _clockCycleTimeTxt = new JTextField(_clockCycleTime);
-        _clockCycleTimeTxt.setPreferredSize(new Dimension (60,15));
+        _clockCycleTimeTxt.setPreferredSize(new Dimension(60, 15));
         _clockCycleTimeTxt.setAlignmentX(this.RIGHT_ALIGNMENT);
         _masterParameters.add(_clockCycleTimeTxt);
         _masterParameters.add(new JLabel("ms"));
@@ -317,7 +318,7 @@ public class ConfigurationParameters extends JDialog {
      * @param configurationParameters
      *            The configuration parameters to show.
      * @param showResources
-     *            Whether the resource quantities are to be displayed or not.
+     *            Whether the resource quantities can be updated or not.
      */
     public void getValues(MasterConfigurationData configurationParameters,
             boolean showResources) {
@@ -397,6 +398,10 @@ public class ConfigurationParameters extends JDialog {
 
     }
 
+    /**
+     * validates data entered in the configuration parameters
+     * @return Validation errors
+     */
     private String validateData() {
         StringBuilder errors = new StringBuilder();
         int value;
@@ -476,7 +481,7 @@ public class ConfigurationParameters extends JDialog {
             }
         } catch (NumberFormatException e) {
             errors.append("'Activation time'in Assembly station must be an integer greater or equal than 1.\n");
-            }
+        }
 
         try {
             value = Integer.parseInt(_weldingBeltSpeedTxt.getText());
@@ -505,11 +510,11 @@ public class ConfigurationParameters extends JDialog {
             if (value < 1) {
                 errors.append("'Ok belt speed' in Quality station must be an integer greater or equal than 1.\n");
             } else {
-                 _masterConfiguration._slave3ConfigurationData._acceptedBelt.setSpeed(value);
+                _masterConfiguration._slave3ConfigurationData._acceptedBelt.setSpeed(value);
             }
         } catch (NumberFormatException e) {
             errors.append("'Ok belt speed' in Quality station must be an integer greater or equal than 1.\n");
-             }
+        }
 
         try {
             value = Integer.parseInt(_OKBeltLengthTxt.getText());
@@ -633,7 +638,7 @@ public class ConfigurationParameters extends JDialog {
         } catch (NumberFormatException e) {
             errors.append("'Clock cycle' in Master must be an integer greater or equal than 1.\n");
         }
-        
+
         try {
             value = Integer.parseInt(_successRateTxt.getText());
             if (value < 0 || value > 100) {
@@ -644,7 +649,7 @@ public class ConfigurationParameters extends JDialog {
         } catch (NumberFormatException e) {
             errors.append("'Success Rate' must be a number greater than 0 and less than 100.\n");
         }
-        
+
         return errors.toString();
 
     }

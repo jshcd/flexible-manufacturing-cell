@@ -1,4 +1,3 @@
-
 package Scada.DataBase;
 
 import java.io.Serializable;
@@ -8,21 +7,21 @@ import java.io.Serializable;
  * @author Echoplex
  */
 public class Slave2ConfigurationData implements Serializable {
-    
+
     /**
      * Welding Station activation time
      */
     public int _weldingActivationTime;
-    
     /**
      * Quality control station activation time
      */
     public int _qualityControlActivationTime;
-    
+
     /**
      * Constructor
      */
-    public  Slave2ConfigurationData(){}
+    public Slave2ConfigurationData() {
+    }
 
     /**
      * Constructor
@@ -62,5 +61,5 @@ public class Slave2ConfigurationData implements Serializable {
      */
     public void setWeldingActivationTime(int _weldingActivationTime) {
         this._weldingActivationTime = _weldingActivationTime;
-    }    
+    }
 }

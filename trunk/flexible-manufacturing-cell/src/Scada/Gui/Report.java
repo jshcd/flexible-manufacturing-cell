@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 /**
- * Class the represents the window in which the reports are shown.
+ * Dialog that allows the user to view the reports
  * @author Echoplex
  */
 public class Report extends JDialog {

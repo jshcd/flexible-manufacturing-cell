@@ -239,7 +239,7 @@ public class DBManager {
         query = Auxiliar.Constants.DBQUERY_UPDATE_GLOBAL_TIMING_CONFIGURATION;
         query = query.replaceAll("\\[VALUE\\]", String.valueOf(md._clockCycleTime));
         db.executeQuery(query);
-        
+
         query = Auxiliar.Constants.DBQUERY_UPDATE_SUCCESS_RATE;
         query = query.replaceAll("\\[VALUE\\]", String.valueOf(md._successRate));
         db.executeQuery(query);
@@ -261,37 +261,37 @@ public class DBManager {
      */
     public ReportData readReportData() {
         ReportData data = new ReportData();
-        
-            try {
-                // Reads the property file
-                Properties properties = new Properties();
-                properties.load(new FileInputStream(Constants.REPORTS_PATH));
 
-                data._rightPiecesCurrentExec = Integer.parseInt(properties.get(
-                        "rightPiecesCurrentExec").toString());
-                data._wrongPiecesCurrentExec = Integer.parseInt(properties.get(
-                        "wrongPiecesCurrentExec").toString());
-                data._rightPiecesAllExec = Integer.parseInt(properties.get(
-                        "rightPiecesAllExec").toString());
-                data._wrongPiecesAllExec = Integer.parseInt(properties.get(
-                        "wrongPiecesAllExec").toString());
+        try {
+            // Reads the property file
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(Constants.REPORTS_PATH));
 
-                data._nRestarts = Integer.parseInt(properties.get("nRestarts").toString());
-                data._nEmergencyStops = Integer.parseInt(properties.get(
-                        "nEmergencyStops").toString());
-                data._nNormalStops = Integer.parseInt(properties.get("nNormalStops").toString());
-            } catch (Exception e) {
-                // If the property file does not exist, default values are loaded
-                data._wrongPiecesCurrentExec = 0;
-                data._wrongPiecesAllExec = 0;
-                data._rightPiecesAllExec = 0;
-                data._rightPiecesCurrentExec = 0;
-                data._nRestarts = 0;
-                data._nEmergencyStops = 0;
-                data._nNormalStops = 0;
-                data._firstStart = true;
-            }
-       
+            data._rightPiecesCurrentExec = Integer.parseInt(properties.get(
+                    "rightPiecesCurrentExec").toString());
+            data._wrongPiecesCurrentExec = Integer.parseInt(properties.get(
+                    "wrongPiecesCurrentExec").toString());
+            data._rightPiecesAllExec = Integer.parseInt(properties.get(
+                    "rightPiecesAllExec").toString());
+            data._wrongPiecesAllExec = Integer.parseInt(properties.get(
+                    "wrongPiecesAllExec").toString());
+
+            data._nRestarts = Integer.parseInt(properties.get("nRestarts").toString());
+            data._nEmergencyStops = Integer.parseInt(properties.get(
+                    "nEmergencyStops").toString());
+            data._nNormalStops = Integer.parseInt(properties.get("nNormalStops").toString());
+        } catch (Exception e) {
+            // If the property file does not exist, default values are loaded
+            data._wrongPiecesCurrentExec = 0;
+            data._wrongPiecesAllExec = 0;
+            data._rightPiecesAllExec = 0;
+            data._rightPiecesCurrentExec = 0;
+            data._nRestarts = 0;
+            data._nEmergencyStops = 0;
+            data._nNormalStops = 0;
+            data._firstStart = true;
+        }
+
 
         return data;
     }
@@ -320,6 +320,4 @@ public class DBManager {
         } catch (Exception e) {
         }
     }
-
-   
 }

@@ -9,8 +9,7 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  * Displays the automata connectivity status.
- * 
- * @author 
+ * @author Echoplex
  */
 public class Connections extends JPanel {
 
@@ -34,6 +33,9 @@ public class Connections extends JPanel {
         layoutComponents();
     }
 
+    /**
+     * Initializes the components of the panel
+     */
     private void createComponents() {
         _welding = new JLabel(Constants.WELDING_AUTOMATON_LABEL);
         _assembly = new JLabel(Constants.ASSEMBLY_AUTOMATON_LABEL);
@@ -50,6 +52,9 @@ public class Connections extends JPanel {
         _slave3Connected = false;
     }
 
+    /**
+     * Distributes the components in the panel
+     */
     private void layoutComponents() {
         MigLayout layout = new MigLayout("wrap 2, ins 0", "[left]15lp[right]",
                 "[fill, grow][fill, grow][fill, grow][fill, grow]");
@@ -65,35 +70,41 @@ public class Connections extends JPanel {
         add(_masterStatus, "");
     }
 
+    /**
+     * Update the slaves status
+     * @param automatonID Slave identifier
+     * @param connected Slave state
+     */
     public void setConnectionStatus(int automatonID, boolean connected) {
 
         if (connected && automatonID == Constants.SLAVE1_ID) {
             _assemblyStatus.setIcon(new ImageIcon(_imageLoader._on));
             _slave1Connected = true;
-
         }
-
         if (connected && automatonID == Constants.SLAVE2_ID) {
             _weldingStatus.setIcon(new ImageIcon(_imageLoader._on));
             _slave2Connected = true;
-
         }
-
         if (connected && automatonID == Constants.SLAVE3_ID) {
             _qualityStatus.setIcon(new ImageIcon(_imageLoader._on));
             _slave3Connected = true;
         }
     }
 
+    /**
+     * Gets the connection status of the slave
+     * @param automatonID Slave identifier
+     * @return The slave state
+     */
     public boolean getConnectionStatus(int automatonID) {
-       boolean state=false;
+        boolean state = false;
         if (automatonID == Constants.SLAVE1_ID) {
-            state=  _slave1Connected;
+            state = _slave1Connected;
         } else if (automatonID == Constants.SLAVE2_ID) {
             state = _slave1Connected;
         } else if (automatonID == Constants.SLAVE3_ID) {
             state = _slave1Connected;
         }
-       return state;
+        return state;
     }
 }

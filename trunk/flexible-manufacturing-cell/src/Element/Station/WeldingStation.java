@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Represents the Welding station
+ * @author Echoplex
+ */
 public class WeldingStation implements PieceContainer {
 
     private int _weldingTime;
@@ -24,6 +28,10 @@ public class WeldingStation implements PieceContainer {
     protected boolean _moving;
     private boolean _actuating;
 
+    /**
+     * Constructor
+     * @param id Identifier
+     */
     public WeldingStation(int id) {
         _id = id;
         _moving = false;
@@ -58,30 +66,57 @@ public class WeldingStation implements PieceContainer {
         }
     }
 
+    /**
+     * Gets the time that takes welding a piece
+     * @return The time
+     */
     public int getWeldingTime() {
         return _weldingTime;
     }
 
+    /**
+     * Sets the time that takes welding a pieces
+     * @param weldingTime
+     */
     public void setWeldingTime(int weldingTime) {
         this._weldingTime = weldingTime;
     }
 
+    /**
+     * Adds a Piece to the station
+     * @param p Piece
+     */
     public void addPiece(Piece p) {
         _pieces.add(p);
         updatePosition(p);
     }
 
+    /**
+     * Adds a sensor to the station
+     * @param s Sensor
+     */
     public void addSensor(Sensor s) {
     }
 
+    /**
+     * Gets the pieces currently in the station
+     * @return List of pieces
+     */
     public List<Piece> getPieces() {
         return _pieces;
     }
 
+    /**
+     * Returns if the
+     * @return whether the welding station is moving
+     */
     public boolean isMoving() {
         return _moving;
     }
 
+    /**
+     * Removes last piece from the station belt
+     */
     public void removeLastPiece() {
         if (_pieces.isEmpty()) {
             Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, "Assembly station with id {0}: unable to remove last element", _id);
@@ -100,6 +135,10 @@ public class WeldingStation implements PieceContainer {
         _id = id;
     }
 
+    /**
+     * Sets the pieces in the station
+     * @param pieces List of pieces
+     */
     public void setPieces(List<Piece> pieces) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -130,10 +169,18 @@ public class WeldingStation implements PieceContainer {
         _moving = false;
     }
 
+    /**
+     * Updates the position in the piece in the station
+     * @param piece Piece to be updated
+     */
     private void updatePosition(Piece piece) {
         piece.setGuiPosition(Constants.WELDING_STATION_CENTER_POSITION);
     }
 
+    /**
+     * Return the state of the station belt
+     * @return Whether the belt is moving or not.
+     */
     public boolean isActuating() {
         return _actuating;
     }
