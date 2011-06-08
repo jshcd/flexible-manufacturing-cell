@@ -6,12 +6,13 @@
 package Automaton.Master.Data;
 
 import Auxiliar.MailboxData;
+import java.io.Serializable;
 
 /**
  *
  * @author Javier
  */
-public class Ok extends MailboxData {
+public class Ok extends MailboxData implements Serializable {
     private boolean _ok;
 
     public Ok() {
