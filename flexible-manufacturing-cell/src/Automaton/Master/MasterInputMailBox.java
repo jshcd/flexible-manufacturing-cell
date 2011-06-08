@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MasterInputMailBox implements MailBox {
+
     private String _id;
     private ServerSocket _serverSocket;
     private Master _master;
@@ -32,7 +33,7 @@ public class MasterInputMailBox implements MailBox {
      * Constructs a new <code>MasterMailBox</code>
      * @param m <code>Master</code> who created the mailbox
      */
-    public MasterInputMailBox(Master m){
+    public MasterInputMailBox(Master m) {
         _id = "Master";
         _master = m;
         _logger.addHandler(m.getMonitor().getLog().getLogHandler());
@@ -42,18 +43,18 @@ public class MasterInputMailBox implements MailBox {
      * Starts a connection at the corresponding port
      */
     public void startConnection() {
-       try {
+        try {
             Properties prop = new Properties();
             InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Master.port"));
             _serverSocket = new ServerSocket(port);
-            _logger.log(Level.INFO, "MasterInputMailBox listening at port {0}", port);
-
+            _logger.log(Level.INFO, "Server listening at port {0}", port);
+            _logger.log(Level.INFO, "Server listening at port: " + port, port);
         } catch (UnknownHostException ex) {
-           _logger.log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-           _logger.log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -91,10 +92,11 @@ public class MasterInputMailBox implements MailBox {
      */
     public void startServer() {
         try {
-            startConnection();        
+            startConnection();
             while (true) {
                 final Socket skCliente = _serverSocket.accept();
                 Thread t = new Thread(new Runnable() {
+
                     public void run() {
                         Object o = null;
                         try {
@@ -139,12 +141,12 @@ public class MasterInputMailBox implements MailBox {
                                     _master.setCanvasStatus(Constants.SLAVE3_ID, (Slave3Data) o);
                                 }
                             } catch (IOException ex1) {
-                               _logger.log(Level.SEVERE, null, ex1);
+                                _logger.log(Level.SEVERE, null, ex1);
                             } finally {
                                 try {
                                     out.close();
                                 } catch (IOException ex1) {
-                                   _logger.log(Level.FINE, null, ex1);
+                                    _logger.log(Level.FINE, null, ex1);
                                 }
                             }
                         } catch (ClassNotFoundException ex) {

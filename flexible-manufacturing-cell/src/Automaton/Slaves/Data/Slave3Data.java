@@ -25,6 +25,8 @@ public class Slave3Data extends MailboxData {
     private List<Piece> _rejectedBeltPieces;
     private int _rightPieces;
     private int _wrongPieces;
+        private int _allRightPieces;
+    private int _allWrongPieces;
 
     public Slave3Data(boolean _acceptedBeltRunning, boolean _rejectedBeltRunning,
             boolean _sensor8Status, boolean _sensor9Status, boolean _sensor10Status,
@@ -123,6 +125,24 @@ public class Slave3Data extends MailboxData {
     public void setWrongPieces(int _wrongPieces) {
         this._wrongPieces = _wrongPieces;
     }
+
+    public int getAllRightPieces() {
+        return _allRightPieces;
+    }
+
+    public int getAllWrongPieces() {
+        return _allWrongPieces;
+    }
+
+    public void setAllRightPieces(int _allRightPieces) {
+        this._allRightPieces = _allRightPieces;
+    }
+
+    public void setAllWrongPieces(int _allWrongPieces) {
+        this._allWrongPieces = _allWrongPieces;
+    }
+
+    
 
 
 }
