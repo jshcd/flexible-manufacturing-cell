@@ -66,17 +66,8 @@ public class MonitorWindow extends JFrame {
                             MonitorWindow.this,
                             "The system cannot be started. Check if the master have received the right parameters.",
                             "Error", JOptionPane.ERROR_MESSAGE);
-                } else if (!_connectionStatus.getConnectionStatus(Constants.SLAVE1_ID) &&
-                        !_connectionStatus.getConnectionStatus(Constants.SLAVE1_ID) &&
-                        !_connectionStatus.getConnectionStatus(Constants.SLAVE1_ID)){
-                         JOptionPane.showMessageDialog(
-                            MonitorWindow.this,
-                            "The system cannot be started until all the slave automata have been connected.",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-                else {
-                    _buttonStart.setEnabled(false);
+                } else {
+                    _buttonStart.setEnabled(true);
                     _buttonStop.setEnabled(true);
                     _buttonEmergencyStop.setEnabled(true);
 
@@ -92,16 +83,15 @@ public class MonitorWindow extends JFrame {
 
                 ;
             } else if (e.getSource() == _buttonStop) {
-                _buttonStart.setEnabled(false);
                 _buttonStop.setEnabled(false);
                 _buttonEmergencyStop.setEnabled(false);
                 _masterAutomaton.getReportData()._nNormalStops++;
                 _masterAutomaton.stopSystem();
+                _buttonStart.setEnabled(true);
             } else if (e.getSource() == _buttonReport) {
-                if (!_masterAutomaton.getReportData()._firstStart) {
+                if (_masterAutomaton.getReportData()._firstStart) {
                     _masterAutomaton.getDbmanager().writeReportData(_masterAutomaton.getReportData());
                 }
-               
                 _report.getValues(_masterAutomaton.getDbmanager().readReportData());
                 _report.setVisible(true);
             } else if (e.getSource() == _buttonConfiguration) {
@@ -235,8 +225,6 @@ public class MonitorWindow extends JFrame {
         _connectionStatus.setConnectionStatus(slaveId, status);
     }
 
-
-
     public void setCanvasStatus(int slaveId, MailboxData data) {
         switch (slaveId) {
             case Constants.SLAVE1_ID:
@@ -246,7 +234,7 @@ public class MonitorWindow extends JFrame {
                 _canvas.setSlave2Data((Slave2Data) data);
                 break;
             case Constants.SLAVE3_ID:
-                _canvas.setSlave3Data((Slave3Data) data);                
+                _canvas.setSlave3Data((Slave3Data) data);
                 break;
         }
     }
