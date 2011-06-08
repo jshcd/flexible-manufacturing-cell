@@ -31,7 +31,7 @@ public class QualityControlStation implements PieceContainer {
     private int _sucessRate = 60;
     
     /**
-     * Lits of pieces
+     * List of pieces
      */
     protected List<Piece> _pieces;
     
@@ -149,7 +149,7 @@ public class QualityControlStation implements PieceContainer {
     }
 
     /**
-     * @return The list of pieces contained in teh station
+     * @return The list of pieces contained in the station
      */
     public List<Piece> getPieces() {
         return _pieces;

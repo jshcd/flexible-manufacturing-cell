@@ -394,35 +394,6 @@ public class Slave1 implements Slave, IOProcess {
         ioi.send((short) command);
     }
 
-//    public void o(int orderNumber) {
-//        try {
-//            InputStream is = null;
-//            Socket requestSocket = new Socket();
-//            ObjectOutputStream out;
-//            ObjectInputStream in;
-//            Properties prop = new Properties();
-//            is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
-//            prop.load(is);
-//            int port = Integer.parseInt(prop.getProperty("Robot1.port"));
-//            String address = prop.getProperty("Robot1.ip");
-//            requestSocket = new Socket(address, port);
-//            out = new ObjectOutputStream(requestSocket.getOutputStream());
-//            out.flush();
-//            out.writeObject(orderNumber);
-//            out.flush();
-//            in = new ObjectInputStream(requestSocket.getInputStream());
-//            try {
-//                System.out.println(in.readObject());
-//            } catch (ClassNotFoundException ex) {
-//                Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            requestSocket.close();
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
     public void reportToMaster(MailboxData data) throws IOException {
         synchronized (data) {
             _outputMailBox.startConnection();
