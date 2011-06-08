@@ -22,6 +22,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     private RobotOutputMailBox _mailBox;
     private AutomatonState _state;
     private AutomatonState _previousState;
+    private int _stateUnchanged;
     private Piece _loadedPiece;
     private boolean _weldingSensor;
     private boolean _weldingTableSensor;
@@ -38,24 +39,32 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     IOInterface ioi;
 
     public Robot2() {
-        _state = AutomatonState.q0;
-        _previousState = AutomatonState.q0;
-        _mailBox = new RobotOutputMailBox(2);
-        _weldingSensor = false;
-        _qualityTableSensor = false;
-        _weldingCompleted = false;
-        _qualityCompletedOK = false;
-        _qualityCompletedNotOK = false;
-        _OKTableSensor = false;
-        _NotOKTableSensor = false;
+        try {
+            _state = AutomatonState.q0;
+            _previousState = AutomatonState.q0;
+            _stateUnchanged = 0;
+            _mailBox = new RobotOutputMailBox(2);
+            _weldingSensor = false;
+            _qualityTableSensor = false;
+            _weldingCompleted = false;
+            _qualityCompletedOK = false;
+            _qualityCompletedNotOK = false;
+            _OKTableSensor = false;
+            _NotOKTableSensor = false;
 
-        _commandReceived = false;
+            _commandReceived = false;
 
-        ioi = new IOInterface();
-        ioi.setProcess(this);
-        ioi.setPortLag(4);
-        ioi.bind();
-        (new Thread(ioi)).start();
+            ioi = new IOInterface();
+            ioi.setProcess(this);
+            ioi.setPortLag(4);
+            ioi.bind();
+            (new Thread(ioi)).start();
+
+            Thread.sleep(4000);
+            restoreState();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Robot2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -68,8 +77,18 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-//            System.out.println(_state);
+
+            if (_stateUnchanged > 50) {
+                restoreState();
+            }
+
+            if (_state.equals(_previousState)) {
+                _stateUnchanged++;
+            } else {
+                _stateUnchanged = 0;
+            }
+
+            _previousState = _state;
 
             switch (_state) {
                 case q0:
@@ -98,7 +117,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     if (_weldingCompleted) {
                         _commandReceived = false;
-                        pickWeldedAssembly(); // 305
+                        if (_loadedPiece != null) {
+                            pickWeldedAssembly(); // 305
+                        }
                         _state = AutomatonState.q3;
                     }
                     break;
@@ -122,11 +143,15 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     if (_qualityCompletedOK) {
                         _commandReceived = false;
-                        pickCheckedWeldedAssembly(); //310
+                        if (_loadedPiece != null) {
+                            pickCheckedWeldedAssembly(); //310
+                        }
                         _state = AutomatonState.q6;
                     } else if (_qualityCompletedNotOK) {
                         _commandReceived = false;
-                        pickCheckedWeldedAssembly();//310
+                        if (_loadedPiece != null) {
+                            pickCheckedWeldedAssembly();//310
+                        }
                         _state = AutomatonState.q7;
                     }
                     break;
@@ -163,7 +188,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void pickAssembly() {
         try {
-            Thread.sleep(_transportTime4/3);
+            Thread.sleep(_transportTime4 / 3);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -175,7 +200,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void transportAssembly() {
         try {
-            Thread.sleep(_transportTime4/3*2);
+            Thread.sleep(_transportTime4 / 3 * 2);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -187,7 +212,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void pickWeldedAssembly() {
         try {
-            Thread.sleep(_transportTime5/3);
+            Thread.sleep(_transportTime5 / 3);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -200,7 +225,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void transportWeldedAssembly() {
         try {
-            Thread.sleep(_transportTime5/3*2);
+            Thread.sleep(_transportTime5 / 3 * 2);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -212,7 +237,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void pickCheckedWeldedAssembly() {
         try {
-            Thread.sleep(_transportTime6/3);
+            Thread.sleep(_transportTime6 / 3);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -225,7 +250,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void transportWeldedOK() {
         try {
-            Thread.sleep(_transportTime6/3*2);
+            Thread.sleep(_transportTime6 / 3 * 2);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -237,7 +262,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void transportWeldedNotOK() {
         try {
-            Thread.sleep(_transportTime6/3*2);
+            Thread.sleep(_transportTime6 / 3 * 2);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -385,5 +410,17 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     public void setTransportTime6(int _transportTime6) {
         this._transportTime6 = _transportTime6;
+    }
+
+    private void restoreState() {
+        if (this._weldingSensor) {
+            _state = AutomatonState.q0;
+        } else if (this._weldingCompleted) {
+            _state = AutomatonState.q2;
+        } else if (this._qualityCompletedOK) {
+            _state = AutomatonState.q4;
+        } else if (this._qualityCompletedNotOK) {
+            _state = AutomatonState.q4;
+        }
     }
 }
