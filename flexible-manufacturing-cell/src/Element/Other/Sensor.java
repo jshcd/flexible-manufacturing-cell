@@ -42,6 +42,7 @@ public class Sensor implements Runnable {
 
         while (true) {
             try {
+
                 if (_associatedContainer.isMoving()) {
                     Thread.sleep(50);
                 } else {

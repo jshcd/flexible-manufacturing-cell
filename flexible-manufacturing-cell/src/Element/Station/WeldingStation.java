@@ -23,30 +23,16 @@ public class WeldingStation implements PieceContainer {
     protected Slave _process;
     protected boolean _moving;
     private boolean _actuating;
-    private boolean _pieceReady;
 
     public WeldingStation(int id) {
         _id = id;
         _moving = false;
         _actuating = false;
-        _pieceReady = false;
         _pieces = Collections.synchronizedList(new ArrayList<Piece>());
     }
 
     @Override
     public synchronized void run() {
-        while (true) {
-            try {
-                Thread.sleep(100);
-                if (_moving) {
-                    if (_pieceReady) {
-                        this._process.sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED);
-                    }
-                }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(AssemblyStation.class.toString()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     public boolean weld() {
@@ -66,7 +52,6 @@ public class WeldingStation implements PieceContainer {
             _pieces.add(p);
             this._process.sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED);
             Logger.getLogger(WeldingStation.class.getName()).log(Level.INFO, "Welding completed");
-            _pieceReady = true;
             return true;
         } else {
             return false;
@@ -99,10 +84,9 @@ public class WeldingStation implements PieceContainer {
 
     public void removeLastPiece() {
         if (_pieces.isEmpty()) {
-            Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, "Welding station with id {0}: unable to remove last element", _id);
+            Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, "Assembly station with id {0}: unable to remove last element", _id);
             return;
         }
-        _pieceReady = false;
         _pieces.remove(0);
     }
 

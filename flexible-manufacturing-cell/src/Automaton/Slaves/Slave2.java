@@ -171,7 +171,6 @@ public class Slave2 implements Slave, IOProcess {
     }
 
     public void start() {
-        System.out.println("S2 STARTING");
         _stopped = false;
         _weldingStation.startContainer();
         _qualityStation.startContainer();
@@ -182,7 +181,7 @@ public class Slave2 implements Slave, IOProcess {
         }
     }
 
-    public void emergencyStop() {
+    public void stop() {
         _stopped = true;
         _weldingStation.stopContainer();
         _qualityStation.stopContainer();
@@ -272,8 +271,5 @@ public class Slave2 implements Slave, IOProcess {
         sensor_range = (double) md._sensorRange;
         _sucessRate = md._successRate;
         initialize();
-    }
-
-    public void normalStop() {
     }
 }
