@@ -17,8 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Portatil
+ * Class that defines the behaviour of an IO Interface
+ * @author Echoplex
  */
 public class IOInterface implements Runnable {
 
