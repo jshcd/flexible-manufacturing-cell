@@ -89,7 +89,7 @@ public class QualityControlStation implements PieceContainer {
             _actuating = false;
 
             int random = (int) (Math.random() * 100);
-            if (random > _sucessRate) {
+            if (random < _sucessRate) {
                 Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed OK");
                 this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
             } else {
