@@ -155,12 +155,10 @@ public class Slave2 implements Slave, IOProcess {
                 try {
                     while (true) {
                         Thread.sleep(50);
-                        if (!_stopped) {
                             try {
                                 updateStatusData();
                             } catch (java.util.ConcurrentModificationException e) {
                             }
-                        }
                     }
                 } catch (InterruptedException ex) {
                     _logger.log(Level.SEVERE, null, ex);

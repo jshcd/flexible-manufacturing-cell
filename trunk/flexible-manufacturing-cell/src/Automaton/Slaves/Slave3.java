@@ -42,7 +42,7 @@ public class Slave3 implements Slave, IOProcess {
     private boolean _stopped;
     private int _rightPieces;
     private int _wrongPieces;
-     private int _allRightPieces;
+    private int _allRightPieces;
     private int _allWrongPieces;
     protected Logger _logger = Logger.getLogger(Slave3.class.toString());
 
@@ -54,7 +54,7 @@ public class Slave3 implements Slave, IOProcess {
         _rightPieces = 0;
         _wrongPieces = 0;
         _allRightPieces = 0;
-        _allWrongPieces =0;
+        _allWrongPieces = 0;
         _logger.log(Level.INFO, "Slave 3 created");
         _outputMailBox = new SlaveOutputMailBox(3);
         _inputMailBox = new SlaveInputMailBox(3, this);
@@ -191,11 +191,9 @@ public class Slave3 implements Slave, IOProcess {
                 try {
                     while (true) {
                         Thread.sleep(50);
-                        if (!_stopped) {
-                            try {
-                                updateStatusData();
-                            } catch (java.util.ConcurrentModificationException e) {
-                            }
+                        try {
+                            updateStatusData();
+                        } catch (java.util.ConcurrentModificationException e) {
                         }
                     }
                 } catch (InterruptedException ex) {
@@ -227,7 +225,7 @@ public class Slave3 implements Slave, IOProcess {
         } catch (IOException ex) {
             _logger.log(Level.SEVERE, null, ex);
         }
-          _rightPieces = 0;
+        _rightPieces = 0;
         _wrongPieces = 0;
     }
 
@@ -244,7 +242,7 @@ public class Slave3 implements Slave, IOProcess {
                 _acceptedBelt.addPiece(p);
                 this._rightPieces++;
                 this._allRightPieces++;
-                              sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
+                sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
             case Constants.ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK:
                 p = new Piece();
@@ -321,7 +319,7 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public void normalStop() {
-         _rightPieces = 0;
+        _rightPieces = 0;
         _wrongPieces = 0;
         throw new UnsupportedOperationException("Not supported yet.");
     }

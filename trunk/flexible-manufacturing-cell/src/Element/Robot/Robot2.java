@@ -79,7 +79,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             _master.updateRobot(_state, _loadedPiece);
 
             if (_stateUnchanged > 50) {
@@ -247,8 +247,11 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
         _loadedPiece = new Piece();
-        if(ok) _loadedPiece.setType(Piece.PieceType.weldedAssemblyOk);
-        else _loadedPiece.setType(Piece.PieceType.weldedAssemblyNotOk);
+        if (ok) {
+            _loadedPiece.setType(Piece.PieceType.weldedAssemblyOk);
+        } else {
+            _loadedPiece.setType(Piece.PieceType.weldedAssemblyNotOk);
+        }
         _weldingCompleted = false;
         sendCommand(Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY);
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 picks welded assembly from quality station");
@@ -420,28 +423,25 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
     private void restoreState() {
         if (_loadedPiece == null) {
-            if (this._weldingSensor) {
-                _state = AutomatonState.q0;
-            } else if (this._weldingCompleted) {
-                _state = AutomatonState.q2;
+            if (this._qualityCompletedNotOK) {
+                _state = AutomatonState.q4;
             } else if (this._qualityCompletedOK) {
                 _state = AutomatonState.q4;
-            } else if (this._qualityCompletedNotOK) {
-                _state = AutomatonState.q4;
+            } else if (this._weldingCompleted) {
+                _state = AutomatonState.q2;
+            } else if (this._weldingSensor) {
+                _state = AutomatonState.q0;
             }
         } else {
             if (_loadedPiece.equals(Piece.PieceType.assembly)) {
                 _state = AutomatonState.q1;
-            } else if(_loadedPiece.equals(Piece.PieceType.assembly)){
-                
+            } else if (_loadedPiece.equals(Piece.PieceType.assembly)) {
             }
-                
+
         }
     }
 
     public void setMaster(Master _master) {
         this._master = _master;
     }
-    
-    
 }
