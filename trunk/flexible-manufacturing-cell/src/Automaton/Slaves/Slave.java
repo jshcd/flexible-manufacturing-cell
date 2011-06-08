@@ -8,8 +8,10 @@ import java.io.IOException;
 
 public interface Slave {
     public void start();
+    
+    public void normalStop();
 
-    public void stop();
+    public void emergencyStop();
     
     public void runCommand(int command);
 

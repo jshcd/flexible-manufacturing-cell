@@ -218,7 +218,7 @@ public class Slave3 implements Slave, IOProcess {
         }
     }
 
-    public void stop() {
+    public void emergencyStop() {
         _stopped = true;
         _acceptedBelt.stopContainer();
         _rejectedBelt.stopContainer();
@@ -318,5 +318,8 @@ public class Slave3 implements Slave, IOProcess {
         _slave3ConfigurationData = md._slave3ConfigurationData;
         sensor_range = (double) md._sensorRange;
         initialize();
+    }
+
+    public void normalStop() {
     }
 }

@@ -304,8 +304,7 @@ public class Slave1 implements Slave, IOProcess {
      * Emergency stop
      */
 
-    public void stop() {
-        System.out.println("S1 STOPPING");
+    public void emergencyStop() {
         _finishing = true;
         _stopped = true;
         _gearBelt.stopContainer();
@@ -319,6 +318,10 @@ public class Slave1 implements Slave, IOProcess {
             this._outputMailBox.startConnection();
         }
     }
+    
+    public void normalStop(){
+        _finishing = true;
+    }
 
     public void runCommand(int command) {
         Piece p;
@@ -329,7 +332,7 @@ public class Slave1 implements Slave, IOProcess {
                 start();
                 break;
             case Constants.EMERGENCY_STOP_ORDER:
-                stop();
+                emergencyStop();
                 break;
             case Constants.NORMAL_STOP_ORDER:
                 _finishing = true;

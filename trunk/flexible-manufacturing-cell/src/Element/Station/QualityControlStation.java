@@ -26,16 +26,36 @@ public class QualityControlStation implements PieceContainer {
     protected Slave _process;
     protected boolean _moving;
     private boolean _actuating;
+    private boolean _pieceReadyOK;
+    private boolean _pieceReadyNotOK;
 
     public QualityControlStation(int id) {
         _id = id;
         _moving = false;
         _actuating = false;
+        _pieceReadyOK = false;
+        _pieceReadyNotOK = false;
         _pieces = Collections.synchronizedList(new ArrayList<Piece>());
     }
 
     @Override
     public synchronized void run() {
+        while (true) {
+            try {
+                Thread.sleep(200);
+                if (_moving) {
+                    if (_pieceReadyOK) {
+                        this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
+                    }
+
+                    if (_pieceReadyNotOK) {
+                        this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
+                    }
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AssemblyStation.class.toString()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public boolean checkQuality() {
@@ -51,12 +71,15 @@ public class QualityControlStation implements PieceContainer {
 
             int random = (int) (Math.random() * 100);
             if (random < _sucessRate) {
+                _pieceReadyOK = true;
                 Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed OK");
                 this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
             } else {
+                _pieceReadyNotOK = true;
                 Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed NOT OK");
                 this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
             }
+
             return true;
         } else {
             return false;
@@ -101,6 +124,8 @@ public class QualityControlStation implements PieceContainer {
             Logger.getLogger(ConveyorBelt.class.getName()).log(Level.SEVERE, "Assembly station with id {0}: unable to remove last element", _id);
             return;
         }
+        _pieceReadyOK = false;
+        _pieceReadyNotOK = false;
         _pieces.remove(0);
     }
 
@@ -147,8 +172,7 @@ public class QualityControlStation implements PieceContainer {
     private void updatePosition(Piece piece) {
         piece.setGuiPosition(Constants.QUALITY_STATION_CENTER_POSITION);
     }
-    
-    
+
     public boolean isActuating() {
         return _actuating;
     }
