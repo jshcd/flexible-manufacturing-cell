@@ -46,6 +46,10 @@ public class Slave3 implements Slave, IOProcess {
     private Slave3ConfigurationData _slave3ConfigurationData;
     private double sensor_range;
     private boolean _stopped;
+    
+    private int _rightPieces;
+    private int _wrongPieces;
+    
     protected Logger _logger = Logger.getLogger(Slave3.class.toString());
 
     public static void main(String args[]) {
@@ -53,6 +57,8 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public Slave3() {
+        _rightPieces = 0;
+        _wrongPieces = 0;
         _logger.log(Level.INFO, "Slave 3 created");
         _outputMailBox = new SlaveOutputMailBox(3);
         _inputMailBox = new SlaveInputMailBox(3, this);
@@ -101,6 +107,8 @@ public class Slave3 implements Slave, IOProcess {
         _statusData.setAcceptedBeltPieces(_acceptedBelt.getPieces());
         _statusData.setRejectedBeltPieces(_rejectedBelt.getPieces());
         _statusData.setRejectedBeltRunning(_rejectedBelt.isMoving());
+        _statusData.setRightPieces(_rightPieces);
+        _statusData.setWrongPieces(_wrongPieces);
         reportToMaster(_statusData);
     }
 
@@ -207,16 +215,17 @@ public class Slave3 implements Slave, IOProcess {
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
                 _acceptedBelt.addPiece(p);
+                this._rightPieces++;
                 _statusData.setRightPieces(_statusData.getRightPieces() + 1);
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
             case Constants.ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK:
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
-                sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 _rejectedBelt.addPiece(p);
-
+                this._wrongPieces++;
                 _statusData.setWrongPieces(_statusData.getWrongPieces() + 1);
+                sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
         }
         if (!_stopped) {
