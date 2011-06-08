@@ -15,8 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Javier
+ * Class that represents the mailbox where the master sends information
+ * @author Echoplex
  */
 public class MasterOutputMailBox implements MailBox {
 
@@ -32,7 +32,7 @@ public class MasterOutputMailBox implements MailBox {
     /**
      * Constructor of the class
      */
-    public MasterOutputMailBox(){
+    public MasterOutputMailBox() {
         _id = "Master";
     }
 
@@ -46,7 +46,7 @@ public class MasterOutputMailBox implements MailBox {
      * 2 in case of Slave2
      * 3 in case of Slave3
      */
-    public void sendInformation(MailboxData command, int destination){
+    public void sendInformation(MailboxData command, int destination) {
         setDestination(destination);
         startConnection();
         acceptConnection();
@@ -64,7 +64,7 @@ public class MasterOutputMailBox implements MailBox {
             prop.load(is);
             String port = "";
             String ip = "";
-            switch(_destination){
+            switch (_destination) {
                 case 1:
                     port = "Slave1.port";
                     ip = "Slave1.ip";
@@ -77,7 +77,7 @@ public class MasterOutputMailBox implements MailBox {
                     port = "Slave3.port";
                     ip = "Slave3.ip";
             }
-            if(port.compareTo("") != 0) {
+            if (port.compareTo("") != 0) {
                 _port = Integer.parseInt(prop.getProperty(port));
                 _address = prop.getProperty(ip);
                 _requestSocket = new Socket(_address, _port);
@@ -92,7 +92,7 @@ public class MasterOutputMailBox implements MailBox {
     }
 
     /**
-     * Closes the connection with the <code>SlaveInputMailBox</code>
+     * Closes the connection with the SlaveInputMailBox
      */
     public void endConnection() {
         try {
@@ -103,7 +103,7 @@ public class MasterOutputMailBox implements MailBox {
     }
 
     /**
-     * Access the connection with the <code>SlaveInputMailBox</code>
+     * Accepts the connection with the SlaveInputMailBox
      */
     public void acceptConnection() {
         try {
@@ -115,9 +115,8 @@ public class MasterOutputMailBox implements MailBox {
     }
 
     /**
-     * Sends a <code>MailboxData</code> command to the correspondent
-     * <code>MasterOutputMailBox</code>
-     * @param command which is going to be sended
+     * Sends a MailboxData command to the correspondent MasterOutputMailBox
+     * @param command which is going to be sent
      */
     public void sendCommand(MailboxData command) {
         try {
@@ -129,7 +128,7 @@ public class MasterOutputMailBox implements MailBox {
     }
 
     /**
-     * Receives the response from the correspondent <code>MasterOutputMailBox</code>
+     * Receives the response from the correspondent MasterOutputMailBox
      */
     public void receiveCommand() {
         try {
@@ -148,19 +147,18 @@ public class MasterOutputMailBox implements MailBox {
     }
 
     /**
-     * Returns identifier of the destination <code>SlaveInputMailBox</code>
-     * @return <code>SlaveInputMailBox</code> identifier
+     * Returns identifier of the destination SlaveInputMailBox
+     * @return SlaveInputMailBox identifier
      */
     public int getDestination() {
         return _destination;
     }
 
     /**
-     * Sets the value of the destination <code>SlaveInputMailBox</code>
-     * @param destination <code>SlaveInputMailBox</code>
+     * Sets the value of the destination SlaveInputMailBox
+     * @param destination SlaveInputMailBox
      */
-    public void setDestination(int destination){
+    public void setDestination(int destination) {
         _destination = destination;
     }
-
 }

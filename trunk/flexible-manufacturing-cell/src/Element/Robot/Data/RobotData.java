@@ -8,8 +8,8 @@ package Element.Robot.Data;
 import Auxiliar.MailboxData;
 
 /**
- *
- * @author Javier
+ * This class specifies the data used by the robot
+ * @author Echoplex
  */
 public class RobotData extends MailboxData {
     //TO-DO Implement class

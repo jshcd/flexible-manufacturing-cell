@@ -22,16 +22,32 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Class that represents the mailbox where the master receives information
+ * @author Echoplex
+ */
 public class MasterInputMailBox implements MailBox {
 
+    /**
+     * Mailbox identifier
+     */
     private String _id;
+    /**
+     * Server socket for communication
+     */
     private ServerSocket _serverSocket;
+    /**
+     * The master that uses the mailbox
+     */
     private Master _master;
+    /**
+     * Logger
+     */
     private static final Logger _logger = Logger.getLogger(MasterInputMailBox.class.toString());
 
     /**
-     * Constructs a new <code>MasterMailBox</code>
-     * @param m <code>Master</code> who created the mailbox
+     * Constructs a new MasterMailBox
+     * @param m Master who created the mailbox
      */
     public MasterInputMailBox(Master m) {
         _id = "Master";
@@ -57,37 +73,50 @@ public class MasterInputMailBox implements MailBox {
         }
     }
 
+    /**
+     * Closes the connection with the SlaveInputMailBox
+     */
     public void endConnection() {
         _logger.log(Level.FINE, "Not supoorted yet.");
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Accepts the connection with the SlaveInputMailBox
+     */
     public void acceptConnection() {
         _logger.log(Level.FINE, "Not supoorted yet.");
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Sends a MailboxData command to the correspondent MasterOutputMailBox
+     * @param command which is going to be sent
+     */
     public void sendCommand(MailboxData command) {
         _logger.log(Level.FINE, "Not supoorted yet.");
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Receives the response from the correspondent MasterOutputMailBox
+     */
     public void receiveCommand() {
         _logger.log(Level.FINE, "Not supoorted yet.");
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
-     * Returns the identifier of the <code>MasterMailBox</code>
-     * @return Identifier of the <code>MasterMailBox</code>
+     * Returns the identifier of the MasterMailBox
+     * @return Identifier of the MasterMailBox
      */
     public String getId() {
         return _id;
     }
 
     /**
-     * Starts a server which attend petitions from the <code>SlaveOutputMailBox</code>
-     * and response them with an <code>Ok</code> message
+     * Starts a server which attend petitions from the SlaveOutputMailBox
+     * and response them with an Ok message
      */
     public void startServer() {
         try {
