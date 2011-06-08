@@ -16,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -115,10 +116,11 @@ public class MasterInputMailBox implements MailBox {
                 final Socket skCliente = _serverSocket.accept();
                 Thread t = new Thread(new Runnable() {
                     public void run() {
+                        Object o = null;
                         try {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                            Object o = in.readObject();
+                            o = in.readObject();
                             Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.FINE, "Received> {0}", o);
                             _logger.log(Level.FINE, "Received> {0}", o);
                             if (o instanceof Command) {
@@ -131,13 +133,10 @@ public class MasterInputMailBox implements MailBox {
                                 }
                             } else if (o instanceof Slave1Data) {
                                 _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data) o);
-                                System.out.println("Slave1Data");
                             } else if (o instanceof Slave2Data) {
                                 _master.setCanvasStatus(Constants.SLAVE2_ID, (Slave2Data) o);
-                                System.out.println("Slave2Data");
                             } else if (o instanceof Slave3Data) {
                                 _master.setCanvasStatus(Constants.SLAVE3_ID, (Slave3Data) o);
-                                System.out.println("Slave3Data");
                             }
                             Ok ok = new Ok();
                             out.writeObject(ok);
@@ -149,6 +148,14 @@ public class MasterInputMailBox implements MailBox {
                                 Ok ok = new Ok();
                                 out.writeObject(ok);
                                 skCliente.close();
+                            } catch (SocketException ex1) {
+                                if (o instanceof Slave1Data) {
+                                    _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data) o);
+                                } else if (o instanceof Slave2Data) {
+                                    _master.setCanvasStatus(Constants.SLAVE2_ID, (Slave2Data) o);
+                                } else if (o instanceof Slave3Data) {
+                                    _master.setCanvasStatus(Constants.SLAVE3_ID, (Slave3Data) o);
+                                }
                             } catch (IOException ex1) {
                                 Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex1);
                             } finally {
