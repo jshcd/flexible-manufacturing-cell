@@ -116,7 +116,6 @@ public class Master {
         });
         t.start();
         (new Thread(_robot)).start();
-
     }
 
     public void startSystem() {
