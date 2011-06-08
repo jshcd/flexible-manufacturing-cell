@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class QualityControlStation implements PieceContainer {
 
     private int _qualityTime;
-    private int _sucessRate;
+    private int _sucessRate = 60;
     protected List<Piece> _pieces;
     private int _id;
     protected Slave _process;

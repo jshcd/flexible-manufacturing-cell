@@ -80,6 +80,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
 
             if (_stateUnchanged > 50) {
                 restoreState();
+                _stateUnchanged = 0;
             }
 
             if (_state.equals(_previousState)) {
@@ -117,7 +118,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     if (_weldingCompleted) {
                         _commandReceived = false;
-                        if (_loadedPiece != null) {
+                        if (_loadedPiece == null) {
                             pickWeldedAssembly(); // 305
                         }
                         _state = AutomatonState.q3;
@@ -143,14 +144,14 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     if (_qualityCompletedOK) {
                         _commandReceived = false;
-                        if (_loadedPiece != null) {
-                            pickCheckedWeldedAssembly(); //310
+                        if (_loadedPiece == null) {
+                            pickCheckedWeldedAssembly(true); //310
                         }
                         _state = AutomatonState.q6;
                     } else if (_qualityCompletedNotOK) {
                         _commandReceived = false;
-                        if (_loadedPiece != null) {
-                            pickCheckedWeldedAssembly();//310
+                        if (_loadedPiece == null) {
+                            pickCheckedWeldedAssembly(false);//310
                         }
                         _state = AutomatonState.q7;
                     }
@@ -235,14 +236,15 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         _loadedPiece = null;
     }
 
-    public void pickCheckedWeldedAssembly() {
+    public void pickCheckedWeldedAssembly(boolean ok) {
         try {
             Thread.sleep(_transportTime6 / 3);
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
         _loadedPiece = new Piece();
-        _loadedPiece.setType(Piece.PieceType.weldedAssembly);
+        if(ok) _loadedPiece.setType(Piece.PieceType.weldedAssembly);
+        else _loadedPiece.setType(Piece.PieceType.weldedAssembly);
         _weldingCompleted = false;
         sendCommand(Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY);
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 picks welded assembly from quality station");
@@ -413,14 +415,23 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     }
 
     private void restoreState() {
-        if (this._weldingSensor) {
-            _state = AutomatonState.q0;
-        } else if (this._weldingCompleted) {
-            _state = AutomatonState.q2;
-        } else if (this._qualityCompletedOK) {
-            _state = AutomatonState.q4;
-        } else if (this._qualityCompletedNotOK) {
-            _state = AutomatonState.q4;
+        if (_loadedPiece == null) {
+            if (this._weldingSensor) {
+                _state = AutomatonState.q0;
+            } else if (this._weldingCompleted) {
+                _state = AutomatonState.q2;
+            } else if (this._qualityCompletedOK) {
+                _state = AutomatonState.q4;
+            } else if (this._qualityCompletedNotOK) {
+                _state = AutomatonState.q4;
+            }
+        } else {
+            if (_loadedPiece.equals(Piece.PieceType.assembly)) {
+                _state = AutomatonState.q1;
+            } else if(_loadedPiece.equals(Piece.PieceType.assembly)){
+                
+            }
+                
         }
     }
 }
