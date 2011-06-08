@@ -1,24 +1,40 @@
-/* 
- * Interface for mailboxes. It's objective is establishing connections with other mailboxes (RMI)
- * and sending and receiving commands (as ints).
- */
-
-
 package Auxiliar;
 
-import java.io.IOException;
-
+/**
+ * Class that defines a <code>MailBox</code> and the communication between them
+ * @author Echoplex
+ */
 public interface MailBox {
-    
+
+    /**
+     * Starts the connection
+     */
     public void startConnection();
 
+    /**
+     * Finishes the connection
+     */
     public void endConnection();
 
+    /**
+     * Accepts the connection
+     */
     public void acceptConnection();
 
-    public void sendCommand(MailboxData command) throws IOException;
+    /**
+     * Sends a command to another <code>MailBox</code>
+     * @param Command which is going to be send
+     */
+    public void sendCommand(MailboxData command);
 
-    public void receiveCommand() throws IOException;
+    /**
+     * Receives a response from the other <code>MailBox</code>
+     */
+    public void receiveCommand();
 
+    /**
+     * Returns the <code>MailBox</code> identifier
+     * @return <code>MailBox</code> identifier
+     */
     public String getId();
 }
