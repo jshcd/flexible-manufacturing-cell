@@ -163,7 +163,7 @@ public class Slave2 implements Slave, IOProcess {
                         }
                     }
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+                    _logger.log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -177,7 +177,7 @@ public class Slave2 implements Slave, IOProcess {
         try {
             reportToMaster(new Command(Constants.SLAVE_TWO_STARTING));
         } catch (IOException ex) {
-            Logger.getLogger(Slave2.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -188,7 +188,7 @@ public class Slave2 implements Slave, IOProcess {
         try {
             reportToMaster(new Command(Constants.SLAVE_TWO_STOPPING));
         } catch (IOException ex) {
-            Logger.getLogger(Slave2.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -241,18 +241,16 @@ public class Slave2 implements Slave, IOProcess {
     public void startServer() {
         try {
             Properties prop = new Properties();
-            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Slave2.port"));
             ServerSocket skServidor = new ServerSocket(port);
             _logger.log(Level.INFO, "Server listening at port {0}", port);
             while (true) {
                 Socket skCliente = skServidor.accept();
-                _logger.log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                _logger.log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
-
+                _logger.log(Level.FINE, "Slave2 received> {0}", Short.parseShort((String) in.readObject()));
                 short a = (short) 0;
                 out.writeObject(a);
                 skCliente.close();
@@ -274,5 +272,6 @@ public class Slave2 implements Slave, IOProcess {
     }
 
     public void normalStop() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
