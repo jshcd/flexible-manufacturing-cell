@@ -45,7 +45,7 @@ public class SlaveInputMailBox implements MailBox {
     public void startConnection() {
         try {
             Properties prop = new Properties();
-            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty(_id + ".port"));
             _serverSocket = new ServerSocket(port);
