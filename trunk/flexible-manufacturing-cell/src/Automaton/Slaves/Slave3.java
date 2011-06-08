@@ -306,7 +306,8 @@ public class Slave3 implements Slave, IOProcess {
      */
     public void start() {
         _stopped = false;
-
+   _rightPieces = 0;
+        _wrongPieces = 0;
         _acceptedBelt.startContainer();
         _rejectedBelt.startContainer();
         try {
@@ -445,7 +446,6 @@ public class Slave3 implements Slave, IOProcess {
      * Stops the execution of the slave
      */
     public void normalStop() {
-        _rightPieces = 0;
-        _wrongPieces = 0;
+        
     }
 }
