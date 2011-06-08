@@ -18,23 +18,83 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Defines the Robot1 Behaviour
+ * @author Echocplex
+ */
 public class Robot1 implements Robot, Runnable, IOProcess {
     
+    /**
+     * Status of the Robot1
+     */
     private AutomatonState _state;
+    
+    /**
+     * Piece that the Robot has loaded
+     */
     private Piece _loadedPiece;
-    private int _transportTime1; // When the robot has moved the gear to the assembly table, the robot 1 waits until the sensor 2 is active.
+    
+    /**
+     * Time to pick and transport an axis
+     * When the robot has moved the gear to the assembly table, 
+     * the robot 1 waits until the sensor 2 is active.
+     */
+    private int _transportTime1;
+    
+    /**
+     * Time to pick and transport a gear
+     */
     private int _transportTime2;
+    
+    /**
+     * Time to pick and transport an assembly
+     */
     private int _transportTime3;
+    
+    /**
+     * Gear Belt sensor status
+     */
     private boolean _gearSensor;
+    
+    /**
+     * Axis Belt sensor status
+     */
     private boolean _axisSensor;
+    
+    /**
+     * Assembly Station Sensor Status
+     */
     private boolean _assemblySensor;
+    
+    /**
+     * Welding Station Sensor status
+     */
     private boolean _weldingSensor;
+    
+    /**
+     * Shows if the assembly process is completed or not
+     */
     private boolean _assemblyCompleted;
+    
+    /**
+     * Shows if the robot is currently working
+     */
     private boolean _running;
+    
+    /**
+     * Instance of IOInterface
+     */
     private IOInterface ioi;
+    
+    /**
+     * Instance of slave1
+     */
     private Slave1 _slave;
     // public Logger _logger = Logger.getLogger(Robot1.class.toString());
 
+    /**
+     * Constructor of the class
+     */
     public Robot1() {
         _state = AutomatonState.q0;
         _gearSensor = false;
@@ -50,6 +110,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         (new Thread(ioi)).start();
     }
     
+    /**
+     * Run method
+     */
     @Override
     public void run() {
         while (true) {
@@ -120,6 +183,11 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         }
     }
     
+    /**
+     * Method that runs a command and perform an action with the robot
+     * @param command Command to run
+     * @see Constants
+     */
     public void runCommand(int command) {
         switch (command) {
             case Constants.START_ROBOT1:
@@ -158,6 +226,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         }
     }
     
+    /**
+     * The robot picks an axis from the axis belt
+     */
     public void pickAxis() {
         try {
             Thread.sleep(_transportTime2 / 3);
@@ -172,6 +243,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         
     }
     
+    /**
+     * The robot picks a gear from the gear belt 
+     */
     public void pickGear() {
         try {
             Thread.sleep(_transportTime1 / 3);
@@ -185,6 +259,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1 picks gear");
     }
     
+    /**
+     * The robot picks an Assembly from the Assembly Station
+     */
     public void pickAssembly() {
         try {
             Thread.sleep(_transportTime3 / 3);
@@ -198,6 +275,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1 picks assembly from assembly station");
     }
     
+    /**
+     * The robot transports a Gear to the assembly station
+     */
     public void transportGear() {
         try {
             Thread.sleep(_transportTime1 / 3 * 2);
@@ -209,6 +289,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         _loadedPiece = null;
     }
     
+    /**
+     * The robot transports an axis to the assembly station
+     */
     public void transportAxis() {
         try {
             Thread.sleep(_transportTime2 / 3 * 2);
@@ -220,6 +303,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         _loadedPiece = null;
     }
     
+    /**
+     * The robot transport an assembly to the next step
+     */
     public void transportAssembly() {
         try {
             Thread.sleep(_transportTime3 / 3 * 2);
@@ -231,6 +317,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         _loadedPiece = null;
     }
     
+    /**
+     * The robot goes back to the stop position
+     */
     public void returnToIdle() {
         try {
             switch (_state) {
@@ -254,26 +343,45 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         }
     }
     
+    /**
+     * Sets the time to pick and transport an axis 
+     * @param transportTime1 New time in ms
+     */
     public void setTrasportTime1(int transportTime1) {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1: tr1 = {0}", transportTime1);
         this._transportTime1 = transportTime1;
     }
     
+    /**
+     * Sets the time to pick and transport a gear
+     * @param transportTime2 New time in ms
+     */
     public void setTransportTime2(int transportTime2) {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1: tr2 = {0}", transportTime2);
         this._transportTime2 = transportTime2;
     }
     
+    /**
+     * Sets the time to pick and transport an assembly
+     * @param transportTime3 New time in ms
+     */
     public void setTransportTime3(int transportTime3) {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1: tr3 = {0}", transportTime3);
         this._transportTime3 = transportTime3;
     }
     
+    /**
+     * Sends a command through the IO Interface
+     * @param command New command to send
+     */
     public void sendCommand(int command) {
         System.out.println("R1 :" + command);
         ioi.send((short) command);
     }
     
+    /**
+     * Starts the server to listen through the IO Interface
+     */
     public void startServer() {
         try {
             Properties prop = new Properties();
@@ -302,6 +410,10 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         }
     }
     
+    /**
+     * Sets the slave to send commands
+     * @param _slave New slave receiver
+     */
     public void setSlave(Slave1 _slave) {
         this._slave = _slave;
     }

@@ -18,28 +18,106 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This class implements the methods for the Robot2 functionality
+ * @author Echoplex
+ */
 public class Robot2 implements Robot, Runnable, IOProcess {
 
+    /**
+     * Master automaton instance
+     */
     private Master _master;
     private RobotOutputMailBox _mailBox;
+    
+    /**
+     * Automaton state
+     */
     private AutomatonState _state;
+    
+    /**
+     * Automaton previous state
+     */
     private AutomatonState _previousState;
+    
+    /**
+     * Counts the number of times that the robot has not changed its status
+     */
     private int _stateUnchanged;
+    
+    /**
+     * Represents the instance of the loaded piece
+     */
     private Piece _loadedPiece;
+    
+    /**
+     * Welding Belt Sensor status
+     */
     private boolean _weldingSensor;
+    
+    /**
+     * Welding Station Sensor status
+     */
     private boolean _weldingTableSensor;
+    
+    /**
+     * Quality Station Sensor status
+     */
     private boolean _qualityTableSensor;
+    
+    /**
+     * Sensor of the Accepted Belt status
+     */
     private boolean _OKTableSensor;
+    
+    /**
+     * Rejected Belt Sensor status
+     */
     private boolean _NotOKTableSensor;
+    
+    /**
+     * Shows if the welding process has finished
+     */
     private boolean _weldingCompleted;
+    
+    /**
+     * Shows if the quality process has finished Ok
+     */
     private boolean _qualityCompletedOK;
+    
+    /**
+     * Shows if the quality process has finished Not Ok
+     */
     private boolean _qualityCompletedNotOK;
+    
+    /**
+     * Shows if a command has been received
+     */
     private boolean _commandReceived;
+    
+    /**
+     * Time to pick and transport an assembly
+     */
     private int _transportTime4;
+    
+    /**
+     * Time to pick and transport a welded assembly
+     */
     private int _transportTime5;
+    
+    /**
+     * Time to pick and transport a checked assembly
+     */
     private int _transportTime6;
+    
+    /**
+     * Instance of IOInterface
+     */
     IOInterface ioi;
 
+    /**
+     * Class constructor
+     */
     public Robot2() {
         try {
             _state = AutomatonState.q0;
@@ -69,6 +147,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         }
     }
 
+    /**
+     * Run method that stablish actions for the different states
+     */
     @Override
     public void run() {
 
@@ -191,6 +272,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         }
     }
 
+    /**
+     * Picks an assembly from the Welding Belt
+     */
     public void pickAssembly() {
         try {
             Thread.sleep(_transportTime4 / 3);
@@ -203,6 +287,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 picks asembly from welding belt");
     }
 
+    /**
+     * Tramsports an assembly to the Welding Station
+     */
     public void transportAssembly() {
         try {
             Thread.sleep(_transportTime4 / 3 * 2);
@@ -215,6 +302,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 places assembly on welding station");
     }
 
+    /**
+     * Picks an assembly from the welding station
+     */
     public void pickWeldedAssembly() {
         try {
             Thread.sleep(_transportTime5 / 3);
@@ -228,6 +318,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 picks welded assembly from welding station");
     }
 
+    /**
+     * Tramsport a welded assembly to the quality station
+     */
     public void transportWeldedAssembly() {
         try {
             Thread.sleep(_transportTime5 / 3 * 2);
@@ -240,6 +333,10 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         _loadedPiece = null;
     }
 
+    /**
+     * Picks an assembly from the quality station
+     * @param ok Status of the piece checked
+     */
     public void pickCheckedWeldedAssembly(boolean ok) {
         try {
             Thread.sleep(_transportTime6 / 3);
@@ -257,6 +354,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 picks welded assembly from quality station");
     }
 
+    /**
+     * Tramsports the checked piece to the Ok Belt
+     */
     public void transportWeldedOK() {
         try {
             Thread.sleep(_transportTime6 / 3 * 2);
@@ -269,6 +369,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         _qualityCompletedOK = false;
     }
 
+    /**
+     * Tramsports the checked piece to the Not Ok belt
+     */
     public void transportWeldedNotOK() {
         try {
             Thread.sleep(_transportTime6 / 3 * 2);
@@ -281,11 +384,20 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         _qualityCompletedNotOK = false;
     }
 
+    /**
+     * Sends a command through the IO Interface
+     * @param command New command to send
+     * @see Constants
+     */
     public void sendCommand(int command) {
 //        System.out.println("R2 sending: " + command);
         ioi.send((short) command);
     }
 
+    /**
+     * Runs a command and performs the different changes in the robot state
+     * @param command New command to execute
+     */
     public void runCommand(int command) {
         if (command > 120) {
             System.out.println("R2 running: " + command + " state: " + _state);
@@ -351,10 +463,16 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         }
     }
 
+    /**
+     * @return The piece that has been loaded
+     */
     public Piece getLoadedPiece() {
         return _loadedPiece;
     }
 
+    /**
+     * Starts listening through the IOInterface
+     */
     public void startServer() {
         try {
             Properties prop = new Properties();
@@ -383,6 +501,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         }
     }
 
+    /**
+     * Returns the Robot to the Idle state
+     */
     private void returnToIdle() {
         _commandReceived = false;
         _qualityCompletedOK = false;
@@ -409,18 +530,33 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         }
     }
 
+    /**
+     * Sets the time to pick and transport an assembly
+     * @param _transportTime4 
+     */
     public void setTransportTime4(int _transportTime4) {
         this._transportTime4 = _transportTime4;
     }
 
+    /**
+     * Sets the time to pick and transport a welded asesmbly
+     * @param _transportTime5 
+     */
     public void setTransportTime5(int _transportTime5) {
         this._transportTime5 = _transportTime5;
     }
-
+    
+    /**
+     * Sets the time to pick and transport a checked assembly
+     * @param _transportTime6 
+     */
     public void setTransportTime6(int _transportTime6) {
         this._transportTime6 = _transportTime6;
     }
 
+    /**
+     * Sertores the state after performing an action
+     */
     private void restoreState() {
         if (_loadedPiece == null) {
             if (this._qualityCompletedNotOK) {
@@ -441,6 +577,10 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         }
     }
 
+    /**
+     * Sets the master instance
+     * @param _master MasterAutomaton
+     */
     public void setMaster(Master _master) {
         this._master = _master;
     }
