@@ -179,6 +179,9 @@ public class Constants {
     public static final Point ASSEMBLY_STATION_SENSOR_LIGHT_POSITION = new Point(544, 192);
     public static final Point WELDING_STATION_SENSOR_LIGHT_POSITION = new Point(900, 146);
     public static final Point QUALITY_CONTROL_STATION_LIGHT_SENSOR_POSITION = new Point(821, 276);
+    /* ROBOTS */
+    public static final Point ROBOT1_POSITION = new Point(302, 3);
+    public static final Point ROBOT2_POSITION = new Point(643, 136);
     /* WELDING STAMPER */
     public static final Point WELDING_STAMPER_POSITION_ENABLED = new Point(391, 130);
     public static final Point WELDING_STAMPER_POSITION_DISABLED = new Point(391, 80);
@@ -191,7 +194,7 @@ public class Constants {
     public static final Point WELDING_STATION_CENTER_POSITION = new Point(824, 183);
     public static final Point QUALITY_STATION_CENTER_POSITION = new Point(742, 314);
     /* TORCH */
-    public static final Point TORCH_POSITION_ENABLED = new Point(833, 114);
+    public static final Point TORCH_POSITION_ENABLED = new Point(833, 108);
     public static final Point TORCH_POSITION_DISABLED = new Point(833, 74);
     /* GLASS */
     public static final Point GLASS_POSITION_ENABLED = new Point(730, 316);

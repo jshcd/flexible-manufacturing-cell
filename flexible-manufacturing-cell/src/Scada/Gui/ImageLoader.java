@@ -59,6 +59,24 @@ public class ImageLoader {
             ImageLoader.class.getResource(IMAGES_FOLDER + "/glassEnabled.png"));    
     public Image _glassDisabled = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/glassDisabled.png"));
+    public Image _robot1 = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot1.png"));
+    public Image _robot1Gear = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot1Gear.png"));
+    public Image _robot1Axis = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot1Axis.png"));    
+    public Image _robot1Assembly = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot1Assembly.png"));
+    public Image _robot2 = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot2.png"));
+    public Image _robot2Assembly = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot2Assembly.png"));
+    public Image _robot2AssemblyOk = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot2AssemblyOk.png"));
+    public Image _robot2AssemblyNotOk = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/robot2AssemblyNotOk.png"));
+    
+    
 
     /**
      * Constructs an image loader associated to a particular component.
