@@ -86,21 +86,17 @@ public class SlaveOutputMailBox implements MailBox {
      * <code>MasterInputMailBox</code>
      * @param Command that the Slave wants to send to the Master
      */
-    public void sendCommand(MailboxData command) {
+    public void sendCommand(MailboxData command) throws IOException {
         synchronized (_out) {
-            try {
-                _out.writeObject(command);
-                _out.flush();
-            } catch (IOException ex) {
-                _logger.log(Level.SEVERE, null, ex);
-            }
+            _out.writeObject(command);
+            _out.flush();
         }
     }
 
     /**
      * Receive response from <code>MasterInputMailBox</code>
      */
-    public void receiveCommand(){
+    public void receiveCommand() {
         try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
             _logger.log(Level.FINE, "Received response from MasterInputMailBox> {0}", _in.readObject());
