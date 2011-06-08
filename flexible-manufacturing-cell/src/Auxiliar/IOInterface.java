@@ -48,7 +48,7 @@ public class IOInterface implements Runnable {
     }
 
     /**
-     *
+     * Binds to a port
      */
     public void bind() {
         try {
@@ -59,7 +59,7 @@ public class IOInterface implements Runnable {
     }
 
     /**
-     *
+     * Listening requests and send them to the process
      */
     public void run() {
 
@@ -91,6 +91,10 @@ public class IOInterface implements Runnable {
         }
     }
 
+    /**
+     * Sends a command to the network using broadcast
+     * @param command Command to be sent
+     */
     public void send(short command) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -108,10 +112,18 @@ public class IOInterface implements Runnable {
         }
     }
 
+    /**
+     * Sets the IOProcess
+     * @param iop IOProcess
+     */
     public void setProcess(IOProcess iop) {
         process = iop;
     }
 
+    /**
+     * Sets the port for communication
+     * @param i Port number
+     */
     public void setPortLag(int i) {
         portS = portS + i;
     }

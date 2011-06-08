@@ -7,8 +7,8 @@ package Auxiliar;
 import java.awt.Point;
 
 /**
- *
- * @author Francesco
+ * class where all constants used by the application are defined
+ * @author Echoplex
  */
 public class Constants {
 
