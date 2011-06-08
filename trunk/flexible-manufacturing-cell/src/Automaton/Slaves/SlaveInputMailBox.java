@@ -32,6 +32,7 @@ public class SlaveInputMailBox implements MailBox {
     private String _id;
     private ServerSocket _serverSocket;
     private Slave _slave;
+    private final static Logger _logger = Logger.getLogger(SlaveInputMailBox.class.getName());
 
     public SlaveInputMailBox(int id, Slave slave){
         _id = "Slave" + id;
@@ -45,11 +46,11 @@ public class SlaveInputMailBox implements MailBox {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty(_id + ".port"));
             _serverSocket = new ServerSocket(port);
-            Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.INFO, "Server listening at port {0}", port);
+            _logger.log(Level.INFO, "Server listening at port {0}", port);
         } catch (UnknownHostException ex) {
-            Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -83,7 +84,7 @@ public class SlaveInputMailBox implements MailBox {
                         try {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                            //Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.INFO, "Received> {0}", in.readObject());
+                            //_logger.log(Level.INFO, "Received> {0}", in.readObject());
                             
                             Object o = in.readObject();
                             if(o instanceof Command){
@@ -113,15 +114,15 @@ public class SlaveInputMailBox implements MailBox {
                             out.writeObject(ok);
                             skCliente.close();
                         } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+                            _logger.log(Level.SEVERE, null, ex);
                         } catch (IOException ex) {
-                            Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+                            _logger.log(Level.SEVERE, null, ex);
                         }
                     }
                 });
                 t.start();
             } catch (IOException ex) {
-                Logger.getLogger(SlaveInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+                _logger.log(Level.SEVERE, null, ex);
             }
         }
     }
