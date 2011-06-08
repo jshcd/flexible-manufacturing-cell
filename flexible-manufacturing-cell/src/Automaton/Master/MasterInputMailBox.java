@@ -8,6 +8,7 @@ import Auxiliar.Command;
 import Auxiliar.Constants;
 import Auxiliar.MailboxData;
 import Auxiliar.MailBox;
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -108,52 +109,66 @@ public class MasterInputMailBox implements MailBox {
     }
 
     public void startServer() {
-        startConnection();
-        while (true) {
-            try {
+        try {
+            startConnection();        
+            while (true) {
                 final Socket skCliente = _serverSocket.accept();
                 Thread t = new Thread(new Runnable() {
                     public void run() {
                         try {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-
                             Object o = in.readObject();
                             Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.FINE, "Received> {0}", o);
-
-                           _logger.log(Level.FINE, "Received> {0}", o);
-
-                            
-                            if(o instanceof Command){
-                                if(((Command)o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED){
+                            _logger.log(Level.FINE, "Received> {0}", o);
+                            if (o instanceof Command) {
+                                if (((Command) o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED) {
                                     _master.setConnectionStatus(Constants.SLAVE1_ID, true);
-                                }else if(((Command)o).getCommand() == Constants.COMMAND_SLAVE2_CONNECTED){
+                                } else if (((Command) o).getCommand() == Constants.COMMAND_SLAVE2_CONNECTED) {
                                     _master.setConnectionStatus(Constants.SLAVE2_ID, true);
-                                }else if(((Command)o).getCommand() == Constants.COMMAND_SLAVE3_CONNECTED){
+                                } else if (((Command) o).getCommand() == Constants.COMMAND_SLAVE3_CONNECTED) {
                                     _master.setConnectionStatus(Constants.SLAVE3_ID, true);
                                 }
-                            }else if(o instanceof Slave1Data){
-                                _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data)o);
-                            }else if(o instanceof Slave2Data){
-                                _master.setCanvasStatus(Constants.SLAVE2_ID, (Slave2Data)o);
-                            }else if(o instanceof Slave3Data){
-                                _master.setCanvasStatus(Constants.SLAVE3_ID, (Slave3Data)o);
+                            } else if (o instanceof Slave1Data) {
+                                _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data) o);
+                                System.out.println("Slave1Data");
+                            } else if (o instanceof Slave2Data) {
+                                _master.setCanvasStatus(Constants.SLAVE2_ID, (Slave2Data) o);
+                                System.out.println("Slave2Data");
+                            } else if (o instanceof Slave3Data) {
+                                _master.setCanvasStatus(Constants.SLAVE3_ID, (Slave3Data) o);
+                                System.out.println("Slave3Data");
                             }
-                            
                             Ok ok = new Ok();
                             out.writeObject(ok);
                             skCliente.close();
+                        } catch (EOFException ex) {
+                            ObjectOutputStream out = null;
+                            try {
+                                out = new ObjectOutputStream(skCliente.getOutputStream());
+                                Ok ok = new Ok();
+                                out.writeObject(ok);
+                                skCliente.close();
+                            } catch (IOException ex1) {
+                                Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex1);
+                            } finally {
+                                try {
+                                    out.close();
+                                } catch (IOException ex1) {
+                                    Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex1);
+                                }
+                            }
                         } catch (ClassNotFoundException ex) {
                             _logger.log(Level.SEVERE, null, ex);
                         } catch (IOException ex) {
-                           _logger.log(Level.SEVERE, null, ex);
+                            _logger.log(Level.SEVERE, null, ex);
                         }
                     }
                 });
                 t.start();
-            } catch (IOException ex) {
-                _logger.log(Level.SEVERE, null, ex);
             }
+        } catch (IOException ex) {
+            _logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
