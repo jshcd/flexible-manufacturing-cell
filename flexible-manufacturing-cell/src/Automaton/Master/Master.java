@@ -6,6 +6,7 @@ import Auxiliar.Command;
 import Auxiliar.Constants;
 import Auxiliar.MailboxData;
 import Element.Piece.Piece;
+import Element.Piece.Piece.PieceType;
 import Scada.DataBase.DBManager;
 import Scada.Gui.Canvas;
 import Element.Robot.Robot2;
@@ -104,7 +105,7 @@ public class Master {
             _reportData._rightPiecesAllExec = d.getAllRightPieces();
             _reportData._wrongPiecesAllExec = d.getAllWrongPieces();
             _dbmanager.writeReportData(_reportData);
-           }
+        }
         _monitor.setCanvasStatus(slaveId, data);
     }
 
@@ -133,8 +134,8 @@ public class Master {
         } else {
             _reportData._nRestarts++;
         }
-       _dbmanager.writeReportData(_reportData);
-        
+        _dbmanager.writeReportData(_reportData);
+
         Command command1 = new Command(Constants.START_SLAVE1);
         _outputMailBox.sendInformation(command1, Constants.SLAVE1_ID);
         Command command2 = new Command(Constants.START_SLAVE2);
@@ -147,7 +148,7 @@ public class Master {
 
     public void stopSystem() {
         _reportData._nNormalStops++;
-      _dbmanager.writeReportData(_reportData);
+        _dbmanager.writeReportData(_reportData);
         Command command = new Command(Constants.NORMAL_STOP_ORDER);
         _outputMailBox.sendInformation(command, Constants.SLAVE1_ID);
         _outputMailBox.sendInformation(command, Constants.SLAVE2_ID);
@@ -158,7 +159,7 @@ public class Master {
     public void emergencyStop() {
         _reportData._nEmergencyStops++;
         _dbmanager.writeReportData(_reportData);
-       Command command = new Command(Constants.EMERGENCY_STOP_ORDER);
+        Command command = new Command(Constants.EMERGENCY_STOP_ORDER);
         _outputMailBox.sendInformation(command, Constants.SLAVE1_ID);
         _outputMailBox.sendInformation(command, Constants.SLAVE2_ID);
         _outputMailBox.sendInformation(command, Constants.SLAVE3_ID);
@@ -221,7 +222,18 @@ public class Master {
         return _configurationData;
     }
 
-    public void updateRobot(AutomatonState automatonState, Piece _state) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void updateRobot(AutomatonState automatonState, Piece piece) {
+        if (piece != null) {
+            if (piece.getType().equals(PieceType.assembly)) {
+                
+            } else if (piece.getType().equals(PieceType.weldedAssembly)) {
+                
+            } else if (piece.getType().equals(PieceType.weldedAssemblyOk)) {
+                
+            } else if (piece.getType().equals(PieceType.weldedAssemblyNotOk)) {
+                
+            }
+
+        }
     }
 }
