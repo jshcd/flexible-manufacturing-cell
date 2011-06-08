@@ -35,7 +35,7 @@ public class MasterInputMailBox implements MailBox {
     public MasterInputMailBox(Master m){
         _id = "Master";
         _master = m;
-      //  _logger.addHandler(m.getMonitor().getLog().getLogHandler());
+        _logger.addHandler(m.getMonitor().getLog().getLogHandler());
     }
 
     /**
@@ -48,7 +48,7 @@ public class MasterInputMailBox implements MailBox {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Master.port"));
             _serverSocket = new ServerSocket(port);
-            _logger.log(Level.FINE, "Server listening at port {0}", port);
+            _logger.log(Level.FINE, "MasterInputMailBox listening at port {0}", port);
 
         } catch (UnknownHostException ex) {
            _logger.log(Level.SEVERE, null, ex);
@@ -101,7 +101,7 @@ public class MasterInputMailBox implements MailBox {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
                             o = in.readObject();
-                            _logger.log(Level.FINE, "MasterInputMailBox received {0}", o);
+                            _logger.log(Level.INFO, "MasterInputMailBox received {0}", o);
                             if (o instanceof Command) {
                                 if (((Command) o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED) {
                                     _master.setConnectionStatus(Constants.SLAVE1_ID, true);
