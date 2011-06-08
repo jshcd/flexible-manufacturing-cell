@@ -35,20 +35,20 @@ public class MasterInputMailBox implements MailBox {
     public MasterInputMailBox(Master m){
         _id = "Master";
         _master = m;
-      //  _logger.addHandler(m.getMonitor().getLog().getLogHandler());
+        _logger.addHandler(m.getMonitor().getLog().getLogHandler());
     }
 
     /**
-     * 
+     * Starts a connection at the corresponding port
      */
     public void startConnection() {
        try {
             Properties prop = new Properties();
-            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Master.port"));
             _serverSocket = new ServerSocket(port);
-            _logger.log(Level.FINE, "Server listening at port {0}", port);
+            _logger.log(Level.INFO, "MasterInputMailBox listening at port {0}", port);
 
         } catch (UnknownHostException ex) {
            _logger.log(Level.SEVERE, null, ex);
@@ -105,10 +105,13 @@ public class MasterInputMailBox implements MailBox {
                             if (o instanceof Command) {
                                 if (((Command) o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED) {
                                     _master.setConnectionStatus(Constants.SLAVE1_ID, true);
+                                    _logger.log(Level.INFO, "Slave 1 is connected");
                                 } else if (((Command) o).getCommand() == Constants.COMMAND_SLAVE2_CONNECTED) {
                                     _master.setConnectionStatus(Constants.SLAVE2_ID, true);
+                                    _logger.log(Level.INFO, "Slave 2 is connected");
                                 } else if (((Command) o).getCommand() == Constants.COMMAND_SLAVE3_CONNECTED) {
                                     _master.setConnectionStatus(Constants.SLAVE3_ID, true);
+                                    _logger.log(Level.INFO, "Slave 3 is connected");
                                 }
                             } else if (o instanceof Slave1Data) {
                                 _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data) o);
