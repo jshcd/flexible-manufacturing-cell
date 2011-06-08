@@ -68,7 +68,16 @@ public class Slave3 implements Slave, IOProcess {
             }
         });
         t.start();
-        reportToMaster(new Command(Constants.COMMAND_SLAVE3_CONNECTED));
+        connectToMaster();
+    }
+
+    public void connectToMaster() {
+        try {
+            reportToMaster(new Command(Constants.COMMAND_SLAVE3_CONNECTED));
+        } catch (IOException ex) {
+            this._outputMailBox.startConnection();
+            connectToMaster();
+        }
     }
 
     public Sensor getSensor8() {
@@ -107,7 +116,13 @@ public class Slave3 implements Slave, IOProcess {
         _statusData.setRejectedBeltRunning(_rejectedBelt.isMoving());
         _statusData.setRightPieces(_rightPieces);
         _statusData.setWrongPieces(_wrongPieces);
-        reportToMaster(_statusData);
+
+        try {
+            reportToMaster(_statusData);
+        } catch (IOException ex) {
+            System.out.println("Master not found: retrying in 5 secs");
+            this._outputMailBox.startConnection();
+        }
     }
 
     public final void initialize() {
@@ -195,14 +210,22 @@ public class Slave3 implements Slave, IOProcess {
         _stopped = false;
         _acceptedBelt.startContainer();
         _rejectedBelt.startContainer();
-        reportToMaster(new Command(Constants.SLAVE_THREE_STARTING));
+        try {
+            reportToMaster(new Command(Constants.SLAVE_THREE_STARTING));
+        } catch (IOException ex) {
+            Logger.getLogger(Slave3.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void stop() {
         _stopped = true;
         _acceptedBelt.stopContainer();
         _rejectedBelt.stopContainer();
-        reportToMaster(new Command(Constants.SLAVE_THREE_STOPPING));
+        try {
+            reportToMaster(new Command(Constants.SLAVE_THREE_STOPPING));
+        } catch (IOException ex) {
+            Logger.getLogger(Slave3.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void runCommand(int command) {
@@ -251,7 +274,7 @@ public class Slave3 implements Slave, IOProcess {
         }
     }
 
-    public void reportToMaster(MailboxData data) {
+    public void reportToMaster(MailboxData data) throws IOException {
         _outputMailBox.startConnection();
         _outputMailBox.acceptConnection();
         _outputMailBox.sendCommand(data);

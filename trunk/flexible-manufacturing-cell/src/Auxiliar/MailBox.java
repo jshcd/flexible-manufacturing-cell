@@ -6,6 +6,8 @@
 
 package Auxiliar;
 
+import java.io.IOException;
+
 public interface MailBox {
     
     public void startConnection();
@@ -14,9 +16,9 @@ public interface MailBox {
 
     public void acceptConnection();
 
-    public void sendCommand(MailboxData command);
+    public void sendCommand(MailboxData command) throws IOException;
 
-    public void receiveCommand();
+    public void receiveCommand() throws IOException;
 
     public String getId();
 }
