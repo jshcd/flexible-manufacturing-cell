@@ -10,8 +10,6 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,10 +27,6 @@ import Auxiliar.MailboxData;
 import Element.Piece.Piece;
 import Scada.DataBase.ReportData;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Monitor where the whole system state is displayed: factory simulation,
@@ -72,7 +66,6 @@ public class MonitorWindow extends JFrame {
                     _buttonStart.setEnabled(true);
                     _buttonStop.setEnabled(true);
                     _buttonEmergencyStop.setEnabled(true);
-
                     _canvas.setEmergencyStopped(false);
                     _masterAutomaton.startSystem();
                 }
@@ -87,13 +80,10 @@ public class MonitorWindow extends JFrame {
             } else if (e.getSource() == _buttonStop) {
                 _buttonStop.setEnabled(false);
                 _buttonEmergencyStop.setEnabled(false);
-                _masterAutomaton.getReportData()._nNormalStops++;
                 _masterAutomaton.stopSystem();
                 _buttonStart.setEnabled(true);
             } else if (e.getSource() == _buttonReport) {
-               // if (_masterAutomaton.getReportData()._firstStart) {
-                    _masterAutomaton.getDbmanager().writeReportData(_masterAutomaton.getReportData());
-              //  }
+                _masterAutomaton.getDbmanager().writeReportData(_masterAutomaton.getReportData());
                 _report.getValues(_masterAutomaton.getDbmanager().readReportData());
                 _report.setVisible(true);
             } else if (e.getSource() == _buttonConfiguration) {
@@ -240,8 +230,8 @@ public class MonitorWindow extends JFrame {
                 break;
         }
     }
-    
-    public void updateRobot2(AutomatonState automatonState, Piece piece){
+
+    public void updateRobot2(AutomatonState automatonState, Piece piece) {
         _canvas.updateRobot2(automatonState, piece);
     }
 
