@@ -26,18 +26,21 @@ public class MasterInputMailBox implements MailBox {
     private String _id;
     private ServerSocket _serverSocket;
     private Master _master;
-     protected Logger _logger = Logger.getLogger(MasterInputMailBox.class.toString());
+    private static final Logger _logger = Logger.getLogger(MasterInputMailBox.class.toString());
+
     /**
-     * Constructs a new <code>MasterMailBox</code> with the indicated id
-     * @param id Identifier of the <code>MasterMailBox</code>
+     * Constructs a new <code>MasterMailBox</code>
+     * @param m <code>Master</code> who created the mailbox
      */
     public MasterInputMailBox(Master m){
         _id = "Master";
         _master = m;
       //  _logger.addHandler(m.getMonitor().getLog().getLogHandler());
-       
- }
+    }
 
+    /**
+     * 
+     */
     public void startConnection() {
        try {
             Properties prop = new Properties();
@@ -55,50 +58,23 @@ public class MasterInputMailBox implements MailBox {
     }
 
     public void endConnection() {
-        /*
-        try {
-            _serverSocket.close();
-        } catch (IOException ex) {
-            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         */
+        _logger.log(Level.FINE, "Not supoorted yet.");
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void acceptConnection() {
-        /*
-        try {
-            Socket skCliente = _serverSocket.accept();
-            _out = new ObjectOutputStream(skCliente.getOutputStream());
-            _in = new ObjectInputStream(skCliente.getInputStream());
-            _out.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         */
+        _logger.log(Level.FINE, "Not supoorted yet.");
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void sendCommand(MailboxData command) {
-        /*
-        try {
-            _out.writeObject(command);
-            _out.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         */
+        _logger.log(Level.FINE, "Not supoorted yet.");
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void receiveCommand() {
-        /*
-        try {
-            _message = (MailboxData) _in.readObject();
-            System.out.println("El objeto que ha llegado es del tipo " + _message.getClass());
-        } catch (IOException ex) {
-            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         */
+        _logger.log(Level.FINE, "Not supoorted yet.");
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -121,7 +97,6 @@ public class MasterInputMailBox implements MailBox {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
                             o = in.readObject();
-                            Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.FINE, "Received> {0}", o);
                             _logger.log(Level.FINE, "Received> {0}", o);
                             if (o instanceof Command) {
                                 if (((Command) o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED) {
@@ -157,12 +132,12 @@ public class MasterInputMailBox implements MailBox {
                                     _master.setConnectionStatus(Constants.SLAVE3_ID, false);
                                 }
                             } catch (IOException ex1) {
-                                Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex1);
+                               _logger.log(Level.SEVERE, null, ex1);
                             } finally {
                                 try {
                                     out.close();
                                 } catch (IOException ex1) {
-                                    Logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex1);
+                                   _logger.log(Level.FINE, null, ex1);
                                 }
                             }
                         } catch (ClassNotFoundException ex) {
@@ -175,7 +150,7 @@ public class MasterInputMailBox implements MailBox {
                 t.start();
             }
         } catch (IOException ex) {
-            _logger.getLogger(MasterInputMailBox.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 }
