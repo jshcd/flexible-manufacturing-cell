@@ -270,6 +270,5 @@ public class Slave2 implements Slave, IOProcess {
     }
 
     public void normalStop() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

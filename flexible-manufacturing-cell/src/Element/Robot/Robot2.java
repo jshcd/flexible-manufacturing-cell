@@ -558,6 +558,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * Sertores the state after performing an action
      */
     private void restoreState() {
+        _commandReceived= false;
         if (_loadedPiece == null) {
             if (this._qualityCompletedNotOK) {
                 _state = AutomatonState.q4;
@@ -571,9 +572,13 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         } else {
             if (_loadedPiece.equals(Piece.PieceType.assembly)) {
                 _state = AutomatonState.q1;
-            } else if (_loadedPiece.equals(Piece.PieceType.assembly)) {
+            } else if (_loadedPiece.equals(Piece.PieceType.weldedAssembly)) {
+                _state = AutomatonState.q3;
+            } else if (_loadedPiece.equals(Piece.PieceType.weldedAssemblyOk)) {
+                _state = AutomatonState.q6;
+            } else if (_loadedPiece.equals(Piece.PieceType.weldedAssemblyNotOk)) {
+                _state = AutomatonState.q7;
             }
-
         }
     }
 
