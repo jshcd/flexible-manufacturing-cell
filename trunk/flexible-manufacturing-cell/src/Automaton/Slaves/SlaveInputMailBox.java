@@ -31,8 +31,8 @@ public class SlaveInputMailBox implements MailBox {
 
     /**
      * Constructor of the class
-     * @param Identifier of the <code>Slave</code> who owns the <code>SlaveInputMailBox</code>
-     * @param <code>Slave</code> who owns the <code>SlaveInputMailBox</code>
+     * @param id Identifier of the <code>Slave</code> who owns the <code>SlaveInputMailBox</code>
+     * @param slave <code>Slave</code> who owns the <code>SlaveInputMailBox</code>
      */
     public SlaveInputMailBox(int id, Slave slave) {
         _id = "Slave" + id;
@@ -76,7 +76,7 @@ public class SlaveInputMailBox implements MailBox {
     /**
      * Sends a <code>MailboxData</code> command to the
      * <code>MasterInputMailBox</code>
-     * @param Command that the Slave wants to send to the Master
+     * @param command that the Slave wants to send to the Master
      */
     public void sendCommand(MailboxData command) {
         _logger.log(Level.FINE, "Not supoorted yet.");
