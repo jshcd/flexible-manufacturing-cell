@@ -222,15 +222,13 @@ public class Slave3 implements Slave, IOProcess {
         _stopped = true;
         _acceptedBelt.stopContainer();
         _rejectedBelt.stopContainer();
-        _rightPieces = 0;
-        _wrongPieces = 0;
-
-
         try {
             reportToMaster(new Command(Constants.SLAVE_THREE_STOPPING));
         } catch (IOException ex) {
             _logger.log(Level.SEVERE, null, ex);
         }
+          _rightPieces = 0;
+        _wrongPieces = 0;
     }
 
     public void runCommand(int command) {
@@ -323,6 +321,8 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public void normalStop() {
+         _rightPieces = 0;
+        _wrongPieces = 0;
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
