@@ -39,6 +39,8 @@ public class Master {
     boolean _slave1Online = false;
     boolean _slave2Online = false;
     boolean _slave3Online = false;
+     private int _rightAllPieces;
+    private int _wrongAllPieces;
 
     // TODO: hay que borrarlo pero se usa para pruebas
     public static void main(String args[]) {
@@ -53,11 +55,12 @@ public class Master {
         _dbmanager = new DBManager();
         _configurationData = null;
         _monitor = m;
-        _reportData = _dbmanager.readReportData();
+        //_reportData = _dbmanager.readReportData();
+        _reportData = new ReportData();
         _reportData._firstStart = true;
         _robot = new Robot2();
         _inputMailBox = new MasterInputMailBox(this);
-        _logger.log(Level.INFO, "prueba");
+        _logger.log(Level.INFO, "System started");
         Thread t = new Thread(new Runnable() {
 
             public void run() {
@@ -94,16 +97,14 @@ public class Master {
     }
 
     public void setCanvasStatus(int slaveId, MailboxData data) {
-        if(slaveId == Constants.SLAVE3_ID){
-        Slave3Data d = ((Slave3Data) data);
-
-//                System.out.println("ok pieces " +d.getAcceptedBeltPieces().size());
-               _reportData._rightPiecesCurrentExec = d.getRightPieces();
-                _reportData._wrongPiecesCurrentExec = d.getWrongPieces();
-                _dbmanager.writeReportData(_reportData);
-             
+        if (slaveId == Constants.SLAVE3_ID) {
+            Slave3Data d = ((Slave3Data) data);
+            _reportData._rightPiecesCurrentExec = d.getRightPieces();
+            _reportData._wrongPiecesCurrentExec = d.getWrongPieces();
+            _reportData._rightPiecesAllExec = _rightAllPieces +d.getRightPieces();
+            _reportData._wrongPiecesAllExec = _wrongAllPieces +d.getWrongPieces();
+            _dbmanager.writeReportData(_reportData);             
            }
-
         _monitor.setCanvasStatus(slaveId, data);
     }
 
@@ -122,11 +123,19 @@ public class Master {
     public void startSystem() {
         if (_reportData._firstStart) {
             _reportData._firstStart = false;
+            _reportData._rightPiecesAllExec = 0;
+            _reportData._wrongPiecesAllExec = 0;
             _reportData._rightPiecesCurrentExec = 0;
             _reportData._wrongPiecesCurrentExec = 0;
+            _reportData._nRestarts = 0;
+            _reportData._nEmergencyStops = 0;
+            _reportData._nNormalStops = 0;
         } else {
             _reportData._nRestarts++;
         }
+         _reportData._rightPiecesCurrentExec = 0;
+        _reportData._wrongPiecesCurrentExec = 0;
+        _dbmanager.writeReportData(_reportData);
 
         Command command1 = new Command(Constants.START_SLAVE1);
         _outputMailBox.sendInformation(command1, Constants.SLAVE1_ID);
@@ -140,6 +149,8 @@ public class Master {
 
     public void stopSystem() {
         _reportData._nNormalStops++;
+        _reportData._rightPiecesCurrentExec = 0;
+        _reportData._wrongPiecesCurrentExec = 0;
         _dbmanager.writeReportData(_reportData);
         Command command = new Command(Constants.NORMAL_STOP_ORDER);
         _outputMailBox.sendInformation(command, Constants.SLAVE1_ID);
@@ -148,9 +159,9 @@ public class Master {
     }
 
     public void emergencyStop() {
-         _reportData._nEmergencyStops++;
-         _reportData._rightPiecesCurrentExec = 0;
-         _reportData._wrongPiecesCurrentExec = 0;
+        _reportData._nEmergencyStops++;
+        _reportData._rightPiecesCurrentExec = 0;
+        _reportData._wrongPiecesCurrentExec = 0;
         _dbmanager.writeReportData(_reportData);
         Command command = new Command(Constants.EMERGENCY_STOP_ORDER);
         _outputMailBox.sendInformation(command, Constants.SLAVE1_ID);
