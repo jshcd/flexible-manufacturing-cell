@@ -1,5 +1,7 @@
 package Auxiliar;
 
+import java.io.IOException;
+
 /**
  * Class that defines a <code>MailBox</code> and the communication between them
  * @author Echoplex
@@ -25,7 +27,7 @@ public interface MailBox {
      * Sends a command to another <code>MailBox</code>
      * @param Command which is going to be send
      */
-    public void sendCommand(MailboxData command);
+    public void sendCommand(MailboxData command) throws IOException;
 
     /**
      * Receives a response from the other <code>MailBox</code>
