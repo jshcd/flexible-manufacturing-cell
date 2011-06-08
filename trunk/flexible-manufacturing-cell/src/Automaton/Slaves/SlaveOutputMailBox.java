@@ -68,7 +68,7 @@ public class SlaveOutputMailBox implements MailBox {
     }
 
     /**
-     * 
+     * Prepares the connection to be able to write through it
      */
     public void acceptConnection() {
         try {
@@ -81,17 +81,31 @@ public class SlaveOutputMailBox implements MailBox {
         }
     }
 
-    public void sendCommand(MailboxData command) throws IOException {
+    /**
+     * Sends a <code>MailboxData</code> command to the
+     * <code>MasterInputMailBox</code>
+     * @param Command that the Slave wants to send to the Master
+     */
+    public void sendCommand(MailboxData command) {
         synchronized (_out) {
-            _out.writeObject(command);
-            _out.flush();
+            try {
+                _out.writeObject(command);
+                _out.flush();
+            } catch (IOException ex) {
+                _logger.log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-    public void receiveCommand() throws IOException {
+    /**
+     * Receive response from <code>MasterInputMailBox</code>
+     */
+    public void receiveCommand(){
         try {
             _in = new ObjectInputStream(_requestSocket.getInputStream());
-            _logger.log(Level.FINE, "Received response> Object of the class {0}", _in.readObject().getClass());
+            _logger.log(Level.FINE, "Received response from MasterInputMailBox> {0}", _in.readObject());
+        } catch (IOException ex) {
+            Logger.getLogger(SlaveOutputMailBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             _logger.log(Level.SEVERE, null, ex);
         }
