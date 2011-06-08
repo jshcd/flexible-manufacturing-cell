@@ -12,8 +12,7 @@ import javax.swing.border.TitledBorder;
 
 /**
  * Panel where log messages can be displayed.
- * 
- * @author
+ * @author Echoplex
  */
 public class Log extends JPanel {
 
@@ -31,6 +30,9 @@ public class Log extends JPanel {
         layoutComponents();
     }
 
+    /**
+     * Initializes the components of the panel
+     */
     private void createComponents() {
         _txtLog = new JTextArea();
         _txtLog.setWrapStyleWord(true);
@@ -43,6 +45,9 @@ public class Log extends JPanel {
         _logHandler = new JTextAreaHandler(_txtLog);
     }
 
+    /**
+     * Distributes the components in the panel
+     */
     private void layoutComponents() {
         setLayout(new BorderLayout());
         setBorder(new TitledBorder(Constants.TITLE_LOG));
@@ -50,7 +55,6 @@ public class Log extends JPanel {
         add(_scrLogs, BorderLayout.CENTER);
     }
 
-  
     /**
      * Gets the handler that a <code>Logger</code> can use to send log messages.
      *
