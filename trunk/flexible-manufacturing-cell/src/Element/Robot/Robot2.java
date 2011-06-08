@@ -1,5 +1,6 @@
 package Element.Robot;
 
+import Automaton.Master.Master;
 import Auxiliar.AutomatonState;
 import Element.Piece.Piece;
 import Auxiliar.Constants;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 
 public class Robot2 implements Robot, Runnable, IOProcess {
 
+    private Master _master;
     private RobotOutputMailBox _mailBox;
     private AutomatonState _state;
     private AutomatonState _previousState;
@@ -77,6 +79,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            _master.updateRobot(_state, _loadedPiece);
 
             if (_stateUnchanged > 50) {
                 restoreState();
@@ -434,4 +438,10 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                 
         }
     }
+
+    public void setMaster(Master _master) {
+        this._master = _master;
+    }
+    
+    
 }

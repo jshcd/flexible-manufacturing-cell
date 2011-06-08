@@ -1,9 +1,11 @@
 package Automaton.Master;
 
 import Automaton.Slaves.Data.Slave3Data;
+import Auxiliar.AutomatonState;
 import Auxiliar.Command;
 import Auxiliar.Constants;
 import Auxiliar.MailboxData;
+import Element.Piece.Piece;
 import Scada.DataBase.DBManager;
 import Scada.Gui.Canvas;
 import Element.Robot.Robot2;
@@ -56,6 +58,7 @@ public class Master {
         _reportData = new ReportData();
         _reportData._firstStart = true;
         _robot = new Robot2();
+        _robot.setMaster(this);
         _inputMailBox = new MasterInputMailBox(this);
         _logger.log(Level.INFO, "System started");
         Thread t = new Thread(new Runnable() {
@@ -216,5 +219,9 @@ public class Master {
 
     public MasterConfigurationData getConfigurationData() {
         return _configurationData;
+    }
+
+    public void updateRobot(AutomatonState automatonState, Piece _state) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }
