@@ -19,7 +19,7 @@ public class Constants {
     /*
      *  Constants used by mailboxes
      */
-    public final static String MAILBOXES_PROPERTIES_PATH = "build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties";
+    public final static String MAILBOXES_PROPERTIES_PATH = "Mailboxes.properties";
     public final static int START_SLAVE1 = 1001;
     public final static int START_SLAVE2 = 1002;
     public final static int START_SLAVE3 = 1003;
