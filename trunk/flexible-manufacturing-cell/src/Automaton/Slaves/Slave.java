@@ -9,7 +9,9 @@ import java.io.IOException;
 public interface Slave {
     public void start();
 
-    public void stop();
+    public void emergencyStop();
+    
+    public void normalStop();
     
     public void runCommand(int command);
 
@@ -23,6 +25,5 @@ public interface Slave {
     
     public void updateStatusData();
 
-    public void normalStop();
     
 }

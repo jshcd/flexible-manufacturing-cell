@@ -306,7 +306,7 @@ public class Slave1 implements Slave, IOProcess {
      * Emergency stop
      */
 
-    public void stop() {
+    public void emergencyStop() {
         System.out.println("S1 STOPPING");
         _finishing = true;
         _stopped = true;
@@ -331,7 +331,7 @@ public class Slave1 implements Slave, IOProcess {
                 start();
                 break;
             case Constants.EMERGENCY_STOP_ORDER:
-                stop();
+                emergencyStop();
                 break;
             case Constants.NORMAL_STOP_ORDER:
                 _finishing = true;
@@ -534,5 +534,9 @@ public class Slave1 implements Slave, IOProcess {
         sensor_range = (double) md._sensorRange;
         pieceSize = (double) md._pieceSize;
         initialize();
+    }
+
+    public void normalStop() {
+        _finishing = true;
     }
 }

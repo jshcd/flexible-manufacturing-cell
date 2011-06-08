@@ -181,7 +181,7 @@ public class Slave2 implements Slave, IOProcess {
         }
     }
 
-    public void stop() {
+    public void emergencyStop() {
         _stopped = true;
         _weldingStation.stopContainer();
         _qualityStation.stopContainer();
@@ -271,5 +271,8 @@ public class Slave2 implements Slave, IOProcess {
         sensor_range = (double) md._sensorRange;
         _sucessRate = md._successRate;
         initialize();
+    }
+
+    public void normalStop() {
     }
 }
