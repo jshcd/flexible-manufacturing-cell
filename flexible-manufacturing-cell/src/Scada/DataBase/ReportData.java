@@ -2,7 +2,7 @@ package Scada.DataBase;
 
 /**
  * Defines the structure of a Report
- * @author 
+ * @author Echoplex
  */
 public class ReportData {
 
@@ -50,6 +50,6 @@ public class ReportData {
      * Constructor
      */
     public ReportData() {
-        /* Does anything */
+        
     }
 }

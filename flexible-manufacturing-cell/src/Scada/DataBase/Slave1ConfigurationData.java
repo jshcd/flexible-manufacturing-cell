@@ -1,4 +1,3 @@
-
 package Scada.DataBase;
 
 import java.io.Serializable;
@@ -8,31 +7,29 @@ import java.io.Serializable;
  * @author Echoplex
  */
 public class Slave1ConfigurationData implements Serializable {
-    
+
     /**
      * Gear Belt configuration instance
      */
     public BeltConfigurationData _gearBeltConfiguration;
-    
     /**
      * Axis Belt configuration instance
      */
     public BeltConfigurationData _axisBeltConfiguration;
-    
     /**
      * Welding Belt configuration instance
      */
     public BeltConfigurationData _weldingBeltConfiguration;
-    
     /**
      * Defines the time that the assembly station gets to activate
      */
     public int _assemblyActivationTime;
-    
+
     /**
      * Constructor
      */
-    public  Slave1ConfigurationData(){}
+    public Slave1ConfigurationData() {
+    }
 
     /**
      * Constructor
@@ -41,8 +38,8 @@ public class Slave1ConfigurationData implements Serializable {
      * @param _weldingBeltConfiguration New welding belt configuration
      * @param _assemblyActivationTime New assembly station activation time
      */
-    public Slave1ConfigurationData(BeltConfigurationData _gearBeltConfiguration, 
-            BeltConfigurationData _axisBeltConfiguration, 
+    public Slave1ConfigurationData(BeltConfigurationData _gearBeltConfiguration,
+            BeltConfigurationData _axisBeltConfiguration,
             BeltConfigurationData _weldingBeltConfiguration,
             int _assemblyActivationTime) {
         this._gearBeltConfiguration = _gearBeltConfiguration;

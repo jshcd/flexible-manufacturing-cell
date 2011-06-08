@@ -41,7 +41,6 @@ public class Log extends JPanel {
         _txtLog.setBackground(Color.WHITE);
         _scrLogs = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
         _logHandler = new JTextAreaHandler(_txtLog);
     }
 

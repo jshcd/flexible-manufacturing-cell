@@ -1,4 +1,3 @@
-
 package Scada.DataBase;
 
 import java.io.Serializable;
@@ -8,21 +7,21 @@ import java.io.Serializable;
  * @author Echoplex
  */
 public class Slave3ConfigurationData implements Serializable {
-    
+
     /**
      * Accepted Belt instance
      */
     public BeltConfigurationData _acceptedBelt;
-    
     /**
      * Not Accepted - Rejected Belt instance
      */
     public BeltConfigurationData _notAcceptedBelt;
-    
+
     /**
      * Constructor
      */
-    public  Slave3ConfigurationData(){}
+    public Slave3ConfigurationData() {
+    }
 
     /**
      * Constructor of the class

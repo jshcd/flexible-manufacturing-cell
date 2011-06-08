@@ -1,4 +1,3 @@
-
 package Scada.DataBase;
 
 import Auxiliar.MailboxData;
@@ -8,6 +7,7 @@ import Auxiliar.MailboxData;
  * @author Echoplex
  */
 public class MasterConfigurationData extends MailboxData {
+
     public Slave1ConfigurationData _slave1ConfigurationData;
     public Slave2ConfigurationData _slave2ConfigurationData;
     public Slave3ConfigurationData _slave3ConfigurationData;
@@ -17,9 +17,10 @@ public class MasterConfigurationData extends MailboxData {
     public int _sensorRange;
     public int _pieceSize;
     public int _successRate;
-    
+
     /** Constructor */
-    public  MasterConfigurationData(){}
+    public MasterConfigurationData() {
+    }
 
     /**
      * Sets the clock cycle parameters
@@ -28,31 +29,31 @@ public class MasterConfigurationData extends MailboxData {
     public void setClockCycleTime(int _clockCycleTime) {
         this._clockCycleTime = _clockCycleTime;
     }
-    
+
     /**
      * Sets the sensor range parameter
      * @param _sensorRange New sensor range value
      */
-    public void setSensorRange(int _sensorRange){
+    public void setSensorRange(int _sensorRange) {
         this._sensorRange = _sensorRange;
     }
-    
+
     /**
      * Sets the piece size parameter
      * @param _pieceSize New piece size value
      */
-    public void setPieceSize(int _pieceSize){
+    public void setPieceSize(int _pieceSize) {
         this._pieceSize = _pieceSize;
     }
-    
+
     /**
      * Sets the success rate
      * @param _successRate New Success Rate value
      */
-    public void setSuccessRate(int _successRate){
+    public void setSuccessRate(int _successRate) {
         this._successRate = _successRate;
     }
-    
+
     /**
      * Sets a new instance for the Robot1 configuration parameters
      * @param _robot1ConfigurationData New instance of Robot1 Parameter Set
@@ -60,12 +61,12 @@ public class MasterConfigurationData extends MailboxData {
     public void setRobot1ConfigurationData(Robot1ConfigurationData _robot1ConfigurationData) {
         this._robot1ConfigurationData = _robot1ConfigurationData;
     }
-    
+
     /**
      * Sets a new instance for the Robot2 configuration prameters
      * @param _robot2ConfigurationData New instance of Robot2 Parameter Set
      */
-    public void setRobot2ConfigurationData(Robot2ConfigurationData _robot2ConfigurationData){
+    public void setRobot2ConfigurationData(Robot2ConfigurationData _robot2ConfigurationData) {
         this._robot2ConfigurationData = _robot2ConfigurationData;
     }
 
