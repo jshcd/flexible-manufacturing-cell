@@ -85,6 +85,10 @@ public class MasterInputMailBox implements MailBox {
         return _id;
     }
 
+    /**
+     * Starts a server which attend petitions from the <code>SlaveOutputMailBox</code>
+     * and response them with an <code>Ok</code> message
+     */
     public void startServer() {
         try {
             startConnection();        
@@ -97,7 +101,7 @@ public class MasterInputMailBox implements MailBox {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
                             o = in.readObject();
-                            _logger.log(Level.FINE, "Received> {0}", o);
+                            _logger.log(Level.FINE, "MasterInputMailBox received {0}", o);
                             if (o instanceof Command) {
                                 if (((Command) o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED) {
                                     _master.setConnectionStatus(Constants.SLAVE1_ID, true);
