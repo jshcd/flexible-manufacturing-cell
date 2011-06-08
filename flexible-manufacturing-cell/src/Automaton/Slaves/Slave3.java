@@ -2,16 +2,11 @@
 package Automaton.Slaves;
 
 import Automaton.Slaves.Data.Slave3Data;
-import Automaton.Slaves.Slave;
-import Automaton.Slaves.Slave;
-import Automaton.Slaves.SlaveOutputMailBox;
-import Automaton.Slaves.SlaveOutputMailBox;
 import Auxiliar.Command;
 import Auxiliar.Constants;
 import Auxiliar.IOInterface;
 import Auxiliar.IOProcess;
 import Auxiliar.MailboxData;
-import Element.Station.QualityControlStation;
 import Element.Conveyor.ConveyorBelt;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
@@ -26,7 +21,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -205,7 +199,7 @@ public class Slave3 implements Slave, IOProcess {
                         }
                     }
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
+                    _logger.log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -220,7 +214,7 @@ public class Slave3 implements Slave, IOProcess {
         try {
             reportToMaster(new Command(Constants.SLAVE_THREE_STARTING));
         } catch (IOException ex) {
-            Logger.getLogger(Slave3.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -235,7 +229,7 @@ public class Slave3 implements Slave, IOProcess {
         try {
             reportToMaster(new Command(Constants.SLAVE_THREE_STOPPING));
         } catch (IOException ex) {
-            Logger.getLogger(Slave3.class.getName()).log(Level.SEVERE, null, ex);
+            _logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -299,18 +293,16 @@ public class Slave3 implements Slave, IOProcess {
     public void startServer() {
         try {
             Properties prop = new Properties();
-            InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
+            InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Slave3.port"));
             ServerSocket skServidor = new ServerSocket(port);
-            _logger.log(Level.INFO, "Server listening at port {0}", port);
+            _logger.log(Level.INFO, "Slave 3 listening at port {0}", port);
             while (true) {
                 Socket skCliente = skServidor.accept();
-                _logger.log(Level.INFO, "Information received");
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                _logger.log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
-
+                _logger.log(Level.FINE, "Slave 3 received> {0}", Short.parseShort((String) in.readObject()));
                 short a = (short) 0;
                 out.writeObject(a);
                 skCliente.close();
@@ -331,5 +323,6 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public void normalStop() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
