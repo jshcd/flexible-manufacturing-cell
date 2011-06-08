@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RobotOutputMailBox implements MailBox {
+
     private String _id;
     private ObjectOutputStream _out;
     private ObjectInputStream _in;
@@ -25,8 +26,8 @@ public class RobotOutputMailBox implements MailBox {
      * Constructs a new <code>RobotMailBox</code> with the indicated id
      * @param id Identifier of the <code>RobotMailBox</code>
      */
-    public RobotOutputMailBox(int id){
-        _id = "Robot"+id;
+    public RobotOutputMailBox(int id) {
+        _id = "Robot" + id;
     }
 
     /**
@@ -48,10 +49,6 @@ public class RobotOutputMailBox implements MailBox {
         }
     }
 
-    /**
-     *
-     * @param destiny
-     */
     public void endConnection() {
         try {
             _requestSocket.close();
@@ -70,7 +67,7 @@ public class RobotOutputMailBox implements MailBox {
     }
 
     public void sendCommand(MailboxData command) {
-         try {
+        try {
             _out.writeObject(command);
             _out.flush();
         } catch (IOException ex) {
@@ -90,8 +87,8 @@ public class RobotOutputMailBox implements MailBox {
     }
 
     /**
-     * Returns the identifier of the <code>RobotMailBox</code>
-     * @return Identifier of the <code>RobotMailBox</code>
+     * Returns the identifier of the RobotMailBox
+     * @return Identifier of the RobotMailBox
      */
     public String getId() {
         return _id;

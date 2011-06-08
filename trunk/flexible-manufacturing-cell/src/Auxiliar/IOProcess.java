@@ -1,13 +1,9 @@
 package Auxiliar;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- *
- * @author Portatil
+ * Class that uses the Interface of 16 bits
+ * @author Echoplex
  */
 public interface IOProcess {
     

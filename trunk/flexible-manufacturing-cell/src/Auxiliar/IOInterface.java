@@ -17,30 +17,50 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class that defines the behaviour of an IO Interface
+ * Class that defines the behavior of an IO Interface
  * @author Echoplex
  */
 public class IOInterface implements Runnable {
 
+    /**
+     * Process that uses the IOInterface
+     */
     IOProcess process;
+    /**
+     * Port for  communication
+     */
     int portS;
+    /**
+     * Port for  communication
+     */
     int portR;
+    /**
+     * Socket
+     */
     DatagramSocket socketSender;
 
+    /**
+     * Constructor of the class, defines default ports
+     */
     public IOInterface() {
         portS = 7446;
         portR = 6446;
     }
 
+    /**
+     *
+     */
     public void bind() {
         try {
-//            System.out.println("BINDING: " + portS + " " + Thread.currentThread().getName());
             socketSender = new DatagramSocket(portS);
         } catch (SocketException ex) {
             Logger.getLogger(IOInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     *
+     */
     public void run() {
 
         MulticastSocket socketReceive;
@@ -61,8 +81,9 @@ public class IOInterface implements Runnable {
                 ByteBuffer bb = ByteBuffer.wrap(buf);
 
                 short s = bb.getShort();
- //               System.out.println(s);
-                if (process != null )process.runCommand(s);
+                if (process != null) {
+                    process.runCommand(s);
+                }
             }
 
         } catch (IOException ex) {
@@ -77,9 +98,6 @@ public class IOInterface implements Runnable {
             dos.writeShort(command);//2 bytes 
             dos.flush();
             byte[] buf = baos.toByteArray();
-
-
-//            System.out.println("Sent: " + command);
 
             // send it
             InetAddress group = InetAddress.getByName("230.0.0.1");

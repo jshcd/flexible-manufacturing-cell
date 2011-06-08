@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Represents the Welding station
+ * Represents the Welding station that weld two pieces
  * @author Echoplex
  */
 public class WeldingStation implements PieceContainer {
