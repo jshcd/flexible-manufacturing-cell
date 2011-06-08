@@ -265,7 +265,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
     }
 
     public void sendCommand(int command) {
-//        System.out.println("R1 :" + command);
+        System.out.println("R1 :" + command);
         ioi.send((short) command);
     }
 

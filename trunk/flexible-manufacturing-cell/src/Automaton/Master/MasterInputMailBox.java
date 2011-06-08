@@ -23,7 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MasterInputMailBox implements MailBox {
-
     private String _id;
     private ServerSocket _serverSocket;
     private Master _master;
@@ -33,28 +32,28 @@ public class MasterInputMailBox implements MailBox {
      * Constructs a new <code>MasterMailBox</code>
      * @param m <code>Master</code> who created the mailbox
      */
-    public MasterInputMailBox(Master m) {
+    public MasterInputMailBox(Master m){
         _id = "Master";
         _master = m;
-        _logger.addHandler(m.getMonitor().getLog().getLogHandler());
+      //  _logger.addHandler(m.getMonitor().getLog().getLogHandler());
     }
 
     /**
      * 
      */
     public void startConnection() {
-        try {
+       try {
             Properties prop = new Properties();
             InputStream is = new FileInputStream("build//classes//flexiblemanufacturingcell//resources//Mailboxes.properties");
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Master.port"));
             _serverSocket = new ServerSocket(port);
-            _logger.log(Level.FINE, "MasterInputMailBox listening at port {0}", port);
+            _logger.log(Level.FINE, "Server listening at port {0}", port);
 
         } catch (UnknownHostException ex) {
-            _logger.log(Level.SEVERE, null, ex);
+           _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            _logger.log(Level.SEVERE, null, ex);
+           _logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -92,18 +91,17 @@ public class MasterInputMailBox implements MailBox {
      */
     public void startServer() {
         try {
-            startConnection();
+            startConnection();        
             while (true) {
                 final Socket skCliente = _serverSocket.accept();
                 Thread t = new Thread(new Runnable() {
-
                     public void run() {
                         Object o = null;
                         try {
                             ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
                             o = in.readObject();
-                            _logger.log(Level.INFO, "MasterInputMailBox received {0}", o);
+                            _logger.log(Level.FINE, "MasterInputMailBox received {0}", o);
                             if (o instanceof Command) {
                                 if (((Command) o).getCommand() == Constants.COMMAND_SLAVE1_CONNECTED) {
                                     _master.setConnectionStatus(Constants.SLAVE1_ID, true);
@@ -114,13 +112,10 @@ public class MasterInputMailBox implements MailBox {
                                 }
                             } else if (o instanceof Slave1Data) {
                                 _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data) o);
-                                _master.setConnectionStatus(Constants.SLAVE1_ID, true);
                             } else if (o instanceof Slave2Data) {
                                 _master.setCanvasStatus(Constants.SLAVE2_ID, (Slave2Data) o);
-                                _master.setConnectionStatus(Constants.SLAVE2_ID, true);
                             } else if (o instanceof Slave3Data) {
                                 _master.setCanvasStatus(Constants.SLAVE3_ID, (Slave3Data) o);
-                                _master.setConnectionStatus(Constants.SLAVE3_ID, true);
                             }
                             Ok ok = new Ok();
                             out.writeObject(ok);
@@ -134,11 +129,11 @@ public class MasterInputMailBox implements MailBox {
                                 skCliente.close();
                             } catch (SocketException ex1) {
                                 if (o instanceof Slave1Data) {
-                                    _master.setConnectionStatus(Constants.SLAVE1_ID, false);
+                                    _master.setCanvasStatus(Constants.SLAVE1_ID, (Slave1Data) o);
                                 } else if (o instanceof Slave2Data) {
-                                    _master.setConnectionStatus(Constants.SLAVE2_ID, false);
+                                    _master.setCanvasStatus(Constants.SLAVE2_ID, (Slave2Data) o);
                                 } else if (o instanceof Slave3Data) {
-                                    _master.setConnectionStatus(Constants.SLAVE3_ID, false);
+                                    _master.setCanvasStatus(Constants.SLAVE3_ID, (Slave3Data) o);
                                 }
                             } catch (IOException ex1) {
                                _logger.log(Level.SEVERE, null, ex1);

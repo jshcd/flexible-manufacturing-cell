@@ -26,14 +26,12 @@ public class AssemblyStation implements PieceContainer {
     protected Slave _process;
     protected boolean _moving;
     private boolean _actuating;
-    private boolean _pieceReady;
     protected Logger _logger = Logger.getLogger(AssemblyStation.class.toString());
 
     public AssemblyStation(int id) {
         _id = id;
         _moving = false;
         _actuating = false;
-        _pieceReady = false;
         _pieces = Collections.synchronizedList(new ArrayList<Piece>());
     }
 
@@ -48,7 +46,6 @@ public class AssemblyStation implements PieceContainer {
                             this._process.sendCommand(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
                         }
                     }
-
                 }
 
             } catch (InterruptedException ex) {
@@ -76,8 +73,7 @@ public class AssemblyStation implements PieceContainer {
                 updatePosition(p);
                 this._process.sendCommand(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
                 _logger.log(Level.INFO, "Assembly completed");
-                _pieceReady = true;
-                
+
                 return true;
             } else {
                 return false;
@@ -115,7 +111,6 @@ public class AssemblyStation implements PieceContainer {
             return;
         }
         _pieces.remove(0);
-        _pieceReady = false;
     }
 
     @Override

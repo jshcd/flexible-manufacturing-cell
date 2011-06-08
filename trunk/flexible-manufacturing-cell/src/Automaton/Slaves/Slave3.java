@@ -207,7 +207,6 @@ public class Slave3 implements Slave, IOProcess {
     }
 
     public void start() {
-        System.out.println("S3 STARTING");
         _stopped = false;
         _acceptedBelt.startContainer();
         _rejectedBelt.startContainer();
@@ -218,7 +217,7 @@ public class Slave3 implements Slave, IOProcess {
         }
     }
 
-    public void emergencyStop() {
+    public void stop() {
         _stopped = true;
         _acceptedBelt.stopContainer();
         _rejectedBelt.stopContainer();
@@ -318,8 +317,5 @@ public class Slave3 implements Slave, IOProcess {
         _slave3ConfigurationData = md._slave3ConfigurationData;
         sensor_range = (double) md._sensorRange;
         initialize();
-    }
-
-    public void normalStop() {
     }
 }
