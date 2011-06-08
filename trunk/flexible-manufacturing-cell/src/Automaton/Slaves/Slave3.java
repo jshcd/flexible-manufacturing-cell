@@ -321,6 +321,5 @@ public class Slave3 implements Slave, IOProcess {
     public void normalStop() {
         _rightPieces = 0;
         _wrongPieces = 0;
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

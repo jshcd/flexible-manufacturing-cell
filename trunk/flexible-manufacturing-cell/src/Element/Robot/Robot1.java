@@ -417,4 +417,8 @@ public class Robot1 implements Robot, Runnable, IOProcess {
     public void setSlave(Slave1 _slave) {
         this._slave = _slave;
     }
+
+    public AutomatonState getState() {
+        return _state;
+    }
 }

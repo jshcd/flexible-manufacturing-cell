@@ -410,7 +410,7 @@ public class Slave1 implements Slave, IOProcess {
             // if we didn't receive the order to finish, we keep adding pieces
             while (!_finishing) {
 
-                Thread.sleep((int) (500 * (Math.random()) + 1000));
+                Thread.sleep((int) (500 * (Math.random()) + 800));
 
                 boolean roomInGearBelt = true;
                 boolean roomInAxisBelt = true;
@@ -437,6 +437,8 @@ public class Slave1 implements Slave, IOProcess {
                         _logger.log(Level.INFO, "Added gear");
                     }
                 }
+
+                Thread.sleep((int) (500 * (Math.random()) + 800));
 
                 pieces = _axisBelt.getPieces();
                 synchronized (pieces) {
@@ -505,51 +507,100 @@ public class Slave1 implements Slave, IOProcess {
     }
 
     public void normalStop() {
-        _finishing = true;
-        int numGears = _gearBelt.getPieces().size();
-        int numAxis = _axisBelt.getPieces().size();
+        Thread t = new Thread(new Runnable() {
 
-        AutomatonState robotState = _robot.getState();
-        List<Piece> assemblyTablePieces = _assemblyStation.getPieces();
-        
-        if(robotState == AutomatonState.q4) {//Transporting Ax
-            numAxis++;
-        } else if(robotState == AutomatonState.q3) {//Transporting Gear
-            numGears++;
-        }
-        if (assemblyTablePieces.size() == 1){
-            Piece p = assemblyTablePieces.get(0);
-            if(p.getType() == Piece.PieceType.axis){
-                numAxis++;
-            } else {
-                numGears++;
-            }
-        }
-        int difference = numGears - numAxis;
-        try {
-            if(difference < 0){
-                for(int i=0; i < Math.abs(difference); i++) { //Add n gears
-                        //Add n gears
-                        System.out.println("Adding gear");
-                        Piece p = new Piece();
-                        p.setPosition(0);
-                        p.setType(PieceType.gear);
-                        _gearBelt.addPiece(p);
+            public void run() {
+
+                _finishing = true;
+                int numGears = _gearBelt.getPieces().size();
+                int numAxis = _axisBelt.getPieces().size();
+
+                AutomatonState robotState = _robot.getState();
+                List<Piece> assemblyTablePieces = _assemblyStation.getPieces();
+
+                if (robotState == AutomatonState.q4) {//Transporting Ax
+                    numAxis++;
+                } else if (robotState == AutomatonState.q3) {//Transporting Gear
+                    numGears++;
+                }
+                if (assemblyTablePieces.size() == 1) {
+                    Piece p = assemblyTablePieces.get(0);
+                    if (p.getType() == Piece.PieceType.axis) {
+                        numAxis++;
+                    } else if (p.getType() == Piece.PieceType.gear) {
+                        numGears++;
+                    }
+                }
+                int differenceA = numGears - numAxis;
+                int differenceG = numAxis - numGears;
+                try {
+
+                    while (differenceG > 0) {
+
+                        boolean roomInGearBelt = true;
+                        //we check if there is room in the gears belt for adding a new piece
+                        List<Piece> pieces = _gearBelt.getPieces();
+                        synchronized (pieces) {
+                            Iterator it = pieces.iterator();
+                            while (it.hasNext()) {
+                                Piece p = (Piece) it.next();
+                                if (p.getPosition() < pieceSize * 1.1) {
+                                    roomInGearBelt = false;
+                                    break;
+                                }
+                            }
+
+                            // if so we add the piece
+                            if (roomInGearBelt) {
+                                Piece p = new Piece();
+                                p.setPosition(0);
+                                p.setType(PieceType.gear);
+                                _gearBelt.addPiece(p);
+
+                                _logger.log(Level.INFO, "Added gear");
+                            }
+                        }
+                        differenceG--;
                         Thread.sleep(50);
-                }
-            } else if(difference > 0) {
-                for(int i=0; i < Math.abs(difference); i++) { //Add n axis
-                    System.out.println("Adding axis");
-                    Piece p = new Piece();
-                    p.setPosition(0);
-                    p.setType(PieceType.axis);
-                    _axisBelt.addPiece(p);
-                    Thread.sleep(50);
+                    }
+                    
+                    while (differenceA > 0) {
+
+                        boolean roomInAxisBelt = true;
+                        //we check if there is room in the gears belt for adding a new piece
+                        List<Piece> pieces = _axisBelt.getPieces();
+                        synchronized (pieces) {
+                            Iterator it = pieces.iterator();
+                            while (it.hasNext()) {
+                                Piece p = (Piece) it.next();
+                                if (p.getPosition() < pieceSize * 1.1) {
+                                    roomInAxisBelt = false;
+                                    break;
+                                }
+                            }
+
+                            // if so we add the piece
+                            if (roomInAxisBelt) {
+                                Piece p = new Piece();
+                                p.setPosition(0);
+                                p.setType(PieceType.axis);
+                                _axisBelt.addPiece(p);
+
+                                _logger.log(Level.INFO, "Added axis");
+                            }
+                        }
+                        differenceA--;
+                        Thread.sleep(50);
+                    }
+
+
+                } catch (InterruptedException ex) {
+                    _logger.log(Level.SEVERE, null, ex);
                 }
             }
-        } catch (InterruptedException ex) {
-            _logger.log(Level.SEVERE, null, ex);
-        }
+        });
+        t.start();
+
     }
 
     public void updateRobot(AutomatonState automatonState, Piece piece) {
