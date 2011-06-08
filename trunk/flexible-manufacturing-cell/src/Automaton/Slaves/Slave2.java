@@ -2,10 +2,6 @@
 package Automaton.Slaves;
 
 import Automaton.Slaves.Data.Slave2Data;
-import Automaton.Slaves.Slave;
-import Automaton.Slaves.Slave;
-import Automaton.Slaves.SlaveOutputMailBox;
-import Automaton.Slaves.SlaveOutputMailBox;
 import Auxiliar.Command;
 import Auxiliar.Constants;
 import Auxiliar.IOInterface;
@@ -26,31 +22,80 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Class that represents the slave 2 execution
+ * @author Echoplex
+ */
 public class Slave2 implements Slave, IOProcess {
 
+    /**
+     * Output mailbox
+     */
     private SlaveOutputMailBox _outputMailBox;
+    /**
+     * Input mailbox
+     */
     protected SlaveInputMailBox _inputMailBox;
+    /**
+     * Welding station
+     */
     private WeldingStation _weldingStation;
+    /**
+     * Quality station
+     */
     private QualityControlStation _qualityStation;
+    /**
+     * Sensor in the end of the welding belt
+     */
     private Sensor _sensor6;
+    /**
+     * Sensor in the welding table
+     */
     private Sensor _sensor7;
+    /**
+     * Data from the slave 2
+     */
     private Slave2Data _statusData;
+    /**
+     * Indicates is the slave is stopped
+     */
     private boolean _stopped;
+    /**
+     * 16 bits interface
+     */
     IOInterface ioi;
+    /**
+     * Configuration data for slave 2
+     */
     private Slave2ConfigurationData _slave2ConfigurationData;
+    /**
+     * Sensor range
+     */
     private double sensor_range;
+    /**
+     * Logger
+     */
     protected Logger _logger = Logger.getLogger(Slave2.class.toString());
+    /**
+     * Success rate for quality station
+     */
     private int _sucessRate;
 
+    /**
+     * Main method that creates a slave
+     * @param args
+     */
     public static void main(String args[]) {
         Slave2 s2 = new Slave2();
     }
 
+    /**
+     * Constructor of the class, initialize the execution
+     */
     public Slave2() {
         _logger.log(Level.INFO, "Slave 2 created");
         _outputMailBox = new SlaveOutputMailBox(2);
@@ -67,6 +112,9 @@ public class Slave2 implements Slave, IOProcess {
         connectToMaster();
     }
 
+    /**
+     * Connects to the master
+     */
     public void connectToMaster() {
         try {
             reportToMaster(new Command(Constants.COMMAND_SLAVE2_CONNECTED));
@@ -76,18 +124,33 @@ public class Slave2 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Gets the welding station
+     * @return WeldingStation
+     */
     public WeldingStation getWeldingStation() {
         return _weldingStation;
     }
 
+    /**
+     * Gets the sensor 6
+     * @return Sensor
+     */
     public Sensor getSensor6() {
         return _sensor6;
     }
 
+    /**
+     * Gets the sensor 7
+     * @return Sensor
+     */
     public Sensor getSensor7() {
         return _sensor7;
     }
 
+    /**
+     * Updates the status data of the slave
+     */
     public void updateStatusData() {
         _statusData = new Slave2Data();
         _statusData.setSensor6Status(_sensor6.isActivated());
@@ -104,6 +167,9 @@ public class Slave2 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Initializes the slave
+     */
     public final void initialize() {
 
         ioi = new IOInterface();
@@ -155,10 +221,10 @@ public class Slave2 implements Slave, IOProcess {
                 try {
                     while (true) {
                         Thread.sleep(50);
-                            try {
-                                updateStatusData();
-                            } catch (java.util.ConcurrentModificationException e) {
-                            }
+                        try {
+                            updateStatusData();
+                        } catch (java.util.ConcurrentModificationException e) {
+                        }
                     }
                 } catch (InterruptedException ex) {
                     _logger.log(Level.SEVERE, null, ex);
@@ -168,6 +234,9 @@ public class Slave2 implements Slave, IOProcess {
         y.start();
     }
 
+    /**
+     * Starts the execution of the slave
+     */
     public void start() {
         _stopped = false;
         _weldingStation.startContainer();
@@ -179,6 +248,9 @@ public class Slave2 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Stops the execution of the slave as an Emergency
+     */
     public void emergencyStop() {
         _stopped = true;
         _weldingStation.stopContainer();
@@ -190,6 +262,10 @@ public class Slave2 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Executes a command
+     * @param command Command identifier
+     */
     public void runCommand(int command) {
         Piece p;
         switch (command) {
@@ -225,10 +301,19 @@ public class Slave2 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Sends a command
+     * @param command Command identifier
+     */
     public void sendCommand(int command) {
         ioi.send((short) command);
     }
 
+    /**
+     * Reports changes to the master
+     * @param data Data that has been changed
+     * @throws IOException
+     */
     public void reportToMaster(MailboxData data) throws IOException {
         _outputMailBox.startConnection();
         _outputMailBox.acceptConnection();
@@ -236,6 +321,9 @@ public class Slave2 implements Slave, IOProcess {
         _outputMailBox.receiveCommand();
     }
 
+    /**
+     * Starts the communication with the server
+     */
     public void startServer() {
         try {
             Properties prop = new Properties();
@@ -262,6 +350,10 @@ public class Slave2 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Stores initial configuration data
+     * @param md MasterConfigurationData
+     */
     public void storeInitialConfiguration(MasterConfigurationData md) {
         _slave2ConfigurationData = md._slave2ConfigurationData;
         sensor_range = (double) md._sensorRange;
@@ -269,6 +361,9 @@ public class Slave2 implements Slave, IOProcess {
         initialize();
     }
 
+    /**
+     * Stops the execution of the slave
+     */
     public void normalStop() {
     }
 }

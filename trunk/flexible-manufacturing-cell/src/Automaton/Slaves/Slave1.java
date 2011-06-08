@@ -20,41 +20,114 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Class that represents the slave 1 execution
+ * @author Echoplex
+ */
 public class Slave1 implements Slave, IOProcess {
 
+    /**
+     * Output mailbox
+     */
     protected SlaveOutputMailBox _outputMailBox;
+    /**
+     * Input mailbox
+     */
     protected SlaveInputMailBox _inputMailBox;
+    /**
+     * Gear belt
+     */
     protected ConveyorBelt _gearBelt;
+    /**
+     * Axis belt
+     */
     protected ConveyorBelt _axisBelt;
+    /**
+     * Welding belt
+     */
     protected ConveyorBelt _weldingBelt;
+    /**
+     * Robot 1
+     */
     protected Robot1 _robot;
+    /**
+     * Assembly station
+     */
     protected AssemblyStation _assemblyStation;
+    /**
+     * Sensor at the end of the axis belt
+     */
     protected Sensor _sensor1;
+    /**
+     * Sensor at the end of the gear belt
+     */
     protected Sensor _sensor2;
+    /**
+     * Sensor at the assembly table
+     */
     protected Sensor _sensor3;
+    /**
+     * Sensor at the beginning of the welding belt
+     */
     protected Sensor _sensor4;
+    /**
+     * Sensor at the end of the welding belt
+     */
     protected Sensor _sensor5;
+    /**
+     * indicates if the slaves has finishing to process all the pieces
+     */
     protected boolean _finishing;
+    /**
+     * Indicates is the slave is stopped
+     */
     private boolean _stopped;
+    /**
+     * Data from the slave 1
+     */
     protected Slave1Data _statusData;
+    /**
+     * Configuration data for slave 1
+     */
     protected Slave1ConfigurationData _slave1ConfigurationData;
+    /**
+     * Configuration data for robot 1
+     */
     protected Robot1ConfigurationData _robot1ConfigurationData;
+    /**
+     * Sensor range
+     */
     protected double sensor_range = 1.2;
+    /**
+     * Gear and axis size
+     */
     protected double pieceSize = 1.5;
+    /**
+     * 16 bits interface
+     */
     private IOInterface ioi;
+    /**
+     * Logger
+     */
     protected Logger _logger = Logger.getLogger(Slave1.class.toString());
 
+    /**
+     * Main method that creates a slave
+     * @param args
+     */
     public static void main(String args[]) {
         Slave1 s1 = new Slave1();
     }
 
+    /**
+     * Constructor of the class, initialize the execution
+     */
     public Slave1() {
 
         _logger.log(Level.INFO, "Slave 1 created");
@@ -76,6 +149,9 @@ public class Slave1 implements Slave, IOProcess {
 
     }
 
+    /**
+     * Connects to the master
+     */
     public void connectToMaster() {
         try {
             reportToMaster(new Command(Constants.COMMAND_SLAVE1_CONNECTED));
@@ -85,22 +161,41 @@ public class Slave1 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Gets the gear conveyor belt
+     * @return ConveyorBelt
+     */
     public ConveyorBelt getGearBelt() {
         return _gearBelt;
     }
 
+    /**
+     * Gets the axis conveyor belt
+     * @return ConveyorBelt
+     */
     public ConveyorBelt getAxisBelt() {
         return _axisBelt;
     }
 
+    /**
+     * Gets the welding conveyor belt
+     * @return ConveyorBelt
+     */
     public ConveyorBelt getWeldingBelt() {
         return _weldingBelt;
     }
 
+    /**
+     * Gets the assembly station
+     * @return AssemblyStation
+     */
     public AssemblyStation getAssemblyStation() {
         return _assemblyStation;
     }
 
+    /**
+     * Updates the status data of the slave
+     */
     public void updateStatusData() {
         try {
             synchronized (_statusData) {
@@ -128,6 +223,9 @@ public class Slave1 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Initializes the slave
+     */
     public final void initialize() {
 
         ioi = new IOInterface();
@@ -239,6 +337,9 @@ public class Slave1 implements Slave, IOProcess {
 
     }
 
+    /**
+     * Starts the execution of the robot
+     */
     public void startRobot() {
         _robot = new Robot1();
         _robot.setSlave(this);
@@ -256,28 +357,48 @@ public class Slave1 implements Slave, IOProcess {
         (new Thread(_robot)).start();
     }
 
+    /**
+     * Gets the sensor 1
+     * @return Sensor
+     */
     public Sensor getSensor1() {
         return _sensor1;
     }
 
+    /**
+     * Gets the sensor 2
+     * @return Sensor
+     */
     public Sensor getSensor2() {
         return _sensor2;
     }
 
+    /**
+     * Gets the sensor 3
+     * @return Sensor
+     */
     public Sensor getSensor3() {
         return _sensor3;
     }
 
+    /**
+     * Gets the sensor 4
+     * @return Sensor
+     */
     public Sensor getSensor4() {
         return _sensor4;
     }
 
+    /**
+     * Gets the sensor 5
+     * @return Sensor
+     */
     public Sensor getSensor5() {
         return _sensor5;
     }
 
-    /*
-     * Starts the system
+    /**
+     * Starts the execution of the slave
      */
     public void start() {
         System.out.println("S1 STARTING");
@@ -299,10 +420,10 @@ public class Slave1 implements Slave, IOProcess {
         t.start();
 
     }
-    /*
-     * Emergency stop
-     */
 
+    /**
+     * Stops the execution of the slave as an Emergency
+     */
     public void emergencyStop() {
         System.out.println("S1 STOPPING");
         _finishing = true;
@@ -319,6 +440,10 @@ public class Slave1 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Executes a command
+     * @param command Command identifier
+     */
     public void runCommand(int command) {
         Piece p;
 //        System.out.println("S1 receives: " + command);
@@ -390,10 +515,19 @@ public class Slave1 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Sends a command
+     * @param command Command identifier
+     */
     public void sendCommand(int command) {
         ioi.send((short) command);
     }
 
+    /**
+     * Reports changes to the master
+     * @param data Data that has been changed
+     * @throws IOException
+     */
     public void reportToMaster(MailboxData data) throws IOException {
         synchronized (data) {
             _outputMailBox.startConnection();
@@ -403,7 +537,9 @@ public class Slave1 implements Slave, IOProcess {
         }
     }
 
-    // This loop is intended to keep adding pieces to the starting belts while the system is working
+    /**
+     * This loop is intended to keep adding pieces to the starting belts while the system is working
+     */
     protected void mainLoop() {
 
         try {
@@ -470,6 +606,9 @@ public class Slave1 implements Slave, IOProcess {
 
     }
 
+    /**
+     * Starts the communication with the server
+     */
     public void startServer() {
         try {
             Properties prop = new Properties();
@@ -498,6 +637,10 @@ public class Slave1 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Stores initial configuration data
+     * @param md MasterConfigurationData
+     */
     public void storeInitialConfiguration(MasterConfigurationData md) {
         _slave1ConfigurationData = md._slave1ConfigurationData;
         _robot1ConfigurationData = md._robot1ConfigurationData;
@@ -506,6 +649,9 @@ public class Slave1 implements Slave, IOProcess {
         initialize();
     }
 
+    /**
+     * Stops the execution of the slave
+     */
     public void normalStop() {
         Thread t = new Thread(new Runnable() {
 
@@ -603,6 +749,11 @@ public class Slave1 implements Slave, IOProcess {
 
     }
 
+    /**
+     * Updates robot status
+     * @param automatonState Automaton
+     * @param piece Piece
+     */
     public void updateRobot(AutomatonState automatonState, Piece piece) {
         this._statusData.setR1state(automatonState);
         this._statusData.setR1loadedPiece(piece);
