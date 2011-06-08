@@ -247,8 +247,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
         }
         _loadedPiece = new Piece();
-        if(ok) _loadedPiece.setType(Piece.PieceType.weldedAssembly);
-        else _loadedPiece.setType(Piece.PieceType.weldedAssembly);
+        if(ok) _loadedPiece.setType(Piece.PieceType.weldedAssemblyOk);
+        else _loadedPiece.setType(Piece.PieceType.weldedAssemblyNotOk);
         _weldingCompleted = false;
         sendCommand(Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY);
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 picks welded assembly from quality station");
