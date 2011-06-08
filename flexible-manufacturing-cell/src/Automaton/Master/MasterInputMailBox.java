@@ -49,7 +49,7 @@ public class MasterInputMailBox implements MailBox {
             prop.load(is);
             int port = Integer.parseInt(prop.getProperty("Master.port"));
             _serverSocket = new ServerSocket(port);
-            _logger.log(Level.INFO, "Server listening at port " + port);
+            _logger.log(Level.INFO, "MasterInputMailBox listening at port " + port);
         } catch (UnknownHostException ex) {
             _logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
