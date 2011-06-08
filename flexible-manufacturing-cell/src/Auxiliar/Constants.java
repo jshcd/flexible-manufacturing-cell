@@ -181,7 +181,7 @@ public class Constants {
     public static final Point QUALITY_CONTROL_STATION_LIGHT_SENSOR_POSITION = new Point(821, 276);
     /* ROBOTS */
     public static final Point ROBOT1_POSITION = new Point(302, 3);
-    public static final Point ROBOT2_POSITION = new Point(643, 136);
+    public static final Point ROBOT2_POSITION = new Point(635, 136);
     /* WELDING STAMPER */
     public static final Point WELDING_STAMPER_POSITION_ENABLED = new Point(391, 130);
     public static final Point WELDING_STAMPER_POSITION_DISABLED = new Point(391, 80);
