@@ -24,32 +24,96 @@ import java.net.Socket;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+/**
+ * Class that represents the slave 3 execution
+ * @author Echoplex
+ */
 public class Slave3 implements Slave, IOProcess {
 
+    /**
+     * Output mailbox
+     */
     private SlaveOutputMailBox _outputMailBox;
+    /**
+     * Input mailbox
+     */
     protected SlaveInputMailBox _inputMailBox;
+    /**
+     * Ok belt
+     */
     private ConveyorBelt _acceptedBelt;
+    /**
+     * Not Ok belt
+     */
     private ConveyorBelt _rejectedBelt;
+    /**
+     * Sensor at the beginning of the not ok belt
+     */
     private Sensor _sensor8;
+    /**
+     * Sensor at the beginning of the  ok belt
+     */
     private Sensor _sensor9;
+    /**
+     * Sensor at the end of the not ok belt
+     */
     private Sensor _sensor10;
+    /**
+     * Sensor at the end of the  ok belt
+     */
     private Sensor _sensor11;
+    /**
+     * Data from the slave 3
+     */
     private Slave3Data _statusData;
+    /**
+     * 16 bits interface
+     */
     private IOInterface ioi;
+    /**
+     * Configuration data for slave 3
+     */
     private Slave3ConfigurationData _slave3ConfigurationData;
+    /**
+     * Sensor range
+     */
     private double sensor_range;
+    /**
+     * Indicates is the slave is stopped
+     */
     private boolean _stopped;
+    /**
+     * number of current ok  pieces
+     */
     private int _rightPieces;
+    /**
+     * number of current not  ok  pieces
+     */
     private int _wrongPieces;
+    /**
+     * number of total   ok  pieces
+     */
     private int _allRightPieces;
+    /**
+     * number of total not  ok  pieces
+     */
     private int _allWrongPieces;
+    /**
+     * Logger
+     */
     protected Logger _logger = Logger.getLogger(Slave3.class.toString());
 
+    /**
+     * Main method that creates a slave
+     * @param args
+     */
     public static void main(String args[]) {
         Slave3 s3 = new Slave3();
     }
 
+    /**
+     * Constructor of the class, initialize the execution
+     */
     public Slave3() {
         _rightPieces = 0;
         _wrongPieces = 0;
@@ -69,6 +133,9 @@ public class Slave3 implements Slave, IOProcess {
         connectToMaster();
     }
 
+    /**
+     * Connects to the master
+     */
     public void connectToMaster() {
         try {
             reportToMaster(new Command(Constants.COMMAND_SLAVE3_CONNECTED));
@@ -78,30 +145,57 @@ public class Slave3 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Gets the sensor 8
+     * @return Sensor
+     */
     public Sensor getSensor8() {
         return _sensor8;
     }
 
+    /**
+     * Gets the sensor 9
+     * @return Sensor
+     */
     public Sensor getSensor9() {
         return _sensor9;
     }
 
+    /**
+     * Gets the sensor 10
+     * @return Sensor
+     */
     public Sensor getSensor10() {
         return _sensor10;
     }
 
+    /**
+     * Gets the sensor 11
+     * @return Sensor
+     */
     public Sensor getSensor11() {
         return _sensor11;
     }
 
+    /**
+     * Gets the  Ok belt
+     * @return ConveyorBelt
+     */
     public ConveyorBelt getAcceptedBelt() {
         return _acceptedBelt;
     }
 
+    /**
+     * Gets the not Ok belt
+     * @return ConveyorBelt
+     */
     public ConveyorBelt getRejectedBelt() {
         return _rejectedBelt;
     }
 
+    /**
+     * Updates the status data of the slave
+     */
     public void updateStatusData() {
         _statusData = new Slave3Data();
         _statusData.setSensor8Status(_sensor8.isActivated());
@@ -125,6 +219,9 @@ public class Slave3 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Initializes the slave
+     */
     public final void initialize() {
 
         ioi = new IOInterface();
@@ -204,6 +301,9 @@ public class Slave3 implements Slave, IOProcess {
         y.start();
     }
 
+    /**
+     * Starts the execution of the slave
+     */
     public void start() {
         _stopped = false;
 
@@ -216,6 +316,9 @@ public class Slave3 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Stops the execution of the slave as an Emergency
+     */
     public void emergencyStop() {
         _stopped = true;
         _acceptedBelt.stopContainer();
@@ -229,6 +332,10 @@ public class Slave3 implements Slave, IOProcess {
         _wrongPieces = 0;
     }
 
+    /**
+     * Executes a command
+     * @param command Command identifier
+     */
     public void runCommand(int command) {
 //        if(command >80) System.out.println("S3 received: " + command);
         Piece p;
@@ -275,6 +382,11 @@ public class Slave3 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Reports changes to the master
+     * @param data Data that has been changed
+     * @throws IOException
+     */
     public void reportToMaster(MailboxData data) throws IOException {
         _outputMailBox.startConnection();
         _outputMailBox.acceptConnection();
@@ -282,10 +394,17 @@ public class Slave3 implements Slave, IOProcess {
         _outputMailBox.receiveCommand();
     }
 
+    /**
+     * Sends a command
+     * @param command Command identifier
+     */
     public void sendCommand(int command) {
         ioi.send((short) command);
     }
 
+    /**
+     * Starts the communication with the server
+     */
     public void startServer() {
         try {
             Properties prop = new Properties();
@@ -312,12 +431,19 @@ public class Slave3 implements Slave, IOProcess {
         }
     }
 
+    /**
+     * Stores initial configuration data
+     * @param md MasterConfigurationData
+     */
     public void storeInitialConfiguration(MasterConfigurationData md) {
         _slave3ConfigurationData = md._slave3ConfigurationData;
         sensor_range = (double) md._sensorRange;
         initialize();
     }
 
+    /**
+     * Stops the execution of the slave
+     */
     public void normalStop() {
         _rightPieces = 0;
         _wrongPieces = 0;
