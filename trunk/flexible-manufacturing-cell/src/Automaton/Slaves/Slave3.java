@@ -48,6 +48,8 @@ public class Slave3 implements Slave, IOProcess {
     private boolean _stopped;
     private int _rightPieces;
     private int _wrongPieces;
+     private int _allRightPieces;
+    private int _allWrongPieces;
     protected Logger _logger = Logger.getLogger(Slave3.class.toString());
 
     public static void main(String args[]) {
@@ -57,6 +59,8 @@ public class Slave3 implements Slave, IOProcess {
     public Slave3() {
         _rightPieces = 0;
         _wrongPieces = 0;
+        _allRightPieces = 0;
+        _allWrongPieces =0;
         _logger.log(Level.INFO, "Slave 3 created");
         _outputMailBox = new SlaveOutputMailBox(3);
         _inputMailBox = new SlaveInputMailBox(3, this);
@@ -116,6 +120,8 @@ public class Slave3 implements Slave, IOProcess {
         _statusData.setRejectedBeltRunning(_rejectedBelt.isMoving());
         _statusData.setRightPieces(_rightPieces);
         _statusData.setWrongPieces(_wrongPieces);
+        _statusData.setAllRightPieces(_allRightPieces);
+        _statusData.setAllWrongPieces(_allWrongPieces);
 
         try {
             reportToMaster(_statusData);
@@ -208,6 +214,7 @@ public class Slave3 implements Slave, IOProcess {
 
     public void start() {
         _stopped = false;
+
         _acceptedBelt.startContainer();
         _rejectedBelt.startContainer();
         try {
@@ -221,6 +228,10 @@ public class Slave3 implements Slave, IOProcess {
         _stopped = true;
         _acceptedBelt.stopContainer();
         _rejectedBelt.stopContainer();
+        _rightPieces = 0;
+        _wrongPieces = 0;
+
+
         try {
             reportToMaster(new Command(Constants.SLAVE_THREE_STOPPING));
         } catch (IOException ex) {
@@ -240,13 +251,15 @@ public class Slave3 implements Slave, IOProcess {
                 p.setType(PieceType.weldedAssembly);
                 _acceptedBelt.addPiece(p);
                 this._rightPieces++;
-                sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
+                this._allRightPieces++;
+                              sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
             case Constants.ROBOT2_SLAVE3_PLACES_WELDED_NOT_OK:
                 p = new Piece();
                 p.setType(PieceType.weldedAssembly);
                 _rejectedBelt.addPiece(p);
                 this._wrongPieces++;
+                this._allWrongPieces++;
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
         }

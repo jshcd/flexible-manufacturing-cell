@@ -120,7 +120,7 @@ public class SlaveInputMailBox implements MailBox {
                                         _logger.log(Level.INFO, "Emergency Stop");
                                         break;
                                     case Constants.NORMAL_STOP_ORDER:
-                                        _slave.normalStop();
+                                       // _slave.normalStop();
                                         _logger.log(Level.INFO, "Normal Stop");
                                 }
                             }else if(o instanceof MasterConfigurationData){
