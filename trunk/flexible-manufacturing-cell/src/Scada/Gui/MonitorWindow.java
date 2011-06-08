@@ -4,6 +4,7 @@ import Automaton.Master.Master;
 import Automaton.Slaves.Data.Slave1Data;
 import Automaton.Slaves.Data.Slave2Data;
 import Automaton.Slaves.Data.Slave3Data;
+import Auxiliar.AutomatonState;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -25,6 +26,7 @@ import net.miginfocom.swing.MigLayout;
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import Auxiliar.Constants;
 import Auxiliar.MailboxData;
+import Element.Piece.Piece;
 import Scada.DataBase.ReportData;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -237,6 +239,10 @@ public class MonitorWindow extends JFrame {
                 _canvas.setSlave3Data((Slave3Data) data);
                 break;
         }
+    }
+    
+    public void updateRobot2(AutomatonState automatonState, Piece piece){
+        _canvas.updateRobot2(automatonState, piece);
     }
 
     public static void main(String[] args) {

@@ -12,7 +12,9 @@ import Auxiliar.Constants;
 import Automaton.Slaves.Data.Slave1Data;
 import Automaton.Slaves.Data.Slave2Data;
 import Automaton.Slaves.Data.Slave3Data;
+import Auxiliar.AutomatonState;
 import Element.Piece.Piece;
+import Element.Piece.Piece.PieceType;
 
 /**
  * Canvas where the factory simulation is displayed.
@@ -27,6 +29,8 @@ public class Canvas extends JPanel {
     private Slave2Data _slave2Data;
     private Slave3Data _slave3Data;
     private boolean _emergencyStopped;
+    private AutomatonState _robot2State;
+    private Piece _robot2Piece;
 
     /**
      * Creates a canvas where the factory simulation is displayed.
@@ -61,6 +65,12 @@ public class Canvas extends JPanel {
         _slave3Data = slaveData;
         repaint();
     }
+    
+    public void updateRobot2(AutomatonState automatonState, Piece piece){
+        _robot2State = automatonState;
+        _robot2Piece = piece;
+        repaint();
+    }
 
     /**
      * Tells the canvas whether the system is at an emergency stop or not.
@@ -86,10 +96,56 @@ public class Canvas extends JPanel {
         paintSlave1(g);
         paintSlave2(g);
         paintSlave3(g);
+        paintRobot2(g);
+    }
+    
+    public void paintRobot2(Graphics g){
+        if (_robot2Piece != null) {
+            if (_robot2Piece.getType().equals(PieceType.assembly)) {
+                g.drawImage(_imageLoader._robot2Assembly, Constants.ROBOT2_POSITION.x, 
+                        Constants.ROBOT2_POSITION.y, null);
+            } else if (_robot2Piece.getType().equals(PieceType.weldedAssembly)) {
+                g.drawImage(_imageLoader._robot2Assembly, Constants.ROBOT2_POSITION.x, 
+                        Constants.ROBOT2_POSITION.y, null);
+            } else if (_robot2Piece.getType().equals(PieceType.weldedAssemblyOk)) {
+                g.drawImage(_imageLoader._robot2AssemblyOk, Constants.ROBOT2_POSITION.x, 
+                        Constants.ROBOT2_POSITION.y, null);
+            } else if (_robot2Piece.getType().equals(PieceType.weldedAssemblyNotOk)) {
+                g.drawImage(_imageLoader._robot2AssemblyNotOk, Constants.ROBOT2_POSITION.x, 
+                        Constants.ROBOT2_POSITION.y, null);
+            }else{
+                g.drawImage(_imageLoader._robot2, Constants.ROBOT2_POSITION.x, 
+                    Constants.ROBOT2_POSITION.y, null);
+            }
+        }else{
+            g.drawImage(_imageLoader._robot2, Constants.ROBOT2_POSITION.x, 
+                    Constants.ROBOT2_POSITION.y, null);
+        }
     }
     
     public void paintSlave1(Graphics g) {
         if (_slave1Data != null) {
+            
+            /* Paint Robot1 */
+            if (_slave1Data.getR1loadedPiece() != null) {
+                if(_slave1Data.getR1loadedPiece().getType().equals(PieceType.axis)){
+                    g.drawImage(_imageLoader._robot1Axis, Constants.ROBOT1_POSITION.x, 
+                        Constants.ROBOT1_POSITION.y, null);
+                }else if(_slave1Data.getR1loadedPiece().getType().equals(PieceType.gear)){
+                    g.drawImage(_imageLoader._robot1Gear, Constants.ROBOT1_POSITION.x, 
+                        Constants.ROBOT1_POSITION.y, null);
+                }else if(_slave1Data.getR1loadedPiece().getType().equals(PieceType.assembly)){
+                    g.drawImage(_imageLoader._robot1Assembly, Constants.ROBOT1_POSITION.x, 
+                        Constants.ROBOT1_POSITION.y, null);
+                }else{
+                    g.drawImage(_imageLoader._robot1, Constants.ROBOT1_POSITION.x, 
+                        Constants.ROBOT1_POSITION.y, null);
+                }
+            }else{
+                g.drawImage(_imageLoader._robot1, Constants.ROBOT1_POSITION.x, 
+                    Constants.ROBOT1_POSITION.y, null);
+            }
+            
             /* Paint Gears */
            for (Piece piece : _slave1Data.getGearBeltPieces()) {
                 if (piece.getType() == Element.Piece.Piece.PieceType.gear) {
@@ -205,6 +261,9 @@ public class Canvas extends JPanel {
                     }
                 }
             }
+        }else{
+            g.drawImage(_imageLoader._robot1, Constants.ROBOT1_POSITION.x, 
+                    Constants.ROBOT1_POSITION.y, null);
         }
     }
 

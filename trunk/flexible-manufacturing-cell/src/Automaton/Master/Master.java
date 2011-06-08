@@ -223,17 +223,6 @@ public class Master {
     }
 
     public void updateRobot(AutomatonState automatonState, Piece piece) {
-        if (piece != null) {
-            if (piece.getType().equals(PieceType.assembly)) {
-                
-            } else if (piece.getType().equals(PieceType.weldedAssembly)) {
-                
-            } else if (piece.getType().equals(PieceType.weldedAssemblyOk)) {
-                
-            } else if (piece.getType().equals(PieceType.weldedAssemblyNotOk)) {
-                
-            }
-
-        }
+        _monitor.updateRobot2(automatonState, piece);
     }
 }
