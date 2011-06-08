@@ -156,7 +156,7 @@ public class Master {
         _outputMailBox.sendInformation(command, Constants.SLAVE1_ID);
         _outputMailBox.sendInformation(command, Constants.SLAVE2_ID);
         _outputMailBox.sendInformation(command, Constants.SLAVE3_ID);
-        _logger.log(Level.INFO, null, "Normal Stop");
+        _logger.log(Level.INFO, "Normal Stop");
     }
 
     public void emergencyStop() {
@@ -168,7 +168,7 @@ public class Master {
         _outputMailBox.sendInformation(command, Constants.SLAVE1_ID);
         _outputMailBox.sendInformation(command, Constants.SLAVE2_ID);
         _outputMailBox.sendInformation(command, Constants.SLAVE3_ID);
-        _logger.log(Level.INFO, null, "Emergency Stop");
+        _logger.log(Level.INFO, "Emergency Stop");
     }
 
     public void failureStop() {
