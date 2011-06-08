@@ -46,11 +46,7 @@ public class TestMailboxes {
             s1mb.acceptConnection();
             
             s2mb.startConnection();
-            try {
-                s1mb.sendCommand(a);
-            } catch (IOException ex) {
-                Logger.getLogger(TestMailboxes.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            s1mb.sendCommand(a);
             s2mb.acceptConnection();
 
             r2mb.startConnection();
