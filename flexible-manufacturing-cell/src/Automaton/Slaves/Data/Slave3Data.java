@@ -183,7 +183,7 @@ public class Slave3Data extends MailboxData {
 
     /**
      * Sensor 11 status
-     * @return 
+     * @return whether the sensor is active or not
      */
     public boolean isSensor11Status() {
         return _sensor11Status;

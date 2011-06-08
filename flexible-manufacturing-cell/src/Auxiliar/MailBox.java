@@ -25,7 +25,7 @@ public interface MailBox {
 
     /**
      * Sends a command to another <code>MailBox</code>
-     * @param Command which is going to be send
+     * @param command which is going to be send
      */
     public void sendCommand(MailboxData command) throws IOException;
 

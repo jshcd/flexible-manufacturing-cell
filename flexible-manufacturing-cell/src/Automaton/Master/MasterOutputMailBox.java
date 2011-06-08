@@ -37,11 +37,10 @@ public class MasterOutputMailBox implements MailBox {
     }
 
     /**
-     * Sends the indicated <code>MailboxData</code> command to a the indicated
-     * <code>SlaveInputMailBox</code>
+     * Sends the indicated MailboxData  command to a the indicated SlaveInputMailBox
      *
-     * @param <code>MailboxData</code> command which is going to be send
-     * @param destination <code>SlaveInputMailBox</code>
+     * @param command which is going to be send
+     * @param destination SlaveInputMailBox
      * 1 in case of Slave1
      * 2 in case of Slave2
      * 3 in case of Slave3

@@ -9,7 +9,7 @@ public interface Robot {
     /**
      * Runs a command in the Robot
      * @param command New Command to run
-     * @see Constants
+     * @see Auxiliar.Constants
      */
     public void runCommand(int command);
 

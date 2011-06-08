@@ -84,7 +84,7 @@ public class SlaveOutputMailBox implements MailBox {
     /**
      * Sends a <code>MailboxData</code> command to the
      * <code>MasterInputMailBox</code>
-     * @param Command that the Slave wants to send to the Master
+     * @param command that the Slave wants to send to the Master
      */
     public void sendCommand(MailboxData command) throws IOException {
         synchronized (_out) {
