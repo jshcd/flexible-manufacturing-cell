@@ -245,6 +245,7 @@ public class Slave1 implements Slave, IOProcess {
 
     public void startRobot() {
         _robot = new Robot1();
+        _robot.setSlave(this);
 
         _robot.setTrasportTime1(_robot1ConfigurationData.getPickAndPlaceGearTime());
         _robot.setTransportTime2(_robot1ConfigurationData.getPickAndPlaceAxisTime());
@@ -538,5 +539,10 @@ public class Slave1 implements Slave, IOProcess {
 
     public void normalStop() {
         _finishing = true;
+    }
+
+    public void updateRobot(AutomatonState automatonState, Piece piece) {
+        this._statusData.setR1state(automatonState);
+        this._statusData.setR1loadedPiece(piece);
     }
 }

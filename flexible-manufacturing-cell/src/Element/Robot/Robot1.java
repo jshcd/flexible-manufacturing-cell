@@ -1,5 +1,6 @@
 package Element.Robot;
 
+import Automaton.Slaves.Slave1;
 import Auxiliar.AutomatonState;
 import Element.Piece.Piece;
 import Auxiliar.Constants;
@@ -18,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Robot1 implements Robot, Runnable, IOProcess {
-
+    
     private AutomatonState _state;
     private Piece _loadedPiece;
     private int _transportTime1; // When the robot has moved the gear to the assembly table, the robot 1 waits until the sensor 2 is active.
@@ -31,6 +32,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
     private boolean _assemblyCompleted;
     private boolean _running;
     private IOInterface ioi;
+    private Slave1 _slave;
     // public Logger _logger = Logger.getLogger(Robot1.class.toString());
 
     public Robot1() {
@@ -47,7 +49,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         ioi.bind();
         (new Thread(ioi)).start();
     }
-
+    
     @Override
     public void run() {
         while (true) {
@@ -56,6 +58,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.toString()).log(Level.SEVERE, null, ex);
             }
+            
+            this._slave.updateRobot(_state, _loadedPiece);
+            
             switch (_state) {
                 case q0:
                     if (_gearSensor) {
@@ -110,11 +115,11 @@ public class Robot1 implements Robot, Runnable, IOProcess {
                 case q9:
                     returnToIdle();
             }
-
+            
             Thread.yield();
         }
     }
-
+    
     public void runCommand(int command) {
         switch (command) {
             case Constants.START_ROBOT1:
@@ -152,7 +157,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
                 break;
         }
     }
-
+    
     public void pickAxis() {
         try {
             Thread.sleep(_transportTime2 / 3);
@@ -164,9 +169,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         _axisSensor = false;
         sendCommand(Constants.ROBOT1_SLAVE1_PICKS_AXIS);
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1 picks axis");
-
+        
     }
-
+    
     public void pickGear() {
         try {
             Thread.sleep(_transportTime1 / 3);
@@ -179,7 +184,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         sendCommand(Constants.ROBOT1_SLAVE1_PICKS_GEAR);
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1 picks gear");
     }
-
+    
     public void pickAssembly() {
         try {
             Thread.sleep(_transportTime3 / 3);
@@ -192,7 +197,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         sendCommand(Constants.ROBOT1_SLAVE1_PICKS_ASSEMBLY);
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1 picks assembly from assembly station");
     }
-
+    
     public void transportGear() {
         try {
             Thread.sleep(_transportTime1 / 3 * 2);
@@ -203,7 +208,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1 places gear on assembly station");
         _loadedPiece = null;
     }
-
+    
     public void transportAxis() {
         try {
             Thread.sleep(_transportTime2 / 3 * 2);
@@ -214,7 +219,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1 places axis on assembly station");
         _loadedPiece = null;
     }
-
+    
     public void transportAssembly() {
         try {
             Thread.sleep(_transportTime3 / 3 * 2);
@@ -225,7 +230,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1 places assembly on welding belt");
         _loadedPiece = null;
     }
-
+    
     public void returnToIdle() {
         try {
             switch (_state) {
@@ -248,27 +253,27 @@ public class Robot1 implements Robot, Runnable, IOProcess {
             Logger.getLogger(Robot1.class.toString()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void setTrasportTime1(int transportTime1) {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1: tr1 = {0}", transportTime1);
         this._transportTime1 = transportTime1;
     }
-
+    
     public void setTransportTime2(int transportTime2) {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1: tr2 = {0}", transportTime2);
         this._transportTime2 = transportTime2;
     }
-
+    
     public void setTransportTime3(int transportTime3) {
         Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Robot1: tr3 = {0}", transportTime3);
         this._transportTime3 = transportTime3;
     }
-
+    
     public void sendCommand(int command) {
         System.out.println("R1 :" + command);
         ioi.send((short) command);
     }
-
+    
     public void startServer() {
         try {
             Properties prop = new Properties();
@@ -283,7 +288,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
                 ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
                 Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Received> {0}", in.readObject());
-
+                
                 short a = (short) 0;
                 out.writeObject(a);
                 skCliente.close();
@@ -295,5 +300,9 @@ public class Robot1 implements Robot, Runnable, IOProcess {
         } catch (IOException ex) {
             Logger.getLogger(Robot1.class.toString()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void setSlave(Slave1 _slave) {
+        this._slave = _slave;
     }
 }
