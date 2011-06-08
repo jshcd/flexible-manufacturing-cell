@@ -13,9 +13,6 @@ import Automaton.Slaves.Data.Slave3Data;
 import Automaton.Slaves.SlaveOutputMailBox;
 import Element.Robot.Data.RobotData;
 import Element.Robot.RobotOutputMailBox;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -24,7 +21,6 @@ import java.util.logging.Logger;
  */
 public class TestMailboxes {
     public static void main(String [] args) {
-        try {
             SlaveOutputMailBox s1mb = new SlaveOutputMailBox(1);
             SlaveOutputMailBox s2mb = new SlaveOutputMailBox(2);
             SlaveOutputMailBox s3mb = new SlaveOutputMailBox(3);
@@ -62,8 +58,5 @@ public class TestMailboxes {
             s3mb.acceptConnection();
             s3mb.sendCommand(c);
             s3mb.receiveCommand();
-        } catch (IOException ex) {
-            Logger.getLogger(TestMailboxes.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }
