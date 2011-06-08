@@ -105,11 +105,10 @@ public class SlaveInputMailBox implements MailBox {
                                         _slave.start();
                                         break;
                                     case Constants.EMERGENCY_STOP_ORDER:
-                                        _slave.stop();
+                                        _slave.emergencyStop();
                                         break;
                                     case Constants.NORMAL_STOP_ORDER:
-                                        //TO-DO
-                                        _slave.stop();
+                                        _slave.normalStop();
                                 }
                             }else if(o instanceof MasterConfigurationData){
                                 _slave.storeInitialConfiguration((MasterConfigurationData)o);
