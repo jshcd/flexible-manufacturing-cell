@@ -43,7 +43,7 @@ public class IOInterface implements Runnable {
      * Constructor of the class, defines default ports
      */
     public IOInterface() {
-        portS = 7446;
+        portS = 7476;
         portR = 6446;
     }
 
