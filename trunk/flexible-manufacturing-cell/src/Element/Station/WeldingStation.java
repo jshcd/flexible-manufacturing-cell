@@ -8,6 +8,7 @@ import Auxiliar.Constants;
 import Element.Conveyor.ConveyorBelt;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
+import Element.Piece.Piece.PieceType;
 import Element.PieceContainer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +42,23 @@ public class WeldingStation implements PieceContainer {
 
     @Override
     public synchronized void run() {
+        while (true) {
+            try {
+                Thread.sleep(100);
+                if (_moving) {
+                    if (!_pieces.isEmpty()) {
+                        if (_pieces.get(0).getType().equals(PieceType.weldedAssembly)) {
+                            this._process.sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED);
+                        } else if(_pieces.get(0).getType().equals(PieceType.assembly)){
+                            weld();
+                        }
+                    }
+                }
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AssemblyStation.class.toString()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public boolean weld() {
