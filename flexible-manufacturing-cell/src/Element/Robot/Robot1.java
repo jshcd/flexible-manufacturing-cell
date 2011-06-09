@@ -387,31 +387,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
      * Starts the server to listen through the IO Interface
      */
     public void startServer() {
-        try {
-            Properties prop = new Properties();
-            InputStream is = new FileInputStream(Constants.IO_DEVICES_PROPERTIES_PATH);
-            prop.load(is);
-            int port = Integer.parseInt(prop.getProperty("Robot1.port"));
-            ServerSocket skServidor = new ServerSocket(port);
-            Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Server listening at port {0}", port);
-            while (true) {
-                Socket skCliente = skServidor.accept();
-                Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Information received");
-                ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                Logger.getLogger(Robot1.class.toString()).log(Level.INFO, "Received> {0}", in.readObject());
-                
-                short a = (short) 0;
-                out.writeObject(a);
-                skCliente.close();
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Robot1.class.toString()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Robot1.class.toString()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Robot1.class.toString()).log(Level.SEVERE, null, ex);
-        }
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     /**
