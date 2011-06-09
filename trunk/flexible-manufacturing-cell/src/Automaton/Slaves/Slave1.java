@@ -673,7 +673,7 @@ public class Slave1 implements Slave, IOProcess {
                 int differenceA = numGears - numAxis;
                 int differenceG = numAxis - numGears;
                 try {
-                    if(differenceA != 0){
+                    if (differenceA != 0) {
                         while (differenceG > 0) {
                             boolean roomInGearBelt = true;
                             //we check if there is room in the gears belt for adding a new piece
@@ -693,11 +693,11 @@ public class Slave1 implements Slave, IOProcess {
                                     p.setPosition(0);
                                     p.setType(PieceType.gear);
                                     _gearBelt.addPiece(p);
+                                    differenceG--;
 
                                     _logger.log(Level.INFO, "Added gear");
                                 }
                             }
-                            differenceG--;
                             Thread.sleep(50);
                         }
 
@@ -720,11 +720,11 @@ public class Slave1 implements Slave, IOProcess {
                                     p.setPosition(0);
                                     p.setType(PieceType.axis);
                                     _axisBelt.addPiece(p);
+                                    differenceA--;
 
                                     _logger.log(Level.INFO, "Added axis");
                                 }
                             }
-                            differenceA--;
                             Thread.sleep(50);
                         }
                     }
