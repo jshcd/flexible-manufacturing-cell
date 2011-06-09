@@ -28,7 +28,6 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * Master automaton instance
      */
     private Master _master;
-    private RobotOutputMailBox _mailBox;
     
     /**
      * Automaton state
@@ -123,7 +122,6 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             _state = AutomatonState.q0;
             _previousState = AutomatonState.q0;
             _stateUnchanged = 0;
-            _mailBox = new RobotOutputMailBox(2);
             _weldingSensor = false;
             _qualityTableSensor = false;
             _weldingCompleted = false;
@@ -474,31 +472,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * Starts listening through the IOInterface
      */
     public void startServer() {
-        try {
-            Properties prop = new Properties();
-            InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
-            prop.load(is);
-            int port = Integer.parseInt(prop.getProperty("Robot2.port"));
-            ServerSocket skServidor = new ServerSocket(port);
-            Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Server listening at port {0}", port);
-            while (true) {
-                Socket skCliente = skServidor.accept();
-                Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Information received");
-                ObjectOutputStream out = new ObjectOutputStream(skCliente.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
-                Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Received> {0}", Short.parseShort((String) in.readObject()));
-
-                short a = (short) 0;
-                out.writeObject(a);
-                skCliente.close();
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Robot2.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Robot2.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Robot2.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
