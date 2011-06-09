@@ -77,6 +77,8 @@ public class AssemblyStation implements PieceContainer {
                     if (!_pieces.isEmpty()) {
                         if (_pieces.get(0).getType().equals(PieceType.assembly)) {
                             this._process.sendCommand(Constants.SLAVE1_ROBOT1_ASSEMBLY_COMPLETED);
+                        } else if(_pieces.size()==2){
+                            assemble();
                         }
                     }
                 }

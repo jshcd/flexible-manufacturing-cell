@@ -6,6 +6,7 @@ import Auxiliar.Constants;
 import Element.Conveyor.ConveyorBelt;
 import Element.Other.Sensor;
 import Element.Piece.Piece;
+import Element.Piece.Piece.PieceType;
 import Element.PieceContainer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +60,7 @@ public class QualityControlStation implements PieceContainer {
      * Constructor of the class
      * @param id Identifier
      */
+    
     public QualityControlStation(int id) {
         _id = id;
         _moving = false;
@@ -71,6 +73,25 @@ public class QualityControlStation implements PieceContainer {
      */
     @Override
     public synchronized void run() {
+        while (true) {
+            try {
+                Thread.sleep(100);
+                if (_moving) {
+                    if (!_pieces.isEmpty()) {
+                        if (_pieces.get(0).getType().equals(PieceType.weldedAssemblyOk)) {
+                            this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
+                        } else if (_pieces.get(0).getType().equals(PieceType.weldedAssemblyNotOk)) {
+                            this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
+                        } else if (_pieces.get(0).getType().equals(PieceType.weldedAssembly)) {
+                            checkQuality();
+                        }
+                    }
+                }
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AssemblyStation.class.toString()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     /**
@@ -91,9 +112,11 @@ public class QualityControlStation implements PieceContainer {
             int random = (int) (Math.random() * 100);
             if (random < _sucessRate) {
                 Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed OK");
+                _pieces.get(0).setType(PieceType.weldedAssemblyOk);
                 this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
             } else {
                 Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed NOT OK");
+                _pieces.get(0).setType(PieceType.weldedAssemblyNotOk);
                 this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
             }
             return true;
