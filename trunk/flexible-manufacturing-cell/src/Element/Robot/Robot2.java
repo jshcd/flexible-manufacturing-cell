@@ -28,87 +28,70 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * Master automaton instance
      */
     private Master _master;
-    
     /**
      * Automaton state
      */
     private AutomatonState _state;
-    
     /**
      * Automaton previous state
      */
     private AutomatonState _previousState;
-    
     /**
      * Counts the number of times that the robot has not changed its status
      */
     private int _stateUnchanged;
-    
     /**
      * Represents the instance of the loaded piece
      */
     private Piece _loadedPiece;
-    
     /**
      * Welding Belt Sensor status
      */
     private boolean _weldingSensor;
-    
     /**
      * Welding Station Sensor status
      */
     private boolean _weldingTableSensor;
-    
     /**
      * Quality Station Sensor status
      */
     private boolean _qualityTableSensor;
-    
     /**
      * Sensor of the Accepted Belt status
      */
     private boolean _OKTableSensor;
-    
     /**
      * Rejected Belt Sensor status
      */
     private boolean _NotOKTableSensor;
-    
     /**
      * Shows if the welding process has finished
      */
     private boolean _weldingCompleted;
-    
     /**
      * Shows if the quality process has finished Ok
      */
     private boolean _qualityCompletedOK;
-    
     /**
      * Shows if the quality process has finished Not Ok
      */
     private boolean _qualityCompletedNotOK;
-    
     /**
      * Shows if a command has been received
      */
     private boolean _commandReceived;
-    
     /**
      * Time to pick and transport an assembly
      */
     private int _transportTime4;
-    
     /**
      * Time to pick and transport a welded assembly
      */
     private int _transportTime5;
-    
     /**
      * Time to pick and transport a checked assembly
      */
     private int _transportTime6;
-    
     /**
      * Instance of IOInterface
      */
@@ -515,7 +498,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     public void setTransportTime5(int _transportTime5) {
         this._transportTime5 = _transportTime5;
     }
-    
+
     /**
      * Sets the time to pick and transport a checked assembly
      * @param _transportTime6 
@@ -528,7 +511,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * Sertores the state after performing an action
      */
     private void restoreState() {
-            _commandReceived = true;
+        _commandReceived = true;
         if (_loadedPiece == null) {
             if (this._qualityCompletedNotOK) {
                 _state = AutomatonState.q4;
