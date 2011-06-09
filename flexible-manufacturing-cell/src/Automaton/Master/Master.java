@@ -151,13 +151,6 @@ public class Master {
      * Starts the robot 2 controlled by the master
      */
     public void startRobot() {
-        Thread t = new Thread(new Runnable() {
-
-            public void run() {
-                _robot.startServer();
-            }
-        });
-        t.start();
         (new Thread(_robot)).start();
 
     }
