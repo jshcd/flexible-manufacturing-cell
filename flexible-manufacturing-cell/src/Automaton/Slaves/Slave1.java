@@ -347,13 +347,6 @@ public class Slave1 implements Slave, IOProcess {
         _robot.setTrasportTime1(_robot1ConfigurationData.getPickAndPlaceGearTime());
         _robot.setTransportTime2(_robot1ConfigurationData.getPickAndPlaceAxisTime());
         _robot.setTransportTime3(_robot1ConfigurationData.getPickAndPlaceAssemblyTime());
-        Thread t = new Thread(new Runnable() {
-
-            public void run() {
-                _robot.startServer();
-            }
-        });
-        t.start();
         (new Thread(_robot)).start();
     }
 
