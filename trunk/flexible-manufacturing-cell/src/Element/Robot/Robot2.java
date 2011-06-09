@@ -388,7 +388,6 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * @see Constants
      */
     public void sendCommand(int command) {
-//        System.out.println("R2 sending: " + command);
         ioi.send((short) command);
     }
 
@@ -397,9 +396,6 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * @param command New command to execute
      */
     public void runCommand(int command) {
-        if (command > 120) {
-            System.out.println("R2 running: " + command + " state: " + _state);
-        }
         switch (command) {
             case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
                 _weldingSensor = true;
