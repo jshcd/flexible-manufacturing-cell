@@ -528,7 +528,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * Sertores the state after performing an action
      */
     private void restoreState() {
-        _commandReceived= false;
+            _commandReceived = true;
         if (_loadedPiece == null) {
             if (this._qualityCompletedNotOK) {
                 _state = AutomatonState.q4;
