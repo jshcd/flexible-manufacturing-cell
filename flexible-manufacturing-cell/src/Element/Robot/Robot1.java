@@ -379,7 +379,6 @@ public class Robot1 implements Robot, Runnable, IOProcess {
      * @param command New command to send
      */
     public void sendCommand(int command) {
-        System.out.println("R1 :" + command);
         ioi.send((short) command);
     }
     
