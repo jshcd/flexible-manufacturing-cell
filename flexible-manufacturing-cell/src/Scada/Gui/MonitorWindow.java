@@ -25,6 +25,8 @@ import Auxiliar.Constants;
 import Auxiliar.MailboxData;
 import Element.Piece.Piece;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 /**
  * Monitor where the whole system state is displayed: factory simulation,
@@ -105,6 +107,7 @@ public class MonitorWindow extends JFrame {
         setResizable(false);
         setTitle(Constants.TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      //  setIconImage(_imageLoader._frameIcon);
         createComponents();
         layoutComponents();
         pack();
@@ -119,6 +122,9 @@ public class MonitorWindow extends JFrame {
      * Initializes the components of the GUI
      */
     private void createComponents() {
+
+        Image icon = Toolkit.getDefaultToolkit().getImage("logo.png");
+        setIconImage(icon);
         Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
         _canvas = new Canvas(_imageLoader);
         _buttonConfiguration = new JButton(new ImageIcon(_imageLoader._configurationButton));

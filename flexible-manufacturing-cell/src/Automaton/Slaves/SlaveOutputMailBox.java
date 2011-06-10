@@ -49,9 +49,9 @@ public class SlaveOutputMailBox implements MailBox {
             _logger.log(Level.INFO, null, "MasterInputMailBox not found: retrying in 5 secs");
             try {
                 Thread.sleep(5000);
-                startConnection();
             } catch (InterruptedException ex1) {
                 _logger.log(Level.SEVERE, null, ex1);
+                startConnection();
             }
         }
     }
