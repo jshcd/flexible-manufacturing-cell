@@ -120,9 +120,12 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             ioi.setPortLag(4);
             ioi.bind();
             (new Thread(ioi)).start();
+            ioi.send((short)10);
 
             Thread.sleep(4000);
             restoreState();
+
+            System.out.println("Robot 2 starting");
         } catch (InterruptedException ex) {
             Logger.getLogger(Robot2.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -379,6 +382,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * @param command New command to execute
      */
     public void runCommand(int command) {
+//        System.out.println("R2: " + command + " State: " + _state);
         switch (command) {
             case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
                 _weldingSensor = true;
