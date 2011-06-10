@@ -267,37 +267,49 @@ public class Slave2 implements Slave, IOProcess {
      * @param command Command identifier
      */
     public void runCommand(int command) {
-        Piece p;
-        switch (command) {
-            case Constants.START_SLAVE2:
-                start();
-                break;
-            case Constants.ROBOT2_SLAVE2_REQUEST_WELDING:
-                _weldingStation.weld();
-                break;
-            case Constants.ROBOT2_SLAVE2_REQUEST_QUALITY:
-                _qualityStation.checkQuality();
-                break;
-            case Constants.ROBOT2_SLAVE2_PLACES_ASSEMBLY:
-                p = new Piece();
-                p.setType(PieceType.assembly);
-                _weldingStation.addPiece(p);
-                sendCommand(Constants.SLAVE2_ROBOT2_ASSEMBLY_PLACED);
-                break;
-            case Constants.ROBOT2_SLAVE2_PICKS_WELDED_ASSEMBLY:
-                _weldingStation.removeLastPiece();
-                sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PICKED);
-                break;
-            case Constants.ROBOT2_SLAVE2_PLACES_WELDED_ASSEMBLY:
-                p = new Piece();
-                p.setType(PieceType.weldedAssembly);
-                _qualityStation.addPiece(p);
-                sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PLACED);
-                break;
-            case Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY:
-                _qualityStation.removeLastPiece();
-                sendCommand(Constants.SLAVE2_ROBOT2_CHECKED_WELDED_ASSEMBLY_PICKED);
-                break;
+        try {
+            Piece p;
+            switch (command) {
+                case Constants.START_SLAVE2:
+                    start();
+                    break;
+                case Constants.ROBOT2_SLAVE2_REQUEST_WELDING:
+                    _weldingStation.weld();
+                    break;
+                case Constants.ROBOT2_SLAVE2_REQUEST_QUALITY:
+                    _qualityStation.checkQuality();
+                    break;
+                case Constants.ROBOT2_SLAVE2_PLACES_ASSEMBLY:
+                    p = new Piece();
+                    p.setType(PieceType.assembly);
+                    _weldingStation.addPiece(p);
+                    sendCommand(Constants.SLAVE2_ROBOT2_ASSEMBLY_PLACED);
+                    Thread.sleep(50);
+                    sendCommand(Constants.SLAVE2_ROBOT2_ASSEMBLY_PLACED);
+                    break;
+                case Constants.ROBOT2_SLAVE2_PICKS_WELDED_ASSEMBLY:
+                    _weldingStation.removeLastPiece();
+                    sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PICKED);
+                    Thread.sleep(50);
+                    sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PICKED);
+                    break;
+                case Constants.ROBOT2_SLAVE2_PLACES_WELDED_ASSEMBLY:
+                    p = new Piece();
+                    p.setType(PieceType.weldedAssembly);
+                    _qualityStation.addPiece(p);
+                    sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PLACED);
+                    Thread.sleep(50);
+                    sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_PLACED);
+                    break;
+                case Constants.ROBOT2_SLAVE2_PICKS_CHECKED_WELDED_ASSEMBLY:
+                    _qualityStation.removeLastPiece();
+                    sendCommand(Constants.SLAVE2_ROBOT2_CHECKED_WELDED_ASSEMBLY_PICKED);
+                    Thread.sleep(50);
+                    sendCommand(Constants.SLAVE2_ROBOT2_CHECKED_WELDED_ASSEMBLY_PICKED);
+                    break;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Slave2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
