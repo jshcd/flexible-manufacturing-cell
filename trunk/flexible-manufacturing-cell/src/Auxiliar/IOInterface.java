@@ -52,7 +52,7 @@ public class IOInterface implements Runnable {
      */
     public IOInterface() {
         portS = 7476;
-        portR = 6446;
+        portR = 5555;
     }
 
     /**
