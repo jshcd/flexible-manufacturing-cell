@@ -438,73 +438,79 @@ public class Slave1 implements Slave, IOProcess {
      * @param command Command identifier
      */
     public void runCommand(int command) {
-        Piece p;
-//        System.out.println("S1 receives: " + command);
+        try {
+            Piece p;
+    //        System.out.println("S1 receives: " + command);
 
-        switch (command) {
-            case Constants.START_SLAVE1:
-                start();
-                break;
-            case Constants.EMERGENCY_STOP_ORDER:
-                emergencyStop();
-                break;
-            case Constants.NORMAL_STOP_ORDER:
-                _finishing = true;
-                break;
-            case Constants.ROBOT1_SLAVE1_PICKS_GEAR:
-                _gearBelt.removeLastPiece();
-                break;
-            case Constants.ROBOT1_SLAVE1_PICKS_AXIS:
-                _axisBelt.removeLastPiece();
-                break;
-            case Constants.ROBOT1_SLAVE1_PLACES_GEAR:
-                p = new Piece();
-                p.setType(PieceType.gear);
-                _assemblyStation.addPiece(p);
-                break;
-            case Constants.ROBOT1_SLAVE1_PLACES_AXIS:
-                p = new Piece();
-                p.setType(PieceType.axis);
-                _assemblyStation.addPiece(p);
-                break;
-            case Constants.ROBOT1_SLAVE1_PICKS_ASSEMBLY:
-                _assemblyStation.removeLastPiece();
-                sendCommand(Constants.SLAVE1_ROBOT2_ASSEMBLY_PICKED);
-                break;
-            case Constants.ROBOT1_SLAVE1_REQUEST_ASSEMBLY:
-                _assemblyStation.assemble();
-                break;
-            case Constants.ROBOT1_SLAVE1_PLACES_ASSEMBLY:
-                p = new Piece();
-                p.setType(PieceType.assembly);
-                _weldingBelt.addPiece(p);
-                break;
-            case Constants.ROBOT2_SLAVE1_PICKS_ASSEMBLY:
-                _weldingBelt.removeLastPiece();
-                break;
-            case Constants.SENSOR_GEAR_UNLOAD_ACTIVATED:
-                _gearBelt.stopContainer();
-                break;
-
-        }
-        if (!_stopped) {
             switch (command) {
-                case Constants.SENSOR_GEAR_UNLOAD_DISACTIVATED:
-                    _gearBelt.startContainer();
+                case Constants.START_SLAVE1:
+                    start();
+                    break;
+                case Constants.EMERGENCY_STOP_ORDER:
+                    emergencyStop();
+                    break;
+                case Constants.NORMAL_STOP_ORDER:
+                    _finishing = true;
+                    break;
+                case Constants.ROBOT1_SLAVE1_PICKS_GEAR:
+                    _gearBelt.removeLastPiece();
+                    break;
+                case Constants.ROBOT1_SLAVE1_PICKS_AXIS:
+                    _axisBelt.removeLastPiece();
+                    break;
+                case Constants.ROBOT1_SLAVE1_PLACES_GEAR:
+                    p = new Piece();
+                    p.setType(PieceType.gear);
+                    _assemblyStation.addPiece(p);
+                    break;
+                case Constants.ROBOT1_SLAVE1_PLACES_AXIS:
+                    p = new Piece();
+                    p.setType(PieceType.axis);
+                    _assemblyStation.addPiece(p);
+                    break;
+                case Constants.ROBOT1_SLAVE1_PICKS_ASSEMBLY:
+                    _assemblyStation.removeLastPiece();
+                    sendCommand(Constants.SLAVE1_ROBOT2_ASSEMBLY_PICKED);
+                    Thread.sleep(50);
+                    sendCommand(Constants.SLAVE1_ROBOT2_ASSEMBLY_PICKED);
+                    break;
+                case Constants.ROBOT1_SLAVE1_REQUEST_ASSEMBLY:
+                    _assemblyStation.assemble();
+                    break;
+                case Constants.ROBOT1_SLAVE1_PLACES_ASSEMBLY:
+                    p = new Piece();
+                    p.setType(PieceType.assembly);
+                    _weldingBelt.addPiece(p);
+                    break;
+                case Constants.ROBOT2_SLAVE1_PICKS_ASSEMBLY:
+                    _weldingBelt.removeLastPiece();
+                    break;
+                case Constants.SENSOR_GEAR_UNLOAD_ACTIVATED:
+                    _gearBelt.stopContainer();
                     break;
                 case Constants.SENSOR_AXIS_UNLOAD_ACTIVATED:
                     _axisBelt.stopContainer();
                     break;
-                case Constants.SENSOR_AXIS_UNLOAD_DISACTIVATED:
-                    _axisBelt.startContainer();
-                    break;
                 case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
                     _weldingBelt.stopContainer();
                     break;
-                case Constants.SENSOR_WELDING_UNLOAD_DISACTIVATED:
-                    _weldingBelt.startContainer();
-                    break;
+
             }
+            if (!_stopped) {
+                switch (command) {
+                    case Constants.SENSOR_GEAR_UNLOAD_DISACTIVATED:
+                        _gearBelt.startContainer();
+                        break;
+                    case Constants.SENSOR_AXIS_UNLOAD_DISACTIVATED:
+                        _axisBelt.startContainer();
+                        break;
+                    case Constants.SENSOR_WELDING_UNLOAD_DISACTIVATED:
+                        _weldingBelt.startContainer();
+                        break;
+                }
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Slave1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

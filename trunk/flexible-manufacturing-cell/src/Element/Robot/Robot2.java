@@ -172,13 +172,12 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     break;
                 case q1:
                     if (!_commandReceived) {
-                        _commandReceived = true;
                         _state = AutomatonState.q0;
                         break;
                     }
                     if (!_weldingTableSensor) {
-                        _commandReceived = false;
                         transportAssembly(); // sends 301,303
+                        _commandReceived = false;
                         _state = AutomatonState.q2;
                     }
                     break;
@@ -191,9 +190,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                         _loadedPiece = null;
                     }
                     if (_weldingCompleted) {
-                        _commandReceived = false;
                         if (_loadedPiece == null) {
                             pickWeldedAssembly(); // 305
+                            _commandReceived = false;
                         }
                         _state = AutomatonState.q3;
                     }
@@ -205,8 +204,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                         break;
                     }
                     if (!_qualityTableSensor) {
-                        _commandReceived = false;
                         transportWeldedAssembly(); // 306 304
+                        _commandReceived = false;
                         _state = AutomatonState.q4;
                     }
                     break;
@@ -219,15 +218,15 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                         _loadedPiece = null;
                     }
                     if (_qualityCompletedOK) {
-                        _commandReceived = false;
                         if (_loadedPiece == null) {
                             pickCheckedWeldedAssembly(true); //310
+                            _commandReceived = false;
                         }
                         _state = AutomatonState.q6;
                     } else if (_qualityCompletedNotOK) {
-                        _commandReceived = false;
                         if (_loadedPiece == null) {
                             pickCheckedWeldedAssembly(false);//310
+                            _commandReceived = false;
                         }
                         _state = AutomatonState.q7;
                     }
@@ -240,6 +239,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     if (!_OKTableSensor) {
                         transportWeldedOK(); //401
+                        _commandReceived = false;
                         _previousState = AutomatonState.q6;
                         _state = AutomatonState.q8;
                     }
@@ -252,6 +252,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     if (!_NotOKTableSensor) {
                         transportWeldedNotOK(); //402
+                        _commandReceived = false;
                         _previousState = AutomatonState.q7;
                         _state = AutomatonState.q8;
                     }
