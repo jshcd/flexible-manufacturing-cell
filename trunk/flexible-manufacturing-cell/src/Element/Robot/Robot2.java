@@ -120,7 +120,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             ioi.setPortLag(4);
             ioi.bind();
             (new Thread(ioi)).start();
-            ioi.send((short)10);
+//            ioi.send((short)10);
 
             Thread.sleep(4000);
             restoreState();
