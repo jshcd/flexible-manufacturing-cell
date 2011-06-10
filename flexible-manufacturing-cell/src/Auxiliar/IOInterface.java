@@ -45,7 +45,6 @@ public class IOInterface implements Runnable {
      * Socket
      */
     DatagramSocket socketSender;
-    
     InetAddress address;
 
     /**
@@ -79,28 +78,12 @@ public class IOInterface implements Runnable {
             Properties prop = new Properties();
             InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
-            String netInterfaceName = prop.getProperty("netInterface");
             String multicastAddress = prop.getProperty("multicastAddress");
             address = InetAddress.getByName(multicastAddress);
-            
+
             System.out.println(address);
-            
-            NetworkInterface netInterface = null;
-            if (netInterfaceName != null) {
-                try {
-                    netInterface = NetworkInterface.getByInetAddress(InetAddress.getByName(netInterfaceName));
-                } catch (UnknownHostException e) {
-                }
-                if (netInterface == null) {
-                    netInterface = NetworkInterface.getByName(netInterfaceName);
-                }
-            }            
-            
-            if (netInterface != null) {
-                socketReceive.joinGroup(new InetSocketAddress(InetAddress.getByName("230.0.0.1"), portR), netInterface);
-            } else {
-                socketReceive.joinGroup(InetAddress.getByName("230.0.0.1"));
-            }
+
+            socketReceive.joinGroup(InetAddress.getByName("230.0.0.1"));
 
             socketReceive.setTimeToLive(1);
 
