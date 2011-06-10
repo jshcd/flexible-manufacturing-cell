@@ -81,7 +81,7 @@ public class IOInterface implements Runnable {
             String multicastAddress = prop.getProperty("multicastAddress");
             address = InetAddress.getByName(multicastAddress);
 
-            System.out.println(address);
+//            System.out.println(address);
 
             socketReceive.joinGroup(InetAddress.getByName("230.0.0.1"));
 
