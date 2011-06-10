@@ -74,7 +74,8 @@ public class ImageLoader {
             ImageLoader.class.getResource(IMAGES_FOLDER + "/robot2AssemblyOk.png"));
     public Image _robot2AssemblyNotOk = Toolkit.getDefaultToolkit().getImage(
             ImageLoader.class.getResource(IMAGES_FOLDER + "/robot2AssemblyNotOk.png"));
-
+     public Image _frameIcon = Toolkit.getDefaultToolkit().getImage(
+            ImageLoader.class.getResource(IMAGES_FOLDER + "/logo.png"));
     /**
      * Constructs an image loader associated to a particular component.
      * 
