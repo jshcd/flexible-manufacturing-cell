@@ -65,12 +65,6 @@ public class Master {
      */
     boolean _slave3Online = false;
 
-    // TODO: hay que borrarlo pero se usa para pruebas
-    public static void main(String args[]) {
-        Master m = new Master(null);
-        m.initialize();
-        m.startRobot();
-    }
 
     /**
      * Constructs the master objects and initializes its components
