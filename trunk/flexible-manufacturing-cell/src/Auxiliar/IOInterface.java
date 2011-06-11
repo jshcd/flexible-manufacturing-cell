@@ -12,13 +12,9 @@ import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
-import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
-import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +41,6 @@ public class IOInterface implements Runnable {
      * Socket
      */
     DatagramSocket socketSender;
-    
     InetAddress address;
 
     /**
@@ -53,7 +48,7 @@ public class IOInterface implements Runnable {
      */
     public IOInterface() {
         portS = 7476;
-        portR = 6446;
+        portR = 5555;
     }
 
     /**
@@ -79,28 +74,12 @@ public class IOInterface implements Runnable {
             Properties prop = new Properties();
             InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
-            String netInterfaceName = prop.getProperty("netInterface");
             String multicastAddress = prop.getProperty("multicastAddress");
             address = InetAddress.getByName(multicastAddress);
-            
-            System.out.println(address);
-            
-            NetworkInterface netInterface = null;
-            if (netInterfaceName != null) {
-                try {
-                    netInterface = NetworkInterface.getByInetAddress(InetAddress.getByName(netInterfaceName));
-                } catch (UnknownHostException e) {
-                }
-                if (netInterface == null) {
-                    netInterface = NetworkInterface.getByName(netInterfaceName);
-                }
-            }            
-            
-            if (netInterface == null) {
-                socketReceive.joinGroup(new InetSocketAddress(address, portR), netInterface);
-            } else {
-                socketReceive.joinGroup(address);
-            }
+
+//            System.out.println(address);
+
+            socketReceive.joinGroup(InetAddress.getByName("230.0.0.1"));
 
             socketReceive.setTimeToLive(1);
 
@@ -138,7 +117,7 @@ public class IOInterface implements Runnable {
             byte[] buf = baos.toByteArray();
 
             // send it
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName("163.117.142.255"), portR);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portR);
             socketSender.send(packet);
         } catch (IOException e) {
             e.printStackTrace();

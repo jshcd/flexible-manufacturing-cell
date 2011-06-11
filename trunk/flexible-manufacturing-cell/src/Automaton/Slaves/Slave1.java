@@ -485,6 +485,12 @@ public class Slave1 implements Slave, IOProcess {
             case Constants.SENSOR_GEAR_UNLOAD_ACTIVATED:
                 _gearBelt.stopContainer();
                 break;
+            case Constants.SENSOR_AXIS_UNLOAD_ACTIVATED:
+                _axisBelt.stopContainer();
+                break;
+            case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
+                _weldingBelt.stopContainer();
+                break;
 
         }
         if (!_stopped) {
@@ -492,14 +498,8 @@ public class Slave1 implements Slave, IOProcess {
                 case Constants.SENSOR_GEAR_UNLOAD_DISACTIVATED:
                     _gearBelt.startContainer();
                     break;
-                case Constants.SENSOR_AXIS_UNLOAD_ACTIVATED:
-                    _axisBelt.stopContainer();
-                    break;
                 case Constants.SENSOR_AXIS_UNLOAD_DISACTIVATED:
                     _axisBelt.startContainer();
-                    break;
-                case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
-                    _weldingBelt.stopContainer();
                     break;
                 case Constants.SENSOR_WELDING_UNLOAD_DISACTIVATED:
                     _weldingBelt.startContainer();

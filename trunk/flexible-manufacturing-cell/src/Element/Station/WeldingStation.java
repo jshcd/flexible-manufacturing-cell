@@ -49,7 +49,7 @@ public class WeldingStation implements PieceContainer {
                     if (!_pieces.isEmpty()) {
                         if (_pieces.get(0).getType().equals(PieceType.weldedAssembly)) {
                             this._process.sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED);
-                        } else if(_pieces.get(0).getType().equals(PieceType.assembly)){
+                        } else if (_pieces.get(0).getType().equals(PieceType.assembly)) {
                             weld();
                         }
                     }
@@ -62,24 +62,28 @@ public class WeldingStation implements PieceContainer {
     }
 
     public boolean weld() {
-        if (_pieces.size() == 1) {
-            _actuating = true;
-            try {
-                Thread.sleep(_weldingTime);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(AssemblyStation.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            if (_pieces.size() == 1) {
+                _actuating = true;
+                try {
+                    Thread.sleep(_weldingTime);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(AssemblyStation.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                _actuating = false;
+
+                _pieces.remove(0);
+
+                Piece p = new Piece();
+                p.setType(Piece.PieceType.weldedAssembly);
+                _pieces.add(p);
+                this._process.sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED);
+                Logger.getLogger(WeldingStation.class.getName()).log(Level.INFO, "Welding completed");
+                return true;
+            } else {
+                return false;
             }
-            _actuating = false;
-
-            _pieces.remove(0);
-
-            Piece p = new Piece();
-            p.setType(Piece.PieceType.weldedAssembly);
-            _pieces.add(p);
-            this._process.sendCommand(Constants.SLAVE2_ROBOT2_WELDED_ASSEMBLY_COMPLETED);
-            Logger.getLogger(WeldingStation.class.getName()).log(Level.INFO, "Welding completed");
-            return true;
-        } else {
+        } catch (java.lang.IndexOutOfBoundsException e) {
             return false;
         }
     }
