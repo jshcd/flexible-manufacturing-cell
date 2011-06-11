@@ -168,6 +168,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                         _state = AutomatonState.q1;
                         if (_loadedPiece == null) {
                             pickAssembly(); // sends 208
+                        } else {
+                            restoreState();
                         }
                     }
                     break;
@@ -178,6 +180,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     if (!_weldingTableSensor) {
                         if (_loadedPiece != null) {
                             transportAssembly(); // sends 301,303
+                        } else {
+                            restoreState();
                         }
                         _state = AutomatonState.q2;
                     }
@@ -189,7 +193,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     if (_weldingCompleted) {
                         if (_loadedPiece == null) {
                             pickWeldedAssembly(); // 305
-                            _commandReceived = false;
+                        } else {
+                            restoreState();
                         }
                         _state = AutomatonState.q3;
                     }
@@ -201,6 +206,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     if (!_qualityTableSensor) {
                         if (_loadedPiece != null) {
                             transportWeldedAssembly(); // 306 304
+                        } else {
+                            restoreState();
                         }
                         _commandReceived = false;
                         _state = AutomatonState.q4;
@@ -213,13 +220,15 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     if (_qualityCompletedOK) {
                         if (_loadedPiece == null) {
                             pickCheckedWeldedAssembly(true); //310
-                            _commandReceived = false;
+                        } else {
+                            restoreState();
                         }
                         _state = AutomatonState.q6;
                     } else if (_qualityCompletedNotOK) {
                         if (_loadedPiece == null) {
                             pickCheckedWeldedAssembly(false);//310
-                            _commandReceived = false;
+                        } else {
+                            restoreState();
                         }
                         _state = AutomatonState.q7;
                     }
@@ -229,8 +238,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                         _state = AutomatonState.q4;
                     }
                     if (!_OKTableSensor) {
-                        transportWeldedOK(); //401
-                        _commandReceived = false;
+                        if (_loadedPiece != null) {
+                            transportWeldedOK(); //401
+                        }
                         _previousState = AutomatonState.q6;
                         _state = AutomatonState.q8;
                     }
@@ -240,15 +250,27 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                         _state = AutomatonState.q4;
                     }
                     if (!_NotOKTableSensor) {
-                        transportWeldedNotOK(); //402
-                        _commandReceived = false;
+                        if (_loadedPiece != null) {
+                            transportWeldedNotOK(); //402
+                        }
                         _previousState = AutomatonState.q7;
                         _state = AutomatonState.q8;
                     }
                     break;
                 case q8:
-                    _loadedPiece = null;
-                    returnToIdle();
+                    if (_previousState.equals(AutomatonState.q6)) {
+                        if (_OKTableSensor) {
+                            returnToIdle();
+                        } else{
+                            restoreState();
+                        }
+                    } else if (_previousState.equals(AutomatonState.q7)) {
+                        if (_NotOKTableSensor) {
+                            returnToIdle();
+                        } else{
+                            restoreState();
+                        }
+                    }
             }
             Thread.yield();
         }
