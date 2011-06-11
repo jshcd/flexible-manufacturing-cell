@@ -120,9 +120,10 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             ioi.setPortLag(4);
             ioi.bind();
             (new Thread(ioi)).start();
-            ioi.send((short)9);
 
             Thread.sleep(4000);
+
+            ioi.send((short) 9);
             restoreState();
 
             System.out.println("Robot 2 starting");
@@ -140,14 +141,14 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         while (true) {
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             _master.updateRobot(_state, _loadedPiece);
 
-            if (_stateUnchanged > 50) {
+            if (_stateUnchanged > 25) {
                 restoreState();
                 _stateUnchanged = 0;
             }
@@ -164,18 +165,19 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                 case q0:
                     if (_weldingSensor) {
                         _state = AutomatonState.q1;
-                        pickAssembly(); // sends 208
+                        if (_loadedPiece == null) {
+                            pickAssembly(); // sends 208
+                        }
                     }
                     break;
                 case q1:
                     if (!_commandReceived) {
-                        _commandReceived = true;
                         _state = AutomatonState.q0;
                         break;
                     }
                     if (!_weldingTableSensor) {
-                        _commandReceived = false;
                         transportAssembly(); // sends 301,303
+                        _commandReceived = false;
                         _state = AutomatonState.q2;
                     }
                     break;
@@ -184,11 +186,13 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                         _commandReceived = true;
                         _state = AutomatonState.q1;
                         break;
+                    } else {
+                        _loadedPiece = null;
                     }
                     if (_weldingCompleted) {
-                        _commandReceived = false;
                         if (_loadedPiece == null) {
                             pickWeldedAssembly(); // 305
+                            _commandReceived = false;
                         }
                         _state = AutomatonState.q3;
                     }
@@ -200,8 +204,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                         break;
                     }
                     if (!_qualityTableSensor) {
-                        _commandReceived = false;
                         transportWeldedAssembly(); // 306 304
+                        _commandReceived = false;
                         _state = AutomatonState.q4;
                     }
                     break;
@@ -210,17 +214,19 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                         _commandReceived = true;
                         _state = AutomatonState.q3;
                         break;
+                    } else {
+                        _loadedPiece = null;
                     }
                     if (_qualityCompletedOK) {
-                        _commandReceived = false;
                         if (_loadedPiece == null) {
                             pickCheckedWeldedAssembly(true); //310
+                            _commandReceived = false;
                         }
                         _state = AutomatonState.q6;
                     } else if (_qualityCompletedNotOK) {
-                        _commandReceived = false;
                         if (_loadedPiece == null) {
                             pickCheckedWeldedAssembly(false);//310
+                            _commandReceived = false;
                         }
                         _state = AutomatonState.q7;
                     }
@@ -233,6 +239,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     if (!_OKTableSensor) {
                         transportWeldedOK(); //401
+                        _commandReceived = false;
                         _previousState = AutomatonState.q6;
                         _state = AutomatonState.q8;
                     }
@@ -245,12 +252,19 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                     }
                     if (!_NotOKTableSensor) {
                         transportWeldedNotOK(); //402
+                        _commandReceived = false;
                         _previousState = AutomatonState.q7;
                         _state = AutomatonState.q8;
                     }
                     break;
                 case q8:
-                    returnToIdle();
+                    if (!_commandReceived) {
+                        _commandReceived = true;
+                        _state = _previousState;
+                        break;
+                    } else {
+                        returnToIdle();
+                    }
             }
             Thread.yield();
         }
@@ -282,7 +296,6 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         }
         sendCommand(Constants.ROBOT2_SLAVE2_PLACES_ASSEMBLY);
         sendCommand(Constants.ROBOT2_SLAVE2_REQUEST_WELDING);
-        _loadedPiece = null;
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 places assembly on welding station");
     }
 
@@ -314,7 +327,6 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         sendCommand(Constants.ROBOT2_SLAVE2_PLACES_WELDED_ASSEMBLY);
         sendCommand(Constants.ROBOT2_SLAVE2_REQUEST_QUALITY);
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 places welded assembly in quality station");
-        _loadedPiece = null;
     }
 
     /**
@@ -349,7 +361,6 @@ public class Robot2 implements Robot, Runnable, IOProcess {
         }
         sendCommand(Constants.ROBOT2_SLAVE3_PLACES_WELDED_OK);
         Logger.getLogger(Robot2.class.getName()).log(Level.INFO, "Robot2 places accepted welded assembly");
-        _loadedPiece = null;
         _qualityCompletedOK = false;
     }
 

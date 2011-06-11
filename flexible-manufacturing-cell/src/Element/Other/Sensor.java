@@ -44,9 +44,9 @@ public class Sensor implements Runnable {
             try {
 
                 if (_associatedContainer.isMoving()) {
-                    Thread.sleep(50);
+                    Thread.sleep(100);
                 } else {
-                    Thread.sleep(500);
+                    Thread.sleep(200);
                 }
 
                 //TO-DO Sección crítica

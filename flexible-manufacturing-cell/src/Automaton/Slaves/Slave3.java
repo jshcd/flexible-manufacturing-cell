@@ -24,6 +24,7 @@ import java.net.Socket;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  * Class that represents the slave 3 execution
  * @author Echoplex
@@ -362,21 +363,21 @@ public class Slave3 implements Slave, IOProcess {
                 this._allWrongPieces++;
                 sendCommand(Constants.SLAVE3_ROBOT2_WELDED_ASSEMBLY_PLACED);
                 break;
+            case Constants.SENSOR_OK_UNLOAD_ACTIVATED:
+                _acceptedBelt.removeLastPiece();
+                _logger.log(Level.INFO, "Piece taken out from accepted belt");
+                _acceptedBelt.stopContainer();
+                break;
+            case Constants.SENSOR_NOT_OK_UNLOAD_ACTIVATED:
+                _rejectedBelt.removeLastPiece();
+                _logger.log(Level.INFO, "Piece taken out from rejected belt");
+                _rejectedBelt.stopContainer();
+                break;
         }
         if (!_stopped) {
             switch (command) {
-                case Constants.SENSOR_OK_UNLOAD_ACTIVATED:
-                    _acceptedBelt.removeLastPiece();
-                    _logger.log(Level.INFO, "Piece taken out from accepted belt");
-                    _acceptedBelt.stopContainer();
-                    break;
                 case Constants.SENSOR_OK_UNLOAD_DISACTIVATED:
                     _acceptedBelt.startContainer();
-                    break;
-                case Constants.SENSOR_NOT_OK_UNLOAD_ACTIVATED:
-                    _rejectedBelt.removeLastPiece();
-                    _logger.log(Level.INFO, "Piece taken out from rejected belt");
-                    _rejectedBelt.stopContainer();
                     break;
                 case Constants.SENSOR_NOT_OK_UNLOAD_DISACTIVATED:
                     _rejectedBelt.startContainer();
@@ -448,6 +449,5 @@ public class Slave3 implements Slave, IOProcess {
      * Stops the execution of the slave
      */
     public void normalStop() {
-        
     }
 }
