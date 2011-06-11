@@ -536,8 +536,18 @@ public class Slave1 implements Slave, IOProcess {
     protected void mainLoop() {
         // If we didn't receive the order to finish, we keep adding pieces
         while (!_finishing) {
-            addGear();
-            addAxis();
+            Thread addGear = new Thread(new Runnable() {
+                public void run(){
+                    addGear();
+                }
+            });
+            addGear.start();
+            Thread addAxis = new Thread(new Runnable() {
+                public void run(){
+                    addAxis();
+                }
+            });
+            addAxis.start();
         }
     }
 
