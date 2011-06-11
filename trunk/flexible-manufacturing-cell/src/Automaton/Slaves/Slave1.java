@@ -394,7 +394,7 @@ public class Slave1 implements Slave, IOProcess {
      * Starts the execution of the slave
      */
     public void start() {
-        System.out.println("S1 STARTING");
+        _logger.log(Level.INFO, "Slave 1 starting");
         _finishing = false;
         _stopped = false;
 
@@ -418,7 +418,7 @@ public class Slave1 implements Slave, IOProcess {
      * Stops the execution of the slave as an Emergency
      */
     public void emergencyStop() {
-        System.out.println("S1 STOPPING");
+        _logger.log(Level.INFO, "Slave 1 stopping");
         _finishing = true;
         _stopped = true;
         _gearBelt.stopContainer();

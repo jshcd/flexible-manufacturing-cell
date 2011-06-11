@@ -238,6 +238,7 @@ public class Slave2 implements Slave, IOProcess {
      * Starts the execution of the slave
      */
     public void start() {
+        _logger.log(Level.INFO, "Slave 2 starting");
         _stopped = false;
         _weldingStation.startContainer();
         _qualityStation.startContainer();
@@ -252,6 +253,7 @@ public class Slave2 implements Slave, IOProcess {
      * Stops the execution of the slave as an Emergency
      */
     public void emergencyStop() {
+        _logger.log(Level.INFO, "Slave 2 stopping");
         _stopped = true;
         _weldingStation.stopContainer();
         _qualityStation.stopContainer();
