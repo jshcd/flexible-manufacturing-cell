@@ -43,11 +43,7 @@ public class Sensor implements Runnable {
         while (true) {
             try {
 
-                if (_associatedContainer.isMoving()) {
-                    Thread.sleep(100);
-                } else {
-                    Thread.sleep(200);
-                }
+                Thread.sleep(75);
 
                 //TO-DO Sección crítica
                 List<Piece> pieces = _associatedContainer.getPieces();
@@ -90,8 +86,8 @@ public class Sensor implements Runnable {
         _activated = false;
         report(0);
     }
-    
-    public boolean isActivated(){
+
+    public boolean isActivated() {
         return _activated;
     }
 
