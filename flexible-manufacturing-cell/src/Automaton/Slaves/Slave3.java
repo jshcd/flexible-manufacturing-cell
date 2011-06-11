@@ -305,8 +305,9 @@ public class Slave3 implements Slave, IOProcess {
      * Starts the execution of the slave
      */
     public void start() {
+        _logger.log(Level.INFO, "Slave 3 starting");
         _stopped = false;
-   _rightPieces = 0;
+        _rightPieces = 0;
         _wrongPieces = 0;
         _acceptedBelt.startContainer();
         _rejectedBelt.startContainer();
@@ -321,6 +322,7 @@ public class Slave3 implements Slave, IOProcess {
      * Stops the execution of the slave as an Emergency
      */
     public void emergencyStop() {
+        _logger.log(Level.INFO, "Slave 3 stopping");
         _stopped = true;
         _acceptedBelt.stopContainer();
         _rejectedBelt.stopContainer();
