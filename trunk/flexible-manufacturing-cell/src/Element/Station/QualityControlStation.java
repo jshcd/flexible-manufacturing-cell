@@ -1,4 +1,3 @@
-
 package Element.Station;
 
 import Automaton.Slaves.Slave;
@@ -24,33 +23,27 @@ public class QualityControlStation implements PieceContainer {
      * Time to process the quality control
      */
     private int _qualityTime;
-    
     /**
      * Quality Control Simulation Success Rate
      * @see MasterConfigurationData
      */
     private int _sucessRate = 60;
-    
     /**
      * List of pieces
      */
     protected List<Piece> _pieces;
-    
     /**
      * Identifier
      */
     private int _id;
-    
     /**
      * Process that makes the callback
      */
     protected Slave _process;
-    
     /**
      * Shows if the station is active
      */
     protected boolean _moving;
-    
     /**
      * Shows if the station is working
      */
@@ -60,7 +53,6 @@ public class QualityControlStation implements PieceContainer {
      * Constructor of the class
      * @param id Identifier
      */
-    
     public QualityControlStation(int id) {
         _id = id;
         _moving = false;
@@ -72,10 +64,10 @@ public class QualityControlStation implements PieceContainer {
      * Run method
      */
     @Override
-    public synchronized void run() {
+    public void run() {
         while (true) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(500);
                 if (_moving) {
                     if (!_pieces.isEmpty()) {
                         if (_pieces.get(0).getType().equals(PieceType.weldedAssemblyOk)) {
@@ -90,7 +82,7 @@ public class QualityControlStation implements PieceContainer {
 
             } catch (InterruptedException ex) {
                 Logger.getLogger(AssemblyStation.class.toString()).log(Level.SEVERE, null, ex);
-            }
+            } 
         }
     }
 
@@ -98,29 +90,33 @@ public class QualityControlStation implements PieceContainer {
      * Function that checks the quality of the piece loaded in the station
      * @return TRUE if everything went good, FALSE in other case
      */
-    public boolean checkQuality() {
-        if (_pieces.size() == 1) {
+    public synchronized boolean checkQuality() {
+        try {
+            if (_pieces.size() == 1) {
 
-            _actuating = true;
-            try {
-                Thread.sleep(_qualityTime);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(AssemblyStation.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            _actuating = false;
+                _actuating = true;
+                try {
+                    Thread.sleep(_qualityTime);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(AssemblyStation.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                _actuating = false;
 
-            int random = (int) (Math.random() * 100);
-            if (random < _sucessRate) {
-                Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed OK");
-                _pieces.get(0).setType(PieceType.weldedAssemblyOk);
-                this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
+                int random = (int) (Math.random() * 100);
+                if (random < _sucessRate) {
+                    Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed OK");
+                    _pieces.get(0).setType(PieceType.weldedAssemblyOk);
+                    this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_OK);
+                } else {
+                    Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed NOT OK");
+                    _pieces.get(0).setType(PieceType.weldedAssemblyNotOk);
+                    this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
+                }
+                return true;
             } else {
-                Logger.getLogger(QualityControlStation.class.getName()).log(Level.INFO, "Quality completed completed NOT OK");
-                _pieces.get(0).setType(PieceType.weldedAssemblyNotOk);
-                this._process.sendCommand(Constants.SLAVE2_ROBOT2_QUALITY_CONTROL_COMPLETED_NOT_OK);
+                return false;
             }
-            return true;
-        } else {
+        } catch (java.lang.IndexOutOfBoundsException e) {
             return false;
         }
     }
@@ -267,7 +263,7 @@ public class QualityControlStation implements PieceContainer {
     private void updatePosition(Piece piece) {
         piece.setGuiPosition(Constants.QUALITY_STATION_CENTER_POSITION);
     }
-    
+
     /**
      * @return The current working status of the station
      */
