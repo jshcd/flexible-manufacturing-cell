@@ -44,7 +44,7 @@ public class WeldingStation implements PieceContainer {
     public synchronized void run() {
         while (true) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(500);
                 if (_moving) {
                     if (!_pieces.isEmpty()) {
                         if (_pieces.get(0).getType().equals(PieceType.weldedAssembly)) {
