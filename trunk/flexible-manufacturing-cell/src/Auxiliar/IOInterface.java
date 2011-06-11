@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Auxiliar;
 
 import java.io.ByteArrayOutputStream;
@@ -70,7 +66,7 @@ public class IOInterface implements Runnable {
         MulticastSocket socketReceive;
         try {
             socketReceive = new MulticastSocket(portR);
-
+            socketReceive.setTimeToLive(255);
             Properties prop = new Properties();
             InputStream is = new FileInputStream(Constants.MAILBOXES_PROPERTIES_PATH);
             prop.load(is);
@@ -118,6 +114,7 @@ public class IOInterface implements Runnable {
 
             // send it
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portR);
+
             socketSender.send(packet);
         } catch (IOException e) {
             e.printStackTrace();

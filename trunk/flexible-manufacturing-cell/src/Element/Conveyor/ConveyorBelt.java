@@ -58,7 +58,6 @@ public class ConveyorBelt implements PieceContainer {
                         }
                     }
                 }
-
                 Thread.yield();
             } catch (InterruptedException ex) {
                  Logger.getLogger(ConveyorBelt.class.toString()).log(Level.SEVERE, null, ex);
