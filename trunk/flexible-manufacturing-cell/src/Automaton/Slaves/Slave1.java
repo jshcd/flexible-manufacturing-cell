@@ -469,7 +469,6 @@ public class Slave1 implements Slave, IOProcess {
                 break;
             case Constants.ROBOT1_SLAVE1_PICKS_ASSEMBLY:
                 _assemblyStation.removeLastPiece();
-                sendCommand(Constants.SLAVE1_ROBOT2_ASSEMBLY_PICKED);
                 break;
             case Constants.ROBOT1_SLAVE1_REQUEST_ASSEMBLY:
                 _assemblyStation.assemble();
@@ -481,6 +480,7 @@ public class Slave1 implements Slave, IOProcess {
                 break;
             case Constants.ROBOT2_SLAVE1_PICKS_ASSEMBLY:
                 _weldingBelt.removeLastPiece();
+                sendCommand(Constants.SLAVE1_ROBOT2_ASSEMBLY_PICKED);
                 break;
             case Constants.SENSOR_GEAR_UNLOAD_ACTIVATED:
                 _gearBelt.stopContainer();
