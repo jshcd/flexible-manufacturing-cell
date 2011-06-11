@@ -46,7 +46,6 @@ public class ConveyorBelt implements PieceContainer {
         while (true) {
             try {
                 Thread.sleep(100);
-
                 if (_moving) {
                     synchronized (_pieces) {
                         Iterator i = _pieces.iterator();
@@ -54,9 +53,8 @@ public class ConveyorBelt implements PieceContainer {
                             Piece p = (Piece) i.next();
                             p.setPosition(p.getPosition() + ((double) _speed / 200));
                             Logger.getLogger(ConveyorBelt.class.toString()).log(Level.FINEST, "ConveyorBelt " + _id + ": piece at {1}", p.getPosition());
-
                             updatePosition(p);
-//                            System.out.println(p.getPos());
+                            //System.out.println(p.getPos());
                         }
                     }
                 }
