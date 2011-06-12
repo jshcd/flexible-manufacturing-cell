@@ -535,7 +535,7 @@ public class Slave1 implements Slave, IOProcess {
      */
     protected void mainLoop() {
         // If we didn't receive the order to finish, we keep adding pieces
-        while (!_finishing) {
+        
             Thread addGear = new Thread(new Runnable() {
                 public void run(){
                     addGear();
@@ -548,7 +548,6 @@ public class Slave1 implements Slave, IOProcess {
                 }
             });
             addAxis.start();
-        }
     }
 
     /**
@@ -703,30 +702,32 @@ public class Slave1 implements Slave, IOProcess {
      * If it is possible, it adds a new gear on the gear belt
      */
     private void addGear() {
-        try {
-            Thread.sleep((int) (500 * (Math.random()) + 800));
-        } catch (InterruptedException ex) {
-            _logger.log(Level.SEVERE, null, ex);
-        }
-        boolean roomInGearBelt = true;
-        //we check if there is room in the gears belt for adding a new piece
-        List<Piece> pieces = _gearBelt.getPieces();
-        synchronized (pieces) {
-            Iterator it = pieces.iterator();
-            while (it.hasNext()) {
-                Piece p = (Piece) it.next();
-                if (p.getPosition() < pieceSize * 1.1) {
-                    roomInGearBelt = false;
-                    break;
-                }
+        while (!_finishing) {
+            try {
+                Thread.sleep((int) (5000 * (Math.random()) + 1000));
+            } catch (InterruptedException ex) {
+                _logger.log(Level.SEVERE, null, ex);
             }
-            // if so we add the piece
-            if (roomInGearBelt) {
-                Piece p = new Piece();
-                p.setPosition(0);
-                p.setType(PieceType.gear);
-                _gearBelt.addPiece(p);
-                _logger.log(Level.INFO, "Added gear");
+            boolean roomInGearBelt = true;
+            //we check if there is room in the gears belt for adding a new piece
+            List<Piece> pieces = _gearBelt.getPieces();
+            synchronized (pieces) {
+                Iterator it = pieces.iterator();
+                while (it.hasNext()) {
+                    Piece p = (Piece) it.next();
+                    if (p.getPosition() < pieceSize * 1.1) {
+                        roomInGearBelt = false;
+                        break;
+                    }
+                }
+                // if so we add the piece
+                if (roomInGearBelt) {
+                    Piece p = new Piece();
+                    p.setPosition(0);
+                    p.setType(PieceType.gear);
+                    _gearBelt.addPiece(p);
+                    _logger.log(Level.INFO, "Added gear");
+                }
             }
         }
     }
@@ -735,30 +736,32 @@ public class Slave1 implements Slave, IOProcess {
      * If it is possible, it adds a new axis on the axis belt
      */
     private void addAxis() {
-        try {
-            Thread.sleep((int) (500 * (Math.random()) + 800));
-        } catch (InterruptedException ex) {
-            _logger.log(Level.SEVERE, null, ex);
-        }
-        boolean roomInAxisBelt = true;
-        List<Piece> pieces = _axisBelt.getPieces();
-        synchronized (pieces) {
-            //we check if there is room in the axis belt for adding a new piece
-            Iterator it = pieces.iterator();
-            while (it.hasNext()) {
-                Piece p = (Piece) it.next();
-                if (p.getPosition() < pieceSize * 1.1) {
-                    roomInAxisBelt = false;
-                    break;
-                }
+        while (!_finishing) {
+            try {
+                Thread.sleep((int) (5000 * (Math.random()) + 1000));
+            } catch (InterruptedException ex) {
+                _logger.log(Level.SEVERE, null, ex);
             }
-            // if so we add the piece
-            if (roomInAxisBelt) {
-                Piece p = new Piece();
-                p.setPosition(0);
-                p.setType(PieceType.axis);
-                _axisBelt.addPiece(p);
-                _logger.log(Level.INFO, "Added axis");
+            boolean roomInAxisBelt = true;
+            List<Piece> pieces = _axisBelt.getPieces();
+            synchronized (pieces) {
+                //we check if there is room in the axis belt for adding a new piece
+                Iterator it = pieces.iterator();
+                while (it.hasNext()) {
+                    Piece p = (Piece) it.next();
+                    if (p.getPosition() < pieceSize * 1.1) {
+                        roomInAxisBelt = false;
+                        break;
+                    }
+                }
+                // if so we add the piece
+                if (roomInAxisBelt) {
+                    Piece p = new Piece();
+                    p.setPosition(0);
+                    p.setType(PieceType.axis);
+                    _axisBelt.addPiece(p);
+                    _logger.log(Level.INFO, "Added axis");
+                }
             }
         }
     }
