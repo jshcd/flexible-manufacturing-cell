@@ -6,15 +6,6 @@ import Element.Piece.Piece;
 import Auxiliar.Constants;
 import Auxiliar.IOInterface;
 import Auxiliar.IOProcess;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -125,64 +116,64 @@ public class Robot1 implements Robot, Runnable, IOProcess {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.toString()).log(Level.SEVERE, null, ex);
             }
-            
-            this._slave.updateRobot(_state, _loadedPiece);
-            
-            switch (_state) {
-                case q0:
-                    if (_gearSensor) {
-                        pickGear();
-                        _state = AutomatonState.q1;
-                    } else if (_axisSensor) {
-                        pickAxis();
-                        _state = AutomatonState.q2;
-                    }
-                    break;
-                case q1:
-                    transportGear();
-                    _state = AutomatonState.q3;
-                    break;
-                case q2:
-                    transportAxis();
-                    _state = AutomatonState.q4;
-                    break;
-                case q3:
-                    if (_axisSensor) {
-                        pickAxis();
-                        _state = AutomatonState.q5;
-                    }
-                    break;
-                case q4:
-                    if (_gearSensor) {
-                        pickGear();
-                        _state = AutomatonState.q6;
-                    }
-                    break;
-                case q5:
-                    transportAxis();
-                    _state = AutomatonState.q7;
-                    break;
-                case q6:
-                    transportGear();
-                    _state = AutomatonState.q7;
-                    break;
-                case q7:
-                    this.sendCommand(Constants.ROBOT1_SLAVE1_REQUEST_ASSEMBLY);
-                    if (_assemblyCompleted) {
-                        pickAssembly();
-                        _state = AutomatonState.q8;
-                    }
-                    break;
-                case q8:
-                    if (!_weldingSensor) {
-                        transportAssembly();
-                        _state = AutomatonState.q9;
-                    }
-                    break;
-                case q9:
-                    returnToIdle();
+            if(_running) {
+                this._slave.updateRobot(_state, _loadedPiece);
+
+                switch (_state) {
+                    case q0:
+                        if (_gearSensor) {
+                            pickGear();
+                            _state = AutomatonState.q1;
+                        } else if (_axisSensor) {
+                            pickAxis();
+                            _state = AutomatonState.q2;
+                        }
+                        break;
+                    case q1:
+                        transportGear();
+                        _state = AutomatonState.q3;
+                        break;
+                    case q2:
+                        transportAxis();
+                        _state = AutomatonState.q4;
+                        break;
+                    case q3:
+                        if (_axisSensor) {
+                            pickAxis();
+                            _state = AutomatonState.q5;
+                        }
+                        break;
+                    case q4:
+                        if (_gearSensor) {
+                            pickGear();
+                            _state = AutomatonState.q6;
+                        }
+                        break;
+                    case q5:
+                        transportAxis();
+                        _state = AutomatonState.q7;
+                        break;
+                    case q6:
+                        transportGear();
+                        _state = AutomatonState.q7;
+                        break;
+                    case q7:
+                        this.sendCommand(Constants.ROBOT1_SLAVE1_REQUEST_ASSEMBLY);
+                        if (_assemblyCompleted) {
+                            pickAssembly();
+                            _state = AutomatonState.q8;
+                        }
+                        break;
+                    case q8:
+                        if (!_weldingSensor) {
+                            transportAssembly();
+                            _state = AutomatonState.q9;
+                        }
+                        break;
+                    case q9:
+                        returnToIdle();
+                }
             }
-            
             Thread.yield();
         }
     }
