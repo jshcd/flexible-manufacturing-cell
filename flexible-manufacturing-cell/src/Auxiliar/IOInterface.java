@@ -73,8 +73,6 @@ public class IOInterface implements Runnable {
             String multicastAddress = prop.getProperty("multicastAddress");
             address = InetAddress.getByName(multicastAddress);
 
-//            System.out.println(address);
-
             socketReceive.joinGroup(InetAddress.getByName("230.0.0.1"));
 
             socketReceive.setTimeToLive(1);
@@ -82,11 +80,9 @@ public class IOInterface implements Runnable {
             DatagramPacket packet;
 
             while (true) {
-
                 byte[] buf = new byte[2];
                 packet = new DatagramPacket(buf, buf.length);
                 socketReceive.receive(packet);
-
                 ByteBuffer bb = ByteBuffer.wrap(buf);
 
                 short s = bb.getShort();
@@ -116,8 +112,8 @@ public class IOInterface implements Runnable {
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portR);
 
             socketSender.send(packet);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            Logger.getLogger(IOInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
