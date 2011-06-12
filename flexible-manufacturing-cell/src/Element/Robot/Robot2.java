@@ -6,15 +6,6 @@ import Element.Piece.Piece;
 import Auxiliar.Constants;
 import Auxiliar.IOInterface;
 import Auxiliar.IOProcess;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -146,131 +137,132 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Robot1.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if(_running) {
+                _master.updateRobot(_state, _loadedPiece);
 
-            _master.updateRobot(_state, _loadedPiece);
+                if (_stateUnchanged > 25) {
+                    restoreState();
+                    _stateUnchanged = 0;
+                }
 
-            if (_stateUnchanged > 25) {
-                restoreState();
-                _stateUnchanged = 0;
-            }
+                if (_state.equals(_previousState)) {
+                    _stateUnchanged++;
+                } else {
+                    _stateUnchanged = 0;
+                }
 
-            if (_state.equals(_previousState)) {
-                _stateUnchanged++;
-            } else {
-                _stateUnchanged = 0;
-            }
+                _previousState = _state;
 
-            _previousState = _state;
-
-            switch (_state) {
-                case q0:
-                    if (_weldingSensor) {
-                        _state = AutomatonState.q1;
-                        if (_loadedPiece == null) {
-                            pickAssembly(); // sends 208
-                        } else {
-                            restoreState();
+                switch (_state) {
+                    case q0:
+                        if (_weldingSensor) {
+                            _state = AutomatonState.q1;
+                            if (_loadedPiece == null) {
+                                pickAssembly(); // sends 208
+                            } else {
+                                restoreState();
+                            }
                         }
-                    }
-                    break;
-                case q1:
-                    if (_weldingSensor) {
-                        _state = AutomatonState.q0;
-                    }
-                    if (!_weldingTableSensor) {
-                        if (_loadedPiece != null) {
-                            transportAssembly(); // sends 301,303
-                        } else {
-                            restoreState();
+                        break;
+                    case q1:
+                        if (_weldingSensor) {
+                            _state = AutomatonState.q0;
                         }
-                        _state = AutomatonState.q2;
-                    }
-                    break;
-                case q2:
-                    if (!_weldingTableSensor) {
-                        _state = AutomatonState.q1;
-                    }
-                    if (_weldingCompleted) {
-                        if (_loadedPiece == null) {
-                            pickWeldedAssembly(); // 305
-                        } else {
-                            restoreState();
+                        if (!_weldingTableSensor) {
+                            if (_loadedPiece != null) {
+                                transportAssembly(); // sends 301,303
+                            } else {
+                                restoreState();
+                            }
+                            _state = AutomatonState.q2;
                         }
-                        _state = AutomatonState.q3;
-                    }
-                    break;
-                case q3:
-                    if (_weldingTableSensor) {
-                        _state = AutomatonState.q2;
-                    }
-                    if (!_qualityTableSensor) {
-                        if (_loadedPiece != null) {
-                            transportWeldedAssembly(); // 306 304
-                        } else {
-                            restoreState();
+                        break;
+                    case q2:
+                        if (!_weldingTableSensor) {
+                            _state = AutomatonState.q1;
                         }
-                        _commandReceived = false;
-                        _state = AutomatonState.q4;
-                    }
-                    break;
-                case q4:
-                    if (!_qualityTableSensor) {
-                        _state = AutomatonState.q3;
-                    }
-                    if (_qualityCompletedOK) {
-                        if (_loadedPiece == null) {
-                            pickCheckedWeldedAssembly(true); //310
-                        } else {
-                            restoreState();
+                        if (_weldingCompleted) {
+                            if (_loadedPiece == null) {
+                                pickWeldedAssembly(); // 305
+                            } else {
+                                restoreState();
+                            }
+                            _state = AutomatonState.q3;
                         }
-                        _state = AutomatonState.q6;
-                    } else if (_qualityCompletedNotOK) {
-                        if (_loadedPiece == null) {
-                            pickCheckedWeldedAssembly(false);//310
-                        } else {
-                            restoreState();
+                        break;
+                    case q3:
+                        if (_weldingTableSensor) {
+                            _state = AutomatonState.q2;
                         }
-                        _state = AutomatonState.q7;
-                    }
-                    break;
-                case q6:
-                    if (_qualityTableSensor) {
-                        _state = AutomatonState.q4;
-                    }
-                    if (!_OKTableSensor) {
-                        if (_loadedPiece != null) {
-                            transportWeldedOK(); //401
+                        if (!_qualityTableSensor) {
+                            if (_loadedPiece != null) {
+                                transportWeldedAssembly(); // 306 304
+                            } else {
+                                restoreState();
+                            }
+                            _commandReceived = false;
+                            _state = AutomatonState.q4;
                         }
-                        _previousState = AutomatonState.q6;
-                        _state = AutomatonState.q8;
-                    }
-                    break;
-                case q7:
-                    if (_qualityTableSensor) {
-                        _state = AutomatonState.q4;
-                    }
-                    if (!_NotOKTableSensor) {
-                        if (_loadedPiece != null) {
-                            transportWeldedNotOK(); //402
+                        break;
+                    case q4:
+                        if (!_qualityTableSensor) {
+                            _state = AutomatonState.q3;
                         }
-                        _previousState = AutomatonState.q7;
-                        _state = AutomatonState.q8;
-                    }
-                    break;
-                case q8:
-                    if (_previousState.equals(AutomatonState.q6)) {
-                        if (_OKTableSensor) {
-                            returnToIdle();
-                        } else{
-                            restoreState();
+                        if (_qualityCompletedOK) {
+                            if (_loadedPiece == null) {
+                                pickCheckedWeldedAssembly(true); //310
+                            } else {
+                                restoreState();
+                            }
+                            _state = AutomatonState.q6;
+                        } else if (_qualityCompletedNotOK) {
+                            if (_loadedPiece == null) {
+                                pickCheckedWeldedAssembly(false);//310
+                            } else {
+                                restoreState();
+                            }
+                            _state = AutomatonState.q7;
                         }
-                    } else if (_previousState.equals(AutomatonState.q7)) {
-                        if (_NotOKTableSensor) {
-                            returnToIdle();
-                        } else{
-                            restoreState();
+                        break;
+                    case q6:
+                        if (_qualityTableSensor) {
+                            _state = AutomatonState.q4;
                         }
-                    }
+                        if (!_OKTableSensor) {
+                            if (_loadedPiece != null) {
+                                transportWeldedOK(); //401
+                            }
+                            _previousState = AutomatonState.q6;
+                            _state = AutomatonState.q8;
+                        }
+                        break;
+                    case q7:
+                        if (_qualityTableSensor) {
+                            _state = AutomatonState.q4;
+                        }
+                        if (!_NotOKTableSensor) {
+                            if (_loadedPiece != null) {
+                                transportWeldedNotOK(); //402
+                            }
+                            _previousState = AutomatonState.q7;
+                            _state = AutomatonState.q8;
+                        }
+                        break;
+                    case q8:
+                        if (_previousState.equals(AutomatonState.q6)) {
+                            if (_OKTableSensor) {
+                                returnToIdle();
+                            } else{
+                                restoreState();
+                            }
+                        } else if (_previousState.equals(AutomatonState.q7)) {
+                            if (_NotOKTableSensor) {
+                                returnToIdle();
+                            } else{
+                                restoreState();
+                            }
+                        }
+                }
             }
             Thread.yield();
         }
