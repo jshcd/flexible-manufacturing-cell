@@ -348,7 +348,7 @@ public class ConfigurationParameters extends JDialog {
         _robot2CheckedTxt.setText(String.valueOf(_masterConfiguration._robot2ConfigurationData.getPickAndTransportCheckedAssemblyTime()));
         _robot2WeldingTxt.setText(String.valueOf(_masterConfiguration._robot2ConfigurationData.getPickAndTransportWeldedAssemblyTime()));
 
-        if (!showResources) {
+        if (showResources) {
             _axisBeltSpeedTxt.setEditable(false);
             _axisBeltCapacityTxt.setEditable(false);
             _axisBeltLengthTxt.setEditable(false);
