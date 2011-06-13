@@ -595,7 +595,6 @@ public class Slave1 implements Slave, IOProcess {
         Thread t = new Thread(new Runnable() {
 
             public void run() {
-
                 _finishing = true;
                 try {
                     Thread.sleep(6000);
@@ -608,7 +607,7 @@ public class Slave1 implements Slave, IOProcess {
                 AutomatonState robotState = _robot.getState();
                 List<Piece> assemblyTablePieces = _assemblyStation.getPieces();
 
-                if (robotState == AutomatonState.q4) {//Transporting Ax
+                if (robotState == AutomatonState.q4) {//Transporting Axis
                     numAxis++;
                 } else if (robotState == AutomatonState.q3) {//Transporting Gear
                     numGears++;
@@ -726,7 +725,7 @@ public class Slave1 implements Slave, IOProcess {
                 }
             }
             try {
-                Thread.sleep((int) (5000 * (Math.random()) + 1000));
+                Thread.sleep((int) (5000 * (Math.random()) + 100));
             } catch (InterruptedException ex) {
                 _logger.log(Level.SEVERE, null, ex);
             }
@@ -760,7 +759,7 @@ public class Slave1 implements Slave, IOProcess {
                 }
             }
             try {
-                Thread.sleep((int) (5000 * (Math.random()) + 1000));
+                Thread.sleep((int) (5000 * (Math.random()) + 100));
             } catch (InterruptedException ex) {
                 _logger.log(Level.SEVERE, null, ex);
             }

@@ -115,7 +115,6 @@ public class SlaveInputMailBox implements MailBox {
                             ObjectInputStream in = new ObjectInputStream(skCliente.getInputStream());
 
                             Object o = in.readObject();
-                            _logger.log(Level.FINE, "Slave {0} SlaveInputMailBox received {1}", new Object[]{_id, o.toString()});
                             if (o instanceof Command) {
                                 switch (((Command) o).getCommand()) {
                                     case Constants.START_SLAVE1:
