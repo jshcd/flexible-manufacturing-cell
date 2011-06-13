@@ -87,7 +87,7 @@ public class MonitorWindow extends JFrame {
                 _report.getValues(_masterAutomaton.getDbmanager().readReportData());
                 _report.setVisible(true);
             } else if (e.getSource() == _buttonConfiguration) {
-                _configurationParameters.getValues(_masterAutomaton.getDbmanager().readParameters(), _buttonStart.isEnabled());
+                _configurationParameters.getValues(_masterAutomaton.getDbmanager().readParameters(), (_buttonEmergencyStop.isEnabled() || _buttonStop.isEnabled()));
                 _configurationParameters.setVisible(true);
             }
         }

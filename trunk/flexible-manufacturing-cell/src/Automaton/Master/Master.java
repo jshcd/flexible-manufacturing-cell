@@ -154,6 +154,7 @@ public class Master {
      */
     public void startSystem() {
         _logger.log(Level.INFO, "System started");
+       // initialize();
         if (_reportData._firstStart) {
             _reportData._firstStart = false;
             _reportData._rightPiecesAllExec = 0;
