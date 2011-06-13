@@ -87,6 +87,10 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * Instance of IOInterface
      */
     IOInterface ioi;
+    /**
+     * Shows if the robot is currently working
+     */
+    private boolean _running;
 
     /**
      * Class constructor
@@ -451,6 +455,12 @@ public class Robot2 implements Robot, Runnable, IOProcess {
                 if (this._qualityCompletedNotOK) {
                     _loadedPiece.setType(Piece.PieceType.weldedAssemblyNotOk);
                 }
+                break;
+            case Constants.EMERGENCY_STOP_ORDER:
+                _running = false;
+                break;
+            case Constants.START_ROBOT2:
+                _running = true;
                 break;
         }
     }

@@ -188,7 +188,7 @@ public class Robot1 implements Robot, Runnable, IOProcess {
             case Constants.START_ROBOT1:
                 _running = true;
                 break;
-            case Constants.NORMAL_STOP_ORDER:
+            case Constants.EMERGENCY_STOP_ORDER:
                 _running = false;
                 break;
             case Constants.SENSOR_GEAR_UNLOAD_ACTIVATED:
