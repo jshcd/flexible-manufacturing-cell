@@ -154,8 +154,7 @@ public class Master {
      */
     public void startSystem() {
         _logger.log(Level.INFO, "System started");
-       // initialize();
-        if (_reportData._firstStart) {
+       if (_reportData._firstStart) {
             _reportData._firstStart = false;
             _reportData._rightPiecesAllExec = 0;
             _reportData._wrongPiecesAllExec = 0;
@@ -168,8 +167,7 @@ public class Master {
             _reportData._nRestarts++;
         }
         _dbmanager.writeReportData(_reportData);
-
-        Command command1 = new Command(Constants.START_SLAVE1);
+       Command command1 = new Command(Constants.START_SLAVE1);
         _outputMailBox.sendInformation(command1, Constants.SLAVE1_ID);
         Command command2 = new Command(Constants.START_SLAVE2);
         _outputMailBox.sendInformation(command2, Constants.SLAVE2_ID);
