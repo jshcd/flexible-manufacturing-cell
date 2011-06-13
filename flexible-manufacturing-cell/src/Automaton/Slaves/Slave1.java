@@ -425,7 +425,7 @@ public class Slave1 implements Slave, IOProcess {
         _axisBelt.stopContainer();
         _assemblyStation.stopContainer();
         _weldingBelt.stopContainer();
-        sendCommand(Constants.NORMAL_STOP_ORDER);
+        sendCommand(Constants.EMERGENCY_STOP_ORDER);
         try {
             reportToMaster(new Command(Constants.SLAVE_ONE_STOPPING));
         } catch (IOException ex) {
@@ -450,7 +450,7 @@ public class Slave1 implements Slave, IOProcess {
                 emergencyStop();
                 break;
             case Constants.NORMAL_STOP_ORDER:
-                _finishing = true;
+                normalStop();
                 break;
             case Constants.ROBOT1_SLAVE1_PICKS_GEAR:
                 _gearBelt.removeLastPiece();
@@ -603,6 +603,11 @@ public class Slave1 implements Slave, IOProcess {
             public void run() {
 
                 _finishing = true;
+                try {
+                    Thread.sleep(6000);
+                } catch (InterruptedException ex) {
+                    _logger.log(Level.SEVERE, null, ex);
+                }
                 int numGears = _gearBelt.getPieces().size();
                 int numAxis = _axisBelt.getPieces().size();
 
@@ -624,6 +629,7 @@ public class Slave1 implements Slave, IOProcess {
                 }
                 int differenceA = numGears - numAxis;
                 int differenceG = numAxis - numGears;
+                System.out.println("******************\n" + differenceA + "\n******************");
                 try {
                     if (differenceA != 0) {
                         while (differenceG > 0) {
