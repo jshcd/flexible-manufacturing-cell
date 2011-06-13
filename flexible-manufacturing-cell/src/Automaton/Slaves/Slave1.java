@@ -425,7 +425,7 @@ public class Slave1 implements Slave, IOProcess {
         _axisBelt.stopContainer();
         _assemblyStation.stopContainer();
         _weldingBelt.stopContainer();
-        sendCommand(Constants.EMERGENCY_STOP_ORDER);
+        _robot.sendCommand(Constants.EMERGENCY_STOP_ORDER);
         try {
             reportToMaster(new Command(Constants.SLAVE_ONE_STOPPING));
         } catch (IOException ex) {
@@ -445,12 +445,6 @@ public class Slave1 implements Slave, IOProcess {
         switch (command) {
             case Constants.START_SLAVE1:
                 start();
-                break;
-            case Constants.EMERGENCY_STOP_ORDER:
-                emergencyStop();
-                break;
-            case Constants.NORMAL_STOP_ORDER:
-                normalStop();
                 break;
             case Constants.ROBOT1_SLAVE1_PICKS_GEAR:
                 _gearBelt.removeLastPiece();
