@@ -347,6 +347,9 @@ public class Slave1 implements Slave, IOProcess {
         y.start();
     }
 
+    /**
+     * Sets configuration data given after the first time it is received
+     */
     public void setConfigurationValues() {
         int gearSpeed = _slave1ConfigurationData._gearBeltConfiguration.getSpeed();
         double gearLength = (double) _slave1ConfigurationData._gearBeltConfiguration.getLength();
@@ -464,8 +467,6 @@ public class Slave1 implements Slave, IOProcess {
      */
     public void runCommand(int command) {
         Piece p;
-//        System.out.println("S1 receives: " + command);
-
         switch (command) {
             case Constants.START_SLAVE1:
                 start();
@@ -656,7 +657,6 @@ public class Slave1 implements Slave, IOProcess {
                 }
                 int differenceA = numGears - numAxis;
                 int differenceG = numAxis - numGears;
-                System.out.println("******************\n" + differenceA + "\n******************");
                 try {
                     if (differenceA != 0) {
                         while (differenceG > 0) {

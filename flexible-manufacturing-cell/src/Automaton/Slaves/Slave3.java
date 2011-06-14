@@ -219,7 +219,7 @@ public class Slave3 implements Slave, IOProcess {
         try {
             reportToMaster(_statusData);
         } catch (IOException ex) {
-            System.out.println("Master not found: retrying in 5 secs");
+            _logger.log(Level.INFO, "Master not found: retrying in 5 secs");
             this._outputMailBox.startConnection();
         }
     }
@@ -306,6 +306,9 @@ public class Slave3 implements Slave, IOProcess {
         y.start();
     }
 
+    /**
+     * Sets configuration data given after the first time it is received
+     */
     public void setConfigurationValues() {
         int acceptedSpeed = _slave3ConfigurationData._acceptedBelt.getSpeed();
         double acceptedLength = (double) _slave3ConfigurationData._acceptedBelt.getLength();
@@ -356,7 +359,6 @@ public class Slave3 implements Slave, IOProcess {
      * @param command Command identifier
      */
     public void runCommand(int command) {
-//        if(command >80) System.out.println("S3 received: " + command);
         Piece p;
         switch (command) {
             case Constants.START_SLAVE3:

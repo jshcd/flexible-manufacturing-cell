@@ -238,6 +238,9 @@ public class Slave2 implements Slave, IOProcess {
         y.start();
     }
 
+    /**
+     * Sets configuration data given after the first time it is received
+     */
     public void setConfigurationValues() {
         _weldingStation.setWeldingTime(_slave2ConfigurationData._weldingActivationTime);
         _qualityStation.setQualityTime(_slave2ConfigurationData._qualityControlActivationTime);
