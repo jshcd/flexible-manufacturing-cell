@@ -103,6 +103,10 @@ public class Slave3 implements Slave, IOProcess {
      * Logger
      */
     protected Logger _logger = Logger.getLogger(Slave3.class.toString());
+    /**
+     * It is the first time receiving the configuration parameters
+     */
+    private boolean _isFirstTime = true;
 
     /**
      * Main method that creates a slave
@@ -233,11 +237,11 @@ public class Slave3 implements Slave, IOProcess {
 
         int acceptedSpeed = _slave3ConfigurationData._acceptedBelt.getSpeed();
         double acceptedLength = (double) _slave3ConfigurationData._acceptedBelt.getLength();
-        int reyectedSpeed = _slave3ConfigurationData._notAcceptedBelt.getSpeed();
-        double reyectedLength = (double) _slave3ConfigurationData._notAcceptedBelt.getLength();
+        int rejectedSpeed = _slave3ConfigurationData._notAcceptedBelt.getSpeed();
+        double rejectedLength = (double) _slave3ConfigurationData._notAcceptedBelt.getLength();
 
         _acceptedBelt = new ConveyorBelt(7, acceptedSpeed, acceptedLength);
-        _rejectedBelt = new ConveyorBelt(8, reyectedSpeed, reyectedLength);
+        _rejectedBelt = new ConveyorBelt(8, rejectedSpeed, rejectedLength);
 
         _sensor8 = new Sensor();
         _sensor8.setSensorId(8);
@@ -258,7 +262,7 @@ public class Slave3 implements Slave, IOProcess {
         _sensor10.setAssociatedContainer(_rejectedBelt);
         _sensor10.setProcess(this);
         _sensor10.setRange(sensor_range);
-        _sensor10.setPositionInBelt(reyectedLength - sensor_range);
+        _sensor10.setPositionInBelt(rejectedLength - sensor_range);
 
         _sensor11 = new Sensor();
         _sensor11.setSensorId(11);
@@ -300,6 +304,17 @@ public class Slave3 implements Slave, IOProcess {
             }
         });
         y.start();
+    }
+
+    public void setConfigurationValues() {
+        int acceptedSpeed = _slave3ConfigurationData._acceptedBelt.getSpeed();
+        double acceptedLength = (double) _slave3ConfigurationData._acceptedBelt.getLength();
+        int rejectedSpeed = _slave3ConfigurationData._notAcceptedBelt.getSpeed();
+        double rejectedLength = (double) _slave3ConfigurationData._notAcceptedBelt.getLength();
+        _acceptedBelt.setLength(acceptedLength);
+        _acceptedBelt.setSpeed(acceptedSpeed);
+        _rejectedBelt.setLength(rejectedLength);
+        _rejectedBelt.setSpeed(rejectedSpeed);
     }
 
     /**
@@ -442,7 +457,17 @@ public class Slave3 implements Slave, IOProcess {
     public void storeInitialConfiguration(MasterConfigurationData md) {
         _slave3ConfigurationData = md._slave3ConfigurationData;
         sensor_range = (double) md._sensorRange;
-        initialize();
+        if(_isFirstTime) {
+            initialize();
+            _isFirstTime = false;
+        } else {
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    setConfigurationValues();
+                }
+            });
+            t.start();
+        }
     }
 
     /**

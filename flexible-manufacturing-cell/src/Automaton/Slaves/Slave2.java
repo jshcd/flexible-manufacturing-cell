@@ -84,6 +84,10 @@ public class Slave2 implements Slave, IOProcess {
      * Success rate for quality station
      */
     private int _sucessRate;
+    /**
+     * It is the first time receiving the configuration parameters
+     */
+    private boolean _isFirstTime = true;
 
     /**
      * Main method that creates a slave
@@ -234,6 +238,12 @@ public class Slave2 implements Slave, IOProcess {
         y.start();
     }
 
+    public void setConfigurationValues() {
+        _weldingStation.setWeldingTime(_slave2ConfigurationData._weldingActivationTime);
+        _qualityStation.setQualityTime(_slave2ConfigurationData._qualityControlActivationTime);
+        _qualityStation.setSucessRate(_sucessRate);
+    }
+
     /**
      * Starts the execution of the slave
      */
@@ -360,7 +370,17 @@ public class Slave2 implements Slave, IOProcess {
         _slave2ConfigurationData = md._slave2ConfigurationData;
         sensor_range = (double) md._sensorRange;
         _sucessRate = md._successRate;
-        initialize();
+        if(_isFirstTime) {
+            initialize();
+            _isFirstTime = false;
+        } else {
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    setConfigurationValues();
+                }
+            });
+            t.start();
+        }
     }
 
     /**
