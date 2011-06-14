@@ -116,6 +116,10 @@ public class Slave1 implements Slave, IOProcess {
      * Logger
      */
     protected Logger _logger = Logger.getLogger(Slave1.class.toString());
+    /**
+     * It is the first time receiving the configuration parameters
+     */
+    private boolean _isFirstTime = true;
 
     /**
      * Main method that creates a slave
@@ -317,6 +321,14 @@ public class Slave1 implements Slave, IOProcess {
         Thread sensor5 = new Thread(_sensor5);
         sensor5.start();
 
+        //Initialize Robot
+        _robot = new Robot1();
+        _robot.setSlave(this);
+
+        _robot.setTrasportTime1(_robot1ConfigurationData.getPickAndPlaceGearTime());
+        _robot.setTransportTime2(_robot1ConfigurationData.getPickAndPlaceAxisTime());
+        _robot.setTransportTime3(_robot1ConfigurationData.getPickAndPlaceAssemblyTime());
+
         startRobot();
 
         Thread y = new Thread(new Runnable() {
@@ -333,20 +345,32 @@ public class Slave1 implements Slave, IOProcess {
             }
         });
         y.start();
+    }
 
+    public void setConfigurationValues() {
+        int gearSpeed = _slave1ConfigurationData._gearBeltConfiguration.getSpeed();
+        double gearLength = (double) _slave1ConfigurationData._gearBeltConfiguration.getLength();
+        int axisSpeed = _slave1ConfigurationData._axisBeltConfiguration.getSpeed();
+        double axisLength = (double) _slave1ConfigurationData._axisBeltConfiguration.getLength();
+        int weldingSpeed = _slave1ConfigurationData._weldingBeltConfiguration.getSpeed();
+        double weldingLength = (double) _slave1ConfigurationData._weldingBeltConfiguration.getLength();
 
+        _gearBelt.setLength(gearLength);
+        _gearBelt.setSpeed(gearSpeed);
+        _axisBelt.setLength(axisLength);
+        _axisBelt.setSpeed(axisSpeed);
+        _assemblyStation.setAssemblyTime(_slave1ConfigurationData._assemblyActivationTime);
+        _weldingBelt.setLength(weldingLength);
+        _weldingBelt.setSpeed(weldingSpeed);
+        _robot.setTrasportTime1(_robot1ConfigurationData.getPickAndPlaceGearTime());
+        _robot.setTransportTime2(_robot1ConfigurationData.getPickAndPlaceAxisTime());
+        _robot.setTransportTime3(_robot1ConfigurationData.getPickAndPlaceAssemblyTime());
     }
 
     /**
      * Starts the execution of the robot
      */
     public void startRobot() {
-        _robot = new Robot1();
-        _robot.setSlave(this);
-
-        _robot.setTrasportTime1(_robot1ConfigurationData.getPickAndPlaceGearTime());
-        _robot.setTransportTime2(_robot1ConfigurationData.getPickAndPlaceAxisTime());
-        _robot.setTransportTime3(_robot1ConfigurationData.getPickAndPlaceAssemblyTime());
         (new Thread(_robot)).start();
     }
 
@@ -585,7 +609,17 @@ public class Slave1 implements Slave, IOProcess {
         _robot1ConfigurationData = md._robot1ConfigurationData;
         sensor_range = (double) md._sensorRange;
         pieceSize = (double) md._pieceSize;
-        initialize();
+        if(_isFirstTime){
+            initialize();
+            _isFirstTime = false;
+        } else {
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    setConfigurationValues();
+                }
+            });
+            t.start();
+        }
     }
 
     /**
