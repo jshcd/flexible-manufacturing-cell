@@ -65,7 +65,6 @@ public class Master {
      */
     boolean _slave3Online = false;
 
-
     /**
      * Constructs the master objects and initializes its components
      * @param m Monitor window where the system is displayed
@@ -154,7 +153,7 @@ public class Master {
      */
     public void startSystem() {
         _logger.log(Level.INFO, "System started");
-       if (_reportData._firstStart) {
+        if (_reportData._firstStart) {
             _reportData._firstStart = false;
             _reportData._rightPiecesAllExec = 0;
             _reportData._wrongPiecesAllExec = 0;
@@ -167,14 +166,17 @@ public class Master {
             _reportData._nRestarts++;
         }
         _dbmanager.writeReportData(_reportData);
-       Command command1 = new Command(Constants.START_SLAVE1);
+        initialize();
+        _outputMailBox.sendInformation(_configurationData, Constants.SLAVE1_ID);
+        _outputMailBox.sendInformation(_configurationData, Constants.SLAVE2_ID);
+        _outputMailBox.sendInformation(_configurationData, Constants.SLAVE3_ID);
+        Command command1 = new Command(Constants.START_SLAVE1);
         _outputMailBox.sendInformation(command1, Constants.SLAVE1_ID);
         Command command2 = new Command(Constants.START_SLAVE2);
         _outputMailBox.sendInformation(command2, Constants.SLAVE2_ID);
         Command command3 = new Command(Constants.START_SLAVE3);
         _outputMailBox.sendInformation(command3, Constants.SLAVE3_ID);
         _robot.sendCommand(Constants.START_ROBOT2);
-
 
     }
 

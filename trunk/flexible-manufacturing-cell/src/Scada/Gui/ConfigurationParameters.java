@@ -217,7 +217,7 @@ public class ConfigurationParameters extends JDialog {
         _slave2Parameters.add(new JLabel("Activation time: "));
         _weldingActivationTimeTxt = new JTextField(_weldingActivationTime);
         _slave2Parameters.add(_weldingActivationTimeTxt);
-        _slave2Parameters.add(new JLabel("axis"));
+        _slave2Parameters.add(new JLabel("ms"));
 
         //robot 1
         pnlCommonLayout = new MigLayout("wrap 3",
