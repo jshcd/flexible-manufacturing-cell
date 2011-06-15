@@ -108,6 +108,8 @@ public class Robot2 implements Robot, Runnable, IOProcess {
             _qualityCompletedNotOK = false;
             _OKTableSensor = false;
             _NotOKTableSensor = false;
+            
+            _running = true;
 
             _commandReceived = false;
 
@@ -386,6 +388,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * @param command New command to execute
      */
     public void runCommand(int command) {
+        if (command > 190) {
+            System.out.println("R2: " + command + " State: " + _state + " Loaded piece: " + _loadedPiece + " CR: " + _commandReceived);
+        }
         switch (command) {
             case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
                 _weldingSensor = true;

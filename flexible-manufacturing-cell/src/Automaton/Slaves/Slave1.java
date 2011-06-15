@@ -156,7 +156,7 @@ public class Slave1 implements Slave, IOProcess {
     /**
      * Connects to the master
      */
-    private void connectToMaster() {
+    public void connectToMaster() {
         try {
             reportToMaster(new Command(Constants.COMMAND_SLAVE1_CONNECTED));
         } catch (IOException ex) {
@@ -452,7 +452,7 @@ public class Slave1 implements Slave, IOProcess {
         _axisBelt.stopContainer();
         _assemblyStation.stopContainer();
         _weldingBelt.stopContainer();
-        _robot.sendCommand(Constants.EMERGENCY_STOP_ORDER);
+        sendCommand(Constants.EMERGENCY_STOP_ORDER);
         try {
             reportToMaster(new Command(Constants.SLAVE_ONE_STOPPING));
         } catch (IOException ex) {
@@ -737,6 +737,11 @@ public class Slave1 implements Slave, IOProcess {
      */
     private void addGear() {
         while (!_finishing) {
+            try {
+                Thread.sleep((int) (5000 * (Math.random()) + 1000));
+            } catch (InterruptedException ex) {
+                _logger.log(Level.SEVERE, null, ex);
+            }
             boolean roomInGearBelt = true;
             //we check if there is room in the gears belt for adding a new piece
             List<Piece> pieces = _gearBelt.getPieces();
@@ -771,6 +776,11 @@ public class Slave1 implements Slave, IOProcess {
      */
     private void addAxis() {
         while (!_finishing) {
+            try {
+                Thread.sleep((int) (5000 * (Math.random()) + 1000));
+            } catch (InterruptedException ex) {
+                _logger.log(Level.SEVERE, null, ex);
+            }
             boolean roomInAxisBelt = true;
             List<Piece> pieces = _axisBelt.getPieces();
             synchronized (pieces) {
