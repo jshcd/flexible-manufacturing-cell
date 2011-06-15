@@ -26,6 +26,8 @@ public class Constants {
     public final static int START_SLAVE3 = 1003;
     public final static int START_ROBOT1 = 1004;
     public final static int START_ROBOT2 = 1005;
+    public final static int STOP_ROBOT1 = 1006;
+    public final static int STOP_ROBOT2 = 1007;
     public final static int EMERGENCY_STOP_ORDER = 1;
     public final static int NORMAL_STOP_ORDER = 2;
     public final static int SLAVE_ONE_STARTING = 3;
