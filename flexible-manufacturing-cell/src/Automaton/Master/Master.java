@@ -177,6 +177,7 @@ public class Master {
         Command command3 = new Command(Constants.START_SLAVE3);
         _outputMailBox.sendInformation(command3, Constants.SLAVE3_ID);
         _robot.sendCommand(Constants.START_ROBOT2);
+        _robot.restoreState();
 
     }
 

@@ -388,9 +388,9 @@ public class Robot2 implements Robot, Runnable, IOProcess {
      * @param command New command to execute
      */
     public void runCommand(int command) {
-        if (command > 190) {
-            System.out.println("R2: " + command + " State: " + _state + " Loaded piece: " + _loadedPiece + " CR: " + _commandReceived);
-        }
+//        if (command > 190) {
+//            System.out.println("R2: " + command + " State: " + _state + " Loaded piece: " + _loadedPiece + " CR: " + _commandReceived);
+//        }
         switch (command) {
             case Constants.SENSOR_WELDING_UNLOAD_ACTIVATED:
                 _weldingSensor = true;
@@ -536,7 +536,7 @@ public class Robot2 implements Robot, Runnable, IOProcess {
     /**
      * Sertores the state after performing an action
      */
-    private void restoreState() {
+    public void restoreState() {
         _commandReceived = true;
         if (_loadedPiece == null) {
             if (this._qualityCompletedNotOK) {
