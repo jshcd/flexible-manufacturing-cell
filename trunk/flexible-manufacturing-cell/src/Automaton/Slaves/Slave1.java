@@ -763,11 +763,6 @@ public class Slave1 implements Slave, IOProcess {
                     _logger.log(Level.INFO, "Added gear");
                 }
             }
-            try {
-                Thread.sleep((int) (5000 * (Math.random()) + 100));
-            } catch (InterruptedException ex) {
-                _logger.log(Level.SEVERE, null, ex);
-            }
         }
     }
 
@@ -801,11 +796,6 @@ public class Slave1 implements Slave, IOProcess {
                     _axisBelt.addPiece(p);
                     _logger.log(Level.INFO, "Added axis");
                 }
-            }
-            try {
-                Thread.sleep((int) (5000 * (Math.random()) + 100));
-            } catch (InterruptedException ex) {
-                _logger.log(Level.SEVERE, null, ex);
             }
         }
     }
